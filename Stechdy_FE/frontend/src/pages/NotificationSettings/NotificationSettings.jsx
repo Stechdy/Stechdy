@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import SidebarNav from "../../components/common/SidebarNav";
 import BottomNav from "../../components/common/BottomNav";
+import SuccessModal from "../../components/common/SuccessModal";
 import settingsService from "../../services/settingsService";
 import "./NotificationSettings.css";
 
@@ -11,6 +12,7 @@ const NotificationSettings = () => {
   const { t } = useTranslation();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [settings, setSettings] = useState({
     notification: {
       enabled: true,
@@ -68,7 +70,7 @@ const NotificationSettings = () => {
       if (response.success) {
         // Also save to localStorage as backup
         localStorage.setItem("notificationSettings", JSON.stringify(settings));
-        alert(t("notificationSettings.savedSuccessfully") || "Settings saved successfully!");
+        setShowSuccessModal(true);
       } else {
         throw new Error(response.message || "Failed to save");
       }
@@ -338,7 +340,7 @@ const NotificationSettings = () => {
                       strokeLinejoin="round"
                     />
                   </svg>
-                  {t("common.saveChanges") || "Save Changes"}
+                  {t("common.saveChanges")}
                 </>
               )}
             </button>
@@ -346,6 +348,13 @@ const NotificationSettings = () => {
         </div>
       </div>
       <BottomNav />
+      
+      {/* Success Modal */}
+      <SuccessModal
+        isOpen={showSuccessModal}
+        onClose={() => setShowSuccessModal(false)}
+        message={t("notificationSettings.savedSuccessfully")}
+      />
     </div>
   );
 };

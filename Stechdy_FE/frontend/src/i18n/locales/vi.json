@@ -205,6 +205,7 @@
     "userInformation": "Thông tin người dùng",
     "appearance": "Giao diện",
     "language": "Ngôn ngữ",
+    "notification": "Thông báo",
     "soundNotifications": "Âm thanh & Thông báo",
     "support": "Hỗ trợ",
     "helpSupport": "Trợ giúp & Hỗ trợ",
@@ -470,10 +471,14 @@
     "error": "Lỗi",
     "success": "Thành công",
     "save": "Lưu",
+    "saveChanges": "Lưu",
+    "saving": "Đang lưu...",
+    "savedSuccessfully": "Thay đổi của bạn đã được lưu thành công!",
     "cancel": "Hủy",
     "edit": "Chỉnh sửa",
     "delete": "Xóa",
     "confirm": "Xác nhận",
+    "ok": "Đồng ý",
     "back": "Quay lại",
     "next": "Tiếp theo",
     "submit": "Gửi",
@@ -594,7 +599,7 @@
     "resourcesUsed": "Tài liệu đã sử dụng",
     "completionNotes": "Ghi chú hoàn thành",
     "editDetails": "Chỉnh sửa",
-    "saveChanges": "Lưu thay đổi",
+    "saveChanges": "Lưu",
     "cancel": "Hủy",
     "selectSubject": "Chọn môn học",
     "startTime": "Giờ bắt đầu",
@@ -842,8 +847,5 @@
       }
     },
     "footer": "Nếu có câu hỏi về các điều khoản này, liên hệ chúng tôi tại"
-  },
-  "common": {
-    "back": "Quay lại"
   }
 }
