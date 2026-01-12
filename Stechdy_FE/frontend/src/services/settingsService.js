@@ -4,7 +4,7 @@ const settingsService = {
   // Get user settings
   getSettings: async () => {
     try {
-      const response = await api.get('/user/settings');
+      const response = await api.get('/users/settings');
       return {
         success: true,
         data: response.data,
@@ -21,7 +21,7 @@ const settingsService = {
   // Update user settings
   updateSettings: async (settings) => {
     try {
-      const response = await api.put('/user/settings', settings);
+      const response = await api.put('/users/settings', settings);
       return {
         success: true,
         data: response.data,

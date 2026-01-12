@@ -205,6 +205,7 @@
     "userInformation": "Thông tin người dùng",
     "appearance": "Giao diện",
     "language": "Ngôn ngữ",
+    "notification": "Thông báo",
     "soundNotifications": "Âm thanh & Thông báo",
     "support": "Hỗ trợ",
     "helpSupport": "Trợ giúp & Hỗ trợ",
@@ -306,6 +307,7 @@
     "studyTime": "Thời gian học",
     "studySession": "Buổi học",
     "quotes": "Trích dẫn",
+    "quoteOfDay": "Trích dẫn trong ngày",
     "missedSession": "Buổi học bị lỡ",
     "missedSessionText": "Bạn đã đánh dấu",
     "asMissed": "là bị lỡ.",
@@ -470,10 +472,14 @@
     "error": "Lỗi",
     "success": "Thành công",
     "save": "Lưu",
+    "saveChanges": "Lưu",
+    "saving": "Đang lưu...",
+    "savedSuccessfully": "Thay đổi của bạn đã được lưu thành công!",
     "cancel": "Hủy",
     "edit": "Chỉnh sửa",
     "delete": "Xóa",
     "confirm": "Xác nhận",
+    "ok": "Đồng ý",
     "back": "Quay lại",
     "next": "Tiếp theo",
     "submit": "Gửi",
@@ -594,7 +600,7 @@
     "resourcesUsed": "Tài liệu đã sử dụng",
     "completionNotes": "Ghi chú hoàn thành",
     "editDetails": "Chỉnh sửa",
-    "saveChanges": "Lưu thay đổi",
+    "saveChanges": "Lưu",
     "cancel": "Hủy",
     "selectSubject": "Chọn môn học",
     "startTime": "Giờ bắt đầu",
@@ -843,7 +849,24 @@
     },
     "footer": "Nếu có câu hỏi về các điều khoản này, liên hệ chúng tôi tại"
   },
-  "common": {
-    "back": "Quay lại"
+  "quote": {
+    "dailyInspiration": "Cảm hứng mỗi ngày",
+    "newQuote": "Câu mới",
+    "share": "Chia sẻ",
+    "shareTitle": "Trích dẫn truyền cảm hứng",
+    "copiedToClipboard": "Đã sao chép vào clipboard!",
+    "dailyMessage": "Một câu trích dẫn mới mỗi ngày để truyền cảm hứng cho bạn 🌟",
+    "categories": {
+      "success": "thành công",
+      "learning": "học tập",
+      "education": "giáo dục",
+      "knowledge": "kiến thức",
+      "motivation": "động lực",
+      "dreams": "uớc mơ",
+      "perseverance": "kiên trì",
+      "passion": "dam mê",
+      "excellence": "xuất sắc",
+      "beginning": "bắt đầu"
+    }
   }
 }

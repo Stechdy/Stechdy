@@ -1895,7 +1895,11 @@ async function seedDatabase() {
     ];
     
     for (const sessionData of taiSessionsToCreate) {
-      const isCompleted = sessionData.date < now;
+      // Check if session has ended (past endTime)
+      const sessionDate = new Date(sessionData.date);
+      const [endHour, endMinute] = sessionData.endTime.split(':').map(Number);
+      sessionDate.setHours(endHour, endMinute, 0, 0);
+      const isCompleted = sessionDate < now;
       
       // Generate realistic completion data for completed sessions
       let completionData = {};
