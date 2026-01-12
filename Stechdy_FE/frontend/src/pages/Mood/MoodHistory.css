@@ -73,11 +73,19 @@
 
 /* Page Title */
 .mood-history-page-title {
-  font-size: 28px;
+  font-size: 30px;
   font-weight: 700;
-  color: var(--text-primary);
+  color: #1a1a1a;
   margin: 0 0 24px 0;
-  letter-spacing: -0.5px;
+  text-align: center;
+}
+
+[data-theme="dark"] .mood-history-page-title {
+  background: linear-gradient(135deg, #F0C5D5 0%, #D4B5D8 50%, #8AC0D5 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
 }
 
 /* Desktop */

@@ -205,6 +205,7 @@
     "userInformation": "User information",
     "appearance": "Appearance",
     "language": "Language",
+    "notification": "Notification",
     "soundNotifications": "Sound & Notifications",
     "support": "Support",
     "helpSupport": "Help & Support",
@@ -470,10 +471,14 @@
     "error": "Error",
     "success": "Success",
     "save": "Save",
+    "saveChanges": "Save",
+    "saving": "Saving...",
+    "savedSuccessfully": "Your changes have been saved successfully!",
     "cancel": "Cancel",
     "edit": "Edit",
     "delete": "Delete",
     "confirm": "Confirm",
+    "ok": "OK",
     "back": "Back",
     "next": "Next",
     "submit": "Submit",
@@ -594,7 +599,7 @@
     "resourcesUsed": "Resources Used",
     "completionNotes": "Completion Notes",
     "editDetails": "Edit Details",
-    "saveChanges": "Save Changes",
+    "saveChanges": "Save",
     "cancel": "Cancel",
     "selectSubject": "Select a subject",
     "startTime": "Start Time",
@@ -842,8 +847,5 @@
       }
     },
     "footer": "For questions about these terms, contact us at"
-  },
-  "common": {
-    "back": "Go back"
   }
 }

@@ -1,5 +1,6 @@
 const User = require('../models/User');
 const Streak = require('../models/Streak');
+const Settings = require('../models/Settings');
 const jwt = require('jsonwebtoken');
 
 // Generate JWT Token
@@ -255,6 +256,56 @@ exports.getUserStreak = async (req, res) => {
     });
   } catch (error) {
     console.error('❌ Error fetching streak data:', error);
+    res.status(500).json({ message: error.message });
+  }
+};
+// @desc    Get user settings
+// @route   GET /api/users/settings
+// @access  Private
+exports.getUserSettings = async (req, res) => {
+  try {
+    let settings = await Settings.findOne({ userId: req.user._id });
+    
+    if (!settings) {
+      // Create default settings if they don't exist
+      settings = await Settings.create({ userId: req.user._id });
+    }
+    
+    res.json(settings);
+  } catch (error) {
+    console.error('Error fetching settings:', error);
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// @desc    Update user settings
+// @route   PUT /api/users/settings
+// @access  Private
+exports.updateUserSettings = async (req, res) => {
+  try {
+    let settings = await Settings.findOne({ userId: req.user._id });
+    
+    if (!settings) {
+      // Create settings if they don't exist
+      settings = await Settings.create({
+        userId: req.user._id,
+        ...req.body
+      });
+    } else {
+      // Update existing settings
+      Object.keys(req.body).forEach(key => {
+        if (typeof req.body[key] === 'object' && !Array.isArray(req.body[key])) {
+          settings[key] = { ...settings[key], ...req.body[key] };
+        } else {
+          settings[key] = req.body[key];
+        }
+      });
+      await settings.save();
+    }
+    
+    res.json(settings);
+  } catch (error) {
+    console.error('Error updating settings:', error);
     res.status(500).json({ message: error.message });
   }
 };
