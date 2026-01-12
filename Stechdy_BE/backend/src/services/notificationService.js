@@ -146,8 +146,7 @@ const createNotification = async (userId, title, message, type = 'reminder') => 
       title,
       message,
       type,
-      read: false,
-      createdAt: new Date()
+      isRead: false
     });
     
     // Emit realtime notification via Socket.IO
@@ -156,7 +155,7 @@ const createNotification = async (userId, title, message, type = 'reminder') => 
     // Update unread count
     const unreadCount = await Notification.countDocuments({ 
       userId, 
-      read: false 
+      isRead: false 
     });
     sendUnreadCountUpdate(userId, unreadCount);
     
@@ -207,7 +206,7 @@ const sendDailyMoodReminders = async () => {
           user._id,
           '🌟 Nhắc nhở: Ghi lại cảm xúc hôm nay!',
           'Hãy dành vài giây để ghi lại cảm xúc của bạn. Điều này giúp bạn theo dõi sức khỏe tinh thần tốt hơn!',
-          'mood_reminder'
+          'mood_checkin'
         );
         notificationCount++;
       }
