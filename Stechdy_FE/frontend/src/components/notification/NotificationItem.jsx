@@ -9,9 +9,33 @@ const NotificationItem = ({
   onMarkAsRead,
   onMarkAsUnread,
   onDelete,
+  onClick,
   viewMode = "table", // 'table' or 'card'
 }) => {
   const { t } = useTranslation();
+
+  // Helper to get translated content if translation key exists
+  const getTranslatedContent = (content, fallback) => {
+    if (!content) return fallback || "";
+    
+    // Check if content is a translation key (starts with common prefixes)
+    if (typeof content === 'string' && 
+        (content.startsWith('notifications.') || 
+         content.startsWith('dashboard.') || 
+         content.startsWith('study.'))) {
+      try {
+        const translated = t(content);
+        // If translation returns the key itself, use fallback
+        return translated !== content ? translated : fallback || content;
+      } catch (e) {
+        return fallback || content;
+      }
+    }
+    return content;
+  };
+
+  const displayTitle = getTranslatedContent(notification.title, notification.title);
+  const displayMessage = getTranslatedContent(notification.message, notification.message);
 
   const getNotificationIcon = (type) => {
     switch (type) {
@@ -103,6 +127,9 @@ const NotificationItem = ({
     if (!notification.isRead && onMarkAsRead) {
       onMarkAsRead(notification._id);
     }
+    if (onClick) {
+      onClick(notification);
+    }
   };
 
   if (viewMode === "card") {
@@ -119,8 +146,8 @@ const NotificationItem = ({
           {getNotificationIcon(notification.type)}
         </div>
         <div className="card-content">
-          <h4 className="card-title">{notification.title}</h4>
-          <p className="card-message">{notification.message}</p>
+          <h4 className="card-title">{displayTitle}</h4>
+          <p className="card-message">{displayMessage}</p>
           <div className="card-meta">
             <span className="card-time">{formatTime(notification.createdAt)}</span>
           </div>
@@ -181,8 +208,8 @@ const NotificationItem = ({
 
       <div className="row-cell message-cell">
         <div className="message-content">
-          <h4 className="message-title">{notification.title}</h4>
-          <p className="message-text">{notification.message}</p>
+          <h4 className="message-title">{displayTitle}</h4>
+          <p className="message-text">{displayMessage}</p>
         </div>
       </div>
 

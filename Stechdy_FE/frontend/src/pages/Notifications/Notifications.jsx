@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useSocket } from "../../context/SocketContext";
 import notificationService from "../../services/notificationService";
+import NotificationDetailModal from "../../components/notification/NotificationDetailModal";
 import "./Notifications.css";
 
 const Notifications = () => {
@@ -15,6 +16,8 @@ const Notifications = () => {
   const [activeType, setActiveType] = useState("all"); // all, mood, study, task, etc.
   const [selectedNotifs, setSelectedNotifs] = useState([]);
   const [selectMode, setSelectMode] = useState(false);
+  const [selectedNotification, setSelectedNotification] = useState(null);
+  const [showDetailModal, setShowDetailModal] = useState(false);
 
   const {
     isConnected,
@@ -125,6 +128,18 @@ const Notifications = () => {
     } else {
       setSelectedNotifs(filteredNotifs.map((n) => n._id));
     }
+  };
+
+  const handleNotificationClick = (notification) => {
+    if (!selectMode) {
+      setSelectedNotification(notification);
+      setShowDetailModal(true);
+    }
+  };
+
+  const handleCloseModal = () => {
+    setShowDetailModal(false);
+    setSelectedNotification(null);
   };
 
   const getNotificationIcon = (type) => {
@@ -338,8 +353,8 @@ const Notifications = () => {
                   onClick={() => {
                     if (selectMode) {
                       handleSelectNotif(notif._id);
-                    } else if (!notif.isRead) {
-                      handleMarkAsRead(notif._id);
+                    } else {
+                      handleNotificationClick(notif);
                     }
                   }}
                 >
@@ -395,6 +410,14 @@ const Notifications = () => {
           )}
         </div>
       </div>
+
+      {/* Notification Detail Modal */}
+      <NotificationDetailModal
+        notification={selectedNotification}
+        isOpen={showDetailModal}
+        onClose={handleCloseModal}
+        onMarkAsRead={handleMarkAsRead}
+      />
     </div>
   );
 };
