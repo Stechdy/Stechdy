@@ -307,6 +307,7 @@
     "studyTime": "Study Time",
     "studySession": "Study Session",
     "quotes": "Quotes",
+    "quoteOfDay": "Quote of the Day",
     "missedSession": "Missed Session",
     "missedSessionText": "You've marked",
     "asMissed": "as missed.",
@@ -847,5 +848,25 @@
       }
     },
     "footer": "For questions about these terms, contact us at"
+  },
+  "quote": {
+    "dailyInspiration": "Daily Inspiration",
+    "newQuote": "New Quote",
+    "share": "Share",
+    "shareTitle": "Inspirational Quote",
+    "copiedToClipboard": "Copied to clipboard!",
+    "dailyMessage": "A new quote every day to inspire you 🌟",
+    "categories": {
+      "success": "success",
+      "learning": "learning",
+      "education": "education",
+      "knowledge": "knowledge",
+      "motivation": "motivation",
+      "dreams": "dreams",
+      "perseverance": "perseverance",
+      "passion": "passion",
+      "excellence": "excellence",
+      "beginning": "beginning"
+    }
   }
 }

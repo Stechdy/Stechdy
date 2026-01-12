@@ -150,6 +150,22 @@ exports.updateUserProfile = async (req, res) => {
     if (user) {
       user.name = req.body.name || user.name;
       user.email = req.body.email || user.email;
+      
+      // Update phone if provided
+      if (req.body.phone !== undefined) {
+        user.phone = req.body.phone;
+      }
+      
+      // Update bio if provided
+      if (req.body.bio !== undefined) {
+        user.bio = req.body.bio;
+      }
+      
+      // Update timezone if provided
+      if (req.body.timezone !== undefined) {
+        user.timezone = req.body.timezone;
+      }
+      
       if (req.body.password) {
         user.password = req.body.password;
       }
@@ -160,6 +176,9 @@ exports.updateUserProfile = async (req, res) => {
         _id: updatedUser._id,
         name: updatedUser.name,
         email: updatedUser.email,
+        phone: updatedUser.phone,
+        bio: updatedUser.bio,
+        timezone: updatedUser.timezone,
         role: updatedUser.role,
         token: generateToken(updatedUser._id),
       });
