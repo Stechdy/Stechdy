@@ -7,9 +7,9 @@ const { handleConfirm, handleSkip, verifyActionToken } = require('../services/se
 router.get('/confirm/:sessionId/:token', async (req, res) => {
   try {
     const { sessionId, token } = req.params;
-    
+
     const session = await StudySessionSchedule.findById(sessionId).populate('userId subjectId');
-    
+
     if (!session) {
       return res.status(404).send(`
         <!DOCTYPE html>
@@ -35,7 +35,7 @@ router.get('/confirm/:sessionId/:token', async (req, res) => {
 
     // Verify token
     const isValid = verifyActionToken(sessionId, session.userId._id.toString(), token);
-    
+
     if (!isValid) {
       return res.status(403).send(`
         <!DOCTYPE html>
@@ -61,7 +61,7 @@ router.get('/confirm/:sessionId/:token', async (req, res) => {
 
     // Đánh dấu đã confirm và bắt đầu tính giờ học
     handleConfirm(sessionId);
-    
+
     // Cập nhật actualStartTime vào database
     await StudySessionSchedule.findByIdAndUpdate(sessionId, {
       actualStartTime: new Date(),
@@ -69,7 +69,7 @@ router.get('/confirm/:sessionId/:token', async (req, res) => {
     });
 
     const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
-    
+
     res.send(`
       <!DOCTYPE html>
       <html>
@@ -142,8 +142,6 @@ router.get('/confirm/:sessionId/:token', async (req, res) => {
         </style>
       </head>
       <body>
-            color: #b45309;
-          }
         </style>
       </head>
       <body>
@@ -176,9 +174,9 @@ router.get('/confirm/:sessionId/:token', async (req, res) => {
 router.get('/skip/:sessionId/:token', async (req, res) => {
   try {
     const { sessionId, token } = req.params;
-    
+
     const session = await StudySessionSchedule.findById(sessionId).populate('userId subjectId');
-    
+
     if (!session) {
       return res.status(404).send(`
         <!DOCTYPE html>
@@ -203,7 +201,7 @@ router.get('/skip/:sessionId/:token', async (req, res) => {
 
     // Verify token
     const isValid = verifyActionToken(sessionId, session.userId._id.toString(), token);
-    
+
     if (!isValid) {
       return res.status(403).send(`
         <!DOCTYPE html>
@@ -230,7 +228,7 @@ router.get('/skip/:sessionId/:token', async (req, res) => {
     await handleSkip(sessionId);
 
     const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
-    
+
     res.send(`
       <!DOCTYPE html>
       <html>
