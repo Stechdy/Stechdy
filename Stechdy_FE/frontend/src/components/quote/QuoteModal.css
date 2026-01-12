@@ -5,14 +5,14 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.6);
+  background: var(--bg-overlay);
   backdrop-filter: blur(8px);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
-  padding: 20px;
-  animation: fadeIn 0.3s ease;
+  z-index: 9999;
+  padding: var(--spacing-lg);
+  animation: fadeIn var(--transition-slow) ease;
 }
 
 @keyframes fadeIn {
@@ -27,13 +27,13 @@
 /* Modal Content */
 .quote-modal-content {
   background: var(--bg-card);
-  border-radius: 24px;
+  border-radius: var(--border-radius-2xl);
   width: 100%;
   max-width: 520px;
   max-height: 90vh;
   overflow-y: auto;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-  animation: slideUp 0.3s ease;
+  box-shadow: var(--shadow-lg);
+  animation: slideUp var(--transition-slow) ease;
   position: relative;
 }
 
@@ -53,40 +53,43 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 24px 24px 16px;
+  padding: var(--spacing-lg) var(--spacing-lg) var(--spacing-md);
   border-bottom: 1px solid var(--border-secondary);
 }
 
 .quote-modal-title {
-  font-size: 22px;
+  font-size: var(--font-size-xl);
   font-weight: 600;
   color: var(--text-primary);
   margin: 0;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: var(--spacing-sm);
+  font-family: var(--font-family);
 }
 
 .quote-modal-icon {
-  font-size: 26px;
+  font-size: 28px;
   line-height: 1;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
 }
 
 .quote-modal-close {
   background: none;
   border: none;
-  font-size: 28px;
+  font-size: 24px;
   color: var(--text-secondary);
   cursor: pointer;
   width: 36px;
   height: 36px;
-  border-radius: 50%;
+  border-radius: var(--border-radius-full);
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all var(--transition-normal);
   line-height: 1;
   padding: 0;
+  font-weight: 300;
 }
 
 .quote-modal-close:hover {
@@ -97,7 +100,7 @@
 
 /* Body */
 .quote-modal-body {
-  padding: 40px 32px;
+  padding: 40px var(--spacing-xl);
   position: relative;
   min-height: 280px;
   display: flex;
@@ -106,10 +109,10 @@
   justify-content: center;
   background: linear-gradient(
     135deg,
-    rgba(232, 121, 249, 0.08) 0%,
-    rgba(160, 113, 250, 0.08) 100%
+    rgba(240, 197, 213, 0.08) 0%,
+    rgba(138, 192, 213, 0.08) 100%
   );
-  transition: opacity 0.3s ease;
+  transition: opacity var(--transition-slow);
 }
 
 .quote-modal-body.refreshing {
@@ -121,10 +124,11 @@
   position: absolute;
   font-size: 120px;
   font-weight: bold;
-  color: rgba(232, 121, 249, 0.15);
+  color: rgba(240, 197, 213, 0.15);
   font-family: Georgia, serif;
   line-height: 1;
   pointer-events: none;
+  user-select: none;
 }
 
 .quote-decoration-left {
@@ -146,64 +150,63 @@
 }
 
 .quote-modal-text {
-  font-size: 20px;
+  font-size: var(--font-size-lg);
   font-weight: 500;
   line-height: 1.7;
   color: var(--text-primary);
   text-align: center;
-  margin: 0 0 24px 0;
+  margin: 0 0 var(--spacing-lg) 0;
   font-style: italic;
+  font-family: var(--font-family);
 }
 
 .quote-modal-author-section {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
+  gap: var(--spacing-sm);
 }
 
 .quote-author-divider {
   width: 60px;
   height: 2px;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    var(--primary-pink),
-    transparent
-  );
+  background: var(--primary-gradient);
+  border-radius: 2px;
 }
 
 .quote-modal-author {
-  font-size: 16px;
+  font-size: var(--font-size-md);
   font-weight: 600;
   color: var(--text-secondary);
   text-align: center;
   margin: 0;
+  font-family: var(--font-family);
 }
 
 /* Category Tag */
 .quote-category {
   display: flex;
   justify-content: center;
-  margin-top: 20px;
+  margin-top: var(--spacing-lg);
 }
 
 .quote-category-tag {
   display: inline-block;
-  padding: 6px 16px;
-  background: rgba(232, 121, 249, 0.12);
+  padding: 6px var(--spacing-md);
+  background: rgba(240, 197, 213, 0.15);
   color: var(--primary-pink);
-  border-radius: 20px;
-  font-size: 13px;
+  border-radius: var(--border-radius-2xl);
+  font-size: var(--font-size-xs);
   font-weight: 600;
   text-transform: lowercase;
+  font-family: var(--font-family);
 }
 
 /* Actions */
 .quote-modal-actions {
   display: flex;
-  gap: 12px;
-  padding: 20px 24px;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-lg) var(--spacing-lg);
   border-top: 1px solid var(--border-secondary);
 }
 
@@ -212,44 +215,42 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  padding: 14px 20px;
+  gap: var(--spacing-sm);
+  padding: 14px var(--spacing-lg);
   border: none;
-  border-radius: 12px;
-  font-size: 15px;
+  border-radius: var(--border-radius-lg);
+  font-size: var(--font-size-sm);
   font-weight: 600;
   cursor: pointer;
   transition: all var(--transition-normal);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  box-shadow: var(--shadow-sm);
+  font-family: var(--font-family);
+}
+
+.quote-action-btn:active {
+  transform: translateY(0);
 }
 
 .quote-refresh-btn {
   background: var(--primary-gradient);
-  color: white;
+  color: var(--text-inverse);
 }
 
 .quote-refresh-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(232, 121, 249, 0.3);
-}
-
-.quote-refresh-btn:active {
-  transform: translateY(0);
+  box-shadow: var(--shadow-gradient);
 }
 
 .quote-share-btn {
   background: var(--bg-secondary);
   color: var(--text-primary);
+  border: 1px solid var(--border-primary);
 }
 
 .quote-share-btn:hover {
   background: var(--bg-hover);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
-}
-
-.quote-share-btn:active {
-  transform: translateY(0);
+  box-shadow: var(--shadow-md);
 }
 
 .refresh-icon {
@@ -272,32 +273,37 @@
 
 /* Footer */
 .quote-modal-footer {
-  padding: 16px 24px;
+  padding: var(--spacing-md) var(--spacing-lg);
   background: var(--bg-secondary);
-  border-radius: 0 0 24px 24px;
+  border-radius: 0 0 var(--border-radius-2xl) var(--border-radius-2xl);
   text-align: center;
 }
 
 .quote-footer-text {
-  font-size: 13px;
+  font-size: var(--font-size-xs);
   color: var(--text-secondary);
   margin: 0;
   line-height: 1.5;
+  font-family: var(--font-family);
 }
 
 /* Mobile Responsive */
 @media (max-width: 768px) {
+  .quote-modal-overlay {
+    padding: var(--spacing-md);
+  }
+
   .quote-modal-content {
     max-width: 100%;
-    border-radius: 20px;
+    border-radius: var(--border-radius-xl);
   }
 
   .quote-modal-header {
-    padding: 20px 20px 12px;
+    padding: var(--spacing-lg) var(--spacing-lg) var(--spacing-sm);
   }
 
   .quote-modal-title {
-    font-size: 20px;
+    font-size: var(--font-size-lg);
   }
 
   .quote-modal-icon {
@@ -305,7 +311,7 @@
   }
 
   .quote-modal-body {
-    padding: 32px 24px;
+    padding: var(--spacing-xl) var(--spacing-lg);
     min-height: 240px;
   }
 
@@ -324,17 +330,18 @@
   }
 
   .quote-modal-text {
-    font-size: 17px;
-    margin-bottom: 20px;
+    font-size: var(--font-size-md);
+    margin-bottom: var(--spacing-lg);
   }
 
   .quote-modal-author {
-    font-size: 14px;
+    font-size: var(--font-size-sm);
   }
 
   .quote-modal-actions {
     flex-direction: column;
-    padding: 16px 20px;
+    padding: var(--spacing-md) var(--spacing-lg);
+    gap: var(--spacing-sm);
   }
 
   .quote-action-btn {
@@ -342,44 +349,38 @@
   }
 
   .quote-modal-footer {
-    padding: 14px 20px;
-  }
-
-  .quote-footer-text {
-    font-size: 12px;
+    padding: var(--spacing-sm) var(--spacing-lg);
   }
 }
 
 /* Dark Theme */
 [data-theme="dark"] .quote-modal-content {
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
 }
 
 [data-theme="dark"] .quote-modal-body {
   background: linear-gradient(
     135deg,
-    rgba(232, 121, 249, 0.05) 0%,
-    rgba(160, 113, 250, 0.05) 100%
+    rgba(240, 197, 213, 0.05) 0%,
+    rgba(138, 192, 213, 0.05) 100%
   );
 }
 
 [data-theme="dark"] .quote-decoration {
-  color: rgba(232, 121, 249, 0.08);
+  color: rgba(240, 197, 213, 0.08);
 }
 
 [data-theme="dark"] .quote-category-tag {
-  background: rgba(232, 121, 249, 0.18);
+  background: rgba(240, 197, 213, 0.15);
+  color: #f0c5d5;
 }
 
 [data-theme="dark"] .quote-share-btn {
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--bg-input);
   color: var(--text-primary);
+  border-color: var(--border-primary);
 }
 
 [data-theme="dark"] .quote-share-btn:hover {
-  background: rgba(255, 255, 255, 0.15);
-}
-
-[data-theme="dark"] .quote-modal-footer {
-  background: rgba(255, 255, 255, 0.03);
+  background: var(--bg-hover);
 }
