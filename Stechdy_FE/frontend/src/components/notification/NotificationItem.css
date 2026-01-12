@@ -18,6 +18,7 @@
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   background: #FFFFFF;
   min-height: 80px;
+  user-select: none;
 }
 
 .notification-card:last-child {
@@ -26,6 +27,11 @@
 
 .notification-card:hover {
   background: #F8F9FA;
+  transform: translateX(2px);
+}
+
+.notification-card:active {
+  transform: translateX(1px);
 }
 
 /* Unread State - Card */
