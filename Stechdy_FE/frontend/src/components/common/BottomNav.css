@@ -1,0 +1,115 @@
+/* Bottom Navigation */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--bg-card);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 8px 8px calc(8px + env(safe-area-inset-bottom));
+  border-top: 1px solid var(--border-primary);
+  box-shadow: var(--shadow-bottom-nav);
+  z-index: 1000;
+  max-width: 100%;
+  transition: background-color var(--transition-normal),
+    border-color var(--transition-normal);
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  color: var(--text-tertiary);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 12px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  min-width: 68px;
+  position: relative;
+  text-decoration: none;
+  outline: none;
+}
+
+.nav-item:focus {
+  outline: none;
+}
+
+.nav-item:active {
+  transform: scale(0.95);
+}
+
+.nav-item.active {
+  color: var(--primary-blue);
+}
+
+.nav-item.active svg {
+  color: var(--primary-blue);
+  transform: scale(1.1);
+}
+
+.nav-item svg {
+  color: var(--text-tertiary);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nav-item-ai {
+  position: relative;
+  margin-top: -20px;
+}
+
+.ai-fab {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: var(--primary-gradient);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 20px rgba(138, 192, 213, 0.5);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 4px solid var(--bg-card);
+}
+
+.nav-item-ai:hover .ai-fab {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(138, 192, 213, 0.6);
+}
+
+.nav-item-ai:active .ai-fab {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(138, 192, 213, 0.4);
+}
+
+.nav-item-ai span {
+  color: var(--primary-blue);
+  font-weight: 600;
+}
+
+/* Responsive Design */
+@media (min-width: 768px) {
+  .bottom-nav {
+    max-width: 480px;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+    border-radius: 24px 24px 0 0;
+  }
+}
+
+@media (min-width: 1024px) {
+  .nav-item:hover {
+    background: var(--bg-hover);
+    color: var(--primary-blue);
+  }
+
+  .nav-item:hover svg {
+    color: var(--primary-blue);
+  }
+}

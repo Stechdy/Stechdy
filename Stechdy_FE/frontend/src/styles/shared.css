@@ -1,0 +1,85 @@
+/* Global Styles */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-family);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  transition: background-color var(--transition-normal),
+    color var(--transition-normal);
+}
+
+/* Shared Gradient Card */
+.gradient-card {
+  background: var(--primary-gradient);
+  border-radius: var(--border-radius-2xl);
+  padding: 20px;
+  box-shadow: var(--shadow-gradient);
+}
+
+/* Page Header Shared Styles */
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--border-secondary);
+  transition: background-color var(--transition-normal),
+    border-color var(--transition-normal);
+}
+
+.back-btn,
+.header-action-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  border: none;
+  background: var(--bg-input);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-normal);
+}
+
+.back-btn svg,
+.header-action-btn svg {
+  color: var(--text-secondary);
+}
+
+.back-btn:active,
+.header-action-btn:active {
+  transform: scale(0.95);
+  background: var(--bg-hover);
+}
+
+.page-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary-gradient);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #e5b5c5 0%, #7ab0c5 100%);
+}

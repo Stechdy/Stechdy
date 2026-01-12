@@ -1,0 +1,138 @@
+/* Fade In Animation */
+@keyframes adminLoginFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.admin-badge {
+  text-align: center;
+  margin-bottom: 16px;
+  animation: adminLoginFadeIn 0.4s ease-out;
+}
+
+.admin-login-header {
+  animation: adminLoginFadeIn 0.4s ease-out;
+  animation-delay: 0.05s;
+}
+
+.admin-login-form {
+  animation: adminLoginFadeIn 0.4s ease-out;
+  animation-delay: 0.1s;
+}
+
+.admin-badge span {
+  display: inline-block;
+  padding: 8px 16px;
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: white;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
+}
+
+.admin-login-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.admin-login-form {
+  width: 100%;
+}
+
+.form-group {
+  margin-bottom: 4px;
+}
+
+.form-label {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 8px;
+}
+
+.alert {
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+.alert-error {
+  background-color: #fef2f2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+}
+
+.forgot-password-link {
+  text-align: right;
+  margin-bottom: 24px;
+  margin-top: -8px;
+}
+
+.forgot-password-link a {
+  color: #7c3aed;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.forgot-password-link a:hover {
+  color: #6d28d9;
+  text-decoration: underline;
+}
+
+.user-portal-link {
+  text-align: center;
+  margin-top: 24px;
+}
+
+.user-portal-link a {
+  color: #6b7280;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition: color 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.user-portal-link a:hover {
+  color: #374151;
+  text-decoration: underline;
+}
+
+/* Mobile responsive */
+@media (max-width: 480px) {
+  .admin-badge span {
+    font-size: 12px;
+    padding: 6px 14px;
+  }
+
+  .admin-login-header {
+    margin-bottom: 28px;
+  }
+
+  .form-label {
+    font-size: 13px;
+  }
+
+  .alert {
+    padding: 10px 14px;
+    font-size: 13px;
+  }
+
+  .forgot-password-link a,
+  .user-portal-link a {
+    font-size: 13px;
+  }
+}

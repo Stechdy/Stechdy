@@ -1,0 +1,526 @@
+/* Mood Calendar Component */
+.mood-calendar {
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: var(--shadow-card);
+  position: static;
+  overflow: visible;
+}
+
+/* Calendar Header */
+.calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.calendar-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.nav-btn {
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: var(--bg-hover);
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  color: var(--text-secondary);
+}
+
+.nav-btn:active {
+  transform: scale(0.95);
+}
+
+.nav-btn:hover {
+  background: var(--border-primary);
+  color: var(--text-primary);
+}
+
+/* Week Days */
+.calendar-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.weekday {
+  text-align: center;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  padding: 6px 0;
+  min-width: 0;
+}
+
+/* Calendar Grid */
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+.calendar-day {
+  aspect-ratio: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s ease;
+  background: var(--bg-hover);
+  min-width: 0;
+  overflow: hidden;
+}
+
+.calendar-day.empty {
+  background: transparent;
+  cursor: default;
+}
+
+.calendar-day:not(.empty):hover {
+  background: var(--border-primary);
+  transform: scale(1.05);
+}
+
+.calendar-day.today {
+  background: rgba(33, 150, 243, 0.1);
+  border: 1px solid #2196F3;
+}
+
+.calendar-day.has-mood {
+  background: rgba(255, 107, 157, 0.1);
+  border: 1px solid rgba(255, 107, 157, 0.3);
+}
+
+.calendar-day.has-mood:hover {
+  border-color: #FF6B9D;
+  transform: scale(1.05);
+}
+
+.day-number {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-primary);
+  transition: all 0.3s ease;
+}
+
+[data-theme="dark"] .day-number {
+  color: #ffffff;
+}
+
+/* Hide day number when mood exists */
+.calendar-day.has-mood .day-number {
+  opacity: 0;
+  transform: translateY(100%);
+}
+
+/* Show day number on hover with roll-up effect */
+.calendar-day.has-mood:hover .day-number {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.day-mood {
+  font-size: 18px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition: all 0.3s ease;
+}
+
+/* Roll up mood icon on hover */
+.calendar-day.has-mood:hover .day-mood {
+  transform: translate(-50%, -150%);
+  opacity: 0;
+}
+
+/* Mood Detail Modal */
+.mood-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 20px;
+  animation: fadeIn 0.3s ease;
+  margin: 0;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.mood-modal {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 24px;
+  max-width: 420px;
+  width: 100%;
+  max-height: 85vh;
+  overflow: hidden;
+  animation: slideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.5) inset;
+}
+
+[data-theme="dark"] .mood-modal {
+  background: rgba(30, 26, 46, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+}
+
+.mood-modal > * {
+  overflow-y: auto;
+  max-height: 85vh;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 24px 20px 24px;
+  background: linear-gradient(135deg, rgba(167, 139, 250, 0.1) 0%, rgba(96, 165, 250, 0.1) 100%);
+  border-bottom: 1px solid rgba(167, 139, 250, 0.2);
+}
+
+[data-theme="dark"] .modal-header {
+  background: linear-gradient(135deg, rgba(167, 139, 250, 0.15) 0%, rgba(96, 165, 250, 0.15) 100%);
+  border-bottom: 1px solid rgba(167, 139, 250, 0.25);
+}
+
+.modal-header h3 {
+  font-size: 20px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #a78bfa 0%, #60a5fa 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0;
+  letter-spacing: -0.3px;
+}
+
+.close-btn {
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: rgba(167, 139, 250, 0.1);
+  border-radius: 50%;
+  font-size: 24px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #a78bfa;
+  transition: all 0.3s ease;
+  font-weight: 300;
+}
+
+.close-btn:hover {
+  background: linear-gradient(135deg, #a78bfa 0%, #60a5fa 100%);
+  color: white;
+  transform: rotate(90deg);
+}
+
+.close-btn:active {
+  transform: rotate(90deg) scale(0.9);
+}
+
+.modal-content {
+  padding: 28px 24px 24px 24px;
+}
+
+.modal-mood {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 32px 24px;
+  background: linear-gradient(135deg, #fce7f3 0%, #f3e8ff 100%);
+  border-radius: 20px;
+  margin-bottom: 24px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(255, 107, 157, 0.15);
+}
+
+[data-theme="dark"] .modal-mood {
+  background: linear-gradient(135deg, rgba(255, 107, 157, 0.2) 0%, rgba(167, 139, 250, 0.2) 100%);
+  box-shadow: 0 4px 20px rgba(255, 107, 157, 0.2);
+}
+
+.modal-mood::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -20%;
+  width: 150px;
+  height: 150px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.4) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.modal-emoji {
+  font-size: 80px;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.1));
+  animation: gentle-bounce 2s ease-in-out infinite;
+}
+
+@keyframes gentle-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.modal-label {
+  font-size: 22px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #FF6B9D 0%, #c084fc 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.modal-energy,
+.modal-emotions,
+.modal-note {
+  margin-bottom: 20px;
+  padding: 16px;
+  background: rgba(167, 139, 250, 0.05);
+  border-radius: 16px;
+  border: 1px solid rgba(167, 139, 250, 0.1);
+  transition: all 0.3s ease;
+}
+
+[data-theme="dark"] .modal-energy,
+[data-theme="dark"] .modal-emotions,
+[data-theme="dark"] .modal-note {
+  background: rgba(167, 139, 250, 0.08);
+  border: 1px solid rgba(167, 139, 250, 0.15);
+}
+
+.modal-energy:hover,
+.modal-emotions:hover,
+.modal-note:hover {
+  background: rgba(167, 139, 250, 0.08);
+  border-color: rgba(167, 139, 250, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(167, 139, 250, 0.1);
+}
+
+.modal-field-label {
+  display: block;
+  font-size: 15px;
+  font-weight: 600;
+  color: #6b7280;
+  margin-bottom: 10px;
+}
+
+[data-theme="dark"] .modal-field-label {
+  color: #9ca3af;
+}
+
+.modal-field-value {
+  font-size: 18px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #FF6B9D 0%, #c084fc 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.modal-emotion-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.modal-emotion-tag {
+  padding: 8px 16px;
+  background: linear-gradient(135deg, #a78bfa 0%, #60a5fa 100%);
+  color: white;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(167, 139, 250, 0.3);
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.modal-emotion-tag:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(167, 139, 250, 0.4);
+}
+
+.modal-note p {
+  font-size: 15px;
+  color: var(--text-primary);
+  line-height: 1.7;
+  margin: 0;
+  padding: 0;
+  font-weight: 500;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .mood-calendar {
+    padding: 12px;
+  }
+  
+  .calendar-header {
+    margin-bottom: 10px;
+  }
+  
+  .calendar-title {
+    font-size: 14px;
+  }
+  
+  .nav-btn {
+    width: 28px;
+    height: 28px;
+    font-size: 14px;
+  }
+  
+  .calendar-weekdays {
+    gap: 2px;
+    margin-bottom: 6px;
+  }
+  
+  .calendar-grid {
+    gap: 2px;
+  }
+  
+  .weekday {
+    font-size: 10px;
+    padding: 4px 0;
+  }
+  
+  .day-number {
+    font-size: 10px;
+  }
+  
+  .day-mood {
+    font-size: 14px;
+    margin-top: 1px;
+  }
+  
+  .calendar-day {
+    border-radius: 6px;
+    min-height: 36px;
+  }
+  
+  .modal-content {
+    padding: 20px 16px 16px 16px;
+  }
+  
+  .modal-header {
+    padding: 20px 16px 16px 16px;
+  }
+  
+  .modal-header h3 {
+    font-size: 18px;
+  }
+  
+  .modal-emoji {
+    font-size: 64px;
+  }
+  
+  .modal-label {
+    font-size: 18px;
+  }
+  
+  .modal-mood {
+    padding: 24px 16px;
+  }
+}
+
+@media (min-width: 481px) and (max-width: 767px) {
+  .mood-calendar {
+    padding: 14px;
+  }
+  
+  .calendar-grid {
+    gap: 4px;
+  }
+  
+  .weekday {
+    font-size: 11px;
+  }
+  
+  .day-number {
+    font-size: 11px;
+  }
+  
+  .day-mood {
+    font-size: 16px;
+  }
+}
+
+@media (min-width: 768px) {
+  .mood-calendar {
+    padding: 10px;
+  }
+  
+  .calendar-header {
+    margin-bottom: 20px;
+  }
+  
+  .calendar-title {
+    font-size: 18px;
+  }
+  
+  .nav-btn {
+    width: 36px;
+    height: 36px;
+  }
+  
+  .calendar-grid {
+    gap: 6px;
+  }
+  
+  .day-number {
+    font-size: 13px;
+  }
+  
+  .day-mood {
+    font-size: 20px;
+  }
+}

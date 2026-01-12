@@ -1,0 +1,805 @@
+/* ===================================
+   NOTIFICATION ITEM COMPONENT
+   Supports both Card View (Dropdown) and Table View (Full Page)
+   =================================== */
+
+/* ===================================
+   CARD VIEW (Dropdown/Bell)
+   =================================== */
+
+.notification-card {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 16px;
+  border-bottom: 1px solid #F0F0F0;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  background: #FFFFFF;
+  min-height: 80px;
+}
+
+.notification-card:last-child {
+  border-bottom: none;
+}
+
+.notification-card:hover {
+  background: #F8F9FA;
+}
+
+/* Unread State - Card */
+.notification-card.unread {
+  background: linear-gradient(135deg, #FFF8FB 0%, #FFF0F7 100%);
+  border-left: 3px solid #FF6B9D;
+  padding-left: 13px;
+  box-shadow: inset 0 0 0 1px rgba(255, 107, 157, 0.08);
+}
+
+.notification-card.unread:hover {
+  background: linear-gradient(135deg, #FFF0F7 0%, #FFE8F0 100%);
+  box-shadow: inset 0 0 0 1px rgba(255, 107, 157, 0.15);
+}
+
+.notification-card.unread .card-title {
+  font-weight: 700;
+  color: #1A1A1A;
+}
+
+/* Indicator Dot */
+.card-indicator {
+  position: absolute;
+  left: 6px;
+  top: 20px;
+  width: 8px;
+  height: 8px;
+}
+
+.notification-card.unread .unread-dot {
+  display: block;
+  width: 8px;
+  height: 8px;
+  background: #FF6B9D;
+  border-radius: 50%;
+  animation: pulse-dot 2s ease-in-out infinite;
+  box-shadow: 0 0 0 0 rgba(255, 107, 157, 0.4);
+}
+
+@keyframes pulse-dot {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.8;
+  }
+}
+
+/* Card Icon */
+.card-icon {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  background: #F5F5F5;
+  border-radius: 12px;
+  transition: all 0.2s ease;
+}
+
+.notification-card.unread .card-icon {
+  background: linear-gradient(135deg, #FFE8F0 0%, #FFD6E5 100%);
+  box-shadow: 0 2px 8px rgba(255, 107, 157, 0.15);
+  transform: scale(1.05);
+}
+
+/* Card Content */
+.card-content {
+  flex: 1;
+  min-width: 0;
+  padding-right: 8px;
+}
+
+.card-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #2C2C2C;
+  margin: 0 0 6px 0;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.card-message {
+  font-size: 13px;
+  color: #666666;
+  margin: 0 0 8px 0;
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.card-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.card-type {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+/* Type Colors */
+.card-type.type-mood {
+  background: #FFF4E6;
+  color: #E67E22;
+}
+
+.card-type.type-study {
+  background: #E3F2FD;
+  color: #2196F3;
+}
+
+.card-type.type-task {
+  background: #E8F5E9;
+  color: #4CAF50;
+}
+
+.card-type.type-achievement {
+  background: #FFF9E6;
+  color: #FFC107;
+}
+
+.card-type.type-streak {
+  background: #FFE5E5;
+  color: #FF5722;
+}
+
+.card-type.type-premium {
+  background: #F3E5F5;
+  color: #9C27B0;
+}
+
+.card-type.type-admin {
+  background: #FCE4EC;
+  color: #E91E63;
+}
+
+.card-type.type-announcement {
+  background: #E0F2F1;
+  color: #009688;
+}
+
+.card-type.type-system {
+  background: #ECEFF1;
+  color: #607D8B;
+}
+
+.card-type.type-default {
+  background: #F5F5F5;
+  color: #757575;
+}
+
+.card-time {
+  font-size: 12px;
+  color: #999999;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.card-time::before {
+  content: '🕐';
+  font-size: 11px;
+  opacity: 0.7;
+}
+
+/* Delete Button - Card */
+.card-delete-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: #F5F5F5;
+  color: #999999;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  opacity: 0;
+}
+
+.notification-card:hover .card-delete-btn {
+  opacity: 1;
+}
+
+.card-delete-btn:hover {
+  background: #FFE5E5;
+  color: #FF3B30;
+  transform: scale(1.1);
+}
+
+.card-delete-btn:active {
+  transform: scale(0.95);
+}
+
+/* ===================================
+   TABLE VIEW (Full Page)
+   =================================== */
+
+.notification-row {
+  display: grid;
+  grid-template-columns: 48px 140px 1fr 140px 120px; /* removed type column */
+  gap: 16px;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid #F0F0F0;
+  background: #FFFFFF;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  min-height: 72px;
+}
+
+.notification-row:hover {
+  background: #F8F9FA;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+/* Unread State - Row */
+.notification-row.unread {
+  background: linear-gradient(135deg, #FFF8FB 0%, #FFF0F7 100%);
+  border-left: 4px solid #FF6B9D;
+  padding-left: 16px;
+  box-shadow: inset 0 0 0 1px rgba(255, 107, 157, 0.08);
+}
+
+.notification-row.unread:hover {
+  background: linear-gradient(135deg, #FFF0F7 0%, #FFE8F0 100%);
+  box-shadow: 0 2px 8px rgba(255, 107, 157, 0.1), inset 0 0 0 1px rgba(255, 107, 157, 0.15);
+}
+
+.notification-row.unread .message-title {
+  font-weight: 700;
+  color: #1A1A1A;
+}
+
+/* Selected State */
+.notification-row.selected {
+  background: #E3F2FD;
+  border-left: 4px solid #2196F3;
+}
+
+.notification-row.selected:hover {
+  background: #BBDEFB;
+}
+
+/* Row Cells */
+.row-cell {
+  display: flex;
+  align-items: center;
+}
+
+.checkbox-cell {
+  justify-content: center;
+}
+
+.notification-checkbox {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: #FF6B9D;
+  transition: transform 0.2s ease;
+}
+
+.notification-checkbox:hover {
+  transform: scale(1.1);
+}
+
+/* Status Cell */
+.status-indicator {
+  display: flex;
+  align-items: center;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.status-badge.unread {
+  background: linear-gradient(135deg, #FFE8F0 0%, #FFD6E5 100%);
+  color: #D81B60;
+  border: 1px solid #FFB3D0;
+}
+
+.status-badge.unread .status-dot {
+  width: 8px;
+  height: 8px;
+  background: #FF6B9D;
+  border-radius: 50%;
+  animation: pulse-status 2s ease-in-out infinite;
+}
+
+@keyframes pulse-status {
+  0%, 100% {
+    opacity: 1;
+    box-shadow: 0 0 0 0 rgba(255, 107, 157, 0.7);
+  }
+  50% {
+    opacity: 0.7;
+    box-shadow: 0 0 0 4px rgba(255, 107, 157, 0);
+  }
+}
+
+.status-badge.read {
+  background: #F5F5F5;
+  color: #757575;
+  border: 1px solid #E0E0E0;
+}
+
+.status-text {
+  text-transform: capitalize;
+}
+
+/* Type Cell */
+.type-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  max-width: 100%;
+}
+
+.type-icon {
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.type-label {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Message Cell */
+.message-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.message-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #2C2C2C;
+  margin: 0 0 4px 0;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.message-text {
+  font-size: 13px;
+  color: #666666;
+  margin: 0;
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Time Cell */
+.time-text {
+  font-size: 13px;
+  color: #999999;
+  white-space: nowrap;
+}
+
+/* Actions Cell */
+.action-buttons {
+  display: flex;
+  gap: 8px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.notification-row:hover .action-buttons {
+  opacity: 1;
+}
+
+.action-icon-btn {
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: #F5F5F5;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  color: #757575;
+}
+
+.action-icon-btn:hover {
+  transform: scale(1.1);
+}
+
+.action-icon-btn:active {
+  transform: scale(0.95);
+}
+
+.action-icon-btn.mark-read:hover {
+  background: #E8F5E9;
+  color: #4CAF50;
+}
+
+.action-icon-btn.mark-unread:hover {
+  background: #FFF3E0;
+  color: #FF9800;
+}
+
+.action-icon-btn.delete:hover {
+  background: #FFEBEE;
+  color: #F44336;
+}
+
+/* ===================================
+   RESPONSIVE - MOBILE
+   =================================== */
+
+@media (max-width: 768px) {
+  /* Card View - Mobile Optimized */
+  .notification-card {
+    padding: 16px 14px;
+    min-height: 88px;
+    gap: 10px;
+  }
+
+  .card-icon {
+    width: 48px;
+    height: 48px;
+    font-size: 26px;
+  }
+
+  .card-title {
+    font-size: 15px;
+  }
+
+  .card-message {
+    font-size: 14px;
+  }
+
+  .card-delete-btn {
+    opacity: 1; /* Always visible on mobile */
+  }
+
+  /* Table View - Stack Layout */
+  .notification-row {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    padding: 16px;
+    position: relative;
+  }
+
+  .checkbox-cell {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+  }
+
+  .status-cell {
+    margin-left: 40px;
+  }
+
+  .type-cell,
+  .message-cell,
+  .time-cell {
+    margin-left: 40px;
+  }
+
+  .actions-cell {
+    margin-left: 40px;
+    margin-top: 8px;
+  }
+
+  .action-buttons {
+    opacity: 1; /* Always visible on mobile */
+    justify-content: flex-start;
+  }
+
+  .action-icon-btn {
+    width: 44px; /* Touch-friendly */
+    height: 44px;
+  }
+}
+
+@media (max-width: 480px) {
+  .notification-card {
+    padding: 14px 12px;
+  }
+
+  .card-icon {
+    width: 42px;
+    height: 42px;
+    font-size: 22px;
+  }
+
+  .card-type {
+    font-size: 10px;
+    padding: 2px 6px;
+  }
+}
+
+/* ===================================
+   DARK MODE
+   =================================== */
+
+/* Card View - Dark Mode */
+[data-theme="dark"] .notification-card,
+.dark-mode .notification-card {
+  background: #2A2A2A;
+  border-bottom: 1px solid #3D3D3D;
+}
+
+[data-theme="dark"] .notification-card:hover,
+.dark-mode .notification-card:hover {
+  background: #333333;
+}
+
+[data-theme="dark"] .notification-card.unread,
+.dark-mode .notification-card.unread {
+  background: linear-gradient(135deg, rgba(255, 107, 157, 0.12) 0%, rgba(255, 107, 157, 0.06) 100%);
+  border-left: 3px solid #FF6B9D;
+  box-shadow: inset 0 0 0 1px rgba(255, 107, 157, 0.15);
+}
+
+[data-theme="dark"] .notification-card.unread:hover,
+.dark-mode .notification-card.unread:hover {
+  background: linear-gradient(135deg, rgba(255, 107, 157, 0.18) 0%, rgba(255, 107, 157, 0.1) 100%);
+  box-shadow: inset 0 0 0 1px rgba(255, 107, 157, 0.25);
+}
+
+[data-theme="dark"] .notification-card.unread .card-title,
+.dark-mode .notification-card.unread .card-title {
+  color: #F0F0F0;
+}
+
+[data-theme="dark"] .card-icon,
+.dark-mode .card-icon {
+  background: #3D3D3D;
+}
+
+[data-theme="dark"] .notification-card.unread .card-icon,
+.dark-mode .notification-card.unread .card-icon {
+  background: linear-gradient(135deg, rgba(255, 107, 157, 0.25) 0%, rgba(255, 107, 157, 0.15) 100%);
+  box-shadow: 0 2px 8px rgba(255, 107, 157, 0.3);
+}
+
+[data-theme="dark"] .card-title,
+.dark-mode .card-title {
+  color: #E0E0E0;
+}
+
+[data-theme="dark"] .card-message,
+.dark-mode .card-message {
+  color: #A0A0A0;
+}
+
+[data-theme="dark"] .card-time,
+.dark-mode .card-time {
+  color: #707070;
+}
+
+/* Type Colors - Dark Mode */
+[data-theme="dark"] .card-type.type-mood,
+.dark-mode .card-type.type-mood {
+  background: rgba(230, 126, 34, 0.2);
+  color: #F39C12;
+}
+
+[data-theme="dark"] .card-type.type-study,
+.dark-mode .card-type.type-study {
+  background: rgba(33, 150, 243, 0.2);
+  color: #64B5F6;
+}
+
+[data-theme="dark"] .card-type.type-task,
+.dark-mode .card-type.type-task {
+  background: rgba(76, 175, 80, 0.2);
+  color: #81C784;
+}
+
+[data-theme="dark"] .card-type.type-achievement,
+.dark-mode .card-type.type-achievement {
+  background: rgba(255, 193, 7, 0.2);
+  color: #FFD54F;
+}
+
+[data-theme="dark"] .card-type.type-streak,
+.dark-mode .card-type.type-streak {
+  background: rgba(255, 87, 34, 0.2);
+  color: #FF8A65;
+}
+
+[data-theme="dark"] .card-type.type-premium,
+.dark-mode .card-type.type-premium {
+  background: rgba(156, 39, 176, 0.2);
+  color: #BA68C8;
+}
+
+[data-theme="dark"] .card-type.type-admin,
+.dark-mode .card-type.type-admin {
+  background: rgba(233, 30, 99, 0.2);
+  color: #F48FB1;
+}
+
+[data-theme="dark"] .card-type.type-announcement,
+.dark-mode .card-type.type-announcement {
+  background: rgba(0, 150, 136, 0.2);
+  color: #4DB6AC;
+}
+
+[data-theme="dark"] .card-type.type-system,
+.dark-mode .card-type.type-system {
+  background: rgba(96, 125, 139, 0.2);
+  color: #90A4AE;
+}
+
+[data-theme="dark"] .card-type.type-default,
+.dark-mode .card-type.type-default {
+  background: rgba(117, 117, 117, 0.2);
+  color: #BDBDBD;
+}
+
+[data-theme="dark"] .card-delete-btn,
+.dark-mode .card-delete-btn {
+  background: #3D3D3D;
+  color: #999999;
+}
+
+[data-theme="dark"] .card-delete-btn:hover,
+.dark-mode .card-delete-btn:hover {
+  background: rgba(255, 59, 48, 0.2);
+  color: #FF6B6B;
+}
+
+/* Table View - Dark Mode */
+[data-theme="dark"] .notification-row,
+.dark-mode .notification-row {
+  background: #2A2A2A;
+  border-bottom: 1px solid #3D3D3D;
+}
+
+[data-theme="dark"] .notification-row:hover,
+.dark-mode .notification-row:hover {
+  background: #333333;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .notification-row.unread,
+.dark-mode .notification-row.unread {
+  background: linear-gradient(135deg, rgba(255, 107, 157, 0.12) 0%, rgba(255, 107, 157, 0.06) 100%);
+  border-left: 4px solid #FF6B9D;
+  box-shadow: inset 0 0 0 1px rgba(255, 107, 157, 0.15);
+}
+
+[data-theme="dark"] .notification-row.unread:hover,
+.dark-mode .notification-row.unread:hover {
+  background: linear-gradient(135deg, rgba(255, 107, 157, 0.18) 0%, rgba(255, 107, 157, 0.1) 100%);
+  box-shadow: 0 2px 8px rgba(255, 107, 157, 0.15), inset 0 0 0 1px rgba(255, 107, 157, 0.25);
+}
+
+[data-theme="dark"] .notification-row.selected,
+.dark-mode .notification-row.selected {
+  background: rgba(33, 150, 243, 0.15);
+  border-left: 4px solid #2196F3;
+}
+
+[data-theme="dark"] .notification-row.selected:hover,
+.dark-mode .notification-row.selected:hover {
+  background: rgba(33, 150, 243, 0.25);
+}
+
+[data-theme="dark"] .status-badge.unread,
+.dark-mode .status-badge.unread {
+  background: linear-gradient(135deg, rgba(255, 107, 157, 0.25) 0%, rgba(255, 107, 157, 0.15) 100%);
+  color: #FF8AB8;
+  border: 1px solid rgba(255, 107, 157, 0.3);
+}
+
+[data-theme="dark"] .status-badge.read,
+.dark-mode .status-badge.read {
+  background: #3D3D3D;
+  color: #999999;
+  border: 1px solid #4D4D4D;
+}
+
+[data-theme="dark"] .message-title,
+.dark-mode .message-title {
+  color: #E0E0E0;
+}
+
+[data-theme="dark"] .notification-row.unread .message-title,
+.dark-mode .notification-row.unread .message-title {
+  color: #F0F0F0;
+}
+
+[data-theme="dark"] .message-text,
+.dark-mode .message-text {
+  color: #A0A0A0;
+}
+
+[data-theme="dark"] .time-text,
+.dark-mode .time-text {
+  color: #707070;
+}
+
+[data-theme="dark"] .action-icon-btn,
+.dark-mode .action-icon-btn {
+  background: #3D3D3D;
+  color: #999999;
+}
+
+[data-theme="dark"] .action-icon-btn.mark-read:hover,
+.dark-mode .action-icon-btn.mark-read:hover {
+  background: rgba(76, 175, 80, 0.2);
+  color: #81C784;
+}
+
+[data-theme="dark"] .action-icon-btn.mark-unread:hover,
+.dark-mode .action-icon-btn.mark-unread:hover {
+  background: rgba(255, 152, 0, 0.2);
+  color: #FFB74D;
+}
+
+[data-theme="dark"] .action-icon-btn.delete:hover,
+.dark-mode .action-icon-btn.delete:hover {
+  background: rgba(244, 67, 54, 0.2);
+  color: #E57373;
+}
+
+/* Accessibility - Focus States */
+.notification-checkbox:focus,
+.action-icon-btn:focus,
+.card-delete-btn:focus {
+  outline: 2px solid #FF6B9D;
+  outline-offset: 2px;
+}
+
+[data-theme="dark"] .notification-checkbox:focus,
+[data-theme="dark"] .action-icon-btn:focus,
+[data-theme="dark"] .card-delete-btn:focus,
+.dark-mode .notification-checkbox:focus,
+.dark-mode .action-icon-btn:focus,
+.dark-mode .card-delete-btn:focus {
+  outline-color: #FF8AB8;
+}

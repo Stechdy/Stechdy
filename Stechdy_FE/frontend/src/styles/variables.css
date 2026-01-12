@@ -1,0 +1,150 @@
+/* ===== LIGHT THEME (Default) ===== */
+:root {
+  /* Primary Colors */
+  --primary-color: #007bff;
+  --primary-gradient: linear-gradient(135deg, #f0c5d5 0%, #8ac0d5 100%);
+  --primary-pink: #f0c5d5;
+  --primary-blue: #8ac0d5;
+
+  /* Semantic Colors */
+  --success-color: #28a745;
+  --danger-color: #dc3545;
+  --warning-color: #ffc107;
+  --info-color: #17a2b8;
+
+  /* Background Colors */
+  --bg-primary: #f5f7fa;
+  --bg-secondary: #f9fafb;
+  --bg-card: #ffffff;
+  --bg-input: #f9fafb;
+  --bg-hover: #f3f4f6;
+  --bg-overlay: rgba(0, 0, 0, 0.5);
+
+  /* Text Colors */
+  --text-primary: #111827;
+  --text-secondary: #6b7280;
+  --text-tertiary: #9ca3af;
+  --text-inverse: #ffffff;
+  --text-link: #93c5fd;
+  --text-link-hover: #d8b4fe;
+
+  /* Border Colors */
+  --border-primary: #e5e7eb;
+  --border-secondary: #f3f4f6;
+  --border-focus: #8ac0d5;
+
+  /* Shadow Colors */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+  --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.04);
+  --shadow-bottom-nav: 0 -2px 20px rgba(0, 0, 0, 0.08);
+  --shadow-gradient: 0 4px 12px rgba(240, 197, 213, 0.15);
+
+  /* Scrollbar Colors */
+  --scrollbar-track: #f3f4f6;
+  --scrollbar-thumb: linear-gradient(135deg, #f0c5d5 0%, #8ac0d5 100%);
+
+  /* Toggle/Switch Colors */
+  --toggle-bg: #e5e7eb;
+  --toggle-bg-active: linear-gradient(135deg, #f0c5d5 0%, #8ac0d5 100%);
+  --toggle-knob: #ffffff;
+
+  /* Alert Colors */
+  --alert-error-bg: #fef2f2;
+  --alert-error-text: #dc2626;
+  --alert-error-border: #fecaca;
+  --alert-success-bg: #f0fdf4;
+  --alert-success-text: #16a34a;
+  --alert-success-border: #bbf7d0;
+
+  /* Premium Badge */
+  --badge-premium-bg: #fef3c7;
+  --badge-premium-text: #92400e;
+  --badge-premium-icon: #f59e0b;
+
+  /* Spacing */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+
+  /* Typography */
+  --font-family: "Outfit", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Roboto", sans-serif;
+  --font-size-xs: 12px;
+  --font-size-sm: 14px;
+  --font-size-md: 16px;
+  --font-size-lg: 18px;
+  --font-size-xl: 20px;
+  --font-size-2xl: 24px;
+  --font-size-3xl: 32px;
+
+  /* Border Radius */
+  --border-radius-sm: 4px;
+  --border-radius-md: 8px;
+  --border-radius-lg: 12px;
+  --border-radius-xl: 16px;
+  --border-radius-2xl: 20px;
+  --border-radius-full: 50%;
+
+  /* Transitions */
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.2s ease;
+  --transition-slow: 0.3s ease;
+}
+
+/* ===== DARK THEME ===== */
+[data-theme="dark"] {
+  /* Background Colors */
+  --bg-primary: #121212;
+  --bg-secondary: #1e1e1e;
+  --bg-card: #2d2d2d;
+  --bg-input: #3d3d3d;
+  --bg-hover: #3d3d3d;
+  --bg-overlay: rgba(0, 0, 0, 0.7);
+
+  /* Text Colors */
+  --text-primary: #f9fafb;
+  --text-secondary: #d1d5db;
+  --text-tertiary: #9ca3af;
+  --text-inverse: #111827;
+  --text-link: #93c5fd;
+  --text-link-hover: #d8b4fe;
+
+  /* Border Colors */
+  --border-primary: #404040;
+  --border-secondary: #333333;
+  --border-focus: #8ac0d5;
+
+  /* Shadow Colors */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.4);
+  --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.2);
+  --shadow-bottom-nav: 0 -2px 20px rgba(0, 0, 0, 0.3);
+  --shadow-gradient: 0 4px 12px rgba(138, 192, 213, 0.2);
+
+  /* Scrollbar Colors */
+  --scrollbar-track: #2d2d2d;
+  --scrollbar-thumb: linear-gradient(135deg, #f0c5d5 0%, #8ac0d5 100%);
+
+  /* Toggle/Switch Colors */
+  --toggle-bg: #404040;
+  --toggle-bg-active: linear-gradient(135deg, #f0c5d5 0%, #8ac0d5 100%);
+  --toggle-knob: #ffffff;
+
+  /* Alert Colors */
+  --alert-error-bg: #3d1f1f;
+  --alert-error-text: #fca5a5;
+  --alert-error-border: #7f1d1d;
+  --alert-success-bg: #1f3d1f;
+  --alert-success-text: #86efac;
+  --alert-success-border: #166534;
+
+  /* Premium Badge */
+  --badge-premium-bg: #3d3a28;
+  --badge-premium-text: #fcd34d;
+  --badge-premium-icon: #f59e0b;
+}

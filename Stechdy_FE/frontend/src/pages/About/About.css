@@ -1,0 +1,593 @@
+/* About Page Container */
+.about-page {
+  display: flex;
+  min-height: 100vh;
+  background: linear-gradient(180deg,
+      #e8d5f0 0%,
+      #f5e6f0 15%,
+      #f8f0f5 30%,
+      #f5f0f8 50%,
+      #f0e8f5 70%,
+      #f5e0f0 85%,
+      #f8d8e8 100%);
+  transition: background-color var(--transition-normal);
+}
+
+[data-theme="dark"] .about-page {
+  background: linear-gradient(180deg,
+      #1a1625 0%,
+      #1e1a2e 15%,
+      #221e35 30%,
+      #1e1a2e 50%,
+      #1a1625 70%,
+      #1e1a2e 85%,
+      #221e35 100%);
+}
+
+.about-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Content Wrapper */
+.about-content {
+  padding: 24px 20px;
+  padding-bottom: 100px;
+  max-width: 480px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* Desktop Layout */
+@media (min-width: 1024px) {
+  .about-content {
+    padding: 32px 40px;
+    max-width: 800px;
+  }
+
+  .about-wrapper {
+    padding-bottom: 20px;
+  }
+}
+
+/* Header Section */
+.about-header-section {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.about-back-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+[data-theme="dark"] .about-back-btn {
+  background: rgba(30, 26, 46, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.about-back-btn svg {
+  color: var(--text-primary);
+}
+
+.about-back-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.about-back-btn:active {
+  transform: scale(0.95);
+}
+
+@media (min-width: 1024px) {
+  .about-back-btn:hover {
+    background: rgba(167, 139, 250, 0.08);
+  }
+}
+
+.about-page-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+  letter-spacing: -0.5px;
+  flex: 1;
+}
+
+.about-page-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+  letter-spacing: -0.5px;
+  flex: 1;
+}
+
+/* App Header Card */
+.about-app-header {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(16px);
+  border-radius: 24px;
+  padding: 32px 24px;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+[data-theme="dark"] .about-app-header {
+  background: rgba(30, 26, 46, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+@media (min-width: 1024px) {
+  .about-app-header:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+  }
+}
+
+.about-app-icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 16px;
+  background: linear-gradient(135deg, #c4b5fd 0%, #93c5fd 100%);
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 24px rgba(167, 139, 250, 0.3);
+}
+
+.about-app-icon svg {
+  width: 40px;
+  height: 40px;
+}
+
+.about-app-icon svg path {
+  fill: white;
+}
+
+.about-app-name {
+  font-size: 28px;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0 0 4px;
+  letter-spacing: -0.5px;
+}
+
+.about-subtitle {
+  font-size: 16px;
+  color: #6b7280;
+  margin: 0;
+  font-weight: 400;
+}
+
+/* Section Cards */
+.about-card {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(16px);
+  border-radius: 24px;
+  padding: 24px;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  transition: all 0.3s ease;
+}
+
+[data-theme="dark"] .about-card {
+  background: rgba(30, 26, 46, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+@media (min-width: 1024px) {
+  .about-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+  }
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  flex-wrap: nowrap;
+}
+
+.section-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.mission-icon {
+  background: linear-gradient(135deg, #dbeafe 0%, #e0e7ff 100%);
+  color: #3b82f6;
+}
+
+.team-icon {
+  background: linear-gradient(135deg, #fef3c7 0%, #d9f99d 100%);
+  color: #65a30d;
+}
+
+.connect-icon {
+  background: linear-gradient(135deg, #fce7f3 0%, #fecdd3 100%);
+  color: #ec4899;
+}
+
+.section-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+  letter-spacing: -0.3px;
+  flex: 1;
+  text-align: left;
+}
+
+/* Mission Section */
+.mission-text {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+/* Connect Section */
+.connect-text {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  margin: 0 0 24px;
+}
+
+/* Team Section */
+.team-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.team-member {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  transition: all 0.2s ease;
+}
+
+[data-theme="dark"] .team-member {
+  background: rgba(45, 45, 45, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+@media (min-width: 1024px) {
+  .team-member:hover {
+    background: rgba(255, 255, 255, 0.6);
+    transform: translateX(4px);
+  }
+
+  [data-theme="dark"] .team-member:hover {
+    background: rgba(45, 45, 45, 0.6);
+  }
+}
+
+.team-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid rgba(167, 139, 250, 0.3);
+  box-shadow: 0 4px 12px rgba(167, 139, 250, 0.2);
+}
+
+.team-info {
+  flex: 1;
+}
+
+.team-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 4px;
+}
+
+.team-role {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.social-links {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.social-btn {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+@media (min-width: 1024px) {
+  .social-btn:hover {
+    transform: translateY(-4px) scale(1.05);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+    justify-content: center;
+
+    .social-btn:active {
+      transform: translateY(0) scale(0.95);
+    }
+  }
+}
+
+.social-btn {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.social-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+.social-btn:active {
+  transform: translateY(0) scale(0.95);
+}
+
+.social-instagram {
+  background: linear-gradient(45deg,
+      #f09433 0%,
+      #e6683c 25%,
+      #dc2743 50%,
+      #cc2366 75%,
+      #bc1888 100%);
+}
+
+.social-facebook {
+  background: #1877f2;
+}
+
+.social-linkedin {
+  background: #0a66c2;
+}
+
+.social-btn svg {
+  width: 24px;
+
+  [data-theme="dark"] .team-avatar {
+    border-color: rgba(64, 64, 64, 0.8);
+  }
+
+  /* Responsive Design */
+  @media (max-width: 480px) {
+    .about-page {
+      padding: 16px;
+    }
+
+    .about-back-btn {
+      top: 16px;
+      left: 16px;
+    }
+
+    .about-content {
+      padding-top: 40px;
+    }
+
+    .about-section {
+      padding: 20px;
+      margin: 12px 0;
+    }
+
+    .about-app-icon {
+      width: 72px;
+      height: 72px;
+    }
+
+    .about-app-name {
+      font-size: 24px;
+    }
+
+    .team-avatar {
+      width: 48px;
+      height: 48px;
+    }
+
+    .social-btn {
+      width: 48px;
+      height: 48px;
+    }
+  }
+
+  /* Large screens */
+  @media (min-width: 768px) {
+    .about-content {
+      max-width: 500px;
+    }
+
+    .about-section {
+      padding: 28px;
+    }
+
+    .social-links {
+      gap: 20px;
+    }
+
+    content {
+      max-width: 100%;
+      padding: 16px;
+    }
+
+    .about-header-section {
+      padding: 12px 16px;
+      margin: 0 -16px 16px;
+    }
+
+    .about-page-title {
+      font-size: 24px;
+    }
+
+    .about-app-header,
+    .about-card {
+      padding: 20px;
+      margin-bottom: 12px;
+    }
+
+    .about-app-icon {
+      width: 72px;
+      height: 72px;
+    }
+
+    .about-app-name {
+      font-size: 24px;
+    }
+
+    .section-icon {
+      width: 40px;
+      height: 40px;
+    }
+
+    .section-title {
+      font-size: 18px;
+    }
+
+    .team-member {
+      padding: 10px;
+    }
+
+    .team-avatar {
+      width: 48px;
+      height: 48px;
+    }
+
+    .social-btn {
+      width: 48px;
+      height: 48px;
+    }
+
+    .social-btn svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  /* Desktop Design */
+  @media (min-width: 1024px) {
+    .about-content {
+      max-width: 800px;
+      padding: 32px 40px;
+    }
+
+    .about-header-section {
+      padding: 16px 0;
+      margin-bottom: 24px;
+    }
+
+    .about-page-title {
+      font-size: 32px;
+    }
+
+    .about-app-header,
+    .about-card {
+      padding: 32px;
+    }
+
+    .about-app-icon {
+      width: 96px;
+      height: 96px;
+    }
+
+    .about-app-icon svg {
+      width: 48px;
+      height: 48px;
+    }
+
+    .about-app-name {
+      font-size: 32px;
+    }
+
+    .section-icon {
+      width: 48px;
+      height: 48px;
+    }
+
+    .section-title {
+      font-size: 22px;
+    }
+
+    .mission-text,
+    .connect-text {
+      font-size: 16px;
+    }
+
+    .team-member {
+      padding: 16px;
+    }
+
+    .team-avatar {
+      width: 64px;
+      height: 64px;
+    }
+
+    .team-name {
+      font-size: 17px;
+    }
+
+    .social-links {
+      gap: 20px;
+    }
+
+    .social-btn {
+      width: 64px;
+      height: 64px;
+    }
+
+    .social-btn svg {
+      width: 28px;
+      height: 28
+    }
+
+    ;
+  }
+}

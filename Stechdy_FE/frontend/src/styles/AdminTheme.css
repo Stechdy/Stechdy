@@ -1,0 +1,400 @@
+/* Global Admin Theme Variables */
+:root,
+[data-theme="dark"] {
+  /* Dark Theme (default) */
+  --admin-bg-primary: #0f1419;
+  --admin-bg-secondary: #1a1a2e;
+  --admin-bg-card: #1e1e2e;
+  --admin-bg-hover: #2a2a3a;
+  --admin-text-primary: #f8fafc;
+  --admin-text-secondary: #cbd5e1;
+  --admin-text-tertiary: #94a3b8;
+  --admin-border: rgba(255, 255, 255, 0.12);
+  --admin-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  --admin-gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --admin-gradient-sidebar: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
+  
+  /* Status Colors */
+  --admin-success: #10b981;
+  --admin-warning: #ffc107;
+  --admin-danger: #ef4444;
+  --admin-info: #3b82f6;
+  --admin-secondary: #6b7280;
+  
+  /* Status Backgrounds */
+  --admin-success-bg: rgba(16, 185, 129, 0.1);
+  --admin-warning-bg: rgba(255, 193, 7, 0.1);
+  --admin-danger-bg: rgba(239, 68, 68, 0.1);
+  --admin-info-bg: rgba(59, 130, 246, 0.1);
+  --admin-secondary-bg: rgba(107, 114, 128, 0.1);
+}
+
+[data-theme="light"] {
+  /* Light Theme */
+  --admin-bg-primary: #f8fafc;
+  --admin-bg-secondary: #ffffff;
+  --admin-bg-card: #ffffff;
+  --admin-bg-hover: #f1f5f9;
+  --admin-text-primary: #0f172a;
+  --admin-text-secondary: #475569;
+  --admin-text-tertiary: #64748b;
+  --admin-border: rgba(0, 0, 0, 0.12);
+  --admin-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  --admin-gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --admin-gradient-sidebar: linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%);
+  
+  /* Status Colors (same in both themes) */
+  --admin-success: #10b981;
+  --admin-warning: #f59e0b;
+  --admin-danger: #ef4444;
+  --admin-info: #3b82f6;
+  --admin-secondary: #6b7280;
+  
+  /* Status Backgrounds (adjusted for light theme) */
+  --admin-success-bg: rgba(16, 185, 129, 0.1);
+  --admin-warning-bg: rgba(245, 158, 11, 0.1);
+  --admin-danger-bg: rgba(239, 68, 68, 0.1);
+  --admin-info-bg: rgba(59, 130, 246, 0.1);
+  --admin-secondary-bg: rgba(107, 114, 128, 0.1);
+}
+
+/* Global Admin Styles */
+.admin-page {
+  background: transparent;
+  min-height: calc(100vh - 48px);
+}
+
+.admin-page-header h1 {
+  color: var(--admin-text-primary);
+  margin: 0 0 8px 0;
+  font-weight: 700;
+  font-size: 28px;
+  letter-spacing: -0.5px;
+  line-height: 1.2;
+}
+
+.admin-page-header p {
+  color: var(--admin-text-secondary);
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.4;
+  font-weight: 500;
+}
+
+/* Admin Stats Grid */
+.admin-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.admin-stat-card {
+  background: var(--admin-bg-card);
+  border: 1px solid var(--admin-border);
+  border-radius: 16px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  box-shadow: var(--admin-shadow);
+  transition: transform 0.2s ease;
+}
+
+.admin-stat-card:hover {
+  transform: translateY(-2px);
+}
+
+.admin-stat-card .stat-icon {
+  font-size: 32px;
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  background: var(--admin-info-bg);
+}
+
+.admin-stat-card.primary .stat-icon {
+  background: var(--admin-info-bg);
+}
+
+.admin-stat-card.success .stat-icon {
+  background: var(--admin-success-bg);
+}
+
+.admin-stat-card.warning .stat-icon {
+  background: var(--admin-warning-bg);
+}
+
+.admin-stat-card.danger .stat-icon {
+  background: var(--admin-danger-bg);
+}
+
+.admin-stat-card.secondary .stat-icon {
+  background: var(--admin-secondary-bg);
+}
+
+.admin-stat-card .stat-info h3 {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--admin-text-primary);
+  margin: 0;
+  line-height: 1.2;
+  letter-spacing: -0.5px;
+}
+
+.admin-stat-card .stat-info p {
+  font-size: 14px;
+  color: var(--admin-text-secondary);
+  margin: 4px 0 0;
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+/* Admin Tables */
+.admin-table-container {
+  overflow-x: auto;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.admin-table thead {
+  background: var(--admin-bg-secondary);
+}
+
+.admin-table th {
+  padding: 16px;
+  text-align: left;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--admin-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid var(--admin-border);
+  line-height: 1.4;
+}
+
+.admin-table td {
+  padding: 16px;
+  border-bottom: 1px solid var(--admin-border);
+  color: var(--admin-text-primary);
+  font-size: 14px;
+  line-height: 1.5;
+  font-weight: 500;
+}
+
+/* Status Badges */
+.status-badge {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  text-align: center;
+  line-height: 1;
+  letter-spacing: 0.3px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.status-badge.success {
+  background: var(--admin-success-bg);
+  color: var(--admin-success);
+}
+
+.status-badge.warning {
+  background: var(--admin-warning-bg);
+  color: var(--admin-warning);
+}
+
+.status-badge.danger {
+  background: var(--admin-danger-bg);
+  color: var(--admin-danger);
+}
+
+.status-badge.secondary {
+  background: var(--admin-secondary-bg);
+  color: var(--admin-secondary);
+}
+
+/* Loading States */
+.admin-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  color: var(--admin-text-secondary);
+}
+
+.admin-loading p {
+  font-size: 16px;
+  font-weight: 500;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.admin-loading .spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--admin-border);
+  border-top: 3px solid var(--admin-info);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 16px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Buttons */
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  line-height: 1;
+  letter-spacing: 0.3px;
+}
+
+.btn-primary {
+  background: var(--admin-gradient-primary);
+  color: #ffffff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+.btn-success {
+  background: var(--admin-success);
+  color: #ffffff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.btn-success:hover {
+  background: #059669;
+}
+
+.btn-danger {
+  background: var(--admin-danger);
+  color: #ffffff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.btn-danger:hover {
+  background: #dc2626;
+}
+
+.btn-outline {
+  background: transparent;
+  border: 1px solid var(--admin-border);
+  color: var(--admin-text-primary);
+  font-weight: 500;
+}
+
+.btn-outline:hover {
+  background: var(--admin-bg-hover);
+  border-color: var(--admin-text-tertiary);
+}
+
+.btn-sm {
+  padding: 6px 12px;
+  font-size: 12px;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .admin-stats-grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .admin-stats-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Utility Classes for Better Text Display */
+.text-primary {
+  color: var(--admin-text-primary) !important;
+}
+
+.text-secondary {
+  color: var(--admin-text-secondary) !important;
+}
+
+.text-tertiary {
+  color: var(--admin-text-tertiary) !important;
+}
+
+.font-medium {
+  font-weight: 500;
+}
+
+.font-semibold {
+  font-weight: 600;
+}
+
+.font-bold {
+  font-weight: 700;
+}
+
+.text-sm {
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.text-base {
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.text-lg {
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+/* Better focus states */
+.admin-card:focus-within {
+  box-shadow: var(--admin-shadow), 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+/* Improved readability for different themes */
+[data-theme="light"] .admin-table tbody tr:hover {
+  background-color: rgba(102, 126, 234, 0.03);
+}
+
+[data-theme="dark"] .admin-table tbody tr:hover {
+  background-color: rgba(255, 255, 255, 0.03);
+}
+
+/* Better visibility for icons in different themes */
+[data-theme="light"] .admin-stat-card .stat-icon {
+  opacity: 0.9;
+}
+
+[data-theme="dark"] .admin-stat-card .stat-icon {
+  opacity: 1;
+}

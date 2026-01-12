@@ -1,0 +1,849 @@
+{
+  "nav": {
+    "features": "Tính năng",
+    "howItWorks": "Cách hoạt động",
+    "testimonials": "Đánh giá",
+    "pricing": "Bảng giá",
+    "signIn": "Đăng nhập",
+    "getStarted": "Bắt đầu"
+  },
+  "theme": {
+    "lightMode": "Chế độ sáng",
+    "darkMode": "Chế độ tối",
+    "switchToLight": "Chuyển sang chế độ sáng",
+    "switchToDark": "Chuyển sang chế độ tối",
+    "chooseTheme": "Chọn giao diện",
+    "light": "Sáng",
+    "dark": "Tối",
+    "system": "Hệ thống",
+    "currentlyUsing": "Đang sử dụng"
+  },
+  "hero": {
+    "badge": "Người bạn đồng hành học tập của bạn",
+    "title": "Học Thông Minh,",
+    "titleGradient": "Cảm Thấy Tốt Hơn",
+    "subtitle": "S'Techdy kết hợp lập kế hoạch học tập thông minh với theo dõi tâm trạng để giúp bạn đạt được thành công học tập đồng thời duy trì sức khỏe tinh thần.",
+    "startFreeTrial": "Dùng thử miễn phí",
+    "stats": {
+      "activeStudents": "Học sinh đang hoạt động",
+      "improvedFocus": "Cải thiện tập trung",
+      "userRating": "Đánh giá người dùng"
+    }
+  },
+  "features": {
+    "badge": "Tính năng",
+    "title": "Mọi thứ bạn cần để xuất sắc",
+    "subtitle": "Công cụ mạnh mẽ được thiết kế để tối ưu hóa thói quen học tập và hỗ trợ sức khỏe của bạn.",
+    "smartScheduling": {
+      "title": "Lên lịch thông minh",
+      "description": "Lên kế hoạch các buổi học với lịch thông minh thích ứng với mô hình học tập và mục tiêu của bạn."
+    },
+    "moodTracking": {
+      "title": "Theo dõi tâm trạng",
+      "description": "Theo dõi sức khỏe cảm xúc và khám phá cách nó ảnh hưởng đến hiệu suất học tập theo thời gian."
+    },
+    "progressAnalytics": {
+      "title": "Phân tích tiến độ",
+      "description": "Theo dõi hành trình học tập với thông tin chi tiết và hình ảnh trực quan đẹp mắt về tiến độ của bạn."
+    },
+    "goalSetting": {
+      "title": "Đặt mục tiêu",
+      "description": "Đặt mục tiêu học tập có thể đạt được và ăn mừng các cột mốc khi bạn hướng tới thành công."
+    },
+    "timeManagement": {
+      "title": "Quản lý thời gian",
+      "description": "Làm chủ thời gian với công cụ theo dõi và nhắc nhở giữ bạn tập trung và đúng tiến độ."
+    },
+    "studySessions": {
+      "title": "Các buổi học",
+      "description": "Sắp xếp các môn học và theo dõi thời gian học tập dành riêng cho từng khóa học hoặc chủ đề."
+    }
+  },
+  "howItWorks": {
+    "badge": "Cách hoạt động",
+    "title": "Bắt đầu với 3 bước đơn giản",
+    "subtitle": "Bắt đầu hành trình học tập tốt hơn chỉ trong vài phút.",
+    "step1": {
+      "title": "Tạo tài khoản",
+      "description": "Đăng ký trong vài giây và thiết lập hồ sơ học tập cá nhân với mục tiêu của bạn."
+    },
+    "step2": {
+      "title": "Lên kế hoạch",
+      "description": "Thêm các môn học, đặt thời gian học và để S'Techdy giúp bạn xây dựng lịch trình hoàn hảo."
+    },
+    "step3": {
+      "title": "Theo dõi & Cải thiện",
+      "description": "Theo dõi tiến độ, kiểm tra tâm trạng và xem năng suất của bạn tăng vọt."
+    }
+  },
+  "testimonials": {
+    "badge": "Đánh giá",
+    "title": "Được yêu thích bởi sinh viên toàn cầu",
+    "subtitle": "Xem cộng đồng của chúng tôi nói gì về trải nghiệm S'Techdy.",
+    "testimonial1": {
+      "text": "\"S'Techdy đã thay đổi hoàn toàn cách tôi tiếp cận việc học. Tính năng theo dõi tâm trạng giúp tôi hiểu thời gian học tốt nhất của mình.\"",
+      "name": "Sarah Chen",
+      "role": "Sinh viên Y khoa"
+    },
+    "testimonial2": {
+      "text": "\"Cuối cùng cũng có một ứng dụng hiểu rằng học tập không chỉ về thời gian, mà còn về sức khỏe tinh thần. Rất khuyến khích!\"",
+      "name": "James Wilson",
+      "role": "Sinh viên Kỹ thuật"
+    },
+    "testimonial3": {
+      "text": "\"Phân tích tiến độ thật tuyệt vời. Tôi thực sự có thể thấy mình đã tiến bộ bao nhiêu trong học kỳ. Thay đổi cuộc chơi!\"",
+      "name": "Emily Rodriguez",
+      "role": "Sinh viên Luật"
+    }
+  },
+  "cta": {
+    "title": "Sẵn sàng thay đổi việc học?",
+    "subtitle": "Tham gia cùng hàng ngàn sinh viên đang học thông minh hơn với S'Techdy.",
+    "button": "Bắt đầu miễn phí"
+  },
+  "footer": {
+    "copyright": " 2025 S'Techdy. Bảo lưu mọi quyền."
+  },
+  "language": {
+    "en": "Tiếng Anh",
+    "vi": "Tiếng Việt"
+  },
+  "auth": {
+    "login": {
+      "title": "Đăng nhập",
+      "email": "Email",
+      "password": "Mật khẩu",
+      "forgotPassword": "Quên mật khẩu?",
+      "submit": "Đăng nhập",
+      "orContinueWith": "hoặc tiếp tục với",
+      "noAccount": "Chưa có tài khoản?",
+      "signUpNow": "Đăng ký ngay",
+      "loginFailed": "Đăng nhập thất bại. Vui lòng thử lại.",
+      "googleLoginFailed": "Đăng nhập Google thất bại. Vui lòng thử lại."
+    },
+    "register": {
+      "title": "Tạo tài khoản",
+      "subtitle": "Tham gia cùng chúng tôi và bắt đầu hành trình học tập",
+      "fullName": "Họ và tên",
+      "email": "Email",
+      "password": "Mật khẩu",
+      "confirmPassword": "Xác nhận mật khẩu",
+      "submit": "Đăng ký",
+      "orContinueWith": "hoặc tiếp tục với",
+      "haveAccount": "Đã có tài khoản?",
+      "loginNow": "Đăng nhập ngay",
+      "registerFailed": "Đăng ký thất bại. Vui lòng thử lại.",
+      "googleSignupFailed": "Đăng ký Google thất bại. Vui lòng thử lại."
+    },
+    "forgotPassword": {
+      "title": "Quên mật khẩu?",
+      "subtitle": "Nhập địa chỉ email của bạn và chúng tôi sẽ gửi cho bạn liên kết đặt lại mật khẩu",
+      "email": "Email",
+      "submit": "Gửi liên kết đặt lại",
+      "backToLogin": "Quay lại đăng nhập",
+      "checkEmail": "Kiểm tra Email của bạn",
+      "emailSent": "Chúng tôi đã gửi liên kết đặt lại mật khẩu đến",
+      "checkSpam": "Không nhận được email? Kiểm tra thư mục spam hoặc thử lại.",
+      "tryAnotherEmail": "Thử email khác"
+    },
+    "resetPassword": {
+      "title": "Đặt lại mật khẩu",
+      "subtitle": "Nhập mật khẩu mới của bạn",
+      "newPassword": "Mật khẩu mới",
+      "confirmNewPassword": "Xác nhận mật khẩu mới",
+      "submit": "Đặt lại mật khẩu",
+      "backToLogin": "Quay lại đăng nhập",
+      "success": "Đặt lại mật khẩu thành công!",
+      "successMessage": "Mật khẩu của bạn đã được đặt lại thành công. Bạn sẽ được chuyển đến trang đăng nhập.",
+      "goToLogin": "Đến trang đăng nhập",
+      "failed": "Đặt lại mật khẩu thất bại. Vui lòng thử lại."
+    },
+    "validation": {
+      "emailRequired": "Vui lòng nhập email",
+      "emailInvalid": "Email không hợp lệ",
+      "passwordRequired": "Vui lòng nhập mật khẩu",
+      "passwordMinLength": "Mật khẩu phải có ít nhất 6 ký tự",
+      "nameRequired": "Vui lòng nhập họ tên",
+      "nameMinLength": "Họ tên phải có ít nhất 2 ký tự",
+      "confirmPasswordRequired": "Vui lòng xác nhận mật khẩu",
+      "passwordMismatch": "Mật khẩu không khớp"
+    },
+    "admin": {
+      "badge": "Cổng Quản Trị",
+      "login": {
+        "title": "Truy cập Quản trị",
+        "subtitle": "Đăng nhập để truy cập trang quản trị",
+        "adminEmail": "Email Quản trị",
+        "password": "Mật khẩu",
+        "forgotPassword": "Quên mật khẩu?",
+        "submit": "Đăng nhập với tư cách Quản trị",
+        "backToUser": "Quay lại cổng người dùng",
+        "failed": "Đăng nhập thất bại. Vui lòng thử lại.",
+        "accessDenied": "Truy cập bị từ chối. Yêu cầu quyền quản trị."
+      },
+      "forgotPassword": {
+        "title": "Khôi phục Mật khẩu Quản trị",
+        "subtitle": "Nhập email quản trị và chúng tôi sẽ gửi link đặt lại mật khẩu cho bạn",
+        "adminEmail": "Email Quản trị",
+        "submit": "Gửi link đặt lại",
+        "backToLogin": "Quay lại đăng nhập quản trị",
+        "checkEmail": "Kiểm tra Email của bạn",
+        "emailSent": "Chúng tôi đã gửi link đặt lại mật khẩu đến",
+        "checkSpam": "Không nhận được email? Kiểm tra thư mục spam hoặc thử lại.",
+        "tryAnotherEmail": "Thử email khác",
+        "failed": "Không thể gửi email. Vui lòng thử lại."
+      }
+    }
+  },
+  "account": {
+    "pageTitle": "Tài khoản",
+    "freePlan": "Gói miễn phí",
+    "premiumPlan": "Premium",
+    "unlockFeatures": "Mở khóa tất cả tính năng cao cấp",
+    "upgradePremium": "Nâng cấp premium",
+    "settings": "Cài đặt",
+    "userInformation": "Thông tin người dùng",
+    "appearance": "Giao diện",
+    "language": "Ngôn ngữ",
+    "soundNotifications": "Âm thanh & Thông báo",
+    "support": "Hỗ trợ",
+    "helpSupport": "Trợ giúp & Hỗ trợ",
+    "aboutUs": "Về chúng tôi",
+    "termsOfUse": "Điều khoản sử dụng",
+    "logout": "Đăng xuất",
+    "systemSettings": "dựa trên cài đặt hệ thống",
+    "chooseLanguage": "Chọn ngôn ngữ"
+  },
+  "notificationSettings": {
+    "title": "Cài đặt Thông báo & Âm thanh",
+    "notifications": "Thông báo",
+    "notificationsDesc": "Quản lý các thông báo bạn muốn nhận",
+    "sound": "Âm thanh",
+    "soundDesc": "Tùy chỉnh âm thanh thông báo",
+    "enableNotifications": "Bật Thông báo",
+    "enableNotificationsDesc": "Bật hoặc tắt tất cả thông báo",
+    "taskReminders": "Nhắc nhở Nhiệm vụ",
+    "taskRemindersDesc": "Nhận thông báo về các nhiệm vụ và deadline sắp tới",
+    "studyReminders": "Nhắc nhở Buổi học",
+    "studyRemindersDesc": "Nhắc nhở cho các buổi học đã lên lịch",
+    "moodCheckIn": "Nhắc nhở Ghi nhận Tâm trạng",
+    "moodCheckInDesc": "Nhắc nhở hàng ngày để ghi lại tâm trạng của bạn",
+    "achievements": "Thành tích & Cột mốc",
+    "achievementsDesc": "Ăn mừng tiến bộ và thành tích của bạn",
+    "emailNotifications": "Thông báo Email",
+    "emailNotificationsDesc": "Nhận thông báo qua email",
+    "pushNotifications": "Thông báo Push",
+    "pushNotificationsDesc": "Nhận thông báo push trong ứng dụng",
+    "enableSound": "Bật Âm thanh",
+    "enableSoundDesc": "Phát âm thanh cho thông báo",
+    "volume": "Âm lượng",
+    "notificationSound": "Âm thanh Thông báo",
+    "notificationSoundDesc": "Chọn âm thanh thông báo của bạn",
+    "testSound": "Thử Âm thanh",
+    "savedSuccessfully": "Lưu cài đặt thành công!",
+    "saveFailed": "Không thể lưu cài đặt",
+    "sound": {
+      "bell": "Chuông",
+      "chime": "Tiếng keng",
+      "pop": "Tiếng bật",
+      "gentle": "Nhẹ nhàng"
+    }
+  },
+  "about": {
+    "title": "Về chúng tôi",
+    "ourMission": "Sứ mệnh của chúng tôi",
+    "missionText": "Tại S'techdy, chúng tôi đam mê trao quyền cho sinh viên lên kế hoạch thông minh hơn với sự trợ giúp của AI. Sứ mệnh của chúng tôi là thay đổi cách sinh viên tiếp cận hành trình học tập bằng cách cung cấp các công cụ thông minh giúp việc lập kế hoạch học tập hiệu quả hơn, cá nhân hóa và hiệu quả hơn.",
+    "meetTheTeam": "Gặp gỡ đội ngũ",
+    "connectWithUs": "Kết nối với chúng tôi",
+    "connectText": "Theo dõi chúng tôi trên mạng xã hội để cập nhật các tính năng mới nhất, mẹo học tập và điểm nổi bật của cộng đồng.",
+    "roles": {
+      "founderCeo": "Nhà sáng lập",
+      "leadAiEngineer": "Giám đốc tài chính",
+      "uxuiDesigner": "Giám đốc Marketing",
+      "productManager": "Giám đốc Chiến lược",
+      "backendEngineer": "Giám đốc sản xuất",
+      "dataScientist": "Giám đốc Vận hành"
+    }
+  },
+  "helpSupport": {
+    "title": "Trợ giúp & Hỗ trợ",
+    "searchPlaceholder": "Tìm kiếm chủ đề trợ giúp",
+    "commonQuestions": "Câu hỏi thường gặp",
+    "contactSupport": "Liên hệ hỗ trợ",
+    "chatWithUs": "Chat với chúng tôi",
+    "sendEmail": "Gửi email",
+    "footer": "Chúng tôi ở đây để giúp bạn học tập thông minh hơn",
+    "faq": {
+      "q1": "Làm thế nào để tạo lịch học?",
+      "a1": "Đi đến trang Lịch và nhấn nút '+' để tạo khung giờ học mới. Bạn có thể đặt môn học, thời gian, thời lượng và thêm ghi chú cho buổi học.",
+      "q2": "Làm thế nào để đặt lại mật khẩu?",
+      "a2": "Đi đến trang đăng nhập và nhấn 'Quên mật khẩu'. Nhập địa chỉ email đã đăng ký và chúng tôi sẽ gửi cho bạn liên kết để đặt lại mật khẩu.",
+      "q3": "Làm thế nào để đồng bộ giữa các thiết bị?",
+      "a3": "Dữ liệu của bạn được tự động đồng bộ khi bạn đăng nhập vào tài khoản. Chỉ cần đăng nhập với cùng thông tin đăng nhập trên bất kỳ thiết bị nào để truy cập kế hoạch học tập.",
+      "q4": "Làm thế nào để đặt nhắc nhở học tập?",
+      "a4": "Khi tạo hoặc chỉnh sửa khung giờ học, bật tùy chọn nhắc nhở và đặt thời gian thông báo ưa thích trước khi buổi học bắt đầu."
+    }
+  },
+  "dashboard": {
+    "goodMorning": "Chào buổi sáng!",
+    "goodAfternoon": "Chào buổi chiều!",
+    "goodEvening": "Chào buổi tối!",
+    "studyProgress": "Tiến độ học tập",
+    "today": "Hôm nay",
+    "streak": "Chuỗi ngày",
+    "currentStreak": "Chuỗi ngày hiện tại",
+    "days": "Ngày",
+    "minutes": "phút",
+    "hours": "giờ",
+    "upcomingSessions": "Buổi học sắp tới",
+    "viewAll": "Xem tất cả",
+    "aiSuggestion": "Gợi ý AI",
+    "noSessions": "Không có buổi học sắp tới",
+    "enjoyFreeTime": "Tận hưởng thời gian rảnh!",
+    "congratulations": "Chúc mừng! Bạn đã hoàn thành",
+    "minutesStudy": "phút học tập!",
+    "todaysProgress": "Tiến độ hôm nay",
+    "studyTime": "Thời gian học",
+    "studySession": "Buổi học",
+    "quotes": "Trích dẫn",
+    "missedSession": "Buổi học bị lỡ",
+    "missedSessionText": "Bạn đã đánh dấu",
+    "asMissed": "là bị lỡ.",
+    "aSession": "một buổi học",
+    "moreMissedToday": "buổi học bị lỡ khác hôm nay",
+    "serverNotRunning": "Máy chủ Backend không chạy",
+    "pleaseStartServer": "Vui lòng khởi động máy chủ để xem các buổi học",
+    "unableToConnect": "Không thể kết nối với máy chủ. Vui lòng kiểm tra kết nối backend.",
+    "aiSuggestions": {
+      "takeBreak": "Hãy nghỉ ngơi 15 phút nhé",
+      "greatProgress": "Tiến độ tuyệt vời hôm nay! Bạn sắp hoàn thành mục tiêu học tập 🎉",
+      "halfwayThrough": "Bạn đã hoàn thành một nửa! Tiếp tục cố gắng nhé 💪",
+      "multipleSessions": "Bạn có nhiều buổi học hôm nay. Hãy tập trung và nghỉ ngơi! 🧘",
+      "twoHoursBreak": "Bạn đã học hơn 2 giờ. Đến giờ nghỉ ngơi rồi! ☕"
+    }
+  },
+  "mood": {
+    "title": "Theo dõi tâm trạng",
+    "howAreYou": "Hôm nay bạn cảm thấy thế nào?",
+    "notes": "Ghi chú",
+    "notesPlaceholder": "Viết về cảm xúc của bạn hôm nay...",
+    "energyLevel": "Mức năng lượng",
+    "low": "Thấp",
+    "high": "Cao",
+    "saveButton": "Lưu tâm trạng hôm nay",
+    "saving": "Đang lưu...",
+    "savedSuccess": "Đã lưu tâm trạng thành công",
+    "selectMood": "Vui lòng chọn tâm trạng của bạn",
+    "errorSaving": "Đã xảy ra lỗi khi lưu",
+    "moods": {
+      "upset": "Bực bội",
+      "sad": "Buồn",
+      "normal": "Bình thường",
+      "happy": "Vui",
+      "veryHappy": "Rất vui"
+    },
+    "energyDescriptions": {
+      "veryLow": "Kiệt sức",
+      "low": "Mệt mỏi",
+      "medium": "Ổn định",
+      "high": "Tràn đầy năng lượng",
+      "veryHigh": "Siêu tích cực"
+    },
+    "history": "Lịch sử tâm trạng"
+  },
+  "calendar": {
+    "title": "Lịch",
+    "week": "Tuần",
+    "today": "Hôm nay",
+    "scheduled": "Đã lên lịch",
+    "completed": "Hoàn thành",
+    "missed": "Bỏ lỡ",
+    "noSessions": "Không có buổi học nào trong ngày này",
+    "noSubject": "Chưa có môn học",
+    "studySessions": "buổi học đã lên lịch",
+    "studySession": "buổi học đã lên lịch"
+  },
+  "notifications": {
+    "title": "Thông báo",
+    "connected": "Đã kết nối",
+    "offline": "Ngoại tuyến",
+    "all": "Tất cả",
+    "unread": "Chưa đọc",
+    "read": "Đã đọc",
+    "seen": "Đã xem",
+    "new": "Mới",
+    "markAllRead": "Đánh dấu tất cả đã đọc",
+    "delete": "Xóa",
+    "deleteNotification": "Xóa thông báo",
+    "selectAll": "Chọn tất cả",
+    "cancel": "Hủy",
+    "noNotifications": "Chưa có thông báo nào",
+    "noUnreadNotifications": "Bạn đã đọc hết thông báo!",
+    "noSeenNotifications": "Chưa có thông báo đã xem",
+    "viewAll": "Xem tất cả thông báo",
+    "types": {
+      "all": "Tất cả",
+      "mood": "Theo dõi tâm trạng",
+      "study": "Học tập",
+      "task": "Nhiệm vụ",
+      "achievement": "Thành tích",
+      "system": "Hệ thống",
+      "other": "Khác"
+    },
+    "time": {
+      "justNow": "Vừa xong",
+      "minutesAgo": "phút trước",
+      "hoursAgo": "giờ trước",
+      "daysAgo": "ngày trước"
+    }
+  },
+  "userInfo": {
+    "title": "Thông tin người dùng",
+    "loading": "Đang tải thông tin người dùng...",
+    "edit": "Chỉnh sửa",
+    "save": "Lưu",
+    "cancel": "Hủy",
+    "saving": "Đang lưu...",
+    "profileUpdated": "Cập nhật hồ sơ thành công!",
+    "failedToSave": "Không thể lưu thay đổi",
+    "personalInfo": "Thông tin cá nhân",
+    "name": "Tên",
+    "email": "Email",
+    "phone": "Số điện thoại",
+    "bio": "Giới thiệu",
+    "bioPlaceholder": "Hãy cho chúng tôi biết về bạn",
+    "noBio": "Chưa có giới thiệu",
+    "notSet": "Chưa cập nhật",
+    "timezone": "Múi giờ",
+    "accountDetails": "Thông tin tài khoản",
+    "accountStatus": "Trạng thái tài khoản",
+    "active": "Đang hoạt động",
+    "accountInfo": "Thông tin tài khoản",
+    "memberSince": "Thành viên từ",
+    "subscriptionPlan": "Gói đăng ký",
+    "studyStats": "Thống kê học tập",
+    "totalStudyTime": "Tổng thời gian học",
+    "sessionsCompleted": "Buổi học đã hoàn thành",
+    "currentStreak": "Chuỗi ngày hiện tại",
+    "level": "Cấp độ",
+    "levelValue": "Cấp {{level}} ({{xp}} XP)",
+    "streakDays": "{{days}} ngày",
+    "avatar": {
+      "upload": "Tải ảnh lên",
+      "remove": "Xóa ảnh",
+      "uploadSuccess": "Tải ảnh đại diện thành công!",
+      "uploadFailed": "Không thể tải ảnh đại diện",
+      "deleteSuccess": "Đã xóa ảnh đại diện!",
+      "deleteFailed": "Không thể xóa ảnh đại diện",
+      "invalidType": "Định dạng file không hợp lệ. Vui lòng tải ảnh JPEG, PNG, GIF hoặc WebP.",
+      "fileTooLarge": "File quá lớn. Kích thước tối đa là 5MB.",
+      "noAvatar": "Không có ảnh đại diện để xóa"
+    }
+  },
+  "studyTimer": {
+    "waiting": "Chờ",
+    "sessionStartsIn": "Buổi học bắt đầu trong",
+    "paused": "Đang tạm dừng",
+    "studying": "Đang học",
+    "elapsed": "Đã học",
+    "remaining": "Còn lại",
+    "resume": "Tiếp tục",
+    "pause": "Tạm dừng",
+    "end": "Kết thúc",
+    "endSession": "Kết thúc buổi học",
+    "timeStudied": "Thời gian đã học",
+    "focusLevel": "Mức độ tập trung của bạn:",
+    "focusLevels": {
+      "1": "Cần cố gắng thêm",
+      "2": "Khá ổn",
+      "3": "Tốt",
+      "4": "Rất tốt",
+      "5": "Xuất sắc"
+    },
+    "notes": "Ghi chú (tùy chọn):",
+    "notesPlaceholder": "Hôm nay bạn đã học được gì?",
+    "saving": "Đang lưu...",
+    "complete": "Hoàn thành"
+  },
+  "common": {
+    "loading": "Đang tải...",
+    "error": "Lỗi",
+    "success": "Thành công",
+    "save": "Lưu",
+    "cancel": "Hủy",
+    "edit": "Chỉnh sửa",
+    "delete": "Xóa",
+    "confirm": "Xác nhận",
+    "back": "Quay lại",
+    "next": "Tiếp theo",
+    "submit": "Gửi",
+    "search": "Tìm kiếm",
+    "noData": "Không có dữ liệu",
+    "tryAgain": "Thử lại",
+    "user": "Người dùng"
+  },
+  "bottomNav": {
+    "dashboard": "Trang chủ",
+    "calendar": "Lịch",
+    "ai": "AI",
+    "mood": "Tâm trạng",
+    "account": "Tài khoản"
+  },
+  "sidebarNav": {
+    "dashboard": "Trang chủ",
+    "calendar": "Lịch",
+    "ai": "AI",
+    "mood": "Tâm trạng",
+    "account": "Tài khoản"
+  },
+  "studyTracker": {
+    "title": "Theo dõi học tập",
+    "weeklySchedule": "Lịch học tuần",
+    "week": "Tuần",
+    "present": "Có mặt",
+    "absent": "Vắng mặt",
+    "noSlot": "Không có",
+    "subjectLegend": "Chú thích môn học",
+    "todaysProgress": "Tiến độ hôm nay",
+    "streakCalendar": "Lịch chuỗi học tập",
+    "currentStreak": "Chuỗi hiện tại",
+    "longestStreak": "Chuỗi dài nhất",
+    "totalDays": "Tổng số ngày",
+    "studyHours": "Giờ học",
+    "totalStudyTime": "Tổng thời gian học",
+    "timeSlots": {
+      "morning": "Sáng",
+      "afternoon": "Chiều",
+      "evening": "Tối"
+    },
+    "weekDays": {
+      "mon": "T2",
+      "tue": "T3",
+      "wed": "T4",
+      "thu": "T5",
+      "fri": "T6",
+      "sat": "T7",
+      "sun": "CN"
+    }
+  },
+  "subjectDetail": {
+    "loading": "Đang tải...",
+    "notFound": "Không tìm thấy môn học",
+    "overallProgress": "Tiến độ tổng thể",
+    "weeklySchedule": "Lịch học tuần",
+    "noSessionsThisWeek": "Không có buổi học nào trong tuần này",
+    "upcomingDeadlines": "Hạn chót sắp tới",
+    "viewAll": "Xem tất cả",
+    "noDeadlines": "Không có hạn chót sắp tới",
+    "addDeadline": "Thêm hạn chót",
+    "addNewDeadline": "Thêm hạn chót mới",
+    "title": "Tiêu đề",
+    "dueDate": "Ngày hết hạn",
+    "type": "Loại",
+    "priority": "Độ ưu tiên",
+    "cancel": "Hủy",
+    "status": {
+      "completed": "Hoàn thành",
+      "missed": "Bỏ lỡ",
+      "scheduled": "Đã lên lịch"
+    },
+    "deadlineTypes": {
+      "assignment": "Bài tập",
+      "exam": "Kỳ thi",
+      "quiz": "Kiểm tra",
+      "project": "Dự án",
+      "presentation": "Thuyết trình",
+      "midterm": "Giữa kỳ",
+      "final": "Cuối kỳ",
+      "other": "Khác"
+    },
+    "priorities": {
+      "low": "Thấp",
+      "medium": "Trung bình",
+      "high": "Cao",
+      "critical": "Quan trọng"
+    },
+    "due": {
+      "overdue": "Quá hạn",
+      "today": "Hết hạn hôm nay",
+      "tomorrow": "Hết hạn ngày mai",
+      "inDays": "Còn {{count}} ngày",
+      "inWeek": "Còn 1 tuần",
+      "inWeeks": "Còn {{count}} tuần"
+    },
+    "placeholder": {
+      "title": "VD: Thi giữa kỳ"
+    }
+  },
+  "slotDetail": {
+    "title": "Chi tiết buổi học",
+    "session": "Buổi học",
+    "subject": "Môn học",
+    "subjectLabel": "Môn",
+    "noSubject": "Chưa chọn môn",
+    "time": "Thời gian",
+    "status": "Trạng thái",
+    "completed": "Hoàn thành",
+    "missed": "Bỏ lỡ",
+    "scheduled": "Đã lên lịch",
+    "actualTime": "Thời gian thực tế",
+    "actualDuration": "Thời lượng thực tế",
+    "minutes": "phút",
+    "focusLevel": "Mức độ tập trung",
+    "completedTopics": "Chủ đề đã hoàn thành",
+    "resourcesUsed": "Tài liệu đã sử dụng",
+    "completionNotes": "Ghi chú hoàn thành",
+    "editDetails": "Chỉnh sửa",
+    "saveChanges": "Lưu thay đổi",
+    "cancel": "Hủy",
+    "selectSubject": "Chọn môn học",
+    "startTime": "Giờ bắt đầu",
+    "endTime": "Giờ kết thúc",
+    "moveToAnother": "Chuyển sang buổi khác",
+    "selectDateSubtitle": "Chọn ngày, sau đó chọn khung giờ trống",
+    "selectDate": "Chọn ngày:",
+    "chooseDate": "-- Chọn ngày --",
+    "selectTimeSlot": "Chọn khung giờ:",
+    "occupied": "Đã có",
+    "current": "Hiện tại",
+    "past": "Đã qua",
+    "available": "Còn trống",
+    "moveToSelected": "Chuyển đến buổi đã chọn",
+    "markAsMissed": "Đánh dấu bỏ lỡ",
+    "deleteSlot": "Xóa buổi học này",
+    "confirmMove": "Xác nhận chuyển",
+    "confirmMoveSubject": "Môn:",
+    "from": "Từ:",
+    "to": "Sang:",
+    "confirmMoveBtn": "Xác nhận chuyển",
+    "markAsMissedTitle": "Đánh dấu bỏ lỡ",
+    "markAsMissedMsg": "Bạn có chắc muốn đánh dấu buổi học này là bỏ lỡ?",
+    "yesMarkMissed": "Có, đánh dấu bỏ lỡ",
+    "deleteTitle": "Xóa buổi học",
+    "deleteMsg": "Bạn có chắc muốn xóa buổi học này? Hành động này không thể hoàn tác.",
+    "yesDelete": "Có, xóa",
+    "timeSlots": {
+      "morning": "Buổi sáng",
+      "afternoon": "Buổi chiều",
+      "evening": "Buổi tối"
+    }
+  },
+  "moodCalendar": {
+    "months": {
+      "january": "Tháng 1",
+      "february": "Tháng 2",
+      "march": "Tháng 3",
+      "april": "Tháng 4",
+      "may": "Tháng 5",
+      "june": "Tháng 6",
+      "july": "Tháng 7",
+      "august": "Tháng 8",
+      "september": "Tháng 9",
+      "october": "Tháng 10",
+      "november": "Tháng 11",
+      "december": "Tháng 12"
+    },
+    "weekDays": {
+      "sun": "CN",
+      "mon": "T2",
+      "tue": "T3",
+      "wed": "T4",
+      "thu": "T5",
+      "fri": "T6",
+      "sat": "T7"
+    },
+    "moods": {
+      "upset": "Bực bội",
+      "sad": "Buồn",
+      "normal": "Bình thường",
+      "happy": "Vui",
+      "veryHappy": "Rất vui"
+    },
+    "energy": "Năng lượng:",
+    "emotions": "Cảm xúc:",
+    "notes": "Ghi chú:"
+  },
+  "moodCheckIn": {
+    "title": "Hôm nay bạn cảm thấy thế nào?",
+    "description": "Dành vài giây để ghi lại tâm trạng. Theo dõi cảm xúc giúp bạn hiểu bản thân hơn!",
+    "recordMood": "Ghi lại tâm trạng 💙",
+    "maybeLater": "Để sau"
+  },
+  "moodHistory": {
+    "averageMood": "Tâm trạng trung bình",
+    "averageEnergy": "Năng lượng trung bình",
+    "totalEntries": "Tổng số lần ghi",
+    "noDataYet": "Chưa có dữ liệu",
+    "startTracking": "Bắt đầu theo dõi tâm trạng ngay hôm nay!",
+    "startNow": "Bắt đầu ngay",
+    "moodCalendar": "Lịch tâm trạng",
+    "commonEmotions": "Cảm xúc phổ biến",
+    "addNewEntry": "Thêm bản ghi tâm trạng mới",
+    "addMood": "Thêm tâm trạng",
+    "emotions": {
+      "Tired": "Mệt mỏi",
+      "Frustrated": "Thất vọng",
+      "Happy": "Vui vẻ",
+      "Excited": "Phấn khích",
+      "Confident": "Tự tin",
+      "Anxious": "Lo lắng",
+      "Stressed": "Căng thẳng",
+      "Motivated": "Có động lực",
+      "Overwhelmed": "Choáng ngợp",
+      "Calm": "Bình tĩnh",
+      "Sad": "Buồn",
+      "Energetic": "Năng động",
+      "Peaceful": "Yên bình",
+      "Angry": "Tức giận",
+      "Grateful": "Biết ơn",
+      "Hopeful": "Hy vọng",
+      "Confused": "Bối rối",
+      "Focused": "Tập trung",
+      "Relaxed": "Thư giãn",
+      "Worried": "Lo lắng"
+    }
+  },
+  "home": {
+    "welcome": "Chào mừng đến với S-Techdy",
+    "subtitle": "Ứng dụng web hiện đại của bạn"
+  },
+  "pricing": {
+    "badge": "Bảng giá",
+    "title": "Chọn Gói Phù Hợp",
+    "subtitle": "Chọn gói hoàn hảo cho hành trình học tập của bạn. Nâng cấp hoặc hạ cấp bất cứ lúc nào.",
+    "monthly": "Theo tháng",
+    "yearly": "Theo năm",
+    "month": "tháng",
+    "months": "tháng",
+    "year": "năm",
+    "mostPopular": "Phổ biến nhất",
+    "currentPlan": "Gói hiện tại",
+    "plans": {
+      "free": {
+        "name": "Miễn phí",
+        "description": "Khám phá S'Techdy có thể làm gì",
+        "buttonText": "Bắt đầu",
+        "features": {
+          "basicScheduling": "Lên lịch học cơ bản",
+          "moodTracking": "Check-in tâm trạng hàng ngày",
+          "limitedAnalytics": "Phân tích tiến độ giới hạn",
+          "basicGoals": "Tối đa 3 mục tiêu học tập"
+        }
+      },
+      "oneMonth": {
+        "name": "Gói 1 Tháng",
+        "description": "Dùng thử các tính năng Premium",
+        "buttonText": "Chọn gói 1 tháng",
+        "features": {
+          "everything": "Tất cả tính năng Miễn phí",
+          "advancedAnalytics": "Phân tích tiến độ nâng cao",
+          "customGoals": "Không giới hạn mục tiêu học tập",
+          "exportData": "Xuất dữ liệu của bạn",
+          "prioritySupport": "Hỗ trợ email ưu tiên"
+        }
+      },
+      "threeMonths": {
+        "name": "Gói 3 Tháng",
+        "description": "Tiết kiệm 15% - Phổ biến nhất",
+        "buttonText": "Chọn gói 3 tháng",
+        "features": {
+          "everything": "Tất cả tính năng Gói 1 Tháng",
+          "aiInsights": "Phân tích học tập bằng AI",
+          "collaboration": "Hợp tác nhóm học",
+          "customThemes": "Giao diện tùy chỉnh",
+          "advancedMood": "Phân tích tâm trạng nâng cao",
+          "integrations": "Tích hợp lịch"
+        }
+      },
+      "oneYear": {
+        "name": "Gói 1 Năm",
+        "description": "Tiết kiệm 36% - Giá trị tốt nhất",
+        "buttonText": "Chọn gói 1 năm",
+        "features": {
+          "everything": "Tất cả tính năng Gói 3 Tháng",
+          "aiCoach": "Huấn luyện viên AI cá nhân",
+          "unlimitedStorage": "Lưu trữ đám mây không giới hạn",
+          "apiAccess": "Truy cập API",
+          "dedicatedSupport": "Hỗ trợ riêng",
+          "earlyAccess": "Truy cập sớm tính năng mới",
+          "customBranding": "Tùy chỉnh thương hiệu"
+        }
+      }
+    },
+    "faq": {
+      "title": "Câu Hỏi Thường Gặp",
+      "q1": {
+        "question": "Tôi có thể thay đổi gói sau không?",
+        "answer": "Có! Bạn có thể nâng cấp hoặc hạ cấp gói bất cứ lúc nào. Thay đổi có hiệu lực ngay lập tức và chúng tôi sẽ tính toán lại thanh toán."
+      },
+      "q2": {
+        "question": "Có dùng thử miễn phí cho gói trả phí không?",
+        "answer": "Tất cả gói trả phí đều có 7 ngày dùng thử miễn phí. Không cần thẻ tín dụng để bắt đầu."
+      },
+      "q3": {
+        "question": "Bạn chấp nhận phương thức thanh toán nào?",
+        "answer": "Chúng tôi chấp nhận tất cả thẻ tín dụng phổ biến, PayPal và chuyển khoản ngân hàng. Mọi thanh toán được xử lý an toàn."
+      },
+      "q4": {
+        "question": "Tôi có thể hủy đăng ký không?",
+        "answer": "Bạn có thể hủy đăng ký bất cứ lúc nào. Bạn vẫn có quyền truy cập đến hết kỳ thanh toán."
+      }
+    },
+    "footer": {
+      "helpText": "Cần giúp chọn gói? Liên hệ chúng tôi tại"
+    }
+  },
+  "termsOfUse": {
+    "title": "Điều khoản sử dụng",
+    "subtitle": "Vui lòng đọc kỹ các điều khoản này trước khi sử dụng S'Techdy",
+    "lastUpdated": "Cập nhật lần cuối",
+    "effectiveDate": "27 tháng 12, 2025",
+    "introduction": "Chào mừng bạn đến với S'Techdy! Điều khoản sử dụng này chi phối việc sử dụng ứng dụng lập kế hoạch học tập và theo dõi tâm trạng của chúng tôi. Bằng cách truy cập hoặc sử dụng S'Techdy, bạn đồng ý tuân theo các điều khoản này.",
+    "sections": {
+      "acceptance": {
+        "title": "Chấp nhận điều khoản",
+        "content": "Bằng cách tạo tài khoản hoặc sử dụng S'Techdy, bạn xác nhận rằng bạn đã đọc, hiểu và đồng ý tuân theo Điều khoản sử dụng này. Nếu bạn không đồng ý với các điều khoản này, vui lòng không sử dụng dịch vụ của chúng tôi."
+      },
+      "eligibility": {
+        "title": "Điều kiện sử dụng",
+        "content": "Bạn phải từ 13 tuổi trở lên để sử dụng S'Techdy. Nếu bạn dưới 18 tuổi, bạn phải có sự đồng ý của cha mẹ hoặc người giám hộ để sử dụng dịch vụ của chúng tôi. Bằng cách sử dụng S'Techdy, bạn cam đoan rằng bạn đáp ứng các yêu cầu này."
+      },
+      "account": {
+        "title": "Trách nhiệm tài khoản",
+        "content": "Bạn có trách nhiệm bảo mật thông tin đăng nhập tài khoản và tất cả các hoạt động diễn ra dưới tài khoản của bạn. Vui lòng sử dụng mật khẩu mạnh và thông báo cho chúng tôi ngay lập tức nếu phát hiện truy cập trái phép."
+      },
+      "usage": {
+        "title": "Sử dụng hợp lệ",
+        "content": "Bạn đồng ý chỉ sử dụng S'Techdy cho mục đích hợp pháp và tuân theo các điều khoản này. Bạn không được lạm dụng dịch vụ, cố gắng truy cập trái phép hoặc can thiệp vào trải nghiệm của người dùng khác."
+      },
+      "intellectualProperty": {
+        "title": "Sở hữu trí tuệ",
+        "content": "Tất cả nội dung, tính năng và chức năng của S'Techdy, bao gồm nhưng không giới hạn văn bản, đồ họa, logo và phần mềm, thuộc sở hữu của S'Techdy và được bảo vệ bởi luật bản quyền và sở hữu trí tuệ."
+      },
+      "privacy": {
+        "title": "Quyền riêng tư & Dữ liệu",
+        "content": "Quyền riêng tư của bạn rất quan trọng với chúng tôi. Việc thu thập và sử dụng thông tin cá nhân được điều chỉnh bởi Chính sách bảo mật của chúng tôi. Bằng cách sử dụng S'Techdy, bạn đồng ý với các thực hành dữ liệu như mô tả trong Chính sách bảo mật."
+      },
+      "termination": {
+        "title": "Chấm dứt",
+        "content": "Chúng tôi có quyền tạm ngừng hoặc chấm dứt tài khoản của bạn bất cứ lúc nào nếu vi phạm các điều khoản này hoặc vì bất kỳ lý do nào theo quyết định của chúng tôi. Bạn cũng có thể xóa tài khoản bất cứ lúc nào thông qua cài đặt tài khoản."
+      },
+      "disclaimer": {
+        "title": "Tuyên bố từ chối bảo đảm",
+        "content": "S'Techdy được cung cấp 'nguyên trạng' mà không có bảo đảm nào. Chúng tôi không đảm bảo rằng dịch vụ sẽ không bị gián đoạn, không có lỗi hoặc hoàn toàn an toàn. Sử dụng dịch vụ của chúng tôi theo rủi ro của riêng bạn."
+      },
+      "changes": {
+        "title": "Thay đổi điều khoản",
+        "content": "Chúng tôi có thể cập nhật Điều khoản sử dụng này theo thời gian. Chúng tôi sẽ thông báo về bất kỳ thay đổi quan trọng nào bằng cách đăng các điều khoản mới trên trang này và cập nhật ngày có hiệu lực. Việc tiếp tục sử dụng đồng nghĩa với việc chấp nhận các điều khoản cập nhật."
+      },
+      "contact": {
+        "title": "Liên hệ",
+        "content": "Nếu bạn có bất kỳ câu hỏi nào về Điều khoản sử dụng này, vui lòng liên hệ đội ngũ pháp lý của chúng tôi. Chúng tôi sẵn sàng giải đáp mọi thắc mắc về quyền và trách nhiệm của bạn."
+      }
+    },
+    "footer": "Nếu có câu hỏi về các điều khoản này, liên hệ chúng tôi tại"
+  },
+  "common": {
+    "back": "Quay lại"
+  }
+}

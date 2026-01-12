@@ -1,0 +1,35 @@
+/* Fade In Animation */
+@keyframes homeFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.home {
+  text-align: center;
+  padding: 50px 20px;
+  animation: homeFadeIn 0.4s ease-out;
+}
+
+.home > * {
+  animation: homeFadeIn 0.4s ease-out;
+}
+
+.home > *:nth-child(1) { animation-delay: 0.05s; }
+.home > *:nth-child(2) { animation-delay: 0.1s; }
+
+.home h1 {
+  font-size: 48px;
+  color: #282c34;
+  margin-bottom: 20px;
+}
+
+.home p {
+  font-size: 24px;
+  color: #666;
+}

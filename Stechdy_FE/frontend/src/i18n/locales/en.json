@@ -1,0 +1,849 @@
+{
+  "nav": {
+    "features": "Features",
+    "howItWorks": "How It Works",
+    "testimonials": "Testimonials",
+    "pricing": "Pricing",
+    "signIn": "Sign In",
+    "getStarted": "Get Started"
+  },
+  "theme": {
+    "lightMode": "Light Mode",
+    "darkMode": "Dark Mode",
+    "switchToLight": "Switch to light mode",
+    "switchToDark": "Switch to dark mode",
+    "chooseTheme": "Choose Theme",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System",
+    "currentlyUsing": "Currently using"
+  },
+  "hero": {
+    "badge": "Your study companion is here",
+    "title": "Study Smarter,",
+    "titleGradient": "Feel Better",
+    "subtitle": "S'Techdy combines intelligent study planning with mood tracking to help you achieve academic success while maintaining your mental wellness.",
+    "startFreeTrial": "Start Free Trial",
+    "stats": {
+      "activeStudents": "Active Students",
+      "improvedFocus": "Improved Focus",
+      "userRating": "User Rating"
+    }
+  },
+  "features": {
+    "badge": "Features",
+    "title": "Everything You Need to Excel",
+    "subtitle": "Powerful tools designed to optimize your study routine and support your wellbeing.",
+    "smartScheduling": {
+      "title": "Smart Scheduling",
+      "description": "Plan your study sessions with an intelligent calendar that adapts to your learning patterns and goals."
+    },
+    "moodTracking": {
+      "title": "Mood Tracking",
+      "description": "Monitor your emotional wellbeing and discover how it affects your study performance over time."
+    },
+    "progressAnalytics": {
+      "title": "Progress Analytics",
+      "description": "Track your learning journey with detailed insights and beautiful visualizations of your progress."
+    },
+    "goalSetting": {
+      "title": "Goal Setting",
+      "description": "Set achievable study goals and celebrate milestones as you work towards academic success."
+    },
+    "timeManagement": {
+      "title": "Time Management",
+      "description": "Master your time with study trackers and reminders that keep you focused and on schedule."
+    },
+    "studySessions": {
+      "title": "Study Sessions",
+      "description": "Organize your subjects and track dedicated study time for each course or topic."
+    }
+  },
+  "howItWorks": {
+    "badge": "How It Works",
+    "title": "Get Started in 3 Simple Steps",
+    "subtitle": "Begin your journey to better studying in just minutes.",
+    "step1": {
+      "title": "Create Your Account",
+      "description": "Sign up in seconds and set up your personalized study profile with your goals."
+    },
+    "step2": {
+      "title": "Plan Your Schedule",
+      "description": "Add your subjects, set study times, and let S'Techdy help you build the perfect routine."
+    },
+    "step3": {
+      "title": "Track & Improve",
+      "description": "Monitor your progress, check in on your mood, and watch your productivity soar."
+    }
+  },
+  "testimonials": {
+    "badge": "Testimonials",
+    "title": "Loved by Students Worldwide",
+    "subtitle": "See what our community has to say about their S'Techdy experience.",
+    "testimonial1": {
+      "text": "\"S'Techdy completely transformed how I approach studying. The mood tracking feature helped me understand my best study times.\"",
+      "name": "Sarah Chen",
+      "role": "Medical Student"
+    },
+    "testimonial2": {
+      "text": "\"Finally, an app that understands that studying is not just about time, but about mental wellness too. Highly recommend!\"",
+      "name": "James Wilson",
+      "role": "Engineering Major"
+    },
+    "testimonial3": {
+      "text": "\"The progress analytics are incredible. I can actually see how much I've improved over the semester. Game changer!\"",
+      "name": "Emily Rodriguez",
+      "role": "Law Student"
+    }
+  },
+  "cta": {
+    "title": "Ready to Transform Your Studies?",
+    "subtitle": "Join thousands of students who are already studying smarter with S'Techdy.",
+    "button": "Get Started Free"
+  },
+  "footer": {
+    "copyright": " 2025 S'Techdy. All rights reserved."
+  },
+  "language": {
+    "en": "English",
+    "vi": "Vietnamese"
+  },
+  "auth": {
+    "login": {
+      "title": "Login",
+      "email": "Email",
+      "password": "Password",
+      "forgotPassword": "Forgot password?",
+      "submit": "Login",
+      "orContinueWith": "or continue with",
+      "noAccount": "Don't have an account?",
+      "signUpNow": "Sign up now",
+      "loginFailed": "Login failed. Please try again.",
+      "googleLoginFailed": "Google login failed. Please try again."
+    },
+    "register": {
+      "title": "Create account",
+      "subtitle": "Join us and start your learning journey",
+      "fullName": "Full name",
+      "email": "Email",
+      "password": "Password",
+      "confirmPassword": "Confirm password",
+      "submit": "Sign up",
+      "orContinueWith": "or continue with",
+      "haveAccount": "Already have an account?",
+      "loginNow": "Login now",
+      "registerFailed": "Registration failed. Please try again.",
+      "googleSignupFailed": "Google sign up failed. Please try again."
+    },
+    "forgotPassword": {
+      "title": "Forgot password?",
+      "subtitle": "Enter your email address and we will send you a password reset link",
+      "email": "Email",
+      "submit": "Send reset link",
+      "backToLogin": " Back to login",
+      "checkEmail": "Check your Email",
+      "emailSent": "We have sent a password reset link to",
+      "checkSpam": "Didn't receive the email? Check your spam folder or try again.",
+      "tryAnotherEmail": "Try another email"
+    },
+    "resetPassword": {
+      "title": "Reset password",
+      "subtitle": "Enter your new password",
+      "newPassword": "New password",
+      "confirmNewPassword": "Confirm new password",
+      "submit": "Reset password",
+      "backToLogin": "Back to login",
+      "success": "Password reset successful!",
+      "successMessage": "Your password has been reset successfully. You will be redirected to login page.",
+      "goToLogin": "Go to login page",
+      "failed": "Password reset failed. Please try again."
+    },
+    "validation": {
+      "emailRequired": "Please enter email",
+      "emailInvalid": "Invalid email",
+      "passwordRequired": "Please enter password",
+      "passwordMinLength": "Password must be at least 6 characters",
+      "nameRequired": "Please enter your name",
+      "nameMinLength": "Name must be at least 2 characters",
+      "confirmPasswordRequired": "Please confirm password",
+      "passwordMismatch": "Passwords do not match"
+    },
+    "admin": {
+      "badge": "Admin Portal",
+      "login": {
+        "title": "Admin Access",
+        "subtitle": "Sign in to access admin dashboard",
+        "adminEmail": "Admin Email",
+        "password": "Password",
+        "forgotPassword": "Forgot password?",
+        "submit": "Login as Admin",
+        "backToUser": "Back to user portal",
+        "failed": "Login failed. Please try again.",
+        "accessDenied": "Access denied. Admin privileges required."
+      },
+      "forgotPassword": {
+        "title": "Admin Password Recovery",
+        "subtitle": "Enter your admin email and we will send you a password reset link",
+        "adminEmail": "Admin Email",
+        "submit": "Send reset link",
+        "backToLogin": "Back to admin login",
+        "checkEmail": "Check your Email",
+        "emailSent": "We have sent a password reset link to",
+        "checkSpam": "Didn't receive the email? Check your spam folder or try again.",
+        "tryAnotherEmail": "Try another email",
+        "failed": "Unable to send email. Please try again."
+      }
+    }
+  },
+  "account": {
+    "pageTitle": "Account",
+    "freePlan": "Free plan",
+    "premiumPlan": "Premium",
+    "unlockFeatures": "Unlock all premium features",
+    "upgradePremium": "Upgrade to premium",
+    "settings": "Settings",
+    "userInformation": "User information",
+    "appearance": "Appearance",
+    "language": "Language",
+    "soundNotifications": "Sound & Notifications",
+    "support": "Support",
+    "helpSupport": "Help & Support",
+    "aboutUs": "About us",
+    "termsOfUse": "Terms of Use",
+    "logout": "Logout",
+    "systemSettings": "based on your system settings",
+    "chooseLanguage": "Choose Language"
+  },
+  "notificationSettings": {
+    "title": "Notification & Sound Settings",
+    "notifications": "Notifications",
+    "notificationsDesc": "Manage what notifications you receive",
+    "sound": "Sound",
+    "soundDesc": "Customize notification sounds",
+    "enableNotifications": "Enable Notifications",
+    "enableNotificationsDesc": "Turn all notifications on or off",
+    "taskReminders": "Task Reminders",
+    "taskRemindersDesc": "Get notified about upcoming tasks and deadlines",
+    "studyReminders": "Study Session Reminders",
+    "studyRemindersDesc": "Reminders for scheduled study sessions",
+    "moodCheckIn": "Mood Check-in Reminders",
+    "moodCheckInDesc": "Daily reminders to log your mood",
+    "achievements": "Achievements & Milestones",
+    "achievementsDesc": "Celebrate your progress and achievements",
+    "emailNotifications": "Email Notifications",
+    "emailNotificationsDesc": "Receive notifications via email",
+    "pushNotifications": "Push Notifications",
+    "pushNotificationsDesc": "Receive push notifications in-app",
+    "enableSound": "Enable Sound",
+    "enableSoundDesc": "Play sound for notifications",
+    "volume": "Volume",
+    "notificationSound": "Notification Sound",
+    "notificationSoundDesc": "Choose your notification sound",
+    "testSound": "Test Sound",
+    "savedSuccessfully": "Settings saved successfully!",
+    "saveFailed": "Failed to save settings",
+    "sound": {
+      "bell": "Bell",
+      "chime": "Chime",
+      "pop": "Pop",
+      "gentle": "Gentle"
+    }
+  },
+  "about": {
+    "title": "About Us",
+    "ourMission": "Our Mission",
+    "missionText": "At S'techdy, we're passionate about empowering students to plan smarter with the help of AI. Our mission is to transform the way students approach their academic journey by providing intelligent tools that make study planning more efficient, personalized, and effective.",
+    "meetTheTeam": "Meet the Team",
+    "connectWithUs": "Connect with Us",
+    "connectText": "Follow us on social media to stay updated with the latest features, study tips, and community highlights.",
+    "roles": {
+      "founderCeo": "Chief Executive Officer",
+      "leadAiEngineer": "Chief Financial Officer",
+      "uxuiDesigner": "Chief Marketing Officer",
+      "productManager": "Chief Strategy Officer",
+      "backendEngineer": "Chief Product Officer",
+      "dataScientist": "Chief Operating Officer"
+    }
+  },
+  "helpSupport": {
+    "title": "Help & Support",
+    "searchPlaceholder": "Search help topics",
+    "commonQuestions": "Common Questions",
+    "contactSupport": "Contact Support",
+    "chatWithUs": "Chat with us",
+    "sendEmail": "Send email",
+    "footer": "We're here to help you study smarter ",
+    "faq": {
+      "q1": "How to create a schedule?",
+      "a1": "Navigate to the Calendar page and tap the '+' button to create a new study slot. You can set the subject, time, duration, and add notes for your study session.",
+      "q2": "How to reset password?",
+      "a2": "Go to the login page and tap 'Forgot Password'. Enter your registered email address and we'll send you a link to reset your password.",
+      "q3": "How to sync across devices?",
+      "a3": "Your data is automatically synced when you're logged into your account. Simply log in with the same credentials on any device to access your study plans.",
+      "q4": "How to set study reminders?",
+      "a4": "When creating or editing a study slot, enable the reminder option and set your preferred notification time before the session starts."
+    }
+  },
+  "dashboard": {
+    "goodMorning": "Good morning!",
+    "goodAfternoon": "Good afternoon!",
+    "goodEvening": "Good evening!",
+    "studyProgress": "Study Progress",
+    "today": "Today",
+    "streak": "Streak",
+    "currentStreak": "Current Streak",
+    "days": "Days",
+    "minutes": "min",
+    "hours": "hours",
+    "upcomingSessions": "Upcoming Sessions",
+    "viewAll": "View All",
+    "aiSuggestion": "AI Suggestion",
+    "noSessions": "No upcoming sessions",
+    "enjoyFreeTime": "Enjoy your free time!",
+    "congratulations": "Congratulations! You completed",
+    "minutesStudy": "minutes of study!",
+    "todaysProgress": "Today's Progress",
+    "studyTime": "Study Time",
+    "studySession": "Study Session",
+    "quotes": "Quotes",
+    "missedSession": "Missed Session",
+    "missedSessionText": "You've marked",
+    "asMissed": "as missed.",
+    "aSession": "a session",
+    "moreMissedToday": "more missed today",
+    "serverNotRunning": "Backend Server Not Running",
+    "pleaseStartServer": "Please start the server to see your sessions",
+    "unableToConnect": "Unable to connect to server. Please check your backend connection.",
+    "aiSuggestions": {
+      "takeBreak": "Consider taking a 15-minute break",
+      "greatProgress": "Great progress today! You're almost done with your study goals 🎉",
+      "halfwayThrough": "You're halfway through! Keep up the good work 💪",
+      "multipleSessions": "You have multiple sessions today. Stay focused and take breaks! 🧘",
+      "twoHoursBreak": "You've been studying for 2+ hours. Time for a break! ☕"
+    }
+  },
+  "mood": {
+    "title": "Mood Tracking",
+    "howAreYou": "How are you feeling today?",
+    "notes": "Notes",
+    "notesPlaceholder": "Write about your feelings today...",
+    "energyLevel": "Energy Level",
+    "low": "Low",
+    "high": "High",
+    "saveButton": "Save Today's Mood ",
+    "saving": "Saving...",
+    "savedSuccess": "Mood saved successfully ",
+    "selectMood": "Please select your mood",
+    "errorSaving": "An error occurred while saving",
+    "moods": {
+      "upset": "Upset",
+      "sad": "Sad",
+      "normal": "Normal",
+      "happy": "Happy",
+      "veryHappy": "Very Happy"
+    },
+    "energyDescriptions": {
+      "veryLow": "Exhausted",
+      "low": "Tired",
+      "medium": "Okay",
+      "high": "Energized",
+      "veryHigh": "Supercharged"
+    },
+    "history": "Mood History"
+  },
+  "calendar": {
+    "title": "Calendar",
+    "week": "Week",
+    "today": "Today",
+    "scheduled": "Scheduled",
+    "completed": "Completed",
+    "missed": "Missed",
+    "noSessions": "No sessions scheduled for this day",
+    "noSubject": "No subject",
+    "studySessions": "study sessions scheduled",
+    "studySession": "study session scheduled"
+  },
+  "notifications": {
+    "title": "Notifications",
+    "connected": "Connected",
+    "offline": "Offline",
+    "all": "All",
+    "unread": "Unread",
+    "read": "Read",
+    "seen": "Seen",
+    "new": "New",
+    "markAllRead": "Mark all as read",
+    "delete": "Delete",
+    "deleteNotification": "Delete notification",
+    "selectAll": "Select all",
+    "cancel": "Cancel",
+    "noNotifications": "No notifications",
+    "noUnreadNotifications": "You have read all notifications!",
+    "noSeenNotifications": "No seen notifications yet",
+    "viewAll": "View all notifications",
+    "types": {
+      "all": "All",
+      "mood": "Mood Tracking",
+      "study": "Study",
+      "task": "Task",
+      "achievement": "Achievement",
+      "system": "System",
+      "other": "Other"
+    },
+    "time": {
+      "justNow": "Just now",
+      "minutesAgo": "minutes ago",
+      "hoursAgo": "hours ago",
+      "daysAgo": "days ago"
+    }
+  },
+  "userInfo": {
+    "title": "User Information",
+    "loading": "Loading user information...",
+    "edit": "Edit",
+    "save": "Save",
+    "cancel": "Cancel",
+    "saving": "Saving...",
+    "profileUpdated": "Profile updated successfully!",
+    "failedToSave": "Failed to save changes",
+    "personalInfo": "Personal Information",
+    "name": "Name",
+    "email": "Email",
+    "phone": "Phone",
+    "bio": "Bio",
+    "bioPlaceholder": "Tell us about yourself",
+    "noBio": "No bio added yet",
+    "notSet": "Not set",
+    "timezone": "Timezone",
+    "accountDetails": "Account Details",
+    "accountStatus": "Account Status",
+    "active": "Active",
+    "accountInfo": "Account Information",
+    "memberSince": "Member Since",
+    "subscriptionPlan": "Subscription Plan",
+    "studyStats": "Study Statistics",
+    "totalStudyTime": "Total Study Time",
+    "sessionsCompleted": "Sessions Completed",
+    "currentStreak": "Current Streak",
+    "level": "Level",
+    "levelValue": "Level {{level}} ({{xp}} XP)",
+    "streakDays": "{{days}} days",
+    "avatar": {
+      "upload": "Upload Photo",
+      "remove": "Remove Photo",
+      "uploadSuccess": "Avatar uploaded successfully!",
+      "uploadFailed": "Failed to upload avatar",
+      "deleteSuccess": "Avatar removed successfully!",
+      "deleteFailed": "Failed to remove avatar",
+      "invalidType": "Invalid file type. Please upload JPEG, PNG, GIF or WebP images.",
+      "fileTooLarge": "File is too large. Maximum size is 5MB.",
+      "noAvatar": "No avatar to remove"
+    }
+  },
+  "studyTimer": {
+    "waiting": "Waiting",
+    "sessionStartsIn": "Session starts in",
+    "paused": "Paused",
+    "studying": "Studying",
+    "elapsed": "Elapsed",
+    "remaining": "Remaining",
+    "resume": "Resume",
+    "pause": "Pause",
+    "end": "End",
+    "endSession": "End study session",
+    "timeStudied": "Time studied",
+    "focusLevel": "Your focus level:",
+    "focusLevels": {
+      "1": "Need more effort",
+      "2": "Okay",
+      "3": "Good",
+      "4": "Very good",
+      "5": "Excellent"
+    },
+    "notes": "Notes (optional):",
+    "notesPlaceholder": "What did you learn today?",
+    "saving": "Saving...",
+    "complete": "Complete"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "save": "Save",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "delete": "Delete",
+    "confirm": "Confirm",
+    "back": "Back",
+    "next": "Next",
+    "submit": "Submit",
+    "search": "Search",
+    "noData": "No data available",
+    "tryAgain": "Try again",
+    "user": "User"
+  },
+  "bottomNav": {
+    "dashboard": "Dashboard",
+    "calendar": "Calendar",
+    "ai": "AI",
+    "mood": "Mood",
+    "account": "Account"
+  },
+  "sidebarNav": {
+    "dashboard": "Dashboard",
+    "calendar": "Calendar",
+    "ai": "AI",
+    "mood": "Mood",
+    "account": "Account"
+  },
+  "studyTracker": {
+    "title": "Study Tracker",
+    "weeklySchedule": "Weekly Schedule",
+    "week": "Week",
+    "present": "Present",
+    "absent": "Absent",
+    "noSlot": "No slot",
+    "subjectLegend": "Subject Legend",
+    "todaysProgress": "Today's Progress",
+    "streakCalendar": "Study Streak Calendar",
+    "currentStreak": "Current Streak",
+    "longestStreak": "Longest Streak",
+    "totalDays": "Total Days",
+    "studyHours": "Study Hours",
+    "totalStudyTime": "Total Study Time",
+    "timeSlots": {
+      "morning": "Mor",
+      "afternoon": "Aft",
+      "evening": "Eve"
+    },
+    "weekDays": {
+      "mon": "M",
+      "tue": "T",
+      "wed": "W",
+      "thu": "T",
+      "fri": "F",
+      "sat": "S",
+      "sun": "S"
+    }
+  },
+  "subjectDetail": {
+    "loading": "Loading...",
+    "notFound": "Subject not found",
+    "overallProgress": "Overall Progress",
+    "weeklySchedule": "Weekly Schedule",
+    "noSessionsThisWeek": "No sessions scheduled this week",
+    "upcomingDeadlines": "Upcoming Deadlines",
+    "viewAll": "View All",
+    "noDeadlines": "No upcoming deadlines",
+    "addDeadline": "Add deadline",
+    "addNewDeadline": "Add New Deadline",
+    "title": "Title",
+    "dueDate": "Due Date",
+    "type": "Type",
+    "priority": "Priority",
+    "cancel": "Cancel",
+    "status": {
+      "completed": "Completed",
+      "missed": "Missed",
+      "scheduled": "Scheduled"
+    },
+    "deadlineTypes": {
+      "assignment": "Assignment",
+      "exam": "Exam",
+      "quiz": "Quiz",
+      "project": "Project",
+      "presentation": "Presentation",
+      "midterm": "Midterm",
+      "final": "Final",
+      "other": "Other"
+    },
+    "priorities": {
+      "low": "Low",
+      "medium": "Medium",
+      "high": "High",
+      "critical": "Critical"
+    },
+    "due": {
+      "overdue": "Overdue",
+      "today": "Due today",
+      "tomorrow": "Due tomorrow",
+      "inDays": "Due in {{count}} days",
+      "inWeek": "Due in 1 week",
+      "inWeeks": "Due in {{count}} weeks"
+    },
+    "placeholder": {
+      "title": "e.g., Midterm Exam"
+    }
+  },
+  "slotDetail": {
+    "title": "Slot Details",
+    "session": "Session",
+    "subject": "Subject",
+    "subjectLabel": "Subject",
+    "noSubject": "No subject",
+    "time": "Time",
+    "status": "Status",
+    "completed": "Completed",
+    "missed": "Missed",
+    "scheduled": "Scheduled",
+    "actualTime": "Actual Time",
+    "actualDuration": "Actual Duration",
+    "minutes": "minutes",
+    "focusLevel": "Focus Level",
+    "completedTopics": "Completed Topics",
+    "resourcesUsed": "Resources Used",
+    "completionNotes": "Completion Notes",
+    "editDetails": "Edit Details",
+    "saveChanges": "Save Changes",
+    "cancel": "Cancel",
+    "selectSubject": "Select a subject",
+    "startTime": "Start Time",
+    "endTime": "End Time",
+    "moveToAnother": "Move to Another Slot",
+    "selectDateSubtitle": "Select a date, then choose an available time slot",
+    "selectDate": "Select Date:",
+    "chooseDate": "-- Choose a date --",
+    "selectTimeSlot": "Select Time Slot:",
+    "occupied": "Occupied",
+    "current": "Current",
+    "past": "Past",
+    "available": "Available",
+    "moveToSelected": "Move to Selected Slot",
+    "markAsMissed": "Mark as Missed",
+    "deleteSlot": "Delete This Slot",
+    "confirmMove": "Confirm Move",
+    "confirmMoveSubject": "Subject:",
+    "from": "From:",
+    "to": "To:",
+    "confirmMoveBtn": "Confirm Move",
+    "markAsMissedTitle": "Mark as Missed",
+    "markAsMissedMsg": "Are you sure you want to mark this session as missed?",
+    "yesMarkMissed": "Yes, Mark as Missed",
+    "deleteTitle": "Delete Slot",
+    "deleteMsg": "Are you sure you want to delete this slot? This action cannot be undone.",
+    "yesDelete": "Yes, Delete",
+    "timeSlots": {
+      "morning": "Morning",
+      "afternoon": "Afternoon",
+      "evening": "Evening"
+    }
+  },
+  "moodCalendar": {
+    "months": {
+      "january": "January",
+      "february": "February",
+      "march": "March",
+      "april": "April",
+      "may": "May",
+      "june": "June",
+      "july": "July",
+      "august": "August",
+      "september": "September",
+      "october": "October",
+      "november": "November",
+      "december": "December"
+    },
+    "weekDays": {
+      "sun": "Sun",
+      "mon": "Mon",
+      "tue": "Tue",
+      "wed": "Wed",
+      "thu": "Thu",
+      "fri": "Fri",
+      "sat": "Sat"
+    },
+    "moods": {
+      "upset": "Upset",
+      "sad": "Sad",
+      "normal": "Normal",
+      "happy": "Happy",
+      "veryHappy": "Very Happy"
+    },
+    "energy": "Energy:",
+    "emotions": "Emotions:",
+    "notes": "Notes:"
+  },
+  "moodCheckIn": {
+    "title": "How are you feeling today?",
+    "description": "Take a few seconds to record your mood. Tracking your emotions helps you understand yourself better!",
+    "recordMood": "Record my mood 💙",
+    "maybeLater": "Maybe later"
+  },
+  "moodHistory": {
+    "averageMood": "Average Mood",
+    "averageEnergy": "Average Energy",
+    "totalEntries": "Total Entries",
+    "noDataYet": "No Data Yet",
+    "startTracking": "Start tracking your mood today!",
+    "startNow": "Start Now",
+    "moodCalendar": "Mood Calendar",
+    "commonEmotions": "Common Emotions",
+    "addNewEntry": "Add new mood entry",
+    "addMood": "Add Mood",
+    "emotions": {
+      "Tired": "Tired",
+      "Frustrated": "Frustrated",
+      "Happy": "Happy",
+      "Excited": "Excited",
+      "Confident": "Confident",
+      "Anxious": "Anxious",
+      "Stressed": "Stressed",
+      "Motivated": "Motivated",
+      "Overwhelmed": "Overwhelmed",
+      "Calm": "Calm",
+      "Sad": "Sad",
+      "Energetic": "Energetic",
+      "Peaceful": "Peaceful",
+      "Angry": "Angry",
+      "Grateful": "Grateful",
+      "Hopeful": "Hopeful",
+      "Confused": "Confused",
+      "Focused": "Focused",
+      "Relaxed": "Relaxed",
+      "Worried": "Worried"
+    }
+  },
+  "home": {
+    "welcome": "Welcome to S-Techdy",
+    "subtitle": "Your modern web application"
+  },
+  "pricing": {
+    "badge": "Pricing Plans",
+    "title": "Choose Your Plan",
+    "subtitle": "Select the perfect plan for your study journey. Upgrade or downgrade at any time.",
+    "monthly": "Monthly",
+    "yearly": "Yearly",
+    "month": "month",
+    "months": "months",
+    "year": "year",
+    "mostPopular": "Most Popular",
+    "currentPlan": "Your current plan",
+    "plans": {
+      "free": {
+        "name": "Free",
+        "description": "See what S'Techdy can do",
+        "buttonText": "Get Started",
+        "features": {
+          "basicScheduling": "Basic study scheduling",
+          "moodTracking": "Daily mood check-in",
+          "limitedAnalytics": "Limited progress analytics",
+          "basicGoals": "Up to 3 study goals"
+        }
+      },
+      "oneMonth": {
+        "name": "1 Month Plan",
+        "description": "Try Premium features",
+        "buttonText": "Get 1 Month",
+        "features": {
+          "everything": "Everything in Free",
+          "advancedAnalytics": "Advanced progress analytics",
+          "customGoals": "Unlimited study goals",
+          "exportData": "Export your data",
+          "prioritySupport": "Priority email support"
+        }
+      },
+      "threeMonths": {
+        "name": "3 Months Plan",
+        "description": "Save 15% - Most Popular",
+        "buttonText": "Get 3 Months",
+        "features": {
+          "everything": "Everything in 1 Month Plan",
+          "aiInsights": "AI-powered study insights",
+          "collaboration": "Study group collaboration",
+          "customThemes": "Custom app themes",
+          "advancedMood": "Advanced mood analytics",
+          "integrations": "Calendar integrations"
+        }
+      },
+      "oneYear": {
+        "name": "1 Year Plan",
+        "description": "Save 36% - Best Value",
+        "buttonText": "Get 1 Year",
+        "features": {
+          "everything": "Everything in 3 Months Plan",
+          "aiCoach": "Personal AI study coach",
+          "unlimitedStorage": "Unlimited cloud storage",
+          "apiAccess": "API access",
+          "dedicatedSupport": "Dedicated support",
+          "earlyAccess": "Early access to new features",
+          "customBranding": "Custom branding options"
+        }
+      }
+    },
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "q1": {
+        "question": "Can I change my plan later?",
+        "answer": "Yes! You can upgrade or downgrade your plan at any time. Changes take effect immediately and we'll prorate any payments."
+      },
+      "q2": {
+        "question": "Is there a free trial for paid plans?",
+        "answer": "All paid plans come with a 7-day free trial. No credit card required to start."
+      },
+      "q3": {
+        "question": "What payment methods do you accept?",
+        "answer": "We accept all major credit cards, PayPal, and bank transfers. All payments are processed securely."
+      },
+      "q4": {
+        "question": "Can I cancel my subscription?",
+        "answer": "You can cancel your subscription at any time. You'll continue to have access until the end of your billing period."
+      }
+    },
+    "footer": {
+      "helpText": "Need help choosing? Contact us at"
+    }
+  },
+  "termsOfUse": {
+    "title": "Terms of Use",
+    "subtitle": "Please read these terms carefully before using S'Techdy",
+    "lastUpdated": "Last Updated",
+    "effectiveDate": "December 27, 2025",
+    "introduction": "Welcome to S'Techdy! These Terms of Use govern your use of our study planning and mood tracking application. By accessing or using S'Techdy, you agree to be bound by these terms.",
+    "sections": {
+      "acceptance": {
+        "title": "Acceptance of Terms",
+        "content": "By creating an account or using S'Techdy, you acknowledge that you have read, understood, and agree to be bound by these Terms of Use. If you do not agree to these terms, please do not use our services."
+      },
+      "eligibility": {
+        "title": "Eligibility",
+        "content": "You must be at least 13 years old to use S'Techdy. If you are under 18, you must have parental or guardian consent to use our services. By using S'Techdy, you represent that you meet these eligibility requirements."
+      },
+      "account": {
+        "title": "Account Responsibilities",
+        "content": "You are responsible for maintaining the confidentiality of your account credentials and for all activities that occur under your account. Please use a strong password and notify us immediately of any unauthorized access."
+      },
+      "usage": {
+        "title": "Acceptable Use",
+        "content": "You agree to use S'Techdy only for lawful purposes and in accordance with these terms. You may not misuse our services, attempt to gain unauthorized access, or interfere with other users' enjoyment of the platform."
+      },
+      "intellectualProperty": {
+        "title": "Intellectual Property",
+        "content": "All content, features, and functionality of S'Techdy, including but not limited to text, graphics, logos, and software, are owned by S'Techdy and are protected by copyright and other intellectual property laws."
+      },
+      "privacy": {
+        "title": "Privacy & Data",
+        "content": "Your privacy is important to us. Our collection and use of personal information is governed by our Privacy Policy. By using S'Techdy, you consent to our data practices as described in our Privacy Policy."
+      },
+      "termination": {
+        "title": "Termination",
+        "content": "We reserve the right to suspend or terminate your account at any time for violations of these terms or for any other reason at our discretion. You may also delete your account at any time through your account settings."
+      },
+      "disclaimer": {
+        "title": "Disclaimer of Warranties",
+        "content": "S'Techdy is provided 'as is' without warranties of any kind. We do not guarantee that our services will be uninterrupted, error-free, or completely secure. Use our services at your own risk."
+      },
+      "changes": {
+        "title": "Changes to Terms",
+        "content": "We may update these Terms of Use from time to time. We will notify you of any significant changes by posting the new terms on this page and updating the effective date. Continued use constitutes acceptance of the updated terms."
+      },
+      "contact": {
+        "title": "Contact Us",
+        "content": "If you have any questions about these Terms of Use, please contact our legal team. We're here to help clarify any concerns you may have about your rights and responsibilities."
+      }
+    },
+    "footer": "For questions about these terms, contact us at"
+  },
+  "common": {
+    "back": "Go back"
+  }
+}

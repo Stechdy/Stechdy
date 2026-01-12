@@ -1,0 +1,196 @@
+/* ============================================
+   SIDEBAR NAVIGATION - MOBILE HIDDEN
+   ============================================ */
+.sidebar-nav {
+  display: none;
+}
+
+.sidebar-backdrop {
+  display: none;
+}
+
+/* ============================================
+   DESKTOP SIDEBAR - CURVED CAROUSEL
+   ============================================ */
+@media (min-width: 1024px) {
+  .sidebar-backdrop {
+    display: none !important;
+  }
+
+  /* Sidebar container - no background */
+  .sidebar-nav {
+    display: flex;
+    position: fixed;
+    left: 60px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 999;
+    pointer-events: none;
+  }
+
+  /* Inner content wrapper */
+  .sidebar-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    pointer-events: auto;
+    position: relative;
+    height: 0; /* Items positioned absolutely relative to center */
+  }
+
+  /* ============================================
+     NAV ITEMS - SMOOTH CAROUSEL
+     ============================================ */
+  .sidebar-nav .nav-item {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    width: 48px;
+    height: 48px;
+    transition: transform 0.9s cubic-bezier(0.16, 1, 0.3, 1), 
+                opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: transform, opacity;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    transform-style: preserve-3d;
+    text-decoration: none;
+    outline: none;
+  }
+
+  .sidebar-nav .nav-item:focus {
+    outline: none;
+  }
+
+  /* Chỉ hiển thị item active khi collapsed */
+  .sidebar-nav .nav-item.active {
+    display: flex;
+  }
+
+  /* Hiển thị tất cả items khi expanded */
+  .sidebar-nav.expanded .nav-item {
+    display: flex;
+  }
+
+  /* Icon container */
+  .nav-item-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .nav-item-icon svg {
+    width: 28px;
+    height: 28px;
+    color: var(--text-tertiary);
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  /* Label - Tooltip style */
+  .nav-item-label {
+    position: absolute;
+    left: 60px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-primary);
+    white-space: nowrap;
+    background: var(--bg-primary);
+    padding: 8px 14px;
+    border-radius: 10px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: all 0.2s ease;
+  }
+
+  [data-theme="dark"] .nav-item-label {
+    background: var(--bg-secondary);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  }
+
+  /* Tooltip arrow */
+  .nav-item-label::before {
+    content: '';
+    position: absolute;
+    left: -6px;
+    top: 50%;
+    transform: translateY(-50%);
+    border: 6px solid transparent;
+    border-right-color: var(--bg-primary);
+  }
+
+  [data-theme="dark"] .nav-item-label::before {
+    border-right-color: var(--bg-secondary);
+  }
+
+  /* Show tooltip on hover */
+  .nav-item:hover .nav-item-label {
+    opacity: 1;
+    visibility: visible;
+    left: 56px;
+  }
+
+  /* ============================================
+     HOVER STATE
+     ============================================ */
+  .nav-item:hover .nav-item-icon svg {
+    color: var(--primary-blue);
+  }
+
+  /* ============================================
+     ACTIVE STATE (Current Route / Center)
+     ============================================ */
+  .nav-item.active .nav-item-icon svg {
+    color: var(--primary-blue);
+  }
+
+  /* ============================================
+     AI ICON - SPECIAL STYLE
+     ============================================ */
+  .sidebar-nav .ai-fab {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--primary-gradient);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 12px rgba(138, 192, 213, 0.3);
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .nav-item:hover .ai-fab {
+    box-shadow: 0 4px 20px rgba(138, 192, 213, 0.5);
+  }
+
+  .sidebar-nav .ai-fab svg,
+  .sidebar-nav .ai-fab img {
+    width: 40px;
+    height: 40px;
+    color: white !important;
+    border-radius: 50%;
+  }
+}
+
+/* ============================================
+   RESPONSIVE ADJUSTMENTS
+   ============================================ */
+@media (max-width: 1023px) {
+  .sidebar-nav,
+  .sidebar-backdrop {
+    display: none !important;
+  }
+}
