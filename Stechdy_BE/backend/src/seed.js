@@ -1851,7 +1851,47 @@ async function seedDatabase() {
       
       // Sunday Dec 29
       { date: new Date('2025-12-29'), dayOfWeek: 0, sessionType: 'morning', subjectId: taiSubjects[4]._id, startTime: '09:00', endTime: '11:00', topic: 'Final Exam Review' },
-      { date: new Date('2025-12-29'), dayOfWeek: 0, sessionType: 'afternoon', subjectId: taiSubjects[0]._id, startTime: '14:00', endTime: '16:00', topic: 'Portfolio Update' }
+      { date: new Date('2025-12-29'), dayOfWeek: 0, sessionType: 'afternoon', subjectId: taiSubjects[0]._id, startTime: '14:00', endTime: '16:00', topic: 'Portfolio Update' },
+      
+      // ===== TUẦN MỚI (Jan 12-19, 2026) =====
+      // Sunday Jan 12, 2026
+      { date: new Date('2026-01-12'), dayOfWeek: 0, sessionType: 'morning', subjectId: taiSubjects[0]._id, startTime: '08:00', endTime: '10:00', topic: 'Week Planning & Code Review' },
+      { date: new Date('2026-01-12'), dayOfWeek: 0, sessionType: 'afternoon', subjectId: taiSubjects[1]._id, startTime: '14:00', endTime: '16:30', topic: 'ML Model Evaluation' },
+      { date: new Date('2026-01-12'), dayOfWeek: 0, sessionType: 'evening', subjectId: taiSubjects[2]._id, startTime: '19:00', endTime: '21:00', topic: 'Testing Strategy Review' },
+      
+      // Monday Jan 13, 2026
+      { date: new Date('2026-01-13'), dayOfWeek: 1, sessionType: 'morning', subjectId: taiSubjects[0]._id, startTime: '06:30', endTime: '08:00', topic: 'React Performance Optimization' },
+      { date: new Date('2026-01-13'), dayOfWeek: 1, sessionType: 'afternoon', subjectId: taiSubjects[3]._id, startTime: '14:00', endTime: '16:00', topic: 'Push Notifications Implementation' },
+      { date: new Date('2026-01-13'), dayOfWeek: 1, sessionType: 'evening', subjectId: taiSubjects[1]._id, startTime: '19:30', endTime: '21:30', topic: 'Deep Learning Architecture' },
+      
+      // Tuesday Jan 14, 2026
+      { date: new Date('2026-01-14'), dayOfWeek: 2, sessionType: 'morning', subjectId: taiSubjects[2]._id, startTime: '06:30', endTime: '08:30', topic: 'Agile Sprint Planning' },
+      { date: new Date('2026-01-14'), dayOfWeek: 2, sessionType: 'afternoon', subjectId: taiSubjects[4]._id, startTime: '14:00', endTime: '16:00', topic: 'Network Security Protocols' },
+      { date: new Date('2026-01-14'), dayOfWeek: 2, sessionType: 'evening', subjectId: taiSubjects[0]._id, startTime: '19:00', endTime: '21:00', topic: 'WebSocket Real-time Features' },
+      
+      // Wednesday Jan 15, 2026
+      { date: new Date('2026-01-15'), dayOfWeek: 3, sessionType: 'morning', subjectId: taiSubjects[1]._id, startTime: '07:00', endTime: '09:00', topic: 'TensorFlow Model Training' },
+      { date: new Date('2026-01-15'), dayOfWeek: 3, sessionType: 'afternoon', subjectId: taiSubjects[3]._id, startTime: '14:30', endTime: '16:30', topic: 'Offline Data Sync' },
+      { date: new Date('2026-01-15'), dayOfWeek: 3, sessionType: 'evening', subjectId: taiSubjects[2]._id, startTime: '19:00', endTime: '21:00', topic: 'Integration Testing' },
+      
+      // Thursday Jan 16, 2026
+      { date: new Date('2026-01-16'), dayOfWeek: 4, sessionType: 'morning', subjectId: taiSubjects[0]._id, startTime: '06:30', endTime: '08:30', topic: 'GraphQL API Development' },
+      { date: new Date('2026-01-16'), dayOfWeek: 4, sessionType: 'afternoon', subjectId: taiSubjects[4]._id, startTime: '14:00', endTime: '16:00', topic: 'VPN & Tunneling' },
+      { date: new Date('2026-01-16'), dayOfWeek: 4, sessionType: 'evening', subjectId: taiSubjects[1]._id, startTime: '19:30', endTime: '21:30', topic: 'Neural Network Backpropagation' },
+      
+      // Friday Jan 17, 2026
+      { date: new Date('2026-01-17'), dayOfWeek: 5, sessionType: 'morning', subjectId: taiSubjects[2]._id, startTime: '07:00', endTime: '09:00', topic: 'Code Quality & Refactoring' },
+      { date: new Date('2026-01-17'), dayOfWeek: 5, sessionType: 'afternoon', subjectId: taiSubjects[3]._id, startTime: '14:00', endTime: '16:00', topic: 'App Store Optimization' },
+      { date: new Date('2026-01-17'), dayOfWeek: 5, sessionType: 'evening', subjectId: taiSubjects[0]._id, startTime: '19:00', endTime: '21:00', topic: 'Microservices Architecture' },
+      
+      // Saturday Jan 18, 2026
+      { date: new Date('2026-01-18'), dayOfWeek: 6, sessionType: 'morning', subjectId: taiSubjects[1]._id, startTime: '08:00', endTime: '10:30', topic: 'ML Project Presentation' },
+      { date: new Date('2026-01-18'), dayOfWeek: 6, sessionType: 'afternoon', subjectId: taiSubjects[4]._id, startTime: '14:00', endTime: '16:00', topic: 'Network Lab Practice' },
+      { date: new Date('2026-01-18'), dayOfWeek: 6, sessionType: 'evening', subjectId: taiSubjects[2]._id, startTime: '19:00', endTime: '21:00', topic: 'DevOps Pipeline Setup' },
+      
+      // Sunday Jan 19, 2026
+      { date: new Date('2026-01-19'), dayOfWeek: 0, sessionType: 'morning', subjectId: taiSubjects[0]._id, startTime: '09:00', endTime: '11:30', topic: 'Full Stack Project Review' },
+      { date: new Date('2026-01-19'), dayOfWeek: 0, sessionType: 'afternoon', subjectId: taiSubjects[3]._id, startTime: '14:30', endTime: '17:00', topic: 'Mobile App Testing & Deployment' }
     ];
     
     for (const sessionData of taiSessionsToCreate) {
