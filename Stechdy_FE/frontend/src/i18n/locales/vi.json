@@ -307,6 +307,7 @@
     "studyTime": "Thời gian học",
     "studySession": "Buổi học",
     "quotes": "Trích dẫn",
+    "quoteOfDay": "Trích dẫn trong ngày",
     "missedSession": "Buổi học bị lỡ",
     "missedSessionText": "Bạn đã đánh dấu",
     "asMissed": "là bị lỡ.",
@@ -847,5 +848,25 @@
       }
     },
     "footer": "Nếu có câu hỏi về các điều khoản này, liên hệ chúng tôi tại"
+  },
+  "quote": {
+    "dailyInspiration": "Cảm hứng mỗi ngày",
+    "newQuote": "Câu mới",
+    "share": "Chia sẻ",
+    "shareTitle": "Trích dẫn truyền cảm hứng",
+    "copiedToClipboard": "Đã sao chép vào clipboard!",
+    "dailyMessage": "Một câu trích dẫn mới mỗi ngày để truyền cảm hứng cho bạn 🌟",
+    "categories": {
+      "success": "thành công",
+      "learning": "học tập",
+      "education": "giáo dục",
+      "knowledge": "kiến thức",
+      "motivation": "động lực",
+      "dreams": "uớc mơ",
+      "perseverance": "kiên trì",
+      "passion": "dam mê",
+      "excellence": "xuất sắc",
+      "beginning": "bắt đầu"
+    }
   }
 }

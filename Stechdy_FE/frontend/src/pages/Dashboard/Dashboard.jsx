@@ -7,6 +7,8 @@ import MoodCheckInModal from "../../components/mood/MoodCheckInModal";
 import StudyTimer from "../../components/study/StudyTimer";
 import NotificationBell from "../../components/notification/NotificationBell";
 import PremiumBanner from "../../components/common/PremiumBanner";
+import QuoteCard from "../../components/quote/QuoteCard";
+import QuoteModal from "../../components/quote/QuoteModal";
 import moodService from "../../services/moodService";
 import { getVietnamTime, getVietnamDate } from "../../utils/helpers";
 import "./Dashboard.css";
@@ -21,6 +23,7 @@ const Dashboard = () => {
   const [aiSuggestion, setAiSuggestion] = useState("");
   const [greeting, setGreeting] = useState("");
   const [showMoodModal, setShowMoodModal] = useState(false);
+  const [showQuoteModal, setShowQuoteModal] = useState(false);
   const [activeSession, setActiveSession] = useState(null);
   const [missedSessions, setMissedSessions] = useState([]);
 
@@ -372,7 +375,7 @@ const Dashboard = () => {
                   </div>
                   <div className="streak-icon">🔥</div>
                 </div>
-                <button className="quotes-btn">{t("dashboard.quotes")}</button>
+                <QuoteCard onClick={() => setShowQuoteModal(true)} />
               </div>
 
               {/* Active Study Timer */}
@@ -519,6 +522,12 @@ const Dashboard = () => {
         <MoodCheckInModal
           isOpen={showMoodModal}
           onClose={() => setShowMoodModal(false)}
+        />
+
+        {/* Quote Modal */}
+        <QuoteModal
+          isOpen={showQuoteModal}
+          onClose={() => setShowQuoteModal(false)}
         />
       </div>
 
