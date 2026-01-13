@@ -18,9 +18,7 @@ services:
       start_period: 40s
 
   backend:
-    build:
-      context: ./Stechdy_BE/backend
-      dockerfile: Dockerfile
+    image: ${DOCKER_USERNAME:-your-dockerhub-username}/stechdy-backend:latest
     container_name: stechdy-backend
     restart: unless-stopped
     depends_on:
@@ -43,9 +41,7 @@ services:
       start_period: 40s
 
   frontend:
-    build:
-      context: ./Stechdy_FE/frontend
-      dockerfile: Dockerfile
+    image: ${DOCKER_USERNAME:-your-dockerhub-username}/stechdy-frontend:latest
     container_name: stechdy-frontend
     restart: unless-stopped
     depends_on:
