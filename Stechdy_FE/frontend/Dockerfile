@@ -12,8 +12,9 @@ RUN npm install --legacy-peer-deps
 # Copy source code
 COPY . .
 
-# Build with CI=false to treat warnings as non-fatal
-RUN CI=false npm run build
+# Build without CI check - CSS minification issues will be bypassed
+ENV CI=false
+RUN npm run build
 
 # Production stage - Nginx
 FROM nginx:alpine
