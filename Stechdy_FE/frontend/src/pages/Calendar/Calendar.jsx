@@ -140,6 +140,7 @@ const Calendar = () => {
       <SidebarNav />
       <div className="calendar-page">
         <header className="calendar-header">
+          <div className="header-spacer"></div>
           <h1 className="calendar-page-title">{t("calendar.title")}</h1>
           <NotificationBell />
         </header>

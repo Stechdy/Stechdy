@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import notificationService from "../../services/notificationService";
 import { useSocket } from "../../context/SocketContext";
 import NotificationItem from "./NotificationItem";
+import NotificationDetailModal from "./NotificationDetailModal";
 import "./NotificationBell.css";
 
 const NotificationBell = () => {
@@ -14,6 +15,8 @@ const NotificationBell = () => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState("all"); // 'all', 'unread', or 'seen'
+  const [selectedNotification, setSelectedNotification] = useState(null);
+  const [showDetailModal, setShowDetailModal] = useState(false);
   const dropdownRef = useRef(null);
 
   // Use Socket.IO context
@@ -114,6 +117,16 @@ const NotificationBell = () => {
     } catch (error) {
       console.error("Error deleting notification:", error);
     }
+  };
+
+  const handleNotificationClick = (notification) => {
+    setSelectedNotification(notification);
+    setShowDetailModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowDetailModal(false);
+    setSelectedNotification(null);
   };
 
   const getNotificationIcon = (type) => {
@@ -257,6 +270,7 @@ const NotificationBell = () => {
                   notification={notif}
                   onMarkAsRead={handleMarkAsRead}
                   onDelete={handleDelete}
+                  onClick={() => handleNotificationClick(notif)}
                   viewMode="card"
                 />
               ))
@@ -278,6 +292,14 @@ const NotificationBell = () => {
           )}
         </div>
       )}
+
+      {/* Notification Detail Modal */}
+      <NotificationDetailModal
+        notification={selectedNotification}
+        isOpen={showDetailModal}
+        onClose={handleCloseModal}
+        onMarkAsRead={handleMarkAsRead}
+      />
     </div>
   );
 };

@@ -92,7 +92,6 @@ const AdminForgotPassword = () => {
 
       <div className="admin-forgot-header">
         <h1 className="auth-title">{t("auth.admin.forgotPassword.title")}</h1>
-        <h2 className="auth-brand">S'techdy</h2>
         <p className="auth-subtitle">
           {t("auth.admin.forgotPassword.subtitle")}
         </p>

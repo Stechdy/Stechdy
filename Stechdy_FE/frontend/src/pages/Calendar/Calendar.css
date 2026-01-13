@@ -46,9 +46,9 @@
   position: relative;
 }
 
-.calendar-header::before {
-  content: '';
-  width: 36px;
+.calendar-header .header-spacer {
+  width: 40px;
+  height: 40px;
 }
 
 .calendar-page-title {
@@ -56,6 +56,9 @@
   font-weight: 700;
   color: #1a1a1a;
   margin: 0;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 [data-theme="dark"] .calendar-page-title {
@@ -67,6 +70,8 @@
 }
 
 .calendar-header .notification-btn {
+  position: absolute;
+  right: 20px;
   width: 36px;
   height: 36px;
   border-radius: 8px;
@@ -117,7 +122,7 @@
   padding: 20px;
 }
 
-.calendar-header button {
+.calendar-header button:not(.mark-all-btn):not(.view-all-btn):not(.tab) {
   width: 36px;
   height: 36px;
   border-radius: 8px;
@@ -130,11 +135,11 @@
   transition: all var(--transition-normal);
 }
 
-.calendar-header button svg h1 {
+.calendar-header button:not(.mark-all-btn):not(.view-all-btn):not(.tab) svg h1 {
   color: var(--text-secondary);
 }
 
-.calendar-header button:active {
+.calendar-header button:not(.mark-all-btn):not(.view-all-btn):not(.tab):active {
   transform: scale(0.95);
   background: var(--bg-hover);
 }

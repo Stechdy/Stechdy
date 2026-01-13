@@ -20,7 +20,7 @@ async function createTestSession() {
       console.log(`🗑️  Deleted ${deleted.deletedCount} old test session(s)`);
     }
 
-    const user = await User.findOne({ email: 'tai05112004@gmail.com' });
+    const user = await User.findOne({ email: 'congc3c1@gmail.com' });
     if (!user) throw new Error('User not found');
 
     const subject = await Subject.findOne({ userId: user._id });
