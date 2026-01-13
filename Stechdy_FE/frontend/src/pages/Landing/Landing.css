@@ -69,6 +69,13 @@
   text-decoration: none;
 }
 
+.landing-logo-img {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--border-radius-md);
+  object-fit: contain;
+}
+
 .landing-logo-icon {
   width: 40px;
   height: 40px;
@@ -328,6 +335,10 @@
 .landing-btn-large {
   padding: 14px 32px;
   font-size: var(--font-size-lg);
+  height: 56px;
+  min-height: 56px;
+  flex-direction: row;
+  white-space: nowrap;
 }
 
 .landing-hero-stats {
