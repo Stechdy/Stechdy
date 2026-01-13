@@ -101,15 +101,27 @@ jobs:
             docker pull ${DOCKER_IMAGE}:latest
             docker pull ${{ secrets.DOCKER_USERNAME }}/stechdy-frontend:latest
             
-            # Stop and remove old containers
+            # Stop old containers
             docker compose down
             
-            # Start new containers
+            # Create SSL certificate directory if not exists
+            mkdir -p certbot/conf/live/stechdy.ai.vn certbot/www
+            
+            # Create dummy certificate if not exists (for first deployment)
+            if [ ! -f certbot/conf/live/stechdy.ai.vn/fullchain.pem ]; then
+              echo "Creating dummy SSL certificate for initial setup..."
+              openssl req -x509 -nodes -newkey rsa:2048 -days 1 \
+                -keyout certbot/conf/live/stechdy.ai.vn/privkey.pem \
+                -out certbot/conf/live/stechdy.ai.vn/fullchain.pem \
+                -subj '/CN=stechdy.ai.vn' 2>/dev/null
+            fi
+            
+            # Start services
             docker compose up -d
             
             # Wait for services to be healthy
             echo "Waiting for services to start..."
-            sleep 10
+            sleep 30
             
             # Check service status
             docker compose ps
