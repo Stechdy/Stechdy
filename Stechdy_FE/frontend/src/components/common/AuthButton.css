@@ -22,6 +22,7 @@
   background: linear-gradient(135deg, #f9a8d4 0%, #93c5fd 50%, #d8b4fe 100%);
   color: white;
   box-shadow: 0 4px 12px rgba(249, 168, 212, 0.3);
+  margin-top: 10px;
 }
 
 .auth-button.primary:hover:not(:disabled) {

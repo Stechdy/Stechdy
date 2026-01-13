@@ -20,7 +20,7 @@ async function createTestSession() {
       console.log(`🗑️  Deleted ${deleted.deletedCount} old test session(s)`);
     }
 
-    const user = await User.findOne({ email: 'congc3c1@gmail.com' });
+    const user = await User.findOne({ email: 'tai05112004@gmail.com' });
     if (!user) throw new Error('User not found');
 
     const subject = await Subject.findOne({ userId: user._id });
@@ -53,15 +53,24 @@ async function createTestSession() {
 
     const sessionType = h >= 6 && h < 12 ? 'morning' : h >= 12 && h < 18 ? 'afternoon' : 'evening';
 
-    // Set date to today at midnight
+    // Set date to today at midnight in Vietnam timezone (UTC+7)
+    // We need to create a date that represents midnight Vietnam time in UTC
     const sessionDate = new Date(now);
-    sessionDate.setHours(0,0,0,0);
+    sessionDate.setHours(0, 0, 0, 0);
+    
+    // Adjust for timezone offset to ensure correct date in DB
+    // Vietnam is UTC+7, so we add 7 hours to keep the date correct
+    const timezoneOffset = sessionDate.getTimezoneOffset(); // Minutes difference from UTC
+    const adjustedDate = new Date(sessionDate.getTime() - (timezoneOffset * 60 * 1000));
+    
+    console.log('📅 Session date (local):', sessionDate.toLocaleDateString('vi-VN'));
+    console.log('📅 Session date (will be saved as):', adjustedDate.toISOString());
 
     const testSession = await StudySessionSchedule.create({
       timetableId: timetable._id,
       userId: user._id,
       subjectId: subject._id,
-      date: sessionDate,
+      date: adjustedDate,
       dayOfWeek: sessionStart.getDay(),
       sessionType: sessionType,
       startTime: startTime,

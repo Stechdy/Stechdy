@@ -11,17 +11,26 @@ const { initializeScheduler } = require("./utils/scheduler");
 const { startReminderScheduler } = require("./services/sessionReminderService");
 const { initializeSocket } = require("./services/socketService");
 
-// Load env vars
-dotenv.config();
-
 // Connect to database
 connectDB();
 
 // Initialize scheduler for notifications
-initializeScheduler();
+try {
+  initializeScheduler();
+  console.log('✅ Notification scheduler initialized');
+} catch (error) {
+  console.error('❌ Failed to initialize notification scheduler:', error.message);
+  console.error('Server will continue without scheduled notifications');
+}
 
 // Start session reminder scheduler
-startReminderScheduler();
+try {
+  startReminderScheduler();
+  console.log('✅ Session reminder scheduler initialized');
+} catch (error) {
+  console.error('❌ Failed to initialize session reminder scheduler:', error.message);
+  console.error('Server will continue without session reminders');
+}
 
 const app = express();
 const server = http.createServer(app);
