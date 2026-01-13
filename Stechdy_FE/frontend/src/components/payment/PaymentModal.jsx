@@ -33,7 +33,7 @@ const PaymentModal = ({ isOpen, onClose, planData }) => {
         return;
       }
 
-      const response = await fetch("${config.apiUrl}/payments/create", {
+      const response = await fetch(`${config.apiUrl}/payments/create`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -71,7 +71,7 @@ const PaymentModal = ({ isOpen, onClose, planData }) => {
       const token = localStorage.getItem("token");
       console.log("Submitting payment with ID:", paymentInfo.id);
       
-      const response = await fetch("${config.apiUrl}/payments/submit", {
+      const response = await fetch(`${config.apiUrl}/payments/submit`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
