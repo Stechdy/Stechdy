@@ -48,6 +48,10 @@ jobs:
           cache-from: type=registry,ref=${{ env.DOCKER_IMAGE }}:buildcache
           cache-to: type=registry,ref=${{ env.DOCKER_IMAGE }}:buildcache,mode=max
       
+      - name: Create frontend .env.production from secret
+        run: |
+          echo "${{ secrets.FRONTEND_ENV }}" > Stechdy_FE/frontend/.env.production
+
       - name: Build and push Frontend Docker image
         uses: docker/build-push-action@v5
         with:
