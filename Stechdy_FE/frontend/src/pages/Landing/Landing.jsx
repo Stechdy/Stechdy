@@ -327,7 +327,7 @@ const Landing = () => {
       {/* Navbar */}
       <nav className="landing-navbar">
         <Link to="/" className="landing-logo">
-          <img src="/stechdy_logo.png" alt="S'Techdy" className="landing-logo-img" />
+          <img src="/Stechdy_logo.png" alt="S'Techdy" className="landing-logo-img" />
           <span className="landing-logo-text">S'Techdy</span>
         </Link>
 
