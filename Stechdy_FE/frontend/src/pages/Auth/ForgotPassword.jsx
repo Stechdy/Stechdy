@@ -84,7 +84,6 @@ const ForgotPassword = () => {
     <AuthLayout>
       <div className="forgot-password-header">
         <h1 className="auth-title">{t("auth.forgotPassword.title")}</h1>
-        <h2 className="auth-brand">S'techdy</h2>
         <p className="auth-subtitle">{t("auth.forgotPassword.subtitle")}</p>
       </div>
 

@@ -169,7 +169,7 @@ const Login = () => {
             {t("auth.login.submit")}
           </AuthButton>
 
-          <div className="divider">
+          <div className="login-divider">
             <span>{t("auth.login.orContinueWith")}</span>
           </div>
 

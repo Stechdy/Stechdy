@@ -64,7 +64,7 @@ const AdminForgotPassword = () => {
           <span>🛡️ {t("auth.admin.badge")}</span>
         </div>
 
-        <div className="success-message">
+        <div className="admin-forgot-success-message">
           <div className="success-icon">✉️</div>
           <h2>{t("auth.admin.forgotPassword.checkEmail")}</h2>
           <p>
@@ -98,10 +98,10 @@ const AdminForgotPassword = () => {
       </div>
 
       <form onSubmit={handleSubmit} className="admin-forgot-form">
-        {error && <div className="alert alert-error">{error}</div>}
+        {error && <div className="admin-forgot-alert admin-forgot-alert-error">{error}</div>}
 
-        <div className="form-group">
-          <label className="form-label">
+        <div className="admin-forgot-form-group">
+          <label className="admin-forgot-form-label">
             {t("auth.admin.forgotPassword.adminEmail")}
           </label>
           <AuthInput
@@ -119,7 +119,7 @@ const AdminForgotPassword = () => {
           {t("auth.admin.forgotPassword.submit")}
         </AuthButton>
 
-        <div className="back-to-login">
+        <div className="admin-forgot-back-to-login">
           <Link to="/admin/login">
             ← {t("auth.admin.forgotPassword.backToLogin")}
           </Link>

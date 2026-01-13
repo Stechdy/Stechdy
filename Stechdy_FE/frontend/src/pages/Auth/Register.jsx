@@ -147,10 +147,10 @@ const Register = () => {
         </div>
 
         <form onSubmit={handleSubmit} className="register-form">
-          {apiError && <div className="alert alert-error">{apiError}</div>}
+          {apiError && <div className="register-alert register-alert-error">{apiError}</div>}
 
-          <div className="form-group">
-            <label className="form-label">{t("auth.register.fullName")}</label>
+          <div className="register-form-group">
+            <label className="register-form-label">{t("auth.register.fullName")}</label>
             <AuthInput
               type="text"
               name="name"
@@ -162,8 +162,8 @@ const Register = () => {
             />
           </div>
 
-          <div className="form-group">
-            <label className="form-label">{t("auth.register.email")}</label>
+          <div className="register-form-group">
+            <label className="register-form-label">{t("auth.register.email")}</label>
             <AuthInput
               type="email"
               name="email"
@@ -175,8 +175,8 @@ const Register = () => {
             />
           </div>
 
-          <div className="form-group">
-            <label className="form-label">{t("auth.register.password")}</label>
+          <div className="register-form-group">
+            <label className="register-form-label">{t("auth.register.password")}</label>
             <AuthInput
               type={showPassword ? "text" : "password"}
               name="password"
@@ -190,8 +190,8 @@ const Register = () => {
             />
           </div>
 
-          <div className="form-group">
-            <label className="form-label">
+          <div className="register-form-group">
+            <label className="register-form-label">
               {t("auth.register.confirmPassword")}
             </label>
             <AuthInput
@@ -213,7 +213,7 @@ const Register = () => {
             {t("auth.register.submit")}
           </AuthButton>
 
-          <div className="divider">
+          <div className="register-divider">
             <span>{t("auth.register.orContinueWith")}</span>
           </div>
 
@@ -230,7 +230,7 @@ const Register = () => {
             />
           </div>
 
-          <div className="login-link">
+          <div className="register-login-link">
             {t("auth.register.haveAccount")}{" "}
             <Link to="/login">{t("auth.register.loginNow")}</Link>
           </div>

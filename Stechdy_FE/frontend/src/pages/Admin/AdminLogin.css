@@ -17,16 +17,11 @@
 }
 
 .admin-login-header {
-  animation: adminLoginFadeIn 0.4s ease-out;
-  animation-delay: 0.05s;
+  text-align: center;
+  margin-bottom: 32px;
 }
 
-.admin-login-form {
-  animation: adminLoginFadeIn 0.4s ease-out;
-  animation-delay: 0.1s;
-}
-
-.admin-badge span {
+.admin-login-badge span {
   display: inline-block;
   padding: 8px 16px;
   background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
@@ -37,20 +32,15 @@
   box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
 }
 
-.admin-login-header {
-  text-align: center;
-  margin-bottom: 32px;
-}
-
 .admin-login-form {
   width: 100%;
 }
 
-.form-group {
+.admin-login-form-group {
   margin-bottom: 4px;
 }
 
-.form-label {
+.admin-login-form-label {
   display: block;
   font-size: 14px;
   font-weight: 500;
@@ -58,26 +48,26 @@
   margin-bottom: 8px;
 }
 
-.alert {
+.admin-login-alert {
   padding: 12px 16px;
   border-radius: 8px;
   margin-bottom: 20px;
   font-size: 14px;
 }
 
-.alert-error {
+.admin-login-alert-error {
   background-color: #fef2f2;
   color: #dc2626;
   border: 1px solid #fecaca;
 }
 
-.forgot-password-link {
+.admin-login-admin-login-forgot-password-link {
   text-align: right;
   margin-bottom: 24px;
   margin-top: -8px;
 }
 
-.forgot-password-link a {
+.admin-login-forgot-password-link a {
   color: #7c3aed;
   text-decoration: none;
   font-size: 14px;
@@ -85,17 +75,17 @@
   transition: color 0.2s;
 }
 
-.forgot-password-link a:hover {
+.admin-login-forgot-password-link a:hover {
   color: #6d28d9;
   text-decoration: underline;
 }
 
-.user-portal-link {
+.admin-login-admin-login-user-portal-link {
   text-align: center;
   margin-top: 24px;
 }
 
-.user-portal-link a {
+.admin-login-user-portal-link a {
   color: #6b7280;
   text-decoration: none;
   font-size: 14px;
@@ -104,6 +94,7 @@
   display: inline-flex;
   align-items: center;
   gap: 4px;
+  margin-top: 10px;
 }
 
 .user-portal-link a:hover {
