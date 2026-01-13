@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import BottomNav from "../../components/common/BottomNav";
 import SidebarNav from "../../components/common/SidebarNav";
 import { getVietnamTime, getVietnamDate } from "../../utils/helpers";
+import config from "../../config";
 import "./SlotDetail.css";
 
 const SlotDetail = () => {
@@ -53,7 +54,7 @@ const SlotDetail = () => {
       }
 
       const response = await fetch(
-        `http://localhost:3001/api/study-sessions/${id}`,
+        `${config.apiUrl}/study-sessions/${id}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -77,7 +78,7 @@ const SlotDetail = () => {
   const fetchSubjects = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("http://localhost:3001/api/subjects", {
+      const response = await fetch("${config.apiUrl}/subjects", {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -94,7 +95,7 @@ const SlotDetail = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        "http://localhost:3001/api/study-sessions/week?offset=0",
+        "${config.apiUrl}/study-sessions/week?offset=0",
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -121,7 +122,7 @@ const SlotDetail = () => {
       dateEnd.setHours(23, 59, 59, 999);
 
       const response = await fetch(
-        `http://localhost:3001/api/study-sessions/today?start=${dateStart.toISOString()}&end=${dateEnd.toISOString()}`,
+        `${config.apiUrl}/study-sessions/today?start=${dateStart.toISOString()}&end=${dateEnd.toISOString()}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -143,7 +144,7 @@ const SlotDetail = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        `http://localhost:3001/api/study-sessions/${id}`,
+        `${config.apiUrl}/study-sessions/${id}`,
         {
           method: "PUT",
           headers: {
@@ -173,7 +174,7 @@ const SlotDetail = () => {
         try {
           const token = localStorage.getItem("token");
           const response = await fetch(
-            `http://localhost:3001/api/study-sessions/${id}`,
+            `${config.apiUrl}/study-sessions/${id}`,
             {
               method: "PUT",
               headers: {
@@ -205,7 +206,7 @@ const SlotDetail = () => {
         try {
           const token = localStorage.getItem("token");
           const response = await fetch(
-            `http://localhost:3001/api/study-sessions/${id}`,
+            `${config.apiUrl}/study-sessions/${id}`,
             {
               method: "DELETE",
               headers: { Authorization: `Bearer ${token}` },
@@ -304,7 +305,7 @@ const SlotDetail = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        `http://localhost:3001/api/study-sessions/${id}`,
+        `${config.apiUrl}/study-sessions/${id}`,
         {
           method: "PUT",
           headers: {

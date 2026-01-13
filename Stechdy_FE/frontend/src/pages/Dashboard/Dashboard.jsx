@@ -11,6 +11,7 @@ import QuoteCard from "../../components/quote/QuoteCard";
 import QuoteModal from "../../components/quote/QuoteModal";
 import moodService from "../../services/moodService";
 import { getVietnamTime, getVietnamDate } from "../../utils/helpers";
+import config from "../../config";
 import "./Dashboard.css";
 
 const Dashboard = () => {
@@ -42,7 +43,7 @@ const Dashboard = () => {
       if (!token) return;
 
       const response = await fetch(
-        "http://localhost:3001/api/study-sessions/active",
+        `${config.apiUrl}/study-sessions/active`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -71,7 +72,7 @@ const Dashboard = () => {
       tomorrow.setDate(tomorrow.getDate() + 1);
 
       const response = await fetch(
-        `http://localhost:3001/api/study-sessions?startDate=${today.toISOString()}&endDate=${tomorrow.toISOString()}&status=missed`,
+        `${config.apiUrl}/study-sessions?startDate=${today.toISOString()}&endDate=${tomorrow.toISOString()}&status=missed`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -165,7 +166,7 @@ const Dashboard = () => {
 
       // Fetch user data first
       const userResponse = await fetch(
-        "http://localhost:3001/api/users/profile",
+        `${config.apiUrl}/users/profile`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -188,7 +189,7 @@ const Dashboard = () => {
 
       // Fetch today's study sessions for time tracking
       const sessionsResponse = await fetch(
-        `http://localhost:3001/api/study-sessions/today?start=${todayStart.toISOString()}&end=${todayEnd.toISOString()}`,
+        `${config.apiUrl}/study-sessions/today?start=${todayStart.toISOString()}&end=${todayEnd.toISOString()}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -225,7 +226,7 @@ const Dashboard = () => {
 
       // Fetch upcoming sessions by subject (current semester)
       const upcomingResponse = await fetch(
-        "http://localhost:3001/api/study-sessions/upcoming-by-subject",
+        `${config.apiUrl}/study-sessions/upcoming-by-subject`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

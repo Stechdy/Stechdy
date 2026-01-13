@@ -5,6 +5,7 @@ import BottomNav from "../../components/common/BottomNav";
 import SidebarNav from "../../components/common/SidebarNav";
 import NotificationBell from "../../components/notification/NotificationBell";
 import { getVietnamTime, getVietnamDate } from "../../utils/helpers";
+import config from "../../config";
 import "./Calendar.css";
 
 const Calendar = () => {
@@ -32,7 +33,7 @@ const Calendar = () => {
       dateEnd.setHours(23, 59, 59, 999);
 
       const response = await fetch(
-        `http://localhost:3001/api/study-sessions/today?start=${dateStart.toISOString()}&end=${dateEnd.toISOString()}`,
+        `${config.apiUrl}/study-sessions/today?start=${dateStart.toISOString()}&end=${dateEnd.toISOString()}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }

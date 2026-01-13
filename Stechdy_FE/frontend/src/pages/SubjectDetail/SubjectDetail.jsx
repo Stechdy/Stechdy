@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import BottomNav from "../../components/common/BottomNav";
 import SidebarNav from "../../components/common/SidebarNav";
 import { getVietnamDate } from "../../utils/helpers";
+import config from "../../config";
 import "./SubjectDetail.css";
 
 const SubjectDetail = () => {
@@ -37,7 +38,7 @@ const SubjectDetail = () => {
 
       // Fetch subject info
       const subjectResponse = await fetch(
-        `http://localhost:3001/api/subjects/${id}`,
+        `${config.apiUrl}/subjects/${id}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -50,7 +51,7 @@ const SubjectDetail = () => {
 
       // Fetch sessions for this subject
       const sessionsResponse = await fetch(
-        `http://localhost:3001/api/study-sessions/subject/${id}`,
+        `${config.apiUrl}/study-sessions/subject/${id}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -63,7 +64,7 @@ const SubjectDetail = () => {
 
       // Fetch deadlines for this subject
       const deadlinesResponse = await fetch(
-        `http://localhost:3001/api/deadlines/subject/${id}`,
+        `${config.apiUrl}/deadlines/subject/${id}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -84,7 +85,7 @@ const SubjectDetail = () => {
   const handleAddDeadline = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("http://localhost:3001/api/deadlines", {
+      const response = await fetch("${config.apiUrl}/deadlines", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
