@@ -12,6 +12,10 @@ RUN npm install --legacy-peer-deps
 # Copy source code
 COPY . .
 
+# Set environment variables for build
+ENV CI=false
+ENV GENERATE_SOURCEMAP=false
+
 # Build the application
 RUN npm run build
 
