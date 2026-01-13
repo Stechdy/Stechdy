@@ -658,11 +658,20 @@ exports.getMonthlyReport = async (req, res) => {
 // Send notification to all users
 exports.sendBroadcastNotification = async (req, res) => {
   try {
+    console.log('🔔 Broadcast notification request received');
+    console.log('User:', req.user?._id, 'Role:', req.user?.role);
+    console.log('Request body:', req.body);
+
     if (!isAdmin(req.user)) {
+      console.log('❌ Access denied - not admin');
       return res.status(403).json({ message: 'Access denied. Admin only.' });
     }
 
     const { title, message, targetUsers = 'all' } = req.body;
+
+    if (!title || !message) {
+      return res.status(400).json({ message: 'Title and message are required' });
+    }
 
     let filter = { role: 'user' };
     if (targetUsers === 'premium') {
@@ -671,8 +680,10 @@ exports.sendBroadcastNotification = async (req, res) => {
       filter.premiumStatus = 'free';
     }
 
+    console.log('Finding users with filter:', filter);
     const users = await User.find(filter).select('_id');
     const userIds = users.map(u => u._id);
+    console.log(`Found ${userIds.length} users to send notification`);
 
     // Create notifications (assuming Notification model exists)
     const Notification = require('../models/Notification');
@@ -684,7 +695,9 @@ exports.sendBroadcastNotification = async (req, res) => {
       data: { from: 'admin', broadcastId: new mongoose.Types.ObjectId() }
     }));
 
+    console.log('Inserting notifications...');
     await Notification.insertMany(notifications);
+    console.log('✅ Notifications created successfully');
 
     res.json({
       success: true,
@@ -692,7 +705,7 @@ exports.sendBroadcastNotification = async (req, res) => {
       count: userIds.length
     });
   } catch (error) {
-    console.error('Error sending broadcast notification:', error);
+    console.error('❌ Error sending broadcast notification:', error);
     res.status(500).json({ message: 'Server error', error: error.message });
   }
 };

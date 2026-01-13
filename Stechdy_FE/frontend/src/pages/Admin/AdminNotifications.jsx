@@ -21,11 +21,20 @@ const AdminNotifications = () => {
       return;
     }
 
-    if (!window.confirm('Xác nhận gửi thông báo đến tất cả người dùng?')) return;
+    const confirmMessage = form.targetUsers === 'all' 
+      ? 'Xác nhận gửi thông báo đến tất cả người dùng?' 
+      : form.targetUsers === 'premium'
+      ? 'Xác nhận gửi thông báo đến người dùng Premium?'
+      : 'Xác nhận gửi thông báo đến người dùng Free?';
+
+    if (!window.confirm(confirmMessage)) return;
 
     try {
       setLoading(true);
       const token = localStorage.getItem('token');
+      
+      console.log('Sending notification:', form);
+      console.log('API URL:', `${API_BASE_URL}/admin/notifications/broadcast`);
       
       const response = await fetch(`${API_BASE_URL}/admin/notifications/broadcast`, {
         method: 'POST',
@@ -36,9 +45,14 @@ const AdminNotifications = () => {
         body: JSON.stringify(form)
       });
 
-      if (!response.ok) throw new Error('Failed to send notification');
-
+      console.log('Response status:', response.status);
       const data = await response.json();
+      console.log('Response data:', data);
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Failed to send notification');
+      }
+
       alert(`✅ Đã gửi thông báo đến ${data.count} người dùng!`);
       
       // Add to history
@@ -54,7 +68,8 @@ const AdminNotifications = () => {
       // Reset form
       setForm({ title: '', message: '', targetUsers: 'all' });
     } catch (err) {
-      alert('Có lỗi xảy ra khi gửi thông báo');
+      console.error('Error sending notification:', err);
+      alert(`Có lỗi xảy ra khi gửi thông báo: ${err.message}`);
     } finally {
       setLoading(false);
     }

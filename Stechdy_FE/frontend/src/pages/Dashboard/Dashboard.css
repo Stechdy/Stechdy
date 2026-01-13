@@ -279,7 +279,7 @@
 .dashboard-sessions-list {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
 }
 
 .dashboard-session-card {
@@ -292,6 +292,7 @@
   box-shadow: var(--shadow-card);
   cursor: pointer;
   transition: all var(--transition-normal);
+  margin-bottom: 10px;
 }
 
 .dashboard-session-card:active {
@@ -552,6 +553,7 @@
 
   .dashboard-session-card {
     padding: 20px;
+    margin-bottom: 15px;
   }
 
   .dashboard-session-card:hover {
