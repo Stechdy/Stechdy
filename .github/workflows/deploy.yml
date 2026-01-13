@@ -111,14 +111,8 @@ jobs:
             # Create SSL certificate directory if not exists
             mkdir -p certbot/conf/live/stechdy.ai.vn certbot/www
             
-            # Create dummy certificate if not exists (for first deployment)
-            if [ ! -f certbot/conf/live/stechdy.ai.vn/fullchain.pem ]; then
-              echo "Creating dummy SSL certificate for initial setup..."
-              openssl req -x509 -nodes -newkey rsa:2048 -days 1 \
-                -keyout certbot/conf/live/stechdy.ai.vn/privkey.pem \
-                -out certbot/conf/live/stechdy.ai.vn/fullchain.pem \
-                -subj '/CN=stechdy.ai.vn' 2>/dev/null
-            fi
+            # SSL Certificate management is manual. 
+            # Ensure certificates exist at certbot/conf/live/stechdy.ai.vn/ before starting nginx.
             
             # Start services
             docker compose up -d
