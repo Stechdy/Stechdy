@@ -6,8 +6,6 @@ services:
     container_name: stechdy-mongodb
     restart: unless-stopped
     environment:
-      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USERNAME:-admin}
-      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD:-changeme}
       TZ: Asia/Ho_Chi_Minh
     volumes:
       - mongodb_data:/data/db
@@ -33,7 +31,7 @@ services:
     environment:
       NODE_ENV: production
       PORT: 3001
-      MONGODB_URI: mongodb://${MONGO_ROOT_USERNAME:-admin}:${MONGO_ROOT_PASSWORD:-changeme}@mongodb:27017/Stechdy?authSource=admin
+      MONGODB_URI: mongodb://mongodb:27017/Stechdy
       TZ: Asia/Ho_Chi_Minh
     env_file:
       - ./Stechdy_BE/backend/.env
