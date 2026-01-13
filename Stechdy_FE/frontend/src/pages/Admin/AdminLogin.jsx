@@ -99,7 +99,6 @@ const AdminLogin = () => {
 
       <div className="admin-login-header">
         <h1 className="auth-title">{t("auth.admin.login.title")}</h1>
-        <h2 className="auth-brand">S'techdy</h2>
         <p className="auth-subtitle">{t("auth.admin.login.subtitle")}</p>
       </div>
 

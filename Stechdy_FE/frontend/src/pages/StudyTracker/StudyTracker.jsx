@@ -10,6 +10,11 @@ import "./StudyTracker.css";
 const WaterDrop = ({ percentage, day, date, isToday, onClick }) => {
   const fillHeight = Math.min(Math.max(percentage, 0), 100);
   
+  // Debug log
+  if (fillHeight > 0) {
+    console.log(`WaterDrop ${date}: ${fillHeight}%`);
+  }
+  
   return (
     <div 
       className={`streak-day ${isToday ? 'today' : ''}`} 
@@ -123,8 +128,15 @@ const StudyTracker = () => {
 
       if (scheduleResponse.ok) {
         const sessions = await scheduleResponse.json();
-        console.log('Month sessions:', sessions);
+        console.log('==================');
+        console.log('Month sessions loaded:', sessions.length);
+        console.log('First 5 sessions:', sessions.slice(0, 5));
+        console.log('Month range:', monthStart.toISOString(), 'to', monthEnd.toISOString());
+        console.log('==================');
         setMonthSessions(sessions || []);
+      } else {
+        console.error('Failed to fetch month sessions:', scheduleResponse.status);
+        setMonthSessions([]);
       }
 
       // Fetch today's progress
@@ -243,10 +255,12 @@ const StudyTracker = () => {
     for (let day = 1; day <= daysInMonth; day++) {
       const date = new Date(year, month, day);
       const dayOfWeek = date.toLocaleDateString("en-US", { weekday: "short" });
+      // Use local date format to avoid timezone issues
+      const fullDate = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
       dates.push({
         day: dayOfWeek,
         date: day,
-        fullDate: date.toISOString().split('T')[0],
+        fullDate: fullDate,
       });
     }
     
@@ -256,36 +270,51 @@ const StudyTracker = () => {
   const getDayProgress = (dayDate) => {
     if (!dayDate) return 0;
     
+    // Parse the dayDate string (format: YYYY-MM-DD)
+    const [year, month, day] = dayDate.split('-').map(Number);
+    const dayStart = new Date(year, month - 1, day, 0, 0, 0, 0);
+    const dayEnd = new Date(year, month - 1, day, 23, 59, 59, 999);
+    
     // Check if the day is in the future
     const now = getVietnamTime();
-    const dayEnd = new Date(dayDate);
-    dayEnd.setHours(23, 59, 59, 999);
-    
     if (dayEnd > now) {
       return 0;
     }
     
-    // Get all completed sessions for this specific day
-    const dayStart = new Date(dayDate);
-    dayStart.setHours(0, 0, 0, 0);
+    console.log('Checking progress for:', dayDate);
+    console.log('Available sessions:', monthSessions.length);
     
+    // Get all completed sessions for this specific day
     const daySessions = monthSessions.filter(session => {
       const sessionDate = new Date(session.date);
-      sessionDate.setHours(0, 0, 0, 0);
-      return sessionDate.getTime() === dayStart.getTime() && session.status === 'completed';
+      // Use local date components to avoid timezone issues
+      const sessionYear = sessionDate.getFullYear();
+      const sessionMonth = String(sessionDate.getMonth() + 1).padStart(2, '0');
+      const sessionDay = String(sessionDate.getDate()).padStart(2, '0');
+      const sessionDateStr = `${sessionYear}-${sessionMonth}-${sessionDay}`;
+      console.log('Session date:', sessionDateStr, 'vs', dayDate, 'status:', session.status);
+      return sessionDateStr === dayDate && session.status === 'completed';
     });
+    
+    console.log('Found completed sessions for', dayDate, ':', daySessions.length);
     
     if (daySessions.length === 0) return 0;
     
     // Calculate total actual study time in minutes
     let totalMinutes = 0;
     daySessions.forEach(session => {
-      totalMinutes += session.actualDuration || 0;
+      const duration = session.actualDuration || session.plannedDuration || 0;
+      totalMinutes += duration;
+      console.log('Session duration:', duration, 'minutes');
     });
     
-    // Convert to percentage (assume 8 hours = 480 minutes = 100%)
-    const targetMinutesPerDay = 480; // 8 hours
+    console.log('Total minutes for', dayDate, ':', totalMinutes);
+    
+    // Convert to percentage (assume 4 hours = 240 minutes = 100%)
+    const targetMinutesPerDay = 240; // 4 hours for more visible progress
     const percentage = Math.min((totalMinutes / targetMinutesPerDay) * 100, 100);
+    
+    console.log('Percentage:', percentage);
     
     return percentage;
   };

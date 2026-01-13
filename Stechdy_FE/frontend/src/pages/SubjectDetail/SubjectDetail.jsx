@@ -269,25 +269,25 @@ const SubjectDetail = () => {
     <div className="subject-detail-container">
       <SidebarNav />
       <div className="subject-detail-page">
-        {/* Header */}
-        <header className="subject-detail-header">
-          <button className="back-btn" onClick={() => navigate(-1)}>
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-              <path
-                d="M15 18L9 12L15 6"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </button>
-          <h1 className="subject-detail-title">{subject.subjectName}</h1>
-          <div className="header-spacer"></div>
-        </header>
-
         {/* Main Content */}
         <main className="subject-main">
+          {/* Header with Back Button and Title */}
+          <div className="subject-main-header">
+            <button className="back-btn" onClick={() => navigate(-1)}>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path
+                  d="M15 18L9 12L15 6"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </button>
+            <h1 className="subject-detail-title">{subject.subjectName}</h1>
+            <div className="header-spacer"></div>
+          </div>
+
           {/* Overall Progress Card */}
           <div className="subject-progress-card">
             <div className="subject-progress-info">

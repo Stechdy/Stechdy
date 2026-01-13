@@ -129,7 +129,7 @@ const Login = () => {
 
   return (
     <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
-      <AuthLayout>
+      <AuthLayout showWelcome={true}>
         <form onSubmit={handleSubmit} className="login-form">
           {apiError && <div className="alert alert-error">{apiError}</div>}
 

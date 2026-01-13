@@ -704,6 +704,68 @@ const createAchievementNotification = async (userId, achievementType, data) => {
   }
 };
 
+/**
+ * Auto-mark sessions as missed if they passed end time without activity
+ */
+const autoMarkMissedSessions = async () => {
+  try {
+    console.log('🔍 Checking for missed sessions...');
+    
+    const now = new Date();
+    
+    // Find all scheduled sessions where end time has passed
+    const sessions = await StudySessionSchedule.find({
+      status: 'scheduled'
+    }).populate('subjectId userId');
+
+    let missedCount = 0;
+
+    for (const session of sessions) {
+      try {
+        // Parse session date and end time
+        const sessionDate = new Date(session.date);
+        const [endHour, endMinute] = session.endTime.split(':').map(Number);
+        
+        // Create end datetime
+        const sessionEndTime = new Date(sessionDate);
+        sessionEndTime.setHours(endHour, endMinute, 0, 0);
+
+        // If session end time has passed, mark as missed
+        if (sessionEndTime < now) {
+          await StudySessionSchedule.findByIdAndUpdate(session._id, {
+            status: 'missed'
+          });
+
+          // Create notification for user
+          await createNotification(
+            session.userId._id,
+            'session_missed',
+            `Buổi học ${session.subjectId.subjectName}`,
+            `Bạn đã bỏ lỡ buổi học ${session.subjectId.subjectName} lúc ${session.startTime}`,
+            { sessionId: session._id }
+          );
+
+          missedCount++;
+          console.log(`✅ Marked session ${session._id} as missed (${session.subjectId.subjectName} at ${session.startTime})`);
+        }
+      } catch (error) {
+        console.error(`Error processing session ${session._id}:`, error);
+      }
+    }
+
+    if (missedCount > 0) {
+      console.log(`✅ Auto-marked ${missedCount} session(s) as missed`);
+    } else {
+      console.log('ℹ️  No sessions to mark as missed');
+    }
+
+    return missedCount;
+  } catch (error) {
+    console.error('❌ Error in autoMarkMissedSessions:', error);
+    throw error;
+  }
+};
+
 module.exports = {
   sendMoodReminderEmail,
   createNotification,
@@ -712,6 +774,7 @@ module.exports = {
   sendTaskReminders,
   sendStudySessionReminders,
   sendDeadlineReminders,
-  createAchievementNotification
+  createAchievementNotification,
+  autoMarkMissedSessions
 };
 
