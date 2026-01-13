@@ -102,13 +102,13 @@ Script sẽ:
 cd /opt/stechdy
 
 # Start all services
-docker-compose up -d
+docker compose up -d
 
 # Check status
-docker-compose ps
+docker compose ps
 
 # View logs
-docker-compose logs -f
+docker compose logs -f
 ```
 
 ### 7. Verify Deployment
@@ -192,19 +192,19 @@ FRONTEND_URL=https://stechdy.ai.vn
 cd /opt/stechdy
 
 # View all containers
-docker-compose ps
+docker compose ps
 
 # View logs
-docker-compose logs -f backend
-docker-compose logs -f mongodb
-docker-compose logs -f nginx
+docker compose logs -f backend
+docker compose logs -f mongodb
+docker compose logs -f nginx
 ```
 
 ### Database Backup
 
 ```bash
 # Backup MongoDB
-docker-compose exec mongodb mongodump \
+docker compose exec mongodb mongodump \
   --uri="mongodb://admin:<password>@localhost:27017/Stechdy?authSource=admin" \
   --out=/data/backup
 
@@ -219,7 +219,7 @@ docker cp stechdy-mongodb:/data/backup ./mongodb-backup-$(date +%Y%m%d)
 docker cp ./mongodb-backup stechdy-mongodb:/data/restore
 
 # Restore
-docker-compose exec mongodb mongorestore \
+docker compose exec mongodb mongorestore \
   --uri="mongodb://admin:<password>@localhost:27017" \
   /data/restore
 ```
@@ -230,10 +230,10 @@ docker-compose exec mongodb mongorestore \
 cd /opt/stechdy
 
 # Renew certificate
-docker-compose run --rm certbot renew
+docker compose run --rm certbot renew
 
 # Restart Nginx
-docker-compose restart nginx
+docker compose restart nginx
 ```
 
 ### Clean Up Old Docker Images

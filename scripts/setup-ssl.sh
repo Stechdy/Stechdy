@@ -46,14 +46,14 @@ mkdir -p certbot/www
 
 # Start Nginx temporarily for ACME challenge
 echo -e "${YELLOW}🚀 Starting Nginx for ACME challenge...${NC}"
-docker-compose up -d nginx
+docker compose up -d nginx
 
 # Wait for Nginx to start
 sleep 5
 
 # Request SSL certificate
 echo -e "${YELLOW}📜 Requesting SSL certificate from Let's Encrypt...${NC}"
-docker-compose run --rm certbot certonly \
+docker compose run --rm certbot certonly \
     --webroot \
     --webroot-path=/var/www/certbot \
     --email $EMAIL \
@@ -72,7 +72,7 @@ echo -e "${GREEN}✅ SSL certificate obtained successfully!${NC}"
 
 # Restart Nginx to apply SSL
 echo -e "${YELLOW}🔄 Restarting Nginx with SSL...${NC}"
-docker-compose restart nginx
+docker compose restart nginx
 
 # Setup auto-renewal cron job
 echo -e "${YELLOW}⏰ Setting up auto-renewal...${NC}"
@@ -81,8 +81,8 @@ echo -e "${YELLOW}⏰ Setting up auto-renewal...${NC}"
 cat > /opt/stechdy/scripts/renew-ssl.sh << 'RENEWAL_SCRIPT'
 #!/bin/bash
 cd /opt/stechdy
-docker-compose run --rm certbot renew
-docker-compose restart nginx
+docker compose run --rm certbot renew
+docker compose restart nginx
 RENEWAL_SCRIPT
 
 chmod +x /opt/stechdy/scripts/renew-ssl.sh
@@ -100,7 +100,7 @@ fi
 
 # Test auto-renewal
 echo -e "${YELLOW}🧪 Testing auto-renewal...${NC}"
-docker-compose run --rm certbot renew --dry-run
+docker compose run --rm certbot renew --dry-run
 
 echo -e "\n${GREEN}✅ SSL setup completed successfully!${NC}"
 echo -e "${GREEN}🔐 Your site is now secured with HTTPS${NC}"

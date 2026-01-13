@@ -17,13 +17,13 @@ DOCKER_IMAGE="${DOCKER_IMAGE:-stechdy-backend}"
 cd $DEPLOY_DIR
 
 echo -e "${YELLOW}📥 Pulling latest Docker images...${NC}"
-docker-compose pull
+docker compose pull
 
 echo -e "${YELLOW}🛑 Stopping old containers...${NC}"
-docker-compose down --remove-orphans
+docker compose down --remove-orphans
 
 echo -e "${YELLOW}🚀 Starting new containers...${NC}"
-docker-compose up -d
+docker compose up -d
 
 echo -e "${YELLOW}⏳ Waiting for services to be healthy...${NC}"
 sleep 15
@@ -36,10 +36,10 @@ BACKEND_HEALTH=$(docker inspect --format='{{.State.Health.Status}}' stechdy-back
 if [ "$BACKEND_HEALTH" != "healthy" ]; then
     echo -e "${RED}❌ Backend service is not healthy!${NC}"
     echo -e "${YELLOW}Backend logs:${NC}"
-    docker-compose logs --tail=50 backend
+    docker compose logs --tail=50 backend
     
     echo -e "${YELLOW}🔄 Rolling back...${NC}"
-    docker-compose down
+    docker compose down
     exit 1
 fi
 
@@ -48,10 +48,10 @@ MONGODB_HEALTH=$(docker inspect --format='{{.State.Health.Status}}' stechdy-mong
 if [ "$MONGODB_HEALTH" != "healthy" ]; then
     echo -e "${RED}❌ MongoDB service is not healthy!${NC}"
     echo -e "${YELLOW}MongoDB logs:${NC}"
-    docker-compose logs --tail=50 mongodb
+    docker compose logs --tail=50 mongodb
     
     echo -e "${YELLOW}🔄 Rolling back...${NC}"
-    docker-compose down
+    docker compose down
     exit 1
 fi
 
@@ -60,10 +60,10 @@ NGINX_STATUS=$(docker inspect --format='{{.State.Status}}' stechdy-nginx 2>/dev/
 if [ "$NGINX_STATUS" != "running" ]; then
     echo -e "${RED}❌ Nginx service is not running!${NC}"
     echo -e "${YELLOW}Nginx logs:${NC}"
-    docker-compose logs --tail=50 nginx
+    docker compose logs --tail=50 nginx
     
     echo -e "${YELLOW}🔄 Rolling back...${NC}"
-    docker-compose down
+    docker compose down
     exit 1
 fi
 
@@ -71,11 +71,11 @@ echo -e "${GREEN}✅ All services are healthy!${NC}"
 
 # Show running containers
 echo -e "\n${YELLOW}📊 Running containers:${NC}"
-docker-compose ps
+docker compose ps
 
 # Show recent logs
 echo -e "\n${YELLOW}📝 Recent logs:${NC}"
-docker-compose logs --tail=20
+docker compose logs --tail=20
 
 # Clean up old images
 echo -e "\n${YELLOW}🧹 Cleaning up old images...${NC}"

@@ -47,6 +47,18 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=registry,ref=${{ env.DOCKER_IMAGE }}:buildcache
           cache-to: type=registry,ref=${{ env.DOCKER_IMAGE }}:buildcache,mode=max
+      
+      - name: Build and push Frontend Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./Stechdy_FE/frontend
+          file: ./Stechdy_FE/frontend/Dockerfile
+          push: true
+          tags: |
+            ${{ secrets.DOCKER_USERNAME }}/stechdy-frontend:latest
+            ${{ secrets.DOCKER_USERNAME }}/stechdy-frontend:${{ github.sha }}
+          cache-from: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/stechdy-frontend:buildcache
+          cache-to: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/stechdy-frontend:buildcache,mode=max
           
   deploy:
     name: Deploy to VPS
@@ -87,22 +99,23 @@ jobs:
             
             # Pull latest image
             docker pull ${DOCKER_IMAGE}:latest
+            docker pull ${{ secrets.DOCKER_USERNAME }}/stechdy-frontend:latest
             
             # Stop and remove old containers
-            docker-compose down
+            docker compose down
             
             # Start new containers
-            docker-compose up -d
+            docker compose up -d
             
             # Wait for services to be healthy
             echo "Waiting for services to start..."
             sleep 10
             
             # Check service status
-            docker-compose ps
+            docker compose ps
             
             # Show logs
-            docker-compose logs --tail=50
+            docker compose logs --tail=50
             
             # Clean up old images
             docker image prune -af --filter "until=24h"
@@ -114,9 +127,9 @@ jobs:
             cd /opt/stechdy
             
             # Check if services are running
-            if ! docker-compose ps | grep -q "Up"; then
+            if ! docker compose ps | grep -q "Up"; then
               echo "Error: Services are not running properly"
-              docker-compose logs
+              docker compose logs
               exit 1
             fi
             
