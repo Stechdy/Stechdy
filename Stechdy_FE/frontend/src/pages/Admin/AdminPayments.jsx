@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useCallback } from "react";
 import AdminLayout from "../../components/layout/AdminLayout";
+import config from "../../config";
 import "../../components/layout/AdminLayout.css";
 import "./AdminPayments.css";
 
-const API_BASE_URL = 'http://localhost:3001/api';
+const API_BASE_URL = config.apiUrl;
 
 const AdminPayments = () => {
   const [payments, setPayments] = useState([]);

@@ -2,7 +2,8 @@ import React, { useState, useEffect, useCallback } from 'react';
 import AdminLayout from '../../components/layout/AdminLayout';
 import '../../components/layout/AdminLayout.css';
 
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api';
+import config from '../../config';
+const API_BASE_URL = config.apiUrl;
 
 const AdminRevenue = () => {
   const [stats, setStats] = useState(null);

@@ -5,6 +5,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import BottomNav from "../../components/common/BottomNav";
 import SidebarNav from "../../components/common/SidebarNav";
+import config from "../../config";
 import "./UserInformation.css";
 
 const UserInformation = () => {
@@ -18,8 +19,6 @@ const UserInformation = () => {
   const [uploadingAvatar, setUploadingAvatar] = useState(false);
   const [showAvatarMenu, setShowAvatarMenu] = useState(false);
   const fileInputRef = useRef(null);
-
-  const API_URL = process.env.REACT_APP_API_URL || "http://localhost:3001/api";
 
   // Helper function to handle API errors
   const handleApiError = (error, response = null) => {
@@ -82,7 +81,7 @@ const UserInformation = () => {
   const fetchUserData = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetchWithTimeout(`${API_URL}/users/profile`, {
+      const response = await fetchWithTimeout(`${config.apiUrl}/users/profile`, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
@@ -136,7 +135,7 @@ const UserInformation = () => {
 
     try {
       const token = localStorage.getItem("token");
-      const response = await fetchWithTimeout(`${API_URL}/users/profile`, {
+      const response = await fetchWithTimeout(`${config.apiUrl}/users/profile`, {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -227,7 +226,7 @@ const UserInformation = () => {
       formData.append("avatar", file);
 
       const response = await fetchWithTimeout(
-        `${API_URL}/upload/avatar`,
+        `${config.apiUrl}/upload/avatar`,
         {
           method: "POST",
           headers: {
@@ -296,7 +295,7 @@ const UserInformation = () => {
 
     try {
       const token = localStorage.getItem("token");
-      const response = await fetchWithTimeout(`${API_URL}/upload/avatar`, {
+      const response = await fetchWithTimeout(`${config.apiUrl}/upload/avatar`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,

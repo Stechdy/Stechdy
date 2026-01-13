@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import AdminLayout from '../../components/layout/AdminLayout';
 
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api';
+import config from '../../config';
+const API_BASE_URL = config.apiUrl;
 
 const AdminDashboard = () => {
   const [stats, setStats] = useState(null);
