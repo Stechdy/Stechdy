@@ -1,7 +1,7 @@
 import React from 'react';
 import './AuthLayout.css';
 
-const AuthLayout = ({ children, title, subtitle }) => {
+const AuthLayout = ({ children, title, subtitle, showWelcome = false }) => {
   return (
     <div className="auth-layout">
       <div className="auth-container">
@@ -12,7 +12,7 @@ const AuthLayout = ({ children, title, subtitle }) => {
         </div>
         
         <div className="auth-header">
-          <h1 className="auth-title">Welcome back to</h1>
+          {showWelcome && <h1 className="auth-title">Welcome back to</h1>}
           <h2 className="auth-brand">S'techdy</h2>
           {subtitle && <p className="auth-subtitle">{subtitle}</p>}
         </div>

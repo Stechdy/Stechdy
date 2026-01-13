@@ -143,7 +143,6 @@ const Register = () => {
       <AuthLayout>
         <div className="register-header">
           <h1 className="auth-title">{t("auth.register.title")}</h1>
-          <h2 className="auth-brand">S'techdy</h2>
           <p className="auth-subtitle">{t("auth.register.subtitle")}</p>
         </div>
 

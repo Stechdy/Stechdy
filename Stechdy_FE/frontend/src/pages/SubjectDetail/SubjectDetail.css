@@ -31,7 +31,7 @@
 .subject-detail-page {
   flex: 1;
   min-height: 100vh;
-  background: var(--bg-primary);
+  background: transparent;
   padding-bottom: 80px;
   transition: background-color var(--transition-normal);
 }
@@ -50,11 +50,9 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px 20px;
+  padding: 20px;
   background: transparent;
   position: relative;
-  min-height: 80px;
-  max-height: 80px;
 }
 
 .subject-detail-header .back-btn {
@@ -81,9 +79,9 @@
 }
 
 .subject-detail-title {
-  font-size: 30px;
+  font-size: 28px;
   font-weight: 700;
-  color: #1a1a1a;
+  color: var(--text-primary);
   margin: 0;
   text-align: center;
   flex: 1;
@@ -118,130 +116,123 @@
   margin: 0 auto;
 }
 
+/* Header in Main */
+.subject-main-header {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 4px;
+  min-height: 36px;
+}
+
+.subject-main-header .back-btn {
+  position: absolute;
+  left: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  border: none;
+  background: var(--bg-card);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  color: var(--text-secondary);
+  flex-shrink: 0;
+}
+
+.subject-main-header .back-btn:hover {
+  background: var(--bg-hover);
+  transform: translateX(-2px);
+}
+
+.subject-main-header .back-btn:active {
+  transform: scale(0.95);
+}
+
+.subject-main-header .subject-detail-title {
+  text-align: center;
+  padding: 0;
+  margin: 0;
+  display: block;
+  -webkit-box-orient: unset;
+  -webkit-line-clamp: unset;
+}
+
+.subject-main-header .header-spacer {
+  display: none;
+}
+
 /* Progress Card */
 .subject-progress-card {
-  background: linear-gradient(135deg, rgba(138, 192, 213, 0.08) 0%, rgba(212, 181, 216, 0.08) 100%);
-  border-radius: 20px;
-  padding: 32px;
-  box-shadow: 0 8px 24px rgba(138, 192, 213, 0.12);
-  border: 1px solid rgba(138, 192, 213, 0.15);
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-}
-
-.subject-progress-card::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  right: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(circle, rgba(138, 192, 213, 0.05) 0%, transparent 70%);
-  pointer-events: none;
-}
-
-.subject-progress-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 32px rgba(138, 192, 213, 0.2);
+  background: var(--bg-card);
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: var(--shadow-card);
+  transition: all var(--transition-normal);
 }
 
 .subject-progress-info {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
-  position: relative;
-  z-index: 1;
+  margin-bottom: 12px;
 }
 
 .subject-progress-info h3 {
-  font-size: 20px;
-  font-weight: 700;
+  font-size: 16px;
+  font-weight: 500;
   color: var(--text-primary);
   margin: 0;
   transition: color var(--transition-normal);
-  letter-spacing: -0.02em;
 }
 
 .progress-percent {
-  font-size: 48px;
-  font-weight: 800;
-  background: linear-gradient(135deg, #8AC0D5 0%, #D4B5D8 100%);
+  font-size: 32px;
+  font-weight: 700;
+  background: var(--primary-gradient);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   transition: all var(--transition-normal);
-  letter-spacing: -0.03em;
-  position: relative;
 }
 
 .progress-bar {
-  height: 16px;
-  background: rgba(138, 192, 213, 0.12);
-  border-radius: 12px;
+  height: 8px;
+  background: var(--bg-secondary);
+  border-radius: 10px;
   overflow: hidden;
   transition: background-color var(--transition-normal);
-  position: relative;
-  z-index: 1;
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .progress-fill {
   height: 100%;
-  border-radius: 12px;
-  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
-  box-shadow: 0 2px 8px rgba(138, 192, 213, 0.3);
-}
-
-.progress-fill::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 50%;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.2) 0%, transparent 100%);
-  border-radius: 12px 12px 0 0;
+  background: var(--primary-gradient);
+  border-radius: 10px;
+  transition: width 0.5s ease;
 }
 
 .progress-hours {
-  margin-top: 16px;
+  margin-top: 12px;
   text-align: center;
-  position: relative;
-  z-index: 1;
 }
 
 .hours-text {
-  font-size: 16px;
-  font-weight: 700;
+  font-size: 14px;
+  font-weight: 500;
   color: var(--text-secondary);
   transition: color var(--transition-normal);
-  letter-spacing: 0.01em;
 }
 
 /* Section Title */
 .subject-section-title {
-  font-size: 22px;
-  font-weight: 800;
+  font-size: 20px;
+  font-weight: 600;
   color: var(--text-primary);
-  margin: 0 0 20px 0;
+  margin: 0 0 16px 0;
   transition: color var(--transition-normal);
-  letter-spacing: -0.02em;
-  position: relative;
-  display: inline-block;
-}
-
-.subject-section-title::after {
-  content: '';
-  position: absolute;
-  bottom: -6px;
-  left: 0;
-  width: 40px;
-  height: 4px;
-  background: linear-gradient(90deg, #8AC0D5 0%, #D4B5D8 100%);
-  border-radius: 2px;
 }
 
 .section-header {
@@ -256,22 +247,19 @@
 }
 
 .view-all-btn {
-  background: linear-gradient(135deg, rgba(138, 192, 213, 0.1) 0%, rgba(212, 181, 216, 0.1) 100%);
-  border: 1px solid rgba(138, 192, 213, 0.2);
-  color: #8AC0D5;
+  background: transparent;
+  border: none;
+  color: var(--primary-blue);
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
-  padding: 8px 16px;
-  border-radius: 12px;
-  letter-spacing: 0.02em;
+  transition: all var(--transition-normal);
+  padding: 8px 12px;
+  border-radius: 8px;
 }
 
 .view-all-btn:hover {
-  background: linear-gradient(135deg, rgba(138, 192, 213, 0.15) 0%, rgba(212, 181, 216, 0.15) 100%);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(138, 192, 213, 0.2);
+  background: var(--bg-hover);
 }
 
 /* Weekly Schedule Section */
@@ -282,120 +270,78 @@
 .schedule-list {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 16px;
+  gap: 10px;
 }
 
 .schedule-item {
   display: flex;
   align-items: center;
-  gap: 20px;
-  padding: 20px;
+  gap: 12px;
+  padding: 16px;
   background: var(--bg-card);
   border-radius: 16px;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  border: 1px solid rgba(138, 192, 213, 0.1);
-  position: relative;
-  overflow: hidden;
-}
-
-.schedule-item::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, #8AC0D5 0%, #D4B5D8 100%);
-  transform: scaleX(0);
-  transition: transform 0.3s ease;
-}
-
-.schedule-item:hover::before {
-  transform: scaleX(1);
+  transition: all var(--transition-normal);
+  box-shadow: var(--shadow-card);
 }
 
 .schedule-item:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(138, 192, 213, 0.15);
-  border-color: rgba(138, 192, 213, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
 }
 
 .schedule-day {
-  width: 64px;
-  height: 64px;
-  border-radius: 16px;
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   color: white;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  position: relative;
-  overflow: hidden;
-}
-
-.schedule-day::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, transparent 100%);
+  flex-shrink: 0;
 }
 
 .schedule-day .day-name {
-  font-size: 14px;
-  font-weight: 800;
-  letter-spacing: 0.05em;
-  position: relative;
-  z-index: 1;
+  font-size: 13px;
+  font-weight: 600;
 }
 
 .schedule-info {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 4px;
 }
 
 .schedule-time {
   font-size: 16px;
-  font-weight: 700;
+  font-weight: 500;
   color: var(--text-primary);
-  letter-spacing: -0.01em;
 }
 
 .schedule-duration {
   font-size: 14px;
   color: var(--text-secondary);
-  font-weight: 600;
-  background: linear-gradient(135deg, rgba(138, 192, 213, 0.08) 0%, rgba(212, 181, 216, 0.08) 100%);
-  padding: 4px 12px;
-  border-radius: 8px;
-  display: inline-block;
-  width: fit-content;
 }
 
 .schedule-status {
-  font-size: 15px;
-  font-weight: 700;
-  padding: 8px 16px;
-  border-radius: 12px;
-  background: rgba(138, 192, 213, 0.08);
-  letter-spacing: 0.01em;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 6px 12px;
+  border-radius: 8px;
 }
 
 .subject-no-sessions,
 .subject-no-deadlines {
-  padding: 32px;
+  padding: 24px;
   text-align: center;
   color: var(--text-tertiary);
-  background: linear-gradient(135deg, rgba(138, 192, 213, 0.05) 0%, rgba(212, 181, 216, 0.05) 100%);
+  background: var(--bg-card);
   border-radius: 16px;
-  font-size: 15px;
+  font-size: 14px;
   transition: all var(--transition-normal);
-  border: 2px dashed rgba(138, 192, 213, 0.2);
-  font-weight: 600;
+  box-shadow: var(--shadow-card);
 }
 
 /* Deadlines Section */
