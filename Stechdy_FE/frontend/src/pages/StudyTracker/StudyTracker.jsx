@@ -5,6 +5,7 @@ import BottomNav from "../../components/common/BottomNav";
 import SidebarNav from "../../components/common/SidebarNav";
 import NotificationBell from "../../components/notification/NotificationBell";
 import { getVietnamTime, getVietnamDate } from "../../utils/helpers";
+import config from "../../config";
 import "./StudyTracker.css";
 
 const WaterDrop = ({ percentage, day, date, isToday, onClick }) => {
@@ -72,7 +73,7 @@ const StudyTracker = () => {
 
       // Fetch weekly schedule
       const scheduleResponse = await fetch(
-        `http://localhost:3001/api/study-sessions/week?offset=${weekOffset}`,
+        `${config.apiUrl}/study-sessions/week?offset=${weekOffset}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -99,7 +100,7 @@ const StudyTracker = () => {
 
       // Fetch subjects
       const subjectsResponse = await fetch(
-        "http://localhost:3001/api/subjects",
+        "${config.apiUrl}/subjects",
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -120,7 +121,7 @@ const StudyTracker = () => {
 
       // Fetch month sessions
       const scheduleResponse = await fetch(
-        `http://localhost:3001/api/study-sessions/range?start=${monthStart.toISOString()}&end=${monthEnd.toISOString()}`,
+        `${config.apiUrl}/study-sessions/range?start=${monthStart.toISOString()}&end=${monthEnd.toISOString()}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -145,7 +146,7 @@ const StudyTracker = () => {
       const todayEnd = new Date(todayDate.setHours(23, 59, 59, 999));
 
       const progressResponse = await fetch(
-        `http://localhost:3001/api/study-sessions/today?start=${todayStart.toISOString()}&end=${todayEnd.toISOString()}`,
+        `${config.apiUrl}/study-sessions/today?start=${todayStart.toISOString()}&end=${todayEnd.toISOString()}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
@@ -157,7 +158,7 @@ const StudyTracker = () => {
 
       // Fetch streak data
       const streakResponse = await fetch(
-        "http://localhost:3001/api/users/streak",
+        "${config.apiUrl}/users/streak",
         {
           headers: { Authorization: `Bearer ${token}` },
         }

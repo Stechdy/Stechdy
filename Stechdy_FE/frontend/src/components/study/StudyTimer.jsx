@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useTranslation } from "react-i18next";
+import config from "../../config";
 import "./StudyTimer.css";
 
 const StudyTimer = ({ session, onEnd, onRefresh }) => {
@@ -97,7 +98,7 @@ const StudyTimer = ({ session, onEnd, onRefresh }) => {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        `http://localhost:3001/api/study-sessions/${session._id}/pause`,
+        `${config.apiUrl}/study-sessions/${session._id}/pause`,
         {
           method: "POST",
           headers: {
@@ -126,7 +127,7 @@ const StudyTimer = ({ session, onEnd, onRefresh }) => {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        `http://localhost:3001/api/study-sessions/${session._id}/resume`,
+        `${config.apiUrl}/study-sessions/${session._id}/resume`,
         {
           method: "POST",
           headers: {
@@ -155,7 +156,7 @@ const StudyTimer = ({ session, onEnd, onRefresh }) => {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        `http://localhost:3001/api/study-sessions/${session._id}/end`,
+        `${config.apiUrl}/study-sessions/${session._id}/end`,
         {
           method: "POST",
           headers: {
