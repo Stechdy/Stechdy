@@ -10,7 +10,7 @@ import "./Register.css";
 
 const GOOGLE_CLIENT_ID =
   process.env.REACT_APP_GOOGLE_CLIENT_ID ||
-  "944831618827-2qgcaei2lpcko6ucl9lj9m21llvkj7nn.apps.googleusercontent.com";
+  "335161050092-sncgi0nc2tg95sahqvukc41jre2aac9o.apps.googleusercontent.com";
 
 const Register = () => {
   const navigate = useNavigate();
