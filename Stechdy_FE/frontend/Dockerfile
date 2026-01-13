@@ -12,12 +12,8 @@ RUN npm install --legacy-peer-deps
 # Copy source code
 COPY . .
 
-# Set environment variables for build
-ENV CI=false
-ENV GENERATE_SOURCEMAP=false
-
-# Build the application
-RUN npm run build
+# Build with CI=false to treat warnings as non-fatal
+RUN CI=false npm run build
 
 # Production stage - Nginx
 FROM nginx:alpine
