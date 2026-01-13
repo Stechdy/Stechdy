@@ -313,22 +313,66 @@ const sendStudySessionReminders = async () => {
     const in30Minutes = new Date(now);
     in30Minutes.setMinutes(in30Minutes.getMinutes() + 30);
 
-    // Find study sessions starting soon
+    // Get today's date range in Vietnam timezone (UTC+7)
+    const today = new Date(now);
+    today.setHours(0, 0, 0, 0);
+    
+    // Adjust for timezone to match how dates are stored in DB
+    const timezoneOffset = today.getTimezoneOffset(); // Minutes from UTC
+    const adjustedToday = new Date(today.getTime() - (timezoneOffset * 60 * 1000));
+    const adjustedTomorrow = new Date(adjustedToday.getTime() + 24 * 60 * 60 * 1000);
+
+    console.log('🔍 Searching sessions for today:', today.toLocaleDateString('vi-VN'));
+    console.log('📅 DB query range:', adjustedToday.toISOString(), 'to', adjustedTomorrow.toISOString());
+    console.log('⏰ Current time:', now.toLocaleTimeString('vi-VN'));
+    console.log('⏰ Looking for sessions starting before:', in30Minutes.toLocaleTimeString('vi-VN'));
+
+    // Find study sessions scheduled for today
     const sessions = await StudySessionSchedule.find({
-      startTime: { $gte: now, $lte: in30Minutes },
-      isCompleted: false,
-      isCancelled: false
+      date: { $gte: adjustedToday, $lt: adjustedTomorrow },
+      status: 'scheduled'
     }).populate('userId subjectId');
 
-    console.log(`Found ${sessions.length} upcoming study sessions`);
+    console.log(`📚 Found ${sessions.length} sessions scheduled for today`);
+
+    // Helper function to parse time string to Date object
+    const parseTime = (timeStr, date) => {
+      const [hours, minutes] = timeStr.split(':').map(Number);
+      const result = new Date(date);
+      result.setHours(hours, minutes, 0, 0);
+      return result;
+    };
 
     let sentCount = 0;
+    let checkedCount = 0;
 
     for (const session of sessions) {
-      if (!session.userId) continue;
+      checkedCount++;
+      
+      // Parse session start time
+      const sessionStart = parseTime(session.startTime, session.date);
+      const timeDiff = sessionStart - now;
+      const minutesUntil = Math.floor(timeDiff / 60000);
+
+      console.log(`  📋 Session ${checkedCount}: ${session.subjectId?.subjectName || 'Unknown'} at ${session.startTime}`);
+      console.log(`     ⏱️  Starts in ${minutesUntil} minutes (${sessionStart.toLocaleTimeString('vi-VN')})`);
+
+      // Check if session starts within next 30 minutes (and not in the past)
+      if (timeDiff < 0 || timeDiff > 30 * 60 * 1000) {
+        console.log(`     ⏭️  Skipped (not in 0-30 minute window)`);
+        continue;
+      }
+
+      if (!session.userId) {
+        console.log(`     ⚠️  Skipped (no user)`);
+        continue;
+      }
 
       // Check if user wants study reminders
-      if (!session.userId.notificationSettings?.studyReminder) continue;
+      if (!session.userId.notificationSettings?.studyReminder) {
+        console.log(`     ⚠️  Skipped (user disabled reminders)`);
+        continue;
+      }
 
       // Check if we already sent a reminder for this session
       const existingNotification = await Notification.findOne({
@@ -338,10 +382,15 @@ const sendStudySessionReminders = async () => {
         createdAt: { $gte: new Date(now.getTime() - 3600000) } // Within last hour
       });
 
-      if (existingNotification) continue;
+      if (existingNotification) {
+        console.log(`     ⚠️  Skipped (already sent within 1 hour)`);
+        continue;
+      }
 
       // Calculate time until session
-      const timeUntil = formatTimeUntil(session.startTime);
+      const timeUntil = formatTimeUntil(sessionStart);
+
+      console.log(`     ✅ Sending reminder (${minutesUntil} minutes until session)...`);
 
       // Generate personalized message
       const { title, message, icon } = await generateStudyReminderMessage(
@@ -352,7 +401,7 @@ const sendStudySessionReminders = async () => {
       );
 
       // Create notification
-      await Notification.create({
+      const notification = await Notification.create({
         userId: session.userId._id,
         type: 'study_reminder',
         title,
@@ -364,20 +413,23 @@ const sendStudySessionReminders = async () => {
         actionUrl: `/study-sessions/${session._id}`,
         actionLabel: 'Xem lịch học',
         metadata: {
-          subjectName: session.subjectId?.name || 'Unknown',
+          subjectName: session.subjectId?.subjectName || 'Unknown',
           startTime: session.startTime
         }
       });
+
+      console.log(`     📧 Notification created:`, notification._id);
 
       sentCount++;
 
       // Send email if enabled
       if (session.userId.notificationSettings?.dailyEmail) {
+        console.log(`     📨 Sending email to ${session.userId.email}...`);
         await sendStudySessionReminderEmail(session, session.userId, message);
       }
     }
 
-    console.log(`Study session reminders sent: ${sentCount} notifications`);
+    console.log(`\n✅ Study session reminders sent: ${sentCount} notifications (checked ${checkedCount} sessions)`);
     return { notificationsSent: sentCount };
   } catch (error) {
     console.error('Error sending study session reminders:', error);
