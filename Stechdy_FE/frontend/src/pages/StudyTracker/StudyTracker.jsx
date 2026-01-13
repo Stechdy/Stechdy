@@ -100,7 +100,7 @@ const StudyTracker = () => {
 
       // Fetch subjects
       const subjectsResponse = await fetch(
-        "${config.apiUrl}/subjects",
+        `${config.apiUrl}/subjects`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -158,7 +158,7 @@ const StudyTracker = () => {
 
       // Fetch streak data
       const streakResponse = await fetch(
-        "${config.apiUrl}/users/streak",
+        `${config.apiUrl}/users/streak`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -176,7 +176,7 @@ const StudyTracker = () => {
   const calculateProgressBySubject = (sessions) => {
     // Calculate total progress for today instead of by subject
     let totalCompleted = 0;
-    let totalGoal = 0;
+    let totalGoal = 240; // Default goal: 4 hours
 
     sessions.forEach((session) => {
       const plannedDuration = session.plannedDuration || 90;
@@ -192,9 +192,7 @@ const StudyTracker = () => {
     // Cap total completed at total goal to avoid showing more than 100%
     totalCompleted = Math.min(totalCompleted, totalGoal);
 
-    // Return single item for total progress
-    if (totalGoal === 0) return [];
-
+    // Always return progress bar, even when no sessions
     return [
       {
         subjectKey: "studyTracker.totalStudyTime",

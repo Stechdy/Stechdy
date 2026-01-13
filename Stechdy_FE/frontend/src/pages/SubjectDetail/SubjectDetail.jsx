@@ -85,7 +85,7 @@ const SubjectDetail = () => {
   const handleAddDeadline = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("${config.apiUrl}/deadlines", {
+      const response = await fetch(`${config.apiUrl}`/deadlines, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,

@@ -78,7 +78,7 @@ const SlotDetail = () => {
   const fetchSubjects = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("${config.apiUrl}/subjects", {
+      const response = await fetch(`${config.apiUrl}/subjects`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -95,8 +95,7 @@ const SlotDetail = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        "${config.apiUrl}/study-sessions/week?offset=0",
-        {
+        `${config.apiUrl}/study-sessions/week?offset=0`,{
           headers: { Authorization: `Bearer ${token}` },
         }
       );
