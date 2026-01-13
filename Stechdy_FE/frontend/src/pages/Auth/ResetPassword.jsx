@@ -85,8 +85,8 @@ const ResetPassword = () => {
   if (success) {
     return (
       <AuthLayout>
-        <div className="success-message">
-          <div className="success-icon">✅</div>
+        <div className="reset-success-message">
+          <div className="reset-success-icon">✅</div>
           <h2>{t("auth.resetPassword.success")}</h2>
           <p>{t("auth.resetPassword.successMessage")}</p>
           <AuthButton onClick={() => navigate("/login")}>
@@ -106,10 +106,10 @@ const ResetPassword = () => {
       </div>
 
       <form onSubmit={handleSubmit} className="reset-password-form">
-        {apiError && <div className="alert alert-error">{apiError}</div>}
+        {apiError && <div className="reset-alert reset-alert-error">{apiError}</div>}
 
-        <div className="form-group">
-          <label className="form-label">
+        <div className="reset-form-group">
+          <label className="reset-form-label">
             {t("auth.resetPassword.newPassword")}
           </label>
           <AuthInput
@@ -125,8 +125,8 @@ const ResetPassword = () => {
           />
         </div>
 
-        <div className="form-group">
-          <label className="form-label">
+        <div className="reset-form-group">
+          <label className="reset-form-label">
             {t("auth.resetPassword.confirmNewPassword")}
           </label>
           <AuthInput
@@ -148,7 +148,7 @@ const ResetPassword = () => {
           {t("auth.resetPassword.submit")}
         </AuthButton>
 
-        <div className="back-to-login">
+        <div className="reset-back-to-login">
           <Link to="/login">← {t("auth.resetPassword.backToLogin")}</Link>
         </div>
       </form>

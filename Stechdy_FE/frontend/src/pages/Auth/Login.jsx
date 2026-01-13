@@ -10,7 +10,7 @@ import "./Login.css";
 
 const GOOGLE_CLIENT_ID =
   process.env.REACT_APP_GOOGLE_CLIENT_ID ||
-  "944831618827-2qgcaei2lpcko6ucl9lj9m21llvkj7nn.apps.googleusercontent.com";
+  "335161050092-sncgi0nc2tg95sahqvukc41jre2aac9o.apps.googleusercontent.com";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -129,7 +129,7 @@ const Login = () => {
 
   return (
     <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
-      <AuthLayout>
+      <AuthLayout showWelcome={true}>
         <form onSubmit={handleSubmit} className="login-form">
           {apiError && <div className="alert alert-error">{apiError}</div>}
 
@@ -169,7 +169,7 @@ const Login = () => {
             {t("auth.login.submit")}
           </AuthButton>
 
-          <div className="divider">
+          <div className="login-divider">
             <span>{t("auth.login.orContinueWith")}</span>
           </div>
 

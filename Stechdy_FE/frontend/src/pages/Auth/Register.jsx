@@ -10,7 +10,7 @@ import "./Register.css";
 
 const GOOGLE_CLIENT_ID =
   process.env.REACT_APP_GOOGLE_CLIENT_ID ||
-  "944831618827-2qgcaei2lpcko6ucl9lj9m21llvkj7nn.apps.googleusercontent.com";
+  "335161050092-sncgi0nc2tg95sahqvukc41jre2aac9o.apps.googleusercontent.com";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -143,15 +143,14 @@ const Register = () => {
       <AuthLayout>
         <div className="register-header">
           <h1 className="auth-title">{t("auth.register.title")}</h1>
-          <h2 className="auth-brand">S'techdy</h2>
           <p className="auth-subtitle">{t("auth.register.subtitle")}</p>
         </div>
 
         <form onSubmit={handleSubmit} className="register-form">
-          {apiError && <div className="alert alert-error">{apiError}</div>}
+          {apiError && <div className="register-alert register-alert-error">{apiError}</div>}
 
-          <div className="form-group">
-            <label className="form-label">{t("auth.register.fullName")}</label>
+          <div className="register-form-group">
+            <label className="register-form-label">{t("auth.register.fullName")}</label>
             <AuthInput
               type="text"
               name="name"
@@ -163,8 +162,8 @@ const Register = () => {
             />
           </div>
 
-          <div className="form-group">
-            <label className="form-label">{t("auth.register.email")}</label>
+          <div className="register-form-group">
+            <label className="register-form-label">{t("auth.register.email")}</label>
             <AuthInput
               type="email"
               name="email"
@@ -176,8 +175,8 @@ const Register = () => {
             />
           </div>
 
-          <div className="form-group">
-            <label className="form-label">{t("auth.register.password")}</label>
+          <div className="register-form-group">
+            <label className="register-form-label">{t("auth.register.password")}</label>
             <AuthInput
               type={showPassword ? "text" : "password"}
               name="password"
@@ -191,8 +190,8 @@ const Register = () => {
             />
           </div>
 
-          <div className="form-group">
-            <label className="form-label">
+          <div className="register-form-group">
+            <label className="register-form-label">
               {t("auth.register.confirmPassword")}
             </label>
             <AuthInput
@@ -214,7 +213,7 @@ const Register = () => {
             {t("auth.register.submit")}
           </AuthButton>
 
-          <div className="divider">
+          <div className="register-divider">
             <span>{t("auth.register.orContinueWith")}</span>
           </div>
 
@@ -231,7 +230,7 @@ const Register = () => {
             />
           </div>
 
-          <div className="login-link">
+          <div className="register-login-link">
             {t("auth.register.haveAccount")}{" "}
             <Link to="/login">{t("auth.register.loginNow")}</Link>
           </div>

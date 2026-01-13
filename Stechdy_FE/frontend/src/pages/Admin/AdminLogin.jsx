@@ -99,15 +99,14 @@ const AdminLogin = () => {
 
       <div className="admin-login-header">
         <h1 className="auth-title">{t("auth.admin.login.title")}</h1>
-        <h2 className="auth-brand">S'techdy</h2>
         <p className="auth-subtitle">{t("auth.admin.login.subtitle")}</p>
       </div>
 
       <form onSubmit={handleSubmit} className="admin-login-form">
-        {apiError && <div className="alert alert-error">{apiError}</div>}
+        {apiError && <div className="admin-login-alert admin-login-alert-error">{apiError}</div>}
 
-        <div className="form-group">
-          <label className="form-label">
+        <div className="admin-login-form-group">
+          <label className="admin-login-form-label">
             {t("auth.admin.login.adminEmail")}
           </label>
           <AuthInput
@@ -121,8 +120,8 @@ const AdminLogin = () => {
           />
         </div>
 
-        <div className="form-group">
-          <label className="form-label">{t("auth.admin.login.password")}</label>
+        <div className="admin-login-form-group">
+          <label className="admin-login-form-label">{t("auth.admin.login.password")}</label>
           <AuthInput
             type={showPassword ? "text" : "password"}
             name="password"
@@ -136,7 +135,7 @@ const AdminLogin = () => {
           />
         </div>
 
-        <div className="forgot-password-link">
+        <div className="admin-login-forgot-password-link">
           <Link to="/admin/forgot-password">
             {t("auth.admin.login.forgotPassword")}
           </Link>
@@ -146,7 +145,7 @@ const AdminLogin = () => {
           {t("auth.admin.login.submit")}
         </AuthButton>
 
-        <div className="user-portal-link">
+        <div className="admin-login-user-portal-link">
           <Link to="/login">← {t("auth.admin.login.backToUser")}</Link>
         </div>
       </form>

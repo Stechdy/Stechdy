@@ -4,7 +4,8 @@ const {
   sendEveningMoodReminder,
   sendTaskReminders,
   sendStudySessionReminders,
-  sendDeadlineReminders
+  sendDeadlineReminders,
+  autoMarkMissedSessions
 } = require('../services/notificationService');
 
 // Initialize all scheduled tasks
@@ -65,6 +66,20 @@ const initializeScheduler = () => {
     timezone: "Asia/Ho_Chi_Minh"
   });
 
+  // ========== AUTO-MARK MISSED SESSIONS ==========
+  
+  // Check for missed sessions every minute for accuracy
+  cron.schedule('* * * * *', async () => {
+    console.log('Running auto-mark missed sessions...');
+    try {
+      await autoMarkMissedSessions();
+    } catch (error) {
+      console.error('Auto-mark missed sessions failed:', error);
+    }
+  }, {
+    timezone: "Asia/Ho_Chi_Minh"
+  });
+
   // ========== DEADLINE REMINDERS ==========
   
   // Check for deadlines at 8:00 AM and 6:00 PM daily
@@ -87,6 +102,7 @@ const initializeScheduler = () => {
   console.log('  🌙 Evening mood reminders: 7:00 PM daily');
   console.log('  ✅ Task reminders: Every hour');
   console.log('  📚 Study session reminders: Every 15 minutes');
+  console.log('  ❌ Auto-mark missed sessions: Every minute');
   console.log('  ⏰ Deadline reminders: 8:00 AM & 6:00 PM daily');
   console.log('========================================');
 };

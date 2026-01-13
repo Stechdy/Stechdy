@@ -378,18 +378,6 @@ const Dashboard = () => {
                 <QuoteCard onClick={() => setShowQuoteModal(true)} />
               </div>
 
-              {/* Active Study Timer */}
-              {activeSession && (
-                <StudyTimer
-                  session={activeSession}
-                  onEnd={handleSessionEnd}
-                  onRefresh={fetchActiveSession}
-                />
-              )}
-            </div>
-
-            {/* Right Column */}
-            <div className="dashboard-right-col">
               {/* Missed Sessions Alert */}
               {missedSessions.length > 0 && (
                 <section className="missed-section">
@@ -425,6 +413,19 @@ const Dashboard = () => {
                   </div>
                 </section>
               )}
+
+              {/* Active Study Timer */}
+              {activeSession && (
+                <StudyTimer
+                  session={activeSession}
+                  onEnd={handleSessionEnd}
+                  onRefresh={fetchActiveSession}
+                />
+              )}
+            </div>
+
+            {/* Right Column */}
+            <div className="dashboard-right-col">
 
               {/* Today's Progress */}
               <section className="progress-section">

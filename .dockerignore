@@ -1,0 +1,15 @@
+# Docker & CI/CD ignore
+.git
+.github
+*.md
+!DEPLOYMENT.md
+
+# Logs
+logs
+*.log
+
+# Certbot data (will be generated)
+certbot/
+
+# Scripts (not needed in image)
+scripts/
