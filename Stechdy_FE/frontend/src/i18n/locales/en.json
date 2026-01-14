@@ -21,14 +21,23 @@
   "hero": {
     "badge": "Your study companion is here",
     "title": "Study Smarter,",
-    "titleGradient": "Feel Better",
+    "titleGradient": "Not Harder",
     "subtitle": "S'Techdy combines intelligent study planning with mood tracking to help you achieve academic success while maintaining your mental wellness.",
     "startFreeTrial": "Start Free Trial",
+    "watchDemo": "Watch Demo",
     "stats": {
       "activeStudents": "Active Students",
       "improvedFocus": "Improved Focus",
       "userRating": "User Rating"
+    },
+    "mockup": {
+      "moodGreat": "Feeling Great!",
+      "progressWeek": "+23% This Week",
+      "studyTime": "2h 30m Studied"
     }
+  },
+  "trusted": {
+    "text": "Trusted by students from top universities worldwide"
   },
   "features": {
     "badge": "Features",
@@ -102,7 +111,93 @@
     "button": "Get Started Free"
   },
   "footer": {
-    "copyright": " 2025 S'Techdy. All rights reserved."
+    "copyright": " 2025 S'Techdy. All rights reserved.",
+    "description": "Your intelligent study companion that combines smart planning with mood tracking for academic success.",
+    "product": {
+      "heading": "Product",
+      "features": "Features",
+      "pricing": "Pricing",
+      "testimonials": "Testimonials"
+    },
+    "company": {
+      "heading": "Company",
+      "about": "About Us",
+      "support": "Support",
+      "termsOfUse": "Terms of Use"
+    },
+    "getStarted": {
+      "heading": "Get Started",
+      "signIn": "Sign In",
+      "createAccount": "Create Account"
+    }
+  },
+  "landingPricing": {
+    "badge": "Pricing",
+    "title": "Choose Your Plan",
+    "subtitle": "Select the perfect plan for your study journey. Upgrade or downgrade at any time.",
+    "free": {
+      "name": "Free",
+      "price": "0",
+      "currency": "₫",
+      "period": "",
+      "button": "Your current plan",
+      "description": "See what S'Techdy can do"
+    },
+    "oneMonth": {
+      "name": "1 Month Plan",
+      "price": "39,000",
+      "originalPrice": "39,000",
+      "currency": "₫",
+      "period": "/1 month",
+      "discount": "-0%",
+      "button": "Get 1 Month",
+      "description": "Try Premium features"
+    },
+    "threeMonths": {
+      "name": "3 Months Plan",
+      "price": "99,000",
+      "originalPrice": "117,000",
+      "currency": "₫",
+      "period": "/3 months",
+      "discount": "-15%",
+      "popular": "Most Popular",
+      "button": "Get 3 Months",
+      "description": "Save 15% - Most Popular"
+    },
+    "oneYear": {
+      "name": "1 Year Plan",
+      "price": "299,000",
+      "originalPrice": "468,000",
+      "currency": "₫",
+      "period": "/1 year",
+      "discount": "-36%",
+      "button": "Get 1 Year",
+      "description": "Save 36% - Best Value"
+    },
+    "features": {
+      "basicScheduling": "Basic study scheduling",
+      "moodTracking": "Daily mood check-in",
+      "limitedAnalytics": "Limited progress analytics",
+      "basicGoals": "Up to 3 study goals",
+      "everything": "Everything in Free",
+      "advancedAnalytics": "Advanced progress analytics",
+      "customGoals": "Unlimited study goals",
+      "exportData": "Export your data",
+      "prioritySupport": "Priority email support",
+      "everythingMonth": "Everything in 1 Month Plan",
+      "aiInsights": "AI-powered study insights",
+      "collaboration": "Study group collaboration",
+      "customThemes": "Custom app themes",
+      "advancedMood": "Advanced mood analytics",
+      "integrations": "Calendar integrations",
+      "everythingThreeMonths": "Everything in 3 Months Plan",
+      "aiCoach": "Personal AI study coach",
+      "unlimitedStorage": "Unlimited cloud storage",
+      "apiAccess": "API access",
+      "dedicatedSupport": "Dedicated support",
+      "earlyAccess": "Early access to new features",
+      "customBranding": "Custom branding options"
+    }
   },
   "language": {
     "en": "English",
@@ -219,7 +314,7 @@
     "title": "Notification & Sound Settings",
     "notifications": "Notifications",
     "notificationsDesc": "Manage what notifications you receive",
-    "sound": "Sound",
+    "soundLabel": "Sound",
     "soundDesc": "Customize notification sounds",
     "enableNotifications": "Enable Notifications",
     "enableNotificationsDesc": "Turn all notifications on or off",
