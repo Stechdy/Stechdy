@@ -182,7 +182,6 @@ const Login = () => {
               text="continue_with"
               shape="rectangular"
               locale={i18n.language}
-              width="400"
               auto_select={false}
               use_fedcm_for_prompt={false}
             />
