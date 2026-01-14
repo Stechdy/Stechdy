@@ -125,14 +125,26 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  margin: 0;
+  padding: 0;
 }
 
 .google-login-wrapper > div {
   width: 100% !important;
+  max-width: 400px;
+  display: flex !important;
+  justify-content: center !important;
 }
 
 .google-login-wrapper > div > div {
   width: 100% !important;
+  max-width: 400px !important;
+}
+
+.google-login-wrapper iframe {
+  width: 100% !important;
+  max-width: 400px !important;
+  height: 44px !important;
 }
 
 /* Mobile responsive */
