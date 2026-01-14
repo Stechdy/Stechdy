@@ -20,15 +20,24 @@
   },
   "hero": {
     "badge": "Người bạn đồng hành học tập của bạn",
-    "title": "Học Thông Minh,",
-    "titleGradient": "Cảm Thấy Tốt Hơn",
+    "title": "Học Thông Minh Hơn,",
+    "titleGradient": "Không Chăm Chỉ Hơn",
     "subtitle": "S'Techdy kết hợp lập kế hoạch học tập thông minh với theo dõi tâm trạng để giúp bạn đạt được thành công học tập đồng thời duy trì sức khỏe tinh thần.",
     "startFreeTrial": "Dùng thử miễn phí",
+    "watchDemo": "Xem Demo",
     "stats": {
       "activeStudents": "Học sinh đang hoạt động",
       "improvedFocus": "Cải thiện tập trung",
       "userRating": "Đánh giá người dùng"
+    },
+    "mockup": {
+      "moodGreat": "Cảm thấy tuyệt vời!",
+      "progressWeek": "+23% Tuần này",
+      "studyTime": "2 giờ 30 phút Đã học"
     }
+  },
+  "trusted": {
+    "text": "Được tin dùng bởi sinh viên từ các trường đại học hàng đầu thế giới"
   },
   "features": {
     "badge": "Tính năng",
@@ -102,7 +111,93 @@
     "button": "Bắt đầu miễn phí"
   },
   "footer": {
-    "copyright": " 2025 S'Techdy. Bảo lưu mọi quyền."
+    "copyright": " 2025 S'Techdy. Bảo lưu mọi quyền.",
+    "description": "Người bạn đồng hành học tập thông minh kết hợp lập kế hoạch thông minh với theo dõi tâm trạng để đạt thành công học tập.",
+    "product": {
+      "heading": "Sản phẩm",
+      "features": "Tính năng",
+      "pricing": "Bảng giá",
+      "testimonials": "Đánh giá"
+    },
+    "company": {
+      "heading": "Công ty",
+      "about": "Về chúng tôi",
+      "support": "Hỗ trợ",
+      "termsOfUse": "Điều khoản sử dụng"
+    },
+    "getStarted": {
+      "heading": "Bắt đầu",
+      "signIn": "Đăng nhập",
+      "createAccount": "Tạo tài khoản"
+    }
+  },
+  "landingPricing": {
+    "badge": "Bảng giá",
+    "title": "Chọn Gói Phù Hợp",
+    "subtitle": "Chọn gói hoàn hảo cho hành trình học tập của bạn. Nâng cấp hoặc hạ cấp bất cứ lúc nào.",
+    "free": {
+      "name": "Miễn phí",
+      "price": "0",
+      "currency": "₫",
+      "period": "",
+      "button": "Gói hiện tại",
+      "description": "Khám phá S'Techdy có thể làm gì"
+    },
+    "oneMonth": {
+      "name": "Gói 1 Tháng",
+      "price": "39.000",
+      "originalPrice": "39,000",
+      "currency": "₫",
+      "period": "/1 tháng",
+      "discount": "-0%",
+      "button": "Chọn gói 1 tháng",
+      "description": "Dùng thử các tính năng Premium"
+    },
+    "threeMonths": {
+      "name": "Gói 3 Tháng",
+      "price": "99.000",
+      "originalPrice": "117.000",
+      "currency": "₫",
+      "period": "/3 tháng",
+      "discount": "-15%",
+      "popular": "Phổ biến nhất",
+      "button": "Chọn gói 3 tháng",
+      "description": "Tiết kiệm 15% - Phổ biến nhất"
+    },
+    "oneYear": {
+      "name": "Gói 1 Năm",
+      "price": "299.000",
+      "originalPrice": "468.000",
+      "currency": "₫",
+      "period": "/1 năm",
+      "discount": "-36%",
+      "button": "Chọn gói 1 năm",
+      "description": "Tiết kiệm 36% - Giá trị tốt nhất"
+    },
+    "features": {
+      "basicScheduling": "Lên lịch học cơ bản",
+      "moodTracking": "Check-in tâm trạng hàng ngày",
+      "limitedAnalytics": "Phân tích tiến độ giới hạn",
+      "basicGoals": "Tối đa 3 mục tiêu học tập",
+      "everything": "Tất cả tính năng Miễn phí",
+      "advancedAnalytics": "Phân tích tiến độ nâng cao",
+      "customGoals": "Không giới hạn mục tiêu học tập",
+      "exportData": "Xuất dữ liệu của bạn",
+      "prioritySupport": "Hỗ trợ email ưu tiên",
+      "everythingMonth": "Tất cả tính năng Gói 1 Tháng",
+      "aiInsights": "Phân tích học tập bằng AI",
+      "collaboration": "Hợp tác nhóm học",
+      "customThemes": "Giao diện tùy chỉnh",
+      "advancedMood": "Phân tích tâm trạng nâng cao",
+      "integrations": "Tích hợp lịch",
+      "everythingThreeMonths": "Tất cả tính năng Gói 3 Tháng",
+      "aiCoach": "Huấn luyện viên AI cá nhân",
+      "unlimitedStorage": "Lưu trữ đám mây không giới hạn",
+      "apiAccess": "Truy cập API",
+      "dedicatedSupport": "Hỗ trợ riêng",
+      "earlyAccess": "Truy cập sớm tính năng mới",
+      "customBranding": "Tùy chỉnh thương hiệu"
+    }
   },
   "language": {
     "en": "Tiếng Anh",

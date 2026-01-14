@@ -13,7 +13,7 @@ import { SocketProvider } from "./context/SocketContext";
 import { ThemeProvider } from "./context/ThemeContext";
 
 // Landing Page
-import Landing from "./pages/Landing/Landing";
+import LandingNew from "./pages/LandingNew/LandingNew";
 import Pricing from "./pages/Pricing/Pricing";
 
 // Auth Pages
@@ -56,245 +56,241 @@ function App() {
         <Router>
           <ScrollToTop />
           <Routes>
-          {/* Public Routes - Redirect if authenticated */}
-          <Route
-            path="/login"
-            element={
-              <PublicRoute>
-                <Login />
-              </PublicRoute>
-            }
-          />
-          <Route
-            path="/register"
-            element={
-              <PublicRoute>
-                <Register />
-              </PublicRoute>
-            }
-          />
-          <Route
-            path="/forgot-password"
-            element={
-              <PublicRoute>
-                <ForgotPassword />
-              </PublicRoute>
-            }
-          />
-          <Route
-            path="/reset-password/:resetToken"
-            element={
-              <PublicRoute>
-                <ResetPassword />
-              </PublicRoute>
-            }
-          />
+            {/* Public Routes - Redirect if authenticated */}
+            <Route
+              path="/login"
+              element={
+                <PublicRoute>
+                  <Login />
+                </PublicRoute>
+              }
+            />
+            <Route
+              path="/register"
+              element={
+                <PublicRoute>
+                  <Register />
+                </PublicRoute>
+              }
+            />
+            <Route
+              path="/forgot-password"
+              element={
+                <PublicRoute>
+                  <ForgotPassword />
+                </PublicRoute>
+              }
+            />
+            <Route
+              path="/reset-password/:resetToken"
+              element={
+                <PublicRoute>
+                  <ResetPassword />
+                </PublicRoute>
+              }
+            />
 
-          {/* Admin Public Routes */}
-          <Route
-            path="/admin/login"
-            element={
-              <PublicRoute redirectTo="/admin/dashboard">
-                <AdminLogin />
-              </PublicRoute>
-            }
-          />
-          <Route
-            path="/admin/forgot-password"
-            element={
-              <PublicRoute redirectTo="/admin/dashboard">
-                <AdminForgotPassword />
-              </PublicRoute>
-            }
-          />
-          <Route
-            path="/admin/payments"
-            element={
-              <AdminPrivateRoute>
-                <AdminPayments />
-              </AdminPrivateRoute>
-            }
-          />
+            {/* Admin Public Routes */}
+            <Route
+              path="/admin/login"
+              element={
+                <PublicRoute redirectTo="/admin/dashboard">
+                  <AdminLogin />
+                </PublicRoute>
+              }
+            />
+            <Route
+              path="/admin/forgot-password"
+              element={
+                <PublicRoute redirectTo="/admin/dashboard">
+                  <AdminForgotPassword />
+                </PublicRoute>
+              }
+            />
+            <Route
+              path="/admin/payments"
+              element={
+                <AdminPrivateRoute>
+                  <AdminPayments />
+                </AdminPrivateRoute>
+              }
+            />
 
-          {/* Private Routes - User Dashboard */}
-          <Route
-            path="/dashboard"
-            element={
-              <PrivateRoute>
-                <Dashboard />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/calendar"
-            element={
-              <PrivateRoute>
-                <Calendar />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/mood"
-            element={
-              <PrivateRoute>
-                <Mood />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/mood/history"
-            element={
-              <PrivateRoute>
-                <MoodHistory />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/notifications"
-            element={
-              <PrivateRoute>
-                <Notifications />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/notification-settings"
-            element={
-              <PrivateRoute>
-                <NotificationSettings />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/study-tracker"
-            element={
-              <PrivateRoute>
-                <StudyTracker />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/calendar"
-            element={
-              <PrivateRoute>
-                <Calendar />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/slot-detail/:id"
-            element={
-              <PrivateRoute>
-                <SlotDetail />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/subject/:id"
-            element={
-              <PrivateRoute>
-                <SubjectDetail />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/account"
-            element={
-              <PrivateRoute>
-                <Account />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/profile"
-            element={
-              <PrivateRoute>
-                <UserInformation />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/about"
-            element={
-              <PrivateRoute>
-                <About />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/help"
-            element={
-              <PrivateRoute>
-                <HelpSupport />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/terms"
-            element={
-              <PrivateRoute>
-                <TermsOfUse />
-              </PrivateRoute>
-            }
-          />
+            {/* Private Routes - User Dashboard */}
+            <Route
+              path="/dashboard"
+              element={
+                <PrivateRoute>
+                  <Dashboard />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/calendar"
+              element={
+                <PrivateRoute>
+                  <Calendar />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/mood"
+              element={
+                <PrivateRoute>
+                  <Mood />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/mood/history"
+              element={
+                <PrivateRoute>
+                  <MoodHistory />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/notifications"
+              element={
+                <PrivateRoute>
+                  <Notifications />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/notification-settings"
+              element={
+                <PrivateRoute>
+                  <NotificationSettings />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/study-tracker"
+              element={
+                <PrivateRoute>
+                  <StudyTracker />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/calendar"
+              element={
+                <PrivateRoute>
+                  <Calendar />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/slot-detail/:id"
+              element={
+                <PrivateRoute>
+                  <SlotDetail />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/subject/:id"
+              element={
+                <PrivateRoute>
+                  <SubjectDetail />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/account"
+              element={
+                <PrivateRoute>
+                  <Account />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/profile"
+              element={
+                <PrivateRoute>
+                  <UserInformation />
+                </PrivateRoute>
+              }
+            />
+            <Route path="/about" element={<About />} />
+            <Route path="/help-support" element={<HelpSupport />} />
+            <Route path="/terms-of-use" element={<TermsOfUse />} />
+            {/* Legacy routes for authenticated users */}
+            <Route
+              path="/help"
+              element={
+                <PrivateRoute>
+                  <HelpSupport />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/terms"
+              element={
+                <PrivateRoute>
+                  <TermsOfUse />
+                </PrivateRoute>
+              }
+            />
 
-          {/* Protected Admin Routes */}
-          <Route
-            path="/admin/dashboard"
-            element={
-              <AdminPrivateRoute>
-                <AdminDashboard />
-              </AdminPrivateRoute>
-            }
-          />
-          <Route
-            path="/admin/users"
-            element={
-              <AdminPrivateRoute>
-                <AdminUsers />
-              </AdminPrivateRoute>
-            }
-          />
-          <Route
-            path="/admin/revenue"
-            element={
-              <AdminPrivateRoute>
-                <AdminRevenue />
-              </AdminPrivateRoute>
-            }
-          />
-          <Route
-            path="/admin/reports"
-            element={
-              <AdminPrivateRoute>
-                <AdminReports />
-              </AdminPrivateRoute>
-            }
-          />
-          <Route
-            path="/admin/notifications"
-            element={
-              <AdminPrivateRoute>
-                <AdminNotifications />
-              </AdminPrivateRoute>
-            }
-          />
-          <Route
-            path="/admin/activity"
-            element={
-              <AdminPrivateRoute>
-                <AdminActivity />
-              </AdminPrivateRoute>
-            }
-          />
+            {/* Protected Admin Routes */}
+            <Route
+              path="/admin/dashboard"
+              element={
+                <AdminPrivateRoute>
+                  <AdminDashboard />
+                </AdminPrivateRoute>
+              }
+            />
+            <Route
+              path="/admin/users"
+              element={
+                <AdminPrivateRoute>
+                  <AdminUsers />
+                </AdminPrivateRoute>
+              }
+            />
+            <Route
+              path="/admin/revenue"
+              element={
+                <AdminPrivateRoute>
+                  <AdminRevenue />
+                </AdminPrivateRoute>
+              }
+            />
+            <Route
+              path="/admin/reports"
+              element={
+                <AdminPrivateRoute>
+                  <AdminReports />
+                </AdminPrivateRoute>
+              }
+            />
+            <Route
+              path="/admin/notifications"
+              element={
+                <AdminPrivateRoute>
+                  <AdminNotifications />
+                </AdminPrivateRoute>
+              }
+            />
+            <Route
+              path="/admin/activity"
+              element={
+                <AdminPrivateRoute>
+                  <AdminActivity />
+                </AdminPrivateRoute>
+              }
+            />
 
-          {/* Default redirect */}
-          <Route path="/" element={<Landing />} />
-          <Route path="/pricing" element={<Pricing />} />
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </Router>
-    </SocketProvider>
+            {/* Default redirect */}
+            <Route path="/" element={<LandingNew />} />
+            <Route path="/pricing" element={<Pricing />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </Router>
+      </SocketProvider>
     </ThemeProvider>
   );
 }
