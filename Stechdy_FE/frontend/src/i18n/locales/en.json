@@ -211,6 +211,7 @@
       "forgotPassword": "Forgot password?",
       "submit": "Login",
       "orContinueWith": "or continue with",
+      "googleSignIn": "Sign in with Google",
       "noAccount": "Don't have an account?",
       "signUpNow": "Sign up now",
       "loginFailed": "Login failed. Please try again.",
