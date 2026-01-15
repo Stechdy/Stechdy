@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import AdminLayout from "../../components/layout/AdminLayout";
 import config from "../../config";
+import "../../styles/AdminTheme.css";
 import "../../components/layout/AdminLayout.css";
 import "./AdminPayments.css";
 
@@ -276,28 +277,30 @@ const AdminPayments = () => {
                         <td>{payment.submittedAt ? formatDate(payment.submittedAt) : "-"}</td>
                         <td>{getStatusBadge(payment.status)}</td>
                         <td>
-                          {payment.status === "pending" && payment.submittedAt ? (
-                            <div className="action-buttons">
-                              <button
-                                className="btn btn-success btn-sm"
-                                onClick={() => handleVerifyPayment(payment._id, "verified")}
-                                disabled={processing === payment._id}
-                              >
-                                ✓ Duyệt
-                              </button>
-                              <button
-                                className="btn btn-danger btn-sm"
-                                onClick={() => handleVerifyPayment(payment._id, "rejected")}
-                                disabled={processing === payment._id}
-                              >
-                                ✗ Từ chối
-                              </button>
-                            </div>
-                          ) : payment.status === "pending" && !payment.submittedAt ? (
-                            <span className="text-muted">Chờ user xác nhận</span>
-                          ) : (
-                            <span className="text-muted">-</span>
-                          )}
+                          <div className="action-buttons">
+                            {payment.status === "pending" && payment.submittedAt ? (
+                              <>
+                                <button
+                                  className="btn btn-success btn-sm"
+                                  onClick={() => handleVerifyPayment(payment._id, "verified")}
+                                  disabled={processing === payment._id}
+                                >
+                                  ✓ Duyệt
+                                </button>
+                                <button
+                                  className="btn btn-danger btn-sm"
+                                  onClick={() => handleVerifyPayment(payment._id, "rejected")}
+                                  disabled={processing === payment._id}
+                                >
+                                  ✗ Từ chối
+                                </button>
+                              </>
+                            ) : payment.status === "pending" && !payment.submittedAt ? (
+                              <span className="text-muted">Chờ user xác nhận</span>
+                            ) : (
+                              <span className="text-muted">-</span>
+                            )}
+                          </div>
                         </td>
                       </tr>
                     ))}
