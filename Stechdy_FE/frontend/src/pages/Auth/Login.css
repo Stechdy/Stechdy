@@ -115,14 +115,43 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  margin: 0;
+  padding: 0;
 }
 
 .google-login-wrapper > div {
   width: 100% !important;
+  display: flex !important;
+  justify-content: center !important;
 }
 
 .google-login-wrapper > div > div {
   width: 100% !important;
+  display: flex !important;
+  justify-content: center !important;
+}
+
+.google-login-wrapper > div > div > iframe {
+  width: 100% !important;
+  height: 44px !important;
+}
+
+.google-login-wrapper iframe {
+  width: 100% !important;
+  height: 44px !important;
+  min-width: 100% !important;
+  max-width: 100% !important;
+}
+
+/* Force full width for all Google button variants */
+.google-login-wrapper * {
+  max-width: 100% !important;
+}
+
+.google-login-wrapper button,
+.google-login-wrapper div[role="button"] {
+  width: 100% !important;
+  max-width: 100% !important;
 }
 
 /* Mobile responsive */
