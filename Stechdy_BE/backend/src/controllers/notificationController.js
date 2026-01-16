@@ -159,10 +159,18 @@ exports.deleteNotification = async (req, res) => {
 exports.testMoodReminder = async (req, res) => {
   try {
     const { sendMoodReminderEmail, createNotification } = require('../services/notificationService');
+    const Settings = require('../models/Settings');
     const user = req.user;
 
-    // Send email
-    const emailSent = await sendMoodReminderEmail(user);
+    // Check if email notifications are enabled
+    const userSettings = await Settings.findOne({ userId: user._id });
+    const emailEnabled = userSettings?.notification?.email;
+    
+    let emailSent = false;
+    if (emailEnabled) {
+      // Send email
+      emailSent = await sendMoodReminderEmail(user);
+    }
     
     // Create notification
     const notification = await createNotification(
@@ -174,8 +182,9 @@ exports.testMoodReminder = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      message: 'Đã gửi email và tạo thông báo test',
+      message: emailEnabled ? 'Đã gửi email và tạo thông báo test' : 'Email notifications đã tắt - chỉ tạo thông báo',
       emailSent,
+      emailEnabled,
       notification
     });
   } catch (error) {

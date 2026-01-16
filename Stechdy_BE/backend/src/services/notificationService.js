@@ -1,5 +1,6 @@
 const nodemailer = require('nodemailer');
 const User = require('../models/User');
+const Settings = require('../models/Settings');
 const MoodTracking = require('../models/MoodTracking');
 const Notification = require('../models/Notification');
 const Task = require('../models/Task');
@@ -197,7 +198,10 @@ const sendDailyMoodReminders = async () => {
       // If no mood entry today, send reminder
       if (!todayMood) {
         // Send email if email notifications enabled
-        if (user.notificationSettings.dailyEmail) {
+        const userSettings = await Settings.findOne({ userId: user._id });
+        const emailEnabled = userSettings?.notification?.email && user.notificationSettings.dailyEmail;
+        
+        if (emailEnabled) {
           const emailSent = await sendMoodReminderEmail(user);
           if (emailSent) sentCount++;
         }
@@ -289,7 +293,10 @@ const sendTaskReminders = async () => {
       sentCount++;
 
       // Send email if enabled
-      if (task.userId.notificationSettings?.dailyEmail) {
+      const userSettings = await Settings.findOne({ userId: task.userId._id });
+      const emailEnabled = userSettings?.notification?.email && task.userId.notificationSettings?.dailyEmail;
+      
+      if (emailEnabled) {
         await sendTaskReminderEmail(task, task.userId, message);
       }
     }
@@ -424,7 +431,10 @@ const sendStudySessionReminders = async () => {
       sentCount++;
 
       // Send email if enabled
-      if (session.userId.notificationSettings?.dailyEmail) {
+      const userSettings = await Settings.findOne({ userId: session.userId._id });
+      const emailEnabled = userSettings?.notification?.email && session.userId.notificationSettings?.dailyEmail;
+      
+      if (emailEnabled) {
         console.log(`     📨 Sending email to ${session.userId.email}...`);
         await sendStudySessionReminderEmail(session, session.userId, message);
       }
@@ -531,7 +541,10 @@ const sendDeadlineReminders = async () => {
       sentCount++;
 
       // Send email if enabled and urgent
-      if (deadline.userId.notificationSettings?.dailyEmail && hoursUntil <= 24) {
+      const userSettings = await Settings.findOne({ userId: deadline.userId._id });
+      const emailEnabled = userSettings?.notification?.email && deadline.userId.notificationSettings?.dailyEmail;
+      
+      if (emailEnabled && hoursUntil <= 24) {
         await sendDeadlineReminderEmail(deadline, deadline.userId, message);
       }
     }

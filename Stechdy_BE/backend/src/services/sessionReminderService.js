@@ -1,6 +1,7 @@
 const cron = require('node-cron');
 const StudySessionSchedule = require('../models/StudySessionSchedule');
 const User = require('../models/User');
+const Settings = require('../models/Settings');
 const { sendReminderEmail, sendStartSessionEmail, sendCompletionEmail } = require('./emailService');
 const crypto = require('crypto');
 
@@ -69,6 +70,15 @@ const checkAndSendReminders = async () => {
           const subject = session.subjectId;
           
           if (user && user.email && subject) {
+            // Check if user has email notifications enabled
+            const userSettings = await Settings.findOne({ userId: user._id });
+            const emailEnabled = userSettings?.notification?.email;
+            
+            if (!emailEnabled) {
+              console.log(`🔕 Email notifications disabled for user ${user.email}`);
+              continue;
+            }
+            
             const actionToken = generateActionToken(session._id.toString(), user._id.toString());
             
             const sessionData = {
@@ -133,6 +143,15 @@ const checkAndSendStartEmails = async () => {
           const subject = session.subjectId;
           
           if (user && user.email && subject) {
+            // Check if user has email notifications enabled
+            const userSettings = await Settings.findOne({ userId: user._id });
+            const emailEnabled = userSettings?.notification?.email;
+            
+            if (!emailEnabled) {
+              console.log(`🔕 Email notifications disabled for user ${user.email}`);
+              continue;
+            }
+            
             const sessionData = {
               userName: user.name,
               subjectName: subject.subjectName,
@@ -250,17 +269,25 @@ const checkAndCompleteEndedSessions = async () => {
         const subject = session.subjectId;
         
         if (user && user.email && subject) {
-          const sent = await sendCompletionEmail(user.email, {
-            userName: user.name,
-            subjectName: subject.subjectName,
-            actualDuration,
-            startTime: session.startTime,
-            endTime: session.endTime,
-            focusLevel: session.focusLevel || 3
-          });
+          // Check if user has email notifications enabled
+          const userSettings = await Settings.findOne({ userId: user._id });
+          const emailEnabled = userSettings?.notification?.email;
           
-          if (sent) {
-            console.log(`📧 Completion email sent for session ${session._id} to ${user.email}`);
+          if (emailEnabled) {
+            const sent = await sendCompletionEmail(user.email, {
+              userName: user.name,
+              subjectName: subject.subjectName,
+              actualDuration,
+              startTime: session.startTime,
+              endTime: session.endTime,
+              focusLevel: session.focusLevel || 3
+            });
+            
+            if (sent) {
+              console.log(`📧 Completion email sent for session ${session._id} to ${user.email}`);
+            }
+          } else {
+            console.log(`🔕 Email notifications disabled for user ${user.email}`);
           }
         }
       }

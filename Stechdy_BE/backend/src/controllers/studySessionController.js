@@ -627,17 +627,24 @@ exports.endSession = async (req, res) => {
     // Gửi email chúc mừng (nếu có emailService)
     try {
       const { sendCompletionEmail } = require('../services/emailService');
+      const Settings = require('../models/Settings');
       const user = await require('../models/User').findById(userId);
       
       if (user && user.email && sendCompletionEmail) {
-        await sendCompletionEmail(user.email, {
-          userName: user.name,
-          subjectName: session.subjectId?.subjectName || 'Study Session',
-          actualDuration,
-          startTime: session.startTime,
-          endTime: session.endTime,
-          focusLevel
-        });
+        // Check if email notifications are enabled
+        const userSettings = await Settings.findOne({ userId: user._id });
+        const emailEnabled = userSettings?.notification?.email;
+        
+        if (emailEnabled) {
+          await sendCompletionEmail(user.email, {
+            userName: user.name,
+            subjectName: session.subjectId?.subjectName || 'Study Session',
+            actualDuration,
+            startTime: session.startTime,
+            endTime: session.endTime,
+            focusLevel
+          });
+        }
       }
     } catch (emailError) {
       console.error('❌ Error sending completion email:', emailError);
