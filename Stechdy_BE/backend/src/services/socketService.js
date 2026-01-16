@@ -256,6 +256,21 @@ const getOnlineUserIds = () => {
   return Array.from(userSockets.keys());
 };
 
+/**
+ * Send premium status update to user
+ * @param {String} userId - User ID
+ * @param {Object} premiumData - Premium subscription data
+ */
+const sendPremiumStatusUpdate = (userId, premiumData) => {
+  return emitToUser(userId, 'premium:status-updated', {
+    premiumStatus: premiumData.premiumStatus,
+    premiumExpiryDate: premiumData.premiumExpiryDate,
+    planName: premiumData.planName,
+    message: premiumData.message || 'Your premium subscription has been activated!',
+    timestamp: new Date()
+  });
+};
+
 module.exports = {
   initializeSocket,
   getIO,
@@ -269,5 +284,6 @@ module.exports = {
   broadcastAnnouncement,
   getOnlineUsersCount,
   isUserOnline,
-  getOnlineUserIds
+  getOnlineUserIds,
+  sendPremiumStatusUpdate
 };
