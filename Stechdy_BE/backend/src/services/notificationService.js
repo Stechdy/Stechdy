@@ -139,13 +139,14 @@ const sendMoodReminderEmail = async (user) => {
 };
 
 // Create in-app notification
-const createNotification = async (userId, title, message, type = 'reminder') => {
+const createNotification = async (userId, type, title, message, metadata = {}) => {
   try {
     const notification = await Notification.create({
       userId,
+      type,
       title,
       message,
-      type,
+      metadata,
       isRead: false
     });
     
@@ -204,9 +205,9 @@ const sendDailyMoodReminders = async () => {
         // Create in-app notification
         await createNotification(
           user._id,
+          'mood_checkin',
           '🌟 Nhắc nhở: Ghi lại cảm xúc hôm nay!',
-          'Hãy dành vài giây để ghi lại cảm xúc của bạn. Điều này giúp bạn theo dõi sức khỏe tinh thần tốt hơn!',
-          'mood_checkin'
+          'Hãy dành vài giây để ghi lại cảm xúc của bạn. Điều này giúp bạn theo dõi sức khỏe tinh thần tốt hơn!'
         );
         notificationCount++;
       }
@@ -791,7 +792,7 @@ const autoMarkMissedSessions = async () => {
           // Create notification for user
           await createNotification(
             session.userId._id,
-            'session_missed',
+            'study_reminder',
             `Buổi học ${session.subjectId.subjectName}`,
             `Bạn đã bỏ lỡ buổi học ${session.subjectId.subjectName} lúc ${session.startTime}`,
             { sessionId: session._id }

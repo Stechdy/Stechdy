@@ -448,9 +448,9 @@ function setupCustomReminder() {
     for (const user of users) {
       await createNotification(
         user._id,
+        'system',
         'Custom Reminder',
-        'Your custom message here',
-        'system'
+        'Your custom message here'
       );
     }
   }, {

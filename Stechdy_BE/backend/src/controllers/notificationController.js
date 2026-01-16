@@ -167,9 +167,9 @@ exports.testMoodReminder = async (req, res) => {
     // Create notification
     const notification = await createNotification(
       user._id,
+      'mood_checkin',
       '🌟 Nhắc nhở: Ghi lại cảm xúc hôm nay!',
-      'Đây là email test. Hãy dành vài giây để ghi lại cảm xúc của bạn.',
-      'mood_checkin'
+      'Đây là email test. Hãy dành vài giây để ghi lại cảm xúc của bạn.'
     );
 
     res.status(200).json({
