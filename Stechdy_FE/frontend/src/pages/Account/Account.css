@@ -842,6 +842,13 @@
 .language-option-flag {
   font-size: 20px;
   line-height: 1;
+  color: var(--text-secondary);
+  opacity: 0.9;
+}
+
+[data-theme="dark"] .language-option-flag {
+  color: var(--text-secondary);
+  opacity: 1;
 }
 
 .language-option-check {
