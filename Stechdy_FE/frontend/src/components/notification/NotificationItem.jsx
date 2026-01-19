@@ -12,7 +12,7 @@ const NotificationItem = ({
   onClick,
   viewMode = "table", // 'table' or 'card'
 }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   // Helper to get translated content if translation key exists
   const getTranslatedContent = (content, fallback) => {
@@ -31,6 +31,24 @@ const NotificationItem = ({
         return fallback || content;
       }
     }
+    
+    // Map common hardcoded Vietnamese text to translation keys (backwards compatibility)
+    const hardcodedMap = {
+      '🌟 Nhắc nhở: Ghi lại cảm xúc hôm nay!': 'notifications.content.moodCheckinTitle',
+      'Ghi nhận tâm trạng': 'notifications.content.moodCheckinTitle',
+      'Hôm nay bạn cảm thấy thế nào? Hãy dành chút thời gian ghi lại tâm trạng của bạn': 'notifications.content.moodCheckinMessage',
+      'Hãy dành vài giây để ghi lại cảm xúc của bạn. Điều này giúp bạn theo dõi sức khỏe tinh thần tốt hơn!': 'notifications.content.moodCheckinMessage',
+      'Đây là email test. Hãy dành vài giây để ghi lại cảm xúc của bạn.': 'notifications.content.moodCheckinMessage',
+    };
+    
+    // Remove emoji and extra spaces for matching
+    const cleanContent = typeof content === 'string' ? content.replace(/[\ud800-\udfff]./g, '').trim() : content;
+    const mappedKey = hardcodedMap[content] || hardcodedMap[cleanContent];
+    
+    if (mappedKey) {
+      return t(mappedKey);
+    }
+    
     return content;
   };
 
@@ -120,7 +138,8 @@ const NotificationItem = ({
     if (diffInDays < 7)
       return `${diffInDays} ${t("notifications.time.daysAgo")}`;
 
-    return notifDate.toLocaleDateString();
+    const locale = i18n.language === "vi" ? "vi-VN" : "en-US";
+    return notifDate.toLocaleDateString(locale);
   };
 
   const handleClick = () => {

@@ -504,6 +504,18 @@
       "normal": "Normal",
       "high": "High Priority"
     },
+    "metadata": {
+      "subjectName": "Subject",
+      "startTime": "Start Time",
+      "endTime": "End Time",
+      "reminderType": "Reminder Type",
+      "hoursUntil": "Hours Until",
+      "deadlineType": "Deadline Type",
+      "date": "Date",
+      "time": "Time",
+      "duration": "Duration",
+      "location": "Location"
+    },
     "types": {
       "all": "All",
       "mood": "Mood Tracking",

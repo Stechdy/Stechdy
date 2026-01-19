@@ -210,8 +210,8 @@ const sendDailyMoodReminders = async () => {
         await createNotification(
           user._id,
           'mood_checkin',
-          '🌟 Nhắc nhở: Ghi lại cảm xúc hôm nay!',
-          'Hãy dành vài giây để ghi lại cảm xúc của bạn. Điều này giúp bạn theo dõi sức khỏe tinh thần tốt hơn!'
+          'notifications.content.moodCheckinTitle',
+          'notifications.content.moodCheckinMessage'
         );
         notificationCount++;
       }

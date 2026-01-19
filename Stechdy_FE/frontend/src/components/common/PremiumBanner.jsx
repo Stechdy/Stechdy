@@ -1,21 +1,29 @@
 import React, { useState, useEffect } from "react";
 import { refreshUserData } from "../../services/authService";
+import { useSocket } from "../../context/SocketContext";
 import "./PremiumBanner.css";
 
 const PremiumBanner = () => {
   const [show, setShow] = useState(false);
   const [premiumData, setPremiumData] = useState(null);
+  const { onPremiumUpdate } = useSocket();
 
   useEffect(() => {
-    // Refresh user data from server first, then check premium status
-    const checkStatus = async () => {
-      await refreshUserData();
-      checkPremiumStatus();
-    };
-    checkStatus();
-  }, []);
+    // Listen for realtime premium status updates
+    if (onPremiumUpdate) {
+      onPremiumUpdate((data) => {
+        console.log('Premium status updated in banner:', data);
+        // When admin approves, show banner immediately
+        if (data.status === 'premium') {
+          displayBanner();
+        }
+      });
+    }
+  }, [onPremiumUpdate]);
 
-  const checkPremiumStatus = () => {
+  const displayBanner = async () => {
+    // Refresh user data from server to get latest premium info
+    await refreshUserData();
     const user = JSON.parse(localStorage.getItem("user"));
     
     if (user?.premiumStatus === "premium" && user?.premiumExpiryDate) {
@@ -24,28 +32,20 @@ const PremiumBanner = () => {
       
       // Check if premium is still valid
       if (expiryDate > now) {
-        // Check if user has seen the welcome banner before
-        const hasSeenWelcome = localStorage.getItem("premiumWelcomeBannerSeen");
-        
-        // Only show once - first time after becoming premium
-        if (!hasSeenWelcome) {
-          setPremiumData({
-            expiryDate: expiryDate.toLocaleDateString("vi-VN", {
-              day: "2-digit",
-              month: "2-digit",
-              year: "numeric",
-            }),
-          });
-          setShow(true);
-        }
+        setPremiumData({
+          expiryDate: expiryDate.toLocaleDateString("vi-VN", {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric",
+          }),
+        });
+        setShow(true);
       }
     }
   };
 
   const handleClose = () => {
     setShow(false);
-    // Mark as seen permanently - will only show once per user
-    localStorage.setItem("premiumWelcomeBannerSeen", "true");
   };
 
   if (!show || !premiumData) return null;

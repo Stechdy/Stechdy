@@ -144,13 +144,6 @@ exports.deleteNotification = async (req, res) => {
       error: error.message
     });
   }
-
-    console.error('Delete notification error:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Lỗi khi xóa thông báo',
-      error: error.message
-    });
 };  
 
 // @desc    Test send mood reminder
