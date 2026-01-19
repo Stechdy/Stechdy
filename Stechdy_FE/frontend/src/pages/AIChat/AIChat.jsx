@@ -104,19 +104,7 @@ Otherwise, provide a helpful, friendly response related to studying, productivit
       <div className="ai-chat-wrapper">
         {/* Header */}
         <header className="ai-chat-header">
-          <button className="ai-back-btn" onClick={() => navigate("/dashboard")}>
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-              <path
-                d="M19 12H5M5 12L12 19M5 12L12 5"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </button>
           <h1 className="ai-page-title">S'Techdy AI</h1>
-          <div className="ai-header-spacer"></div>
         </header>
 
         {/* Add New Schedule Button */}
