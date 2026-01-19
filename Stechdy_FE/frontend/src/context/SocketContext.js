@@ -16,6 +16,7 @@ export const SocketProvider = ({ children }) => {
   const [isConnected, setIsConnected] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const [unreadCount, setUnreadCount] = useState(0);
+  const [premiumUpdateCallback, setPremiumUpdateCallback] = useState(null);
 
   // Initialize socket connection
   useEffect(() => {
@@ -144,6 +145,29 @@ export const SocketProvider = ({ children }) => {
       }
     });
 
+    // Premium status update
+    newSocket.on('premium:status-updated', (data) => {
+      console.log('🎉 Premium status updated:', data);
+      
+      // Call registered callback if exists
+      if (premiumUpdateCallback) {
+        premiumUpdateCallback(data);
+      }
+      
+      // Show browser notification
+      if (Notification.permission === 'granted') {
+        new Notification('🎉 Premium Activated!', {
+          body: data.message,
+          icon: '/logo192.png',
+          tag: 'premium-activated',
+          requireInteraction: true
+        });
+      }
+      
+      // Play notification sound
+      playNotificationSound();
+    });
+
     setSocket(newSocket);
 
     // Cleanup on unmount
@@ -189,6 +213,11 @@ export const SocketProvider = ({ children }) => {
     }
   }, [socket, isConnected]);
 
+  // Register callback for premium updates
+  const onPremiumUpdate = useCallback((callback) => {
+    setPremiumUpdateCallback(() => callback);
+  }, []);
+
   const value = {
     socket,
     isConnected,
@@ -197,7 +226,8 @@ export const SocketProvider = ({ children }) => {
     unreadCount,
     setUnreadCount,
     requestNotifications,
-    markNotificationAsRead
+    markNotificationAsRead,
+    onPremiumUpdate
   };
 
   return (

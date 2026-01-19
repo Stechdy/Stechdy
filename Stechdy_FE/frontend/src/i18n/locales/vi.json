@@ -629,6 +629,18 @@
       "normal": "Bình thường",
       "high": "Ưu tiên cao"
     },
+    "metadata": {
+      "subjectName": "Môn học",
+      "startTime": "Thời gian bắt đầu",
+      "endTime": "Thời gian kết thúc",
+      "reminderType": "Loại nhắc nhở",
+      "hoursUntil": "Còn lại (giờ)",
+      "deadlineType": "Loại deadline",
+      "date": "Ngày",
+      "time": "Thời gian",
+      "duration": "Thời lượng",
+      "location": "Địa điểm"
+    },
     "types": {
       "all": "Tất cả",
       "mood": "Theo dõi tâm trạng",

@@ -1,6 +1,8 @@
 const Payment = require('../models/Payment');
 const User = require('../models/User');
 const emailService = require('../services/emailService');
+const { sendPremiumStatusUpdate, sendNewNotification } = require('../services/socketService');
+const Notification = require('../models/Notification');
 
 // Generate unique payment code
 const generatePaymentCode = () => {
@@ -259,6 +261,40 @@ exports.verifyPayment = async (req, res) => {
         user.premiumStatus = 'premium';
         user.premiumExpiryDate = expiryDate;
         await user.save();
+
+        // Create in-app notification for premium activation
+        try {
+          const notification = await Notification.create({
+            userId: user._id,
+            type: 'premium',
+            title: '🎉 Premium Activated!',
+            message: `Your ${payment.planName} subscription has been activated successfully. Enjoy premium features until ${expiryDate.toLocaleDateString('vi-VN')}!`,
+            priority: 'high',
+            metadata: {
+              planName: payment.planName,
+              expiryDate: expiryDate,
+              paymentId: payment._id
+            }
+          });
+
+          // Send notification via socket
+          sendNewNotification(user._id.toString(), notification);
+        } catch (notifError) {
+          console.error('Error creating premium notification:', notifError);
+        }
+
+        // Send premium status update via socket (real-time)
+        try {
+          sendPremiumStatusUpdate(user._id.toString(), {
+            premiumStatus: 'premium',
+            premiumExpiryDate: expiryDate,
+            planName: payment.planName,
+            message: `Congratulations! Your ${payment.planName} premium subscription is now active!`
+          });
+          console.log(`✅ Sent premium status update to user ${user._id}`);
+        } catch (socketError) {
+          console.error('Error sending premium socket update:', socketError);
+        }
 
         // Send confirmation email to user
         try {

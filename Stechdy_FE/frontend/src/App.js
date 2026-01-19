@@ -9,6 +9,7 @@ import PublicRoute from "./components/common/PublicRoute";
 import PrivateRoute from "./components/common/PrivateRoute";
 import AdminPrivateRoute from "./components/common/AdminPrivateRoute";
 import ScrollToTop from "./components/common/ScrollToTop";
+import PremiumUpdateHandler from "./components/common/PremiumUpdateHandler";
 import { SocketProvider } from "./context/SocketContext";
 import { ThemeProvider } from "./context/ThemeContext";
 
@@ -56,9 +57,10 @@ function App() {
   return (
     <ThemeProvider>
       <SocketProvider>
-        <Router>
-          <ScrollToTop />
-          <Routes>
+        <PremiumUpdateHandler>
+          <Router>
+            <ScrollToTop />
+            <Routes>
             {/* Public Routes - Redirect if authenticated */}
             <Route
               path="/login"
@@ -317,6 +319,7 @@ function App() {
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </Router>
+        </PremiumUpdateHandler>
       </SocketProvider>
     </ThemeProvider>
   );

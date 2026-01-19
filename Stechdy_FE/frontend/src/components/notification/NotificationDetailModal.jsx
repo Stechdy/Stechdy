@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import "./NotificationDetailModal.css";
 
 const NotificationDetailModal = ({ notification, isOpen, onClose, onMarkAsRead }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
 
   // Helper to get translated content if translation key exists
@@ -26,6 +26,24 @@ const NotificationDetailModal = ({ notification, isOpen, onClose, onMarkAsRead }
         return fallback || content;
       }
     }
+    
+    // Map common hardcoded Vietnamese text to translation keys (backwards compatibility)
+    const hardcodedMap = {
+      '🌟 Nhắc nhở: Ghi lại cảm xúc hôm nay!': 'notifications.content.moodCheckinTitle',
+      'Ghi nhận tâm trạng': 'notifications.content.moodCheckinTitle',
+      'Hôm nay bạn cảm thấy thế nào? Hãy dành chút thời gian ghi lại tâm trạng của bạn': 'notifications.content.moodCheckinMessage',
+      'Hãy dành vài giây để ghi lại cảm xúc của bạn. Điều này giúp bạn theo dõi sức khỏe tinh thần tốt hơn!': 'notifications.content.moodCheckinMessage',
+      'Đây là email test. Hãy dành vài giây để ghi lại cảm xúc của bạn.': 'notifications.content.moodCheckinMessage',
+    };
+    
+    // Remove emoji and extra spaces for matching
+    const cleanContent = typeof content === 'string' ? content.replace(/[\ud800-\udfff]./g, '').trim() : content;
+    const mappedKey = hardcodedMap[content] || hardcodedMap[cleanContent];
+    
+    if (mappedKey) {
+      return t(mappedKey);
+    }
+    
     return content;
   };
 
@@ -78,30 +96,66 @@ const NotificationDetailModal = ({ notification, isOpen, onClose, onMarkAsRead }
   };
 
   const formatDateTime = (date) => {
+    if (!date) return "";
+    
     const d = new Date(date);
-    const language = t("language");
+    if (isNaN(d.getTime())) return String(date);
     
-    if (language === "vi") {
-      // Custom format for Vietnamese without "lúc"
-      const options = {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-      };
-      const formatted = d.toLocaleString("vi-VN", options);
-      // Remove "lúc" from the string
-      return formatted.replace(/\slúc\s/, " ");
-    }
+    // Get current language from i18n
+    const currentLang = i18n.language || localStorage.getItem('i18nextLng') || 'en';
+    const locale = currentLang.startsWith('vi') ? "vi-VN" : "en-US";
     
-    return d.toLocaleString("en-US", {
+    return d.toLocaleString(locale, {
       year: "numeric",
       month: "long",
       day: "numeric",
       hour: "2-digit",
       minute: "2-digit",
     });
+  };
+
+  // Format metadata values based on type
+  const formatMetadataValue = (key, value) => {
+    if (value === null || value === undefined) return "";
+    
+    // Check if value is a date string or date object
+    const datePattern = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/;
+    if (typeof value === 'string' && datePattern.test(value)) {
+      return formatDateTime(value);
+    }
+    
+    // Check if key suggests it's a time field
+    if (typeof value === 'string' && (key.toLowerCase().includes('time') || key.toLowerCase().includes('date'))) {
+      const date = new Date(value);
+      if (!isNaN(date.getTime())) {
+        return formatDateTime(value);
+      }
+    }
+    
+    // Format objects
+    if (typeof value === "object") {
+      return JSON.stringify(value);
+    }
+    
+    return String(value);
+  };
+
+  // Translate metadata keys
+  const translateMetadataKey = (key) => {
+    const keyMap = {
+      subjectName: t("notifications.metadata.subjectName") || "Môn học",
+      startTime: t("notifications.metadata.startTime") || "Thời gian bắt đầu",
+      endTime: t("notifications.metadata.endTime") || "Thời gian kết thúc",
+      reminderType: t("notifications.metadata.reminderType") || "Loại nhắc nhở",
+      hoursUntil: t("notifications.metadata.hoursUntil") || "Còn lại (giờ)",
+      deadlineType: t("notifications.metadata.deadlineType") || "Loại deadline",
+      date: t("notifications.metadata.date") || "Ngày",
+      time: t("notifications.metadata.time") || "Thời gian",
+      duration: t("notifications.metadata.duration") || "Thời lượng",
+      location: t("notifications.metadata.location") || "Địa điểm",
+    };
+    
+    return keyMap[key] || key;
   };
 
   const handleActionClick = () => {
@@ -238,9 +292,9 @@ const NotificationDetailModal = ({ notification, isOpen, onClose, onMarkAsRead }
               <div className="metadata-grid">
                 {Object.entries(notification.metadata).map(([key, value]) => (
                   <div key={key} className="metadata-item">
-                    <span className="metadata-key">{key}:</span>
+                    <span className="metadata-key">{translateMetadataKey(key)}:</span>
                     <span className="metadata-value">
-                      {typeof value === "object" ? JSON.stringify(value) : String(value)}
+                      {formatMetadataValue(key, value)}
                     </span>
                   </div>
                 ))}

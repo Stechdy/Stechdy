@@ -210,8 +210,8 @@ const sendDailyMoodReminders = async () => {
         await createNotification(
           user._id,
           'mood_checkin',
-          '🌟 Nhắc nhở: Ghi lại cảm xúc hôm nay!',
-          'Hãy dành vài giây để ghi lại cảm xúc của bạn. Điều này giúp bạn theo dõi sức khỏe tinh thần tốt hơn!'
+          'notifications.content.moodCheckinTitle',
+          'notifications.content.moodCheckinMessage'
         );
         notificationCount++;
       }
@@ -311,15 +311,15 @@ const sendTaskReminders = async () => {
 
 /**
  * Send study session reminders
- * Checks for sessions starting within next 30 minutes
+ * Checks for sessions starting within next 15 minutes
  */
 const sendStudySessionReminders = async () => {
   try {
     console.log('Starting study session reminder check...');
 
     const now = new Date();
-    const in30Minutes = new Date(now);
-    in30Minutes.setMinutes(in30Minutes.getMinutes() + 30);
+    const in15Minutes = new Date(now);
+    in15Minutes.setMinutes(in15Minutes.getMinutes() + 15);
 
     // Get today's date range in Vietnam timezone (UTC+7)
     const today = new Date(now);
@@ -333,7 +333,7 @@ const sendStudySessionReminders = async () => {
     console.log('🔍 Searching sessions for today:', today.toLocaleDateString('vi-VN'));
     console.log('📅 DB query range:', adjustedToday.toISOString(), 'to', adjustedTomorrow.toISOString());
     console.log('⏰ Current time:', now.toLocaleTimeString('vi-VN'));
-    console.log('⏰ Looking for sessions starting before:', in30Minutes.toLocaleTimeString('vi-VN'));
+    console.log('⏰ Looking for sessions starting before:', in15Minutes.toLocaleTimeString('vi-VN'));
 
     // Find study sessions scheduled for today
     const sessions = await StudySessionSchedule.find({
@@ -365,9 +365,9 @@ const sendStudySessionReminders = async () => {
       console.log(`  📋 Session ${checkedCount}: ${session.subjectId?.subjectName || 'Unknown'} at ${session.startTime}`);
       console.log(`     ⏱️  Starts in ${minutesUntil} minutes (${sessionStart.toLocaleTimeString('vi-VN')})`);
 
-      // Check if session starts within next 30 minutes (and not in the past)
-      if (timeDiff < 0 || timeDiff > 30 * 60 * 1000) {
-        console.log(`     ⏭️  Skipped (not in 0-30 minute window)`);
+      // Check if session starts within next 15 minutes (and not in the past)
+      if (timeDiff < 0 || timeDiff > 15 * 60 * 1000) {
+        console.log(`     ⏭️  Skipped (not in 0-15 minute window)`);
         continue;
       }
 
@@ -430,14 +430,14 @@ const sendStudySessionReminders = async () => {
 
       sentCount++;
 
-      // Send email if enabled
-      const userSettings = await Settings.findOne({ userId: session.userId._id });
-      const emailEnabled = userSettings?.notification?.email && session.userId.notificationSettings?.dailyEmail;
-      
-      if (emailEnabled) {
-        console.log(`     📨 Sending email to ${session.userId.email}...`);
-        await sendStudySessionReminderEmail(session, session.userId, message);
-      }
+      // Email reminder is disabled - using sessionReminderService for 15-min reminder instead
+      // const userSettings = await Settings.findOne({ userId: session.userId._id });
+      // const emailEnabled = userSettings?.notification?.email && session.userId.notificationSettings?.dailyEmail;
+      // 
+      // if (emailEnabled) {
+      //   console.log(`     📨 Sending email to ${session.userId.email}...`);
+      //   await sendStudySessionReminderEmail(session, session.userId, message);
+      // }
     }
 
     console.log(`\n✅ Study session reminders sent: ${sentCount} notifications (checked ${checkedCount} sessions)`);
