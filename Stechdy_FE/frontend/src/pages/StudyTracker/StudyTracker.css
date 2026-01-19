@@ -918,7 +918,7 @@
 }
 
 [data-theme="dark"] .st-streak-stat-item {
-  background: rgba(30, 26, 46, 0.6);
+  background: linear-gradient(135deg, rgba(167, 139, 250, 0.08) 0%, rgba(96, 165, 250, 0.08) 100%);
   border: 1px solid rgba(100, 100, 120, 0.3);
 }
 
