@@ -901,9 +901,7 @@
   box-shadow: 0 4px 16px rgba(138, 192, 213, 0.25);
 }
 
-.slot-option.selected .slot-name {
-  color: #1F1F1F;
-}
+
 
 .slot-option.disabled {
   background: var(--bg-secondary);
@@ -1376,7 +1374,7 @@
 /* Action Buttons */
 .action-buttons {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   gap: 12px;
   margin-top: 8px;
   margin-bottom: 80px;
@@ -1384,6 +1382,7 @@
 
 .cancel-slot-btn,
 .delete-slot-btn {
+  flex: 1;
   padding: 14px;
   border: none;
   border-radius: 12px;
