@@ -418,6 +418,131 @@
       "halfwayThrough": "Bạn đã hoàn thành một nửa! Tiếp tục cố gắng nhé 💪",
       "multipleSessions": "Bạn có nhiều buổi học hôm nay. Hãy tập trung và nghỉ ngơi! 🧘",
       "twoHoursBreak": "Bạn đã học hơn 2 giờ. Đến giờ nghỉ ngơi rồi! ☕"
+    },
+    "aiGeneratorTitle": "Tạo lịch học bằng AI",
+    "aiGeneratorDesc": "Tạo lịch học tối ưu với thuật toán AI thông minh",
+    "tryNow": "Thử ngay",
+    "viewProfile": "Xem hồ sơ"
+  },
+  "ai": {
+    "title": "Tạo lịch học bằng AI",
+    "subtitle": "Để AI tạo lịch học hoàn hảo cho bạn",
+    "subjects": "Môn học",
+    "subjectName": "Tên môn học...",
+    "addSubject": "Thêm môn học",
+    "priority": "Độ ưu tiên",
+    "dateRange": "Khoảng thời gian",
+    "startDate": "Ngày bắt đầu",
+    "endDate": "Ngày kết thúc (Tùy chọn)",
+    "endDateHint": "Để trống để mặc định 30 ngày",
+    "studyDuration": "Thời lượng mỗi buổi học",
+    "customHint": "15-240 phút",
+    "busyTimes": "Thời gian bận (Tùy chọn)",
+    "selectDay": "Chọn ngày...",
+    "addBusyTime": "Thêm thời gian bận",
+    "generateSchedule": "Tạo lịch học",
+    "generating": "Đang tạo...",
+    "workflowOverview": "Tổng quan quy trình AI",
+    "workflowDescription": "AI của chúng tôi sử dụng thuật toán lập lịch tiên tiến được hỗ trợ bởi n8n để tạo lịch học tối ưu dựa trên ưu tiên, thời gian rảnh và mô hình học tập của bạn.",
+    "schedulesGenerated": "Lịch đã tạo",
+    "avgTime": "Thời gian TB",
+    "successRate": "Tỷ lệ thành công",
+    "algorithmProcess": "Quy trình thuật toán",
+    "keyFeatures": "Tính năng chính",
+    "getStarted": "Bắt đầu",
+    "viewSchedule": "Xem lịch học",
+    "testConnection": "Kiểm tra kết nối n8n",
+    "viewAlgorithm": "Xem thông tin thuật toán"
+  },
+  "schedule": {
+    "title": "Lịch học AI",
+    "editTitle": "Chỉnh sửa lịch học",
+    "regenerate": "Tạo lại",
+    "export": "Xuất file",
+    "noSchedule": "Chưa có lịch học",
+    "generatePrompt": "Tạo lịch học AI để bắt đầu",
+    "generateNew": "Tạo lịch học mới",
+    "noSessionsWeek": "Không có buổi học nào trong tuần này",
+    "subject": "Môn học",
+    "session": "Buổi",
+    "saveToDatabase": "Lưu vào cơ sở dữ liệu",
+    "saving": "Đang lưu...",
+    "editSession": "Chỉnh sửa buổi học",
+    "deleteSession": "Xóa buổi học",
+    "dragDropHint": "Kéo thả để di chuyển buổi học",
+    "clickToEdit": "Nhấp vào buổi học để chỉnh sửa",
+    "morning": "Buổi sáng",
+    "afternoon": "Buổi chiều",
+    "evening": "Buổi tối"
+  },
+  "scheduleEditor": {
+    "title": "Chỉnh sửa lịch học",
+    "unsavedChanges": "Chưa lưu thay đổi",
+    "save": "Lưu",
+    "saving": "Đang lưu...",
+    "backToGenerator": "Quay lại AI Generator",
+    "weekNavigation": "Điều hướng tuần",
+    "previousWeek": "Tuần trước",
+    "nextWeek": "Tuần sau",
+    "instructions": {
+      "clickToEdit": "Nhấp vào buổi học để chỉnh sửa",
+      "dragAndDrop": "Kéo thả để di chuyển buổi học",
+      "saveWhenDone": "Lưu khi hoàn tất chỉnh sửa"
+    },
+    "saveAllWeeks": "Áp dụng cho tất cả tuần",
+    "timeSlots": {
+      "morning": "Buổi sáng",
+      "afternoon": "Buổi chiều",
+      "evening": "Buổi tối"
+    },
+    "grid": {
+      "time": "Thời gian",
+      "dropHere": "Thả vào đây",
+      "addSlot": "Thêm slot"
+    },
+    "modal": {
+      "addNewSession": "Thêm buổi học mới",
+      "editSession": "Chỉnh sửa buổi học",
+      "subject": "Môn học",
+      "startTime": "Giờ bắt đầu",
+      "endTime": "Giờ kết thúc",
+      "date": "Ngày",
+      "delete": "Xóa",
+      "cancel": "Hủy",
+      "save": "Lưu"
+    },
+    "messages": {
+      "sessionAdded": "✓ Đã thêm buổi học",
+      "sessionUpdated": "✓ Đã cập nhật",
+      "sessionDeleted": "✓ Đã xóa",
+      "timeConflict": "Trùng giờ! Vui lòng chọn giờ khác.",
+      "invalidTimeRange": "Giờ kết thúc phải sau giờ bắt đầu!",
+      "deleteConfirm": "Bạn có chắc chắn muốn xóa buổi học này không?",
+      "schedulesSaved": "Đã lưu lịch học! Tạo {{count}} buổi học.",
+      "scheduleSavedLocal": "Đã lưu lịch học cục bộ! Đăng nhập để đồng bộ lên cloud.",
+      "saveFailed": "Lỗi khi lưu lịch học: {{error}}"
+    },
+    "noEvents": {
+      "title": "Không có lịch học để chỉnh sửa",
+      "description": "Tạo lịch học trước để chỉnh sửa tại đây",
+      "generateButton": "Tạo lịch học mới"
+    },
+    "legend": {
+      "title": "Môn học:"
+    },
+    "statistics": {
+      "title": "Thống kê học tập",
+      "hours": "giờ",
+      "sessions": "buổi học"
+    },
+    "days": {
+      "mon": "T2",
+      "tue": "T3",
+      "wed": "T4",
+      "thu": "T5",
+      "fri": "T6",
+      "sat": "T7",
+      "sun": "CN"
     }
   },
   "mood": {
@@ -1001,5 +1126,12 @@
       "excellence": "xuất sắc",
       "beginning": "bắt đầu"
     }
+  },
+  "aiChat": {
+    "addNewSchedule": "Thêm lịch học mới",
+    "inputPlaceholder": "Hỏi tôi mọi thứ",
+    "greeting": "Chào buổi sáng! Bạn muốn làm gì?",
+    "createSchedulePrompt": "Bạn có thể tạo lịch tự học cho tôi không?",
+    "createScheduleResponse": "Tất nhiên! Vui lòng nhấn vào Tạo lịch học để tiếp tục!!!"
   }
 }

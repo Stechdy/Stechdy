@@ -418,6 +418,131 @@
       "halfwayThrough": "You're halfway through! Keep up the good work 💪",
       "multipleSessions": "You have multiple sessions today. Stay focused and take breaks! 🧘",
       "twoHoursBreak": "You've been studying for 2+ hours. Time for a break! ☕"
+    },
+    "aiGeneratorTitle": "AI Schedule Generator",
+    "aiGeneratorDesc": "Generate optimal study schedules with AI-powered algorithms",
+    "tryNow": "Try Now",
+    "viewProfile": "View Profile"
+  },
+  "ai": {
+    "title": "AI Schedule Generator",
+    "subtitle": "Let AI create your perfect study schedule",
+    "subjects": "Subjects",
+    "subjectName": "Subject name...",
+    "addSubject": "Add Subject",
+    "priority": "Priority",
+    "dateRange": "Date Range",
+    "startDate": "Start Date",
+    "endDate": "End Date (Optional)",
+    "endDateHint": "Leave empty for 30 days from start",
+    "studyDuration": "Study Session Duration",
+    "customHint": "15-240 minutes",
+    "busyTimes": "Busy Times (Optional)",
+    "selectDay": "Select day...",
+    "addBusyTime": "Add Busy Time",
+    "generateSchedule": "Generate Schedule",
+    "generating": "Generating...",
+    "workflowOverview": "AI Workflow Overview",
+    "workflowDescription": "Our AI uses advanced scheduling algorithms powered by n8n to generate optimal study schedules based on your priorities, availability, and learning patterns.",
+    "schedulesGenerated": "Schedules Generated",
+    "avgTime": "Avg. Generation Time",
+    "successRate": "Success Rate",
+    "algorithmProcess": "Algorithm Process",
+    "keyFeatures": "Key Features",
+    "getStarted": "Get Started",
+    "viewSchedule": "View My Schedule",
+    "testConnection": "Test n8n Connection",
+    "viewAlgorithm": "View Algorithm Info"
+  },
+  "schedule": {
+    "title": "AI Study Schedule",
+    "editTitle": "Edit Schedule",
+    "regenerate": "Regenerate",
+    "export": "Export",
+    "noSchedule": "No Schedule Generated",
+    "generatePrompt": "Generate your AI schedule to get started",
+    "generateNew": "Generate New Schedule",
+    "noSessionsWeek": "No sessions this week",
+    "subject": "Subject",
+    "session": "Session",
+    "saveToDatabase": "Save to Database",
+    "saving": "Saving...",
+    "editSession": "Edit Session",
+    "deleteSession": "Delete Session",
+    "dragDropHint": "Drag & drop to move sessions",
+    "clickToEdit": "Click a session to edit details",
+    "morning": "Morning",
+    "afternoon": "Afternoon",
+    "evening": "Evening"
+  },
+  "scheduleEditor": {
+    "title": "Edit Schedule",
+    "unsavedChanges": "Unsaved changes",
+    "save": "Save",
+    "saving": "Saving...",
+    "backToGenerator": "Back to AI Generator",
+    "weekNavigation": "Week Navigation",
+    "previousWeek": "Previous week",
+    "nextWeek": "Next week",
+    "instructions": {
+      "clickToEdit": "Click a session to edit details",
+      "dragAndDrop": "Drag & drop to move sessions",
+      "saveWhenDone": "Save when done editing"
+    },
+    "saveAllWeeks": "Apply to All Weeks",
+    "timeSlots": {
+      "morning": "Morning",
+      "afternoon": "Afternoon",
+      "evening": "Evening"
+    },
+    "grid": {
+      "time": "Time",
+      "dropHere": "Drop here",
+      "addSlot": "Add slot"
+    },
+    "modal": {
+      "addNewSession": "Add New Session",
+      "editSession": "Edit Session",
+      "subject": "Subject",
+      "startTime": "Start Time",
+      "endTime": "End Time",
+      "date": "Date",
+      "delete": "Delete",
+      "cancel": "Cancel",
+      "save": "Save"
+    },
+    "messages": {
+      "sessionAdded": "✓ Session added",
+      "sessionUpdated": "✓ Updated",
+      "sessionDeleted": "✓ Deleted",
+      "timeConflict": "Time conflict! Choose another time.",
+      "invalidTimeRange": "End time must be after start time!",
+      "deleteConfirm": "Are you sure you want to delete this session?",
+      "schedulesSaved": "Schedule saved! Created {{count}} sessions.",
+      "scheduleSavedLocal": "Schedule saved locally! Login to sync to cloud.",
+      "saveFailed": "Failed to save schedule: {{error}}"
+    },
+    "noEvents": {
+      "title": "No Schedule to Edit",
+      "description": "Generate a schedule first to edit it here",
+      "generateButton": "Generate New Schedule"
+    },
+    "legend": {
+      "title": "Subjects:"
+    },
+    "statistics": {
+      "title": "Study Statistics",
+      "hours": "h",
+      "sessions": "sessions"
+    },
+    "days": {
+      "mon": "Mon",
+      "tue": "Tue",
+      "wed": "Wed",
+      "thu": "Thu",
+      "fri": "Fri",
+      "sat": "Sat",
+      "sun": "Sun"
     }
   },
   "mood": {
@@ -1001,5 +1126,12 @@
       "excellence": "excellence",
       "beginning": "beginning"
     }
+  },
+  "aiChat": {
+    "addNewSchedule": "Add new schedule",
+    "inputPlaceholder": "Ask me everything",
+    "greeting": "Good morning! What do you want to do?",
+    "createSchedulePrompt": "Can you create Self-study schedule for me?",
+    "createScheduleResponse": "Of course! Please press on create Schedule to continue!!!"
   }
 }

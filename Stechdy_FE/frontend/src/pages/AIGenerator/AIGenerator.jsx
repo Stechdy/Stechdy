@@ -1,0 +1,785 @@
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import BottomNav from "../../components/common/BottomNav";
+import SidebarNav from "../../components/common/SidebarNav";
+import config from "../../config";
+import "./AIGenerator.css";
+
+const AIGenerator = () => {
+  const navigate = useNavigate();
+  const { t } = useTranslation();
+  
+  // Form state
+  const [subjects, setSubjects] = useState([{ name: "", priority: 3 }]);
+  const [startDate, setStartDate] = useState(
+    new Date().toISOString().split("T")[0]
+  );
+  const [endDate, setEndDate] = useState("");
+  const [sessionDuration, setSessionDuration] = useState("45");
+  const [customDuration, setCustomDuration] = useState("45");
+  const [busyTimes, setBusyTimes] = useState([
+    { day: "", slots: [] },
+  ]);
+  
+  // UI state
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+  const [toastType, setToastType] = useState("info");
+  // eslint-disable-next-line no-unused-vars
+  const [hasExistingSchedule, setHasExistingSchedule] = useState(false);
+  const [lastScheduleDate, setLastScheduleDate] = useState(null);
+  const [showDeleteConfirmModal, setShowDeleteConfirmModal] = useState(false);
+  const [minStartDate, setMinStartDate] = useState(
+    new Date().toISOString().split("T")[0]
+  );
+
+  const n8nWebhookUrl = "http://localhost:1234/webhook/gen-schedule-v2";
+
+  // Check for existing schedule on mount
+  useEffect(() => {
+    const checkExistingSchedule = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        if (!token) return;
+
+        const response = await fetch(
+          `${config.apiUrl}/study-sessions/latest`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+
+        if (response.ok) {
+          const data = await response.json();
+          if (data && data.date) {
+            setHasExistingSchedule(true);
+            setLastScheduleDate(data.date);
+            
+            // Show confirmation modal
+            setShowDeleteConfirmModal(true);
+          }
+        }
+      } catch (error) {
+        console.error("Error checking existing schedule:", error);
+      }
+    };
+
+    checkExistingSchedule();
+  }, []);
+
+  // Handle delete old schedule confirmation
+  const handleDeleteOldSchedule = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(
+        `${config.apiUrl}/study-sessions/all`,
+        {
+          method: "DELETE",
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      if (response.ok) {
+        displayToast("Old schedule deleted successfully", "success");
+        setHasExistingSchedule(false);
+        setMinStartDate(new Date().toISOString().split("T")[0]);
+        setStartDate(new Date().toISOString().split("T")[0]);
+      } else {
+        displayToast("Failed to delete old schedule", "error");
+      }
+    } catch (error) {
+      displayToast("Error deleting old schedule", "error");
+    }
+    setShowDeleteConfirmModal(false);
+  };
+
+  const handleKeepOldSchedule = () => {
+    // Set minimum start date to day after last schedule
+    const lastDate = new Date(lastScheduleDate);
+    lastDate.setDate(lastDate.getDate() + 1);
+    const nextDay = lastDate.toISOString().split("T")[0];
+    
+    setMinStartDate(nextDay);
+    setStartDate(nextDay);
+    setShowDeleteConfirmModal(false);
+    
+    displayToast(
+      `Start date must be after ${new Date(lastScheduleDate).toLocaleDateString()}`,
+      "info"
+    );
+  };
+
+  // Subject handlers
+  const addSubject = () => {
+    setSubjects([...subjects, { name: "", priority: 3 }]);
+  };
+
+  const removeSubject = (index) => {
+    if (subjects.length > 1) {
+      setSubjects(subjects.filter((_, i) => i !== index));
+    }
+  };
+
+  const updateSubject = (index, field, value) => {
+    const newSubjects = [...subjects];
+    newSubjects[index][field] = value;
+    setSubjects(newSubjects);
+  };
+
+  // Busy time handlers
+  const addBusyTime = () => {
+    setBusyTimes([...busyTimes, { day: "", slots: [] }]);
+  };
+
+  const removeBusyTime = (index) => {
+    if (busyTimes.length > 1) {
+      setBusyTimes(busyTimes.filter((_, i) => i !== index));
+    }
+  };
+
+  const updateBusyTimeDay = (index, day) => {
+    const newBusyTimes = [...busyTimes];
+    newBusyTimes[index].day = day;
+    // Reset slots when changing day
+    newBusyTimes[index].slots = [];
+    setBusyTimes(newBusyTimes);
+  };
+
+  // Check if all days are selected
+  const allDaysSelected = () => {
+    const selectedDays = busyTimes.filter(bt => bt.day !== "").map(bt => bt.day);
+    return selectedDays.length >= 7;
+  };
+
+  const toggleBusyTimeSlot = (busyIndex, slot) => {
+    const newBusyTimes = [...busyTimes];
+    const slots = newBusyTimes[busyIndex].slots;
+    
+    if (slots.includes(slot)) {
+      newBusyTimes[busyIndex].slots = slots.filter((s) => s !== slot);
+    } else {
+      newBusyTimes[busyIndex].slots = [...slots, slot];
+    }
+    
+    setBusyTimes(newBusyTimes);
+  };
+
+  // Transform form data to n8n format
+  const transformDataForWebhook = () => {
+    const finalEndDate = endDate || (() => {
+      const end = new Date(startDate);
+      end.setDate(end.getDate() + 30);
+      return end.toISOString().split("T")[0];
+    })();
+
+    const sessionMinutes =
+      sessionDuration === "custom"
+        ? parseInt(customDuration) || 60
+        : parseInt(sessionDuration);
+    const durationHours = Math.max(sessionMinutes / 60, 0.5);
+
+    // Transform busy times
+    const transformedBusyTimes = [];
+    busyTimes.forEach((bt) => {
+      if (bt.day && bt.slots.length > 0) {
+        bt.slots.forEach((slot) => {
+          let startTime, endTime, label;
+          if (slot === "morning") {
+            startTime = "08:00";
+            endTime = "12:00";
+            label = "Morning";
+          } else if (slot === "afternoon") {
+            startTime = "14:00";
+            endTime = "17:00";
+            label = "Afternoon";
+          } else if (slot === "evening") {
+            startTime = "19:00";
+            endTime = "22:00";
+            label = "Evening";
+          }
+
+          transformedBusyTimes.push({
+            day: bt.day.toLowerCase(),
+            start: startTime,
+            end: endTime,
+            label: label,
+          });
+        });
+      }
+    });
+
+    const validSubjects = subjects.filter((s) => s.name.trim() !== "");
+    
+    // Check if evening is available (not in busy times)
+    const eveningBusy = transformedBusyTimes.some(bt => bt.label === "Evening");
+    // If evening is free, we can have 3 slots per day (morning, afternoon, evening)
+    const slotsPerDay = eveningBusy ? 2 : 3;
+    const maxSubjectsPerDay = Math.min(Math.max(validSubjects.length, slotsPerDay), slotsPerDay);
+
+    return {
+      start_date: startDate,
+      end_date: finalEndDate,
+      duration: durationHours,
+      subjects: validSubjects.map((s) => ({
+        name: s.name,
+        priority: s.priority || 3,
+      })),
+      busy_times: transformedBusyTimes,
+      lunch_start: "12:00",
+      lunch_end: "13:00",
+      dinner_start: "17:00",
+      dinner_end: "18:00",
+      max_subjects_per_day: maxSubjectsPerDay,
+      include_saturday: true,
+      include_evening: !eveningBusy,
+      slots_per_day: slotsPerDay,
+    };
+  };
+
+  // Handle form submit
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const validSubjects = subjects.filter((s) => s.name.trim() !== "");
+    if (validSubjects.length === 0) {
+      displayToast("Please add at least one subject", "error");
+      return;
+    }
+
+    if (!startDate) {
+      displayToast("Please select a start date", "error");
+      return;
+    }
+
+    // Validate end date is not before start date
+    if (endDate && new Date(endDate) < new Date(startDate)) {
+      displayToast("End date cannot be before start date", "error");
+      return;
+    }
+
+    // Validate start date is not before minimum allowed date
+    if (new Date(startDate) < new Date(minStartDate)) {
+      displayToast(
+        `Start date must be ${new Date(minStartDate).toLocaleDateString()} or later`,
+        "error"
+      );
+      return;
+    }
+
+    setIsGenerating(true);
+
+    try {
+      const webhookData = transformDataForWebhook();
+      console.log("Request data:", JSON.stringify(webhookData, null, 2));
+
+      const response = await fetch(n8nWebhookUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(webhookData),
+      });
+
+      const contentType = response.headers.get("content-type");
+      let result;
+
+      if (contentType && contentType.includes("application/json")) {
+        result = await response.json();
+      } else {
+        const text = await response.text();
+        console.error("Non-JSON response:", text);
+        throw new Error(text || `Server error: ${response.status}`);
+      }
+
+      if (!response.ok) {
+        throw new Error(
+          result.error?.message || `HTTP error! status: ${response.status}`
+        );
+      }
+
+      console.log("Response:", result);
+
+      // Extract schedule data - handle various response formats from n8n
+      let scheduleData = null;
+      
+      // Case 1: n8n returns array with response object [{success, data: {schedule: [...]}}]
+      if (Array.isArray(result) && result.length > 0) {
+        const firstItem = result[0];
+        if (firstItem?.data?.schedule && Array.isArray(firstItem.data.schedule)) {
+          scheduleData = firstItem.data;
+          console.log("Extracted from array[0].data:", scheduleData);
+        } else if (firstItem?.schedule && Array.isArray(firstItem.schedule)) {
+          scheduleData = firstItem;
+          console.log("Extracted from array[0]:", scheduleData);
+        } else {
+          // Assume the array itself is the schedule
+          scheduleData = { schedule: result };
+        }
+      }
+      // Case 2: Direct response {success, data: {schedule: [...]}}
+      else if (result.success && result.data?.schedule) {
+        scheduleData = result.data;
+        console.log("Extracted from result.data:", scheduleData);
+      }
+      // Case 3: Direct {schedule: [...]}
+      else if (result.schedule && Array.isArray(result.schedule)) {
+        scheduleData = result;
+        console.log("Extracted direct schedule:", scheduleData);
+      }
+
+      console.log("Final scheduleData:", scheduleData);
+      console.log("Schedule array length:", scheduleData?.schedule?.length);
+
+      if (scheduleData && scheduleData.schedule && Array.isArray(scheduleData.schedule) && scheduleData.schedule.length > 0) {
+        // Save to localStorage for editing in ScheduleEditor
+        localStorage.setItem("studySchedule", JSON.stringify(scheduleData));
+        localStorage.setItem("studyScheduleInput", JSON.stringify(webhookData));
+        
+        // Show success message - user will save to DB after editing
+        displayToast(
+          `Schedule generated with ${scheduleData.schedule.length} days! Review and edit before saving.`,
+          "success"
+        );
+        
+        // Increment generation count
+        const currentCount = parseInt(
+          localStorage.getItem("ai_generation_count") || "0",
+          10
+        );
+        localStorage.setItem("ai_generation_count", (currentCount + 1).toString());
+
+        // Redirect to schedule editor page to review/edit before final save
+        setTimeout(() => {
+          navigate("/schedule-editor");
+        }, 1500);
+      } else {
+        console.error("Unexpected response structure:", JSON.stringify(result, null, 2));
+        throw new Error("Unexpected response format. Check browser console for details.");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+
+      let userMessage = error.message;
+      if (
+        error.message.includes("Failed to fetch") ||
+        error.message.includes("NetworkError")
+      ) {
+        userMessage =
+          "Cannot connect to n8n server. Please check:\n1. n8n is running on localhost:5678\n2. The workflow is activated";
+      } else if (error.message.includes("500")) {
+        userMessage = "Server error during schedule generation. Please try again.";
+      }
+
+      displayToast(userMessage, "error");
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
+  const displayToast = (message, type = "info") => {
+    setToastMessage(message);
+    setToastType(type);
+    setShowToast(true);
+
+    setTimeout(() => {
+      setShowToast(false);
+    }, 4000);
+  };
+
+  return (
+    <div className="ai-generator-container">
+      <SidebarNav />
+      
+      <div className="ai-generator-wrapper">
+        {/* Header */}
+        <h1 className="ai-generator-page-title">{t("ai.title") || "AI Schedule Generator"}</h1>
+
+        {/* Main Content with 2-column layout */}
+        <main className="ai-generator-content">
+          <form className="schedule-form" onSubmit={handleSubmit}>
+            <div className="ai-generator-content-grid">
+              {/* Left Column - Subjects & Date */}
+              <div className="ai-generator-left-column">
+                {/* Subjects Section */}
+                <section className="ag-form-section">
+                  <h2 className="ag-section-title">
+                    <i className="fas fa-book"></i>
+                    {t("ai.subjects") || "Subjects"}
+                  </h2>
+              
+              <div className="subjects-list">
+                {subjects.map((subject, index) => (
+                  <div key={index} className="subject-item">
+                    <div className="subject-row">
+                      <input
+                        type="text"
+                        className="subject-input"
+                        placeholder={t("ai.subjectName") || "Subject name..."}
+                        value={subject.name}
+                        onChange={(e) =>
+                          updateSubject(index, "name", e.target.value)
+                        }
+                        required
+                      />
+                    </div>
+                    
+                    <div className="priority-group">
+                      <div className="priority-header">
+                        <label className="priority-label">
+                          {t("ai.priority") || "Priority"}
+                        </label>
+                        {subjects.length > 1 && (
+                          <button
+                            type="button"
+                            className="ag-btn-remove"
+                            onClick={() => removeSubject(index)}
+                            title="Remove subject"
+                          >
+                            <i className="fas fa-times"></i>
+                          </button>
+                        )}
+                      </div>
+                      <div className="priority-pills">
+                        {[1, 2, 3, 4, 5].map((priority) => (
+                          <button
+                            key={priority}
+                            type="button"
+                            className={`pill ${
+                              subject.priority === priority ? "active" : ""
+                            }`}
+                            onClick={() =>
+                              updateSubject(index, "priority", priority)
+                            }
+                          >
+                            {priority}
+                          </button>
+                        ))}
+                      </div>
+                      <span className="priority-hint">
+                        {subject.priority === 1 && "Highest"}
+                        {subject.priority === 2 && "High"}
+                        {subject.priority === 3 && "Medium"}
+                        {subject.priority === 4 && "Low"}
+                        {subject.priority === 5 && "Lowest"}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              
+              <button
+                type="button"
+                className="ag-btn-add"
+                onClick={addSubject}
+              >
+                <i className="fas fa-plus"></i>
+                {t("ai.addSubject") || "Add Subject"}
+              </button>
+            </section>
+
+            {/* Date Range Section */}
+            <section className="ag-form-section">
+              <h2 className="ag-section-title">
+                <i className="fas fa-calendar-alt"></i>
+                {t("ai.dateRange") || "Date Range"}
+              </h2>
+              
+              <div className="date-inputs">
+                <div className="ag-input-group">
+                  <label htmlFor="start-date">
+                    {t("ai.startDate") || "Start Date"}
+                  </label>
+                  <div className="date-input-wrapper">
+                    <input
+                      type="date"
+                      id="start-date"
+                      className="date-input"
+                      value={startDate}
+                      onChange={(e) => setStartDate(e.target.value)}
+                      min={minStartDate}
+                      required
+                    />
+                    <i className="fas fa-calendar-alt date-icon"></i>
+                  </div>
+                </div>
+                
+                <div className="ag-input-group">
+                  <label htmlFor="end-date">
+                    {t("ai.endDate") || "End Date (Optional)"}
+                  </label>
+                  <div className="date-input-wrapper">
+                    <input
+                      type="date"
+                      id="end-date"
+                      className="date-input"
+                      value={endDate}
+                      onChange={(e) => setEndDate(e.target.value)}
+                      min={startDate || new Date().toISOString().split("T")[0]}
+                    />
+                    <i className="fas fa-calendar-alt date-icon"></i>
+                  </div>
+                  <span className="input-hint">
+                    {t("ai.endDateHint") || "Leave empty for 30 days from start"}
+                  </span>
+                </div>
+              </div>
+            </section>
+              </div>
+
+              {/* Right Column - Duration & Busy Times */}
+              <div className="ai-generator-right-column">
+            {/* Study Duration Section */}
+            <section className="ag-form-section">
+              <h2 className="ag-section-title">
+                <i className="fas fa-clock"></i>
+                {t("ai.studyDuration") || "Study Session Duration"}
+              </h2>
+              
+              <div className="duration-pills">
+                {[
+                  { value: "30", label: "30 min" },
+                  { value: "45", label: "45 min" },
+                  { value: "60", label: "1 hour" },
+                  { value: "90", label: "1.5 hours" },
+                  { value: "custom", label: "Custom" },
+                ].map((option) => (
+                  <button
+                    key={option.value}
+                    type="button"
+                    className={`pill ${
+                      sessionDuration === option.value ? "active" : ""
+                    }`}
+                    onClick={() => setSessionDuration(option.value)}
+                  >
+                    {option.label}
+                  </button>
+                ))}
+              </div>
+              
+              {sessionDuration === "custom" && (
+                <div className="custom-duration">
+                  <input
+                    type="number"
+                    className="custom-input"
+                    placeholder="Minutes..."
+                    value={customDuration}
+                    onChange={(e) => setCustomDuration(e.target.value)}
+                    min="15"
+                    max="240"
+                    step="15"
+                  />
+                  <span className="input-hint">
+                    {t("ai.customHint") || "15-240 minutes"}
+                  </span>
+                </div>
+              )}
+            </section>
+
+            {/* Busy Times Section */}
+            <section className="ag-form-section">
+              <h2 className="ag-section-title">
+                <i className="fas fa-calendar-times"></i>
+                {t("ai.busyTimes") || "Busy Times (Optional)"}
+              </h2>
+              
+              <div className="busy-times-list">
+                {busyTimes.map((busyTime, index) => (
+                  <div key={index} className="busy-time-item">
+                    <div className="busy-time-row">
+                      <select
+                        className="day-select"
+                        value={busyTime.day}
+                        onChange={(e) =>
+                          updateBusyTimeDay(index, e.target.value)
+                        }
+                      >
+                        <option value="">{t("ai.selectDay") || "Select day..."}</option>
+                        {[
+                          { value: "monday", label: "Monday" },
+                          { value: "tuesday", label: "Tuesday" },
+                          { value: "wednesday", label: "Wednesday" },
+                          { value: "thursday", label: "Thursday" },
+                          { value: "friday", label: "Friday" },
+                          { value: "saturday", label: "Saturday" },
+                          { value: "sunday", label: "Sunday" }
+                        ].map(day => {
+                          const isSelected = busyTimes.some((bt, i) => i !== index && bt.day === day.value);
+                          return (
+                            <option 
+                              key={day.value} 
+                              value={day.value}
+                              disabled={isSelected}
+                            >
+                              {day.label}{isSelected ? " (✓)" : ""}
+                            </option>
+                          );
+                        })}
+                      </select>
+                      
+                      {busyTimes.length > 1 && (
+                        <button
+                          type="button"
+                          className="ag-btn-remove"
+                          onClick={() => removeBusyTime(index)}
+                          title="Remove busy time"
+                        >
+                          <i className="fas fa-times"></i>
+                        </button>
+                      )}
+                    </div>
+                    
+                    {busyTime.day && (
+                      <div className="time-slot-selector">
+                        <div className="slot-options">
+                          {[
+                            { value: "morning", label: "Morning", icon: "☀️" },
+                            { value: "afternoon", label: "Afternoon", icon: "🌤️" },
+                            { value: "evening", label: "Evening", icon: "🌙" },
+                          ].map((slot) => (
+                            <button
+                              key={slot.value}
+                              type="button"
+                              className={`slot-option ${
+                                busyTime.slots.includes(slot.value)
+                                  ? "selected"
+                                  : ""
+                              }`}
+                              onClick={() => toggleBusyTimeSlot(index, slot.value)}
+                            >
+                              <span className="slot-icon">{slot.icon}</span>
+                              <span className="slot-name">{slot.label}</span>
+                              <span
+                                className={`slot-status ${
+                                  busyTime.slots.includes(slot.value)
+                                    ? "unavailable"
+                                    : "available"
+                                }`}
+                              >
+                                {busyTime.slots.includes(slot.value)
+                                  ? "Busy"
+                                  : "Available"}
+                              </span>
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+              
+              <button
+                type="button"
+                className="ag-btn-add"
+                onClick={addBusyTime}
+                disabled={allDaysSelected()}
+                style={{
+                  opacity: allDaysSelected() ? 0.5 : 1,
+                  cursor: allDaysSelected() ? "not-allowed" : "pointer"
+                }}
+              >
+                <i className="fas fa-plus"></i>
+                {t("ai.addBusyTime") || "Add Busy Time"}
+              </button>
+            </section>
+              </div>
+            </div>
+
+            {/* Submit Button - Full Width */}
+            <button
+              type="submit"
+              className="ag-btn-generate"
+              disabled={isGenerating}
+            >
+              {isGenerating ? (
+                <>
+                  <i className="fas fa-spinner fa-spin"></i>
+                  {t("ai.generating") || "Generating..."}
+                </>
+              ) : (
+                <>
+                  <i className="fas fa-magic"></i>
+                  {t("ai.generateSchedule") || "Generate Schedule"}
+                </>
+              )}
+            </button>
+          </form>
+        </main>
+      </div>
+
+      {/* Toast Notification */}
+      {showToast && (
+        <div className={`ag-toast show ${toastType}`}>
+          <div className="ag-toast-icon">
+            <i
+              className={
+                toastType === "success"
+                  ? "fas fa-check-circle"
+                  : toastType === "error"
+                  ? "fas fa-times-circle"
+                  : "fas fa-info-circle"
+              }
+            ></i>
+          </div>
+          <div className="ag-toast-content">
+            <div className="ag-toast-title">
+              {toastType === "success"
+                ? "Success"
+                : toastType === "error"
+                ? "Error"
+                : "Info"}
+            </div>
+            <div className="ag-toast-message">{toastMessage}</div>
+          </div>
+        </div>
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {showDeleteConfirmModal && (
+        <div className="ag-modal-overlay">
+          <div className="ag-modal-content confirm-modal">
+            <div className="ag-modal-header">
+              <h2>Existing Schedule Detected</h2>
+            </div>
+            <div className="ag-modal-body">
+              <p>
+                You already have a study schedule until{" "}
+                <strong>
+                  {lastScheduleDate
+                    ? new Date(lastScheduleDate).toLocaleDateString()
+                    : ""}
+                </strong>
+                .
+              </p>
+              <p>
+                Do you want to delete your old schedule and create a new one, or keep
+                the old schedule and start the new one after it ends?
+              </p>
+            </div>
+            <div className="modal-footer">
+              <button
+                className="btn-modal btn-danger"
+                onClick={handleDeleteOldSchedule}
+              >
+                <i className="fas fa-trash"></i> Delete Old Schedule
+              </button>
+              <button
+                className="btn-modal btn-primary"
+                onClick={handleKeepOldSchedule}
+              >
+                <i className="fas fa-calendar-plus"></i> Keep & Continue After
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Bottom Navigation - Mobile */}
+      <BottomNav />
+    </div>
+  );
+};
+
+export default AIGenerator;
