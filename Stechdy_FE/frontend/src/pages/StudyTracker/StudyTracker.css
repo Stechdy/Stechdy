@@ -248,7 +248,19 @@
 /* Empty day placeholder for calendar alignment */
 .st-empty-day {
   aspect-ratio: 1;
-  min-height: 70px;
+  min-height: 50px;
+}
+
+@media (max-width: 768px) {
+  .st-empty-day {
+    min-height: 45px;
+  }
+}
+
+@media (max-width: 480px) {
+  .st-empty-day {
+    min-height: 40px;
+  }
 }
 
 /* Calendar Day Cell - Streak Day */
@@ -264,7 +276,7 @@
   background: white;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
-  min-height: 70px;
+  min-height: 50px;
   overflow: hidden;
   animation: fadeInScale 0.5s ease-out backwards;
 }
@@ -378,7 +390,7 @@
 }
 
 .day-number {
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 600;
   color: #1f2937;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
@@ -414,7 +426,7 @@
 @media (max-width: 768px) {
   .streak-day {
     border-radius: 6px;
-    min-height: 50px;
+    min-height: 45px;
   }
   
   .streak-day .water-fill {
@@ -422,22 +434,26 @@
   }
   
   .streak-day .day-number {
-    font-size: 16px;
+    font-size: 15px;
   }
 }
 
 @media (max-width: 480px) {
   .streak-day {
-    border-radius: 4px;
-    min-height: 45px;
+    border-radius: 6px;
+    min-height: 40px;
   }
   
   .streak-day .water-fill {
-    border-radius: 0 0 4px 4px;
+    border-radius: 0 0 6px 6px;
   }
   
   .streak-day .day-number {
-    font-size: 16px;
+    font-size: 14px;
+  }
+  
+  .st-empty-day {
+    min-height: 40px;
   }
 }
 
