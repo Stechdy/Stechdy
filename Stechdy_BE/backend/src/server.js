@@ -68,6 +68,7 @@ app.use("/api/users", require("./routes/userRoutes"));
 app.use("/api/products", require("./routes/productRoutes"));
 app.use("/api/subjects", require("./routes/subjectRoutes"));
 app.use("/api/study-sessions", require("./routes/studySessionRoutes"));
+app.use("/api/ai-schedule", require("./routes/aiScheduleRoutes"));
 app.use("/api/moods", require("./routes/moodRoutes"));
 app.use("/api/notifications", require("./routes/notificationRoutes"));
 app.use("/api/session-reminder", require("./routes/sessionReminderRoutes"));

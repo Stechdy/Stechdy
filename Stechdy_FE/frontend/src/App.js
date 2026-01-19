@@ -49,6 +49,9 @@ import Notifications from "./pages/Notifications/Notifications";
 import NotificationSettings from "./pages/NotificationSettings/NotificationSettings";
 import HelpSupport from "./pages/HelpSupport/HelpSupport";
 import TermsOfUse from "./pages/TermsOfUse/TermsOfUse";
+import AIGenerator from "./pages/AIGenerator/AIGenerator";
+import ScheduleEditor from "./pages/ScheduleEditor/ScheduleEditor";
+import AIChat from "./pages/AIChat/AIChat";
 
 function App() {
   return (
@@ -148,6 +151,30 @@ function App() {
               element={
                 <PrivateRoute>
                   <MoodHistory />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/ai"
+              element={
+                <PrivateRoute>
+                  <AIChat />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/ai-generator"
+              element={
+                <PrivateRoute>
+                  <AIGenerator />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/schedule-editor"
+              element={
+                <PrivateRoute>
+                  <ScheduleEditor />
                 </PrivateRoute>
               }
             />

@@ -518,6 +518,35 @@ const Dashboard = () => {
               <p className="ai-text">{aiSuggestion}</p>
             </div>
           </section>
+
+          {/* AI Generator Card */}
+          <section className="ai-generator-section">
+            <div 
+              className="ai-generator-card gradient-card"
+              onClick={() => navigate("/ai-generator")}
+              style={{ cursor: "pointer" }}
+            >
+              <div className="ai-generator-content">
+                <div className="ai-generator-icon">
+                  <i className="fas fa-magic"></i>
+                </div>
+                <div className="ai-generator-info">
+                  <h3 className="ai-generator-title">
+                    {t("dashboard.aiGeneratorTitle") || "AI Schedule Generator"}
+                  </h3>
+                  <p className="ai-generator-description">
+                    {t("dashboard.aiGeneratorDesc") || "Generate optimal study schedules with AI-powered algorithms"}
+                  </p>
+                </div>
+              </div>
+              <div className="ai-generator-action">
+                <span className="ai-generator-badge">
+                  {t("dashboard.tryNow") || "Try Now"}
+                </span>
+                <i className="fas fa-arrow-right"></i>
+              </div>
+            </div>
+          </section>
         </main>
 
         {/* Mood Check-in Modal */}

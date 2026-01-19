@@ -645,3 +645,127 @@
 .dashboard-main > *:nth-child(4) {
   animation-delay: 0.2s;
 }
+
+/* ============== AI Generator Section ============== */
+.ai-generator-section {
+  margin-top: 24px;
+}
+
+.ai-generator-card {
+  background: linear-gradient(
+    135deg,
+    rgba(244, 114, 182, 0.1) 0%,
+    rgba(168, 85, 247, 0.1) 100%
+  );
+  border: 2px solid rgba(244, 114, 182, 0.2);
+  border-radius: 20px;
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+[data-theme="dark"] .ai-generator-card {
+  background: linear-gradient(
+    135deg,
+    rgba(244, 114, 182, 0.15) 0%,
+    rgba(168, 85, 247, 0.15) 100%
+  );
+  border: 2px solid rgba(244, 114, 182, 0.3);
+}
+
+.ai-generator-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(244, 114, 182, 0.25);
+  border-color: var(--primary-pink);
+}
+
+.ai-generator-content {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex: 1;
+}
+
+.ai-generator-icon {
+  width: 56px;
+  height: 56px;
+  background: linear-gradient(135deg, var(--primary-pink) 0%, #ec4899 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  color: white;
+  box-shadow: 0 4px 16px rgba(244, 114, 182, 0.4);
+  flex-shrink: 0;
+}
+
+.ai-generator-info {
+  flex: 1;
+}
+
+.ai-generator-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+}
+
+.ai-generator-description {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.ai-generator-action {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.ai-generator-badge {
+  display: inline-flex;
+  padding: 8px 16px;
+  background: var(--primary-pink);
+  color: white;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(244, 114, 182, 0.3);
+}
+
+.ai-generator-action i {
+  font-size: 20px;
+  color: var(--primary-pink);
+  transition: transform 0.3s;
+}
+
+.ai-generator-card:hover .ai-generator-action i {
+  transform: translateX(4px);
+}
+
+@media (max-width: 768px) {
+  .ai-generator-card {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 20px;
+  }
+
+  .ai-generator-action {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .ai-generator-title {
+    font-size: 16px;
+  }
+
+  .ai-generator-description {
+    font-size: 13px;
+  }
+}
