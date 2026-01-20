@@ -76,7 +76,7 @@
   height: 36px;
   border-radius: 8px;
   border: none;
-  background: var(--bg-card);
+  background: transparent;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -85,7 +85,7 @@
 }
 
 .calendar-header .notification-btn:hover {
-  background: var(--bg-hover);
+  background: transparent;
 }
 
 .calendar-header .notification-btn:active {
@@ -122,18 +122,7 @@
   padding: 20px;
 }
 
-.calendar-header button:not(.mark-all-btn):not(.view-all-btn):not(.tab) {
-  width: 36px;
-  height: 36px;
-  border-radius: 8px;
-  border: none;
-  background: var(--bg-card);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all var(--transition-normal);
-}
+
 
 .calendar-header button:not(.mark-all-btn):not(.view-all-btn):not(.tab) svg h1 {
   color: var(--text-secondary);
@@ -236,13 +225,44 @@
   border-color: #8AC0D5;
 }
 
+.week-navigation {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.week-navigation button {
+  background: rgba(167, 139, 250, 0.1);
+  border: 1px solid rgba(167, 139, 250, 0.2);
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  font-size: 18px;
+  cursor: pointer;
+  color: #a78bfa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  font-weight: 600;
+}
+
+.week-navigation button:hover {
+  background: linear-gradient(135deg, #a78bfa 0%, #60a5fa 100%);
+  color: white;
+  border-color: transparent;
+}
+
+.week-navigation button:active {
+  transform: scale(0.95);
+}
+
 .week-navigation span {
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 600;
   color: var(--text-primary);
-  min-width: 70px;
+  min-width: 80px;
   text-align: center;
-  transition: color var(--transition-normal);
 }
 
 /* Week Calendar */
