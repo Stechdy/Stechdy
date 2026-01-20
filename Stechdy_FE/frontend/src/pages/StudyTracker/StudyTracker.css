@@ -48,7 +48,8 @@
 }
 
 .study-tracker > * {
-  animation: trackerFadeIn 0.4s ease-out;
+  animation: trackerFadeIn 0.4s ease-out both;
+  animation-iteration-count: 1;
 }
 
 .study-tracker > *:nth-child(1) { animation-delay: 0s; }
@@ -286,6 +287,7 @@
   min-height: 50px;
   overflow: hidden;
   animation: fadeInScale 0.5s ease-out backwards;
+  animation-iteration-count: 1;
 }
 
 [data-theme="dark"] .streak-day {
