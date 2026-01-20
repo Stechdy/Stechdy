@@ -413,10 +413,71 @@
     "pleaseStartServer": "Please start the server to see your sessions",
     "unableToConnect": "Unable to connect to server. Please check your backend connection.",
     "aiSuggestions": {
+      "motivation": [
+        "Believe in yourself! You can do this 🌟",
+        "Every minute of study is a step forward! Keep going 💪",
+        "Success starts today. Make it count! 🚀",
+        "You're doing great! Keep up the momentum ⭐",
+        "Education is the best investment in your future 📚",
+        "Every lesson is a new opportunity to grow 🌱",
+        "A journey of a thousand miles begins with a single step 👣",
+        "You're stronger than you think! Push forward 💫"
+      ],
+      "break": [
+        "Consider taking a 15-minute break ☕",
+        "Time to refresh your mind! Take a break 🌸",
+        "You've been studying hard! Recharge your energy 🔋",
+        "Rest is part of the learning process! ☕",
+        "A 5-minute stretch will boost your focus 🏃",
+        "Take a deep breath and relax for a moment 🧘‍♀️"
+      ],
+      "focus": [
+        "Focus on the task at hand, success will follow! 🎯",
+        "Turn off notifications for maximum concentration 📵",
+        "One step at a time, no rush 🐢",
+        "Try Pomodoro: 25 min focus + 5 min break ⏰",
+        "Remove all distractions, give 100% focus 🎧",
+        "Quiet environment = effective learning 🤫"
+      ],
+      "progress": [
+        "Great progress today! You're almost done with your goals 🎉",
+        "You're halfway through! Keep up the good work 💪",
+        "Wow! 80% complete! Just a bit more 🌈",
+        "You're improving day by day! Amazing 📈",
+        "Your goal is getting closer! Don't give up 🏆",
+        "Every minute counts. You're doing great! ⭐"
+      ],
+      "morning": [
+        "Good morning! Start your day with study motivation 🌅",
+        "Morning is the golden time to study! Make it count 🌞",
+        "A productive day starts in the morning! Happy studying 🌻",
+        "Your brain works best in the morning. Optimize it! 🧠"
+      ],
+      "afternoon": [
+        "Afternoon energy boost! Keep studying 🌤️",
+        "Had lunch? Energy is important! 🍱",
+        "Maintain your study momentum this afternoon 💪",
+        "Afternoon is ideal for review and consolidation 📖"
+      ],
+      "evening": [
+        "Evening is perfect for reviewing today's lessons 🌙",
+        "Prepare for tomorrow starting today! Effective study 🌃",
+        "Quiet evenings help you focus better 🌆",
+        "End your day with a great study session! ✨"
+      ],
+      "multipleSessions": [
+        "You have multiple sessions today. Stay focused and take breaks! 🧘",
+        "Busy schedule! Break it down and conquer each part 📅",
+        "Multiple sessions = lots of new knowledge! You got this 💫"
+      ],
+      "longSession": [
+        "You've been studying for 2+ hours. Time for a break! ☕",
+        "Study marathon! Don't forget to take breaks 🏃‍♀️",
+        "Long study without rest reduces efficiency! 🔋"
+      ],
       "takeBreak": "Consider taking a 15-minute break",
       "greatProgress": "Great progress today! You're almost done with your study goals 🎉",
       "halfwayThrough": "You're halfway through! Keep up the good work 💪",
-      "multipleSessions": "You have multiple sessions today. Stay focused and take breaks! 🧘",
       "twoHoursBreak": "You've been studying for 2+ hours. Time for a break! ☕"
     },
     "aiGeneratorTitle": "AI Schedule Generator",

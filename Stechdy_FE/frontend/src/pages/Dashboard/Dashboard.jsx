@@ -11,6 +11,7 @@ import QuoteCard from "../../components/quote/QuoteCard";
 import QuoteModal from "../../components/quote/QuoteModal";
 import moodService from "../../services/moodService";
 import { getVietnamTime, getVietnamDate } from "../../utils/helpers";
+import { getRandomAISuggestion } from "../../utils/aiSuggestions";
 import config from "../../config";
 import "./Dashboard.css";
 
@@ -152,7 +153,16 @@ const Dashboard = () => {
       setStudyProgress(data.studyProgress || { current: 0, goal: 360 });
       setStreak(data.streak || 0);
       setUpcomingSessions(data.upcomingSessions || []);
-      setAiSuggestion(data.aiSuggestion || "");
+      
+      // Always generate a fresh random suggestion on load
+      const progressPercent = ((data.studyProgress?.current || 0) / (data.studyProgress?.goal || 360)) * 100;
+      const freshSuggestion = getRandomAISuggestion(t, {
+        progressPercent,
+        completedMinutes: data.studyProgress?.current || 0,
+        upcomingSessionsCount: data.upcomingSessions?.length || 0,
+        consecutiveStudyMinutes: data.studyProgress?.current || 0,
+      });
+      setAiSuggestion(freshSuggestion);
     }
   };
 
@@ -264,19 +274,16 @@ const Dashboard = () => {
           });
       }
 
-      // Generate AI suggestion based on progress
-      let suggestion = t("dashboard.aiSuggestions.takeBreak");
+      // Generate AI suggestion based on progress and context
       const progressPercent = (completedMinutes / goalMinutes) * 100;
-
-      if (progressPercent >= 80) {
-        suggestion = t("dashboard.aiSuggestions.greatProgress");
-      } else if (progressPercent >= 50) {
-        suggestion = t("dashboard.aiSuggestions.halfwayThrough");
-      } else if (upcomingSessions.length > 2) {
-        suggestion = t("dashboard.aiSuggestions.multipleSessions");
-      } else if (completedMinutes >= 120) {
-        suggestion = t("dashboard.aiSuggestions.twoHoursBreak");
-      }
+      
+      // Get random AI suggestion with context
+      const suggestion = getRandomAISuggestion(t, {
+        progressPercent,
+        completedMinutes,
+        upcomingSessionsCount: upcomingSessions.length,
+        consecutiveStudyMinutes: completedMinutes, // You can track this separately if needed
+      });
 
       const dashboardData = {
         studyProgress: { current: completedMinutes, goal: goalMinutes },
