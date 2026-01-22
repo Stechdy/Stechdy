@@ -19,19 +19,18 @@ exports.createMoodEntry = async (req, res) => {
       });
     }
 
-    // Check if mood entry already exists for today (Vietnam timezone)
+    // Check if mood entry already exists for today (UTC timezone)
     const now = new Date();
-    const vietnamOffset = 7 * 60; // UTC+7
-    const localTime = new Date(now.getTime() + vietnamOffset * 60 * 1000);
+    const today = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
     
-    const startOfDay = new Date(localTime);
+    const startOfDay = new Date(today);
     startOfDay.setUTCHours(0, 0, 0, 0);
-    const endOfDay = new Date(localTime);
+    const endOfDay = new Date(today);
     endOfDay.setUTCHours(23, 59, 59, 999);
 
     console.log('createMoodEntry - Checking existing mood for today');
-    console.log('createMoodEntry - startOfDay:', startOfDay);
-    console.log('createMoodEntry - endOfDay:', endOfDay);
+    console.log('createMoodEntry - startOfDay:', startOfDay.toISOString());
+    console.log('createMoodEntry - endOfDay:', endOfDay.toISOString());
     console.log('createMoodEntry - userId:', userId);
 
     const existingMood = await MoodTracking.findOne({
@@ -61,18 +60,18 @@ exports.createMoodEntry = async (req, res) => {
       });
     }
 
-    // Create new mood entry with Vietnam timezone
+    // Create new mood entry with UTC timezone
     const moodEntry = await MoodTracking.create({
       userId,
       mood,
       emotionTags: emotionTags || [],
       note: note || '',
       energyLevel: energyLevel || 5,
-      date: localTime
+      date: today
     });
 
     console.log('createMoodEntry - Created new mood entry');
-    console.log('createMoodEntry - new mood date:', moodEntry.date);
+    console.log('createMoodEntry - new mood date:', moodEntry.date.toISOString());
 
     // Update Gamification: Add XP for mood check-in
     let gamification = await Gamification.findOne({ userId });
@@ -89,7 +88,11 @@ exports.createMoodEntry = async (req, res) => {
       streak = await Streak.create({ userId });
     }
     
-    streak.updateStreak();
+    // Reset monthly makeups if new month
+    streak.resetMonthlyMakeups();
+    
+    // Pass today date to updateStreak to ensure consistency
+    const streakUpdate = streak.updateStreak(false, today);
     await streak.save();
 
     // Check for "Self-aware Learner" badge (7 consecutive days)
@@ -113,7 +116,9 @@ exports.createMoodEntry = async (req, res) => {
         mood: moodEntry,
         xpGained: 10,
         currentStreak: streak.currentStreak,
-        newBadge: streak.currentStreak === 7 ? 'Self-aware Learner' : null
+        longestStreak: streak.longestStreak,
+        newBadge: streak.currentStreak === 7 ? 'Self-aware Learner' : null,
+        newMilestones: streakUpdate?.newlyUnlocked || []
       }
     });
 
@@ -471,6 +476,226 @@ exports.generateMoodInsight = async (req, res) => {
     res.status(500).json({
       success: false,
       message: 'Lỗi khi tạo phân tích cảm xúc',
+      error: error.message
+    });
+  }
+};
+
+// @desc    Makeup mood check-in for missed day
+// @route   POST /api/moods/makeup
+// @access  Private
+exports.makeupMoodCheckIn = async (req, res) => {
+  try {
+    const { date, mood, emotionTags, note, energyLevel } = req.body;
+    const userId = req.user._id;
+
+    // Validate required fields
+    if (!date) {
+      return res.status(400).json({
+        success: false,
+        message: 'Vui lòng chọn ngày cần điểm danh bù'
+      });
+    }
+
+    if (!mood || mood < 1 || mood > 5) {
+      return res.status(400).json({
+        success: false,
+        message: 'Vui lòng chọn tâm trạng (1-5)'
+      });
+    }
+
+    // Parse the date - handle YYYY-MM-DD format to avoid timezone issues
+    // Input format: "2026-01-20"
+    let makeupDate;
+    if (date.includes('T')) {
+      // ISO string format
+      makeupDate = new Date(date);
+    } else {
+      // YYYY-MM-DD format - parse as UTC date at midnight
+      // This ensures the date is stored correctly in database
+      const [year, month, day] = date.split('-').map(Number);
+      // Create UTC date: YYYY-MM-DDT00:00:00.000Z
+      makeupDate = new Date(Date.UTC(year, month - 1, day, 0, 0, 0, 0));
+    }
+    
+    console.log('Parsed makeup date:', makeupDate);
+    console.log('Makeup date ISO:', makeupDate.toISOString());
+    
+    // Get today at midnight UTC
+    const today = new Date();
+    const todayUTC = new Date(Date.UTC(today.getFullYear(), today.getMonth(), today.getDate(), 0, 0, 0, 0));
+    
+    console.log('Today UTC:', todayUTC.toISOString());
+    
+    // Validate that makeup date is in the past (not today or future)
+    if (makeupDate >= todayUTC) {
+      return res.status(400).json({
+        success: false,
+        message: 'Chỉ có thể điểm danh bù cho các ngày trong quá khứ'
+      });
+    }
+    
+    const now = new Date();
+
+    // Check streak and makeup availability
+    let streak = await Streak.findOne({ userId });
+    if (!streak) {
+      streak = await Streak.create({ userId });
+    }
+
+    // Reset monthly makeups if new month
+    streak.resetMonthlyMakeups();
+
+    // Check if user has makeup check-ins left this month
+    if (streak.makeupCheckIns.usedThisMonth >= streak.makeupCheckIns.monthlyLimit) {
+      return res.status(400).json({
+        success: false,
+        message: `Bạn đã sử dụng hết ${streak.makeupCheckIns.monthlyLimit} lần điểm danh bù trong tháng này`,
+        remainingMakeups: 0
+      });
+    }
+
+    // Check if already checked in for the makeup date
+    // Create start and end of day boundaries in UTC
+    const startOfMakeupDay = new Date(makeupDate);
+    startOfMakeupDay.setUTCHours(0, 0, 0, 0);
+    const endOfMakeupDay = new Date(makeupDate);
+    endOfMakeupDay.setUTCHours(23, 59, 59, 999);
+
+    console.log('Checking existing mood for date range:', {
+      start: startOfMakeupDay.toISOString(),
+      end: endOfMakeupDay.toISOString(),
+      makeupDate: makeupDate.toISOString()
+    });
+
+    const existingMood = await MoodTracking.findOne({
+      userId,
+      date: { $gte: startOfMakeupDay, $lte: endOfMakeupDay }
+    });
+    
+    console.log('Existing mood found:', existingMood ? 'YES' : 'NO');
+
+    if (existingMood) {
+      return res.status(400).json({
+        success: false,
+        message: 'Bạn đã điểm danh cho ngày này rồi'
+      });
+    }
+
+    // Create makeup mood entry
+    const moodEntry = await MoodTracking.create({
+      userId,
+      mood,
+      emotionTags: emotionTags || [],
+      note: note || '',
+      energyLevel: energyLevel || 5,
+      date: makeupDate
+    });
+
+    // Update streak with makeup
+    const streakUpdate = streak.updateStreak(true, makeupDate);
+    
+    // Record makeup usage
+    streak.makeupCheckIns.usedThisMonth += 1;
+    streak.makeupCheckIns.history.push({
+      date: makeupDate,
+      originalDate: now
+    });
+    
+    await streak.save();
+
+    // Update Gamification: Add XP for makeup check-in (less than regular)
+    let gamification = await Gamification.findOne({ userId });
+    if (!gamification) {
+      gamification = await Gamification.create({ userId });
+    }
+    
+    gamification.addXP(5, 'Điểm danh bù mood');
+    await gamification.save();
+
+    const remainingMakeups = streak.makeupCheckIns.monthlyLimit - streak.makeupCheckIns.usedThisMonth;
+
+    res.status(201).json({
+      success: true,
+      message: `Đã điểm danh bù thành công! Còn ${remainingMakeups} lần điểm danh bù trong tháng này`,
+      data: {
+        mood: moodEntry,
+        xpGained: 5,
+        currentStreak: streak.currentStreak,
+        longestStreak: streak.longestStreak,
+        remainingMakeups,
+        newMilestones: streakUpdate?.newlyUnlocked || []
+      }
+    });
+
+  } catch (error) {
+    console.error('Makeup mood check-in error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Lỗi khi điểm danh bù',
+      error: error.message
+    });
+  }
+};
+
+// @desc    Get streak info with milestones
+// @route   GET /api/moods/streak
+// @access  Private
+exports.getStreakInfo = async (req, res) => {
+  try {
+    const userId = req.user._id;
+
+    let streak = await Streak.findOne({ userId });
+    if (!streak) {
+      streak = await Streak.create({ userId });
+      await streak.save();
+    }
+
+    // Reset monthly makeups if new month
+    streak.resetMonthlyMakeups();
+    
+    // Initialize milestones
+    streak.checkMilestones();
+    await streak.save();
+
+    // Get all milestone animals
+    const allMilestones = Streak.getMilestoneAnimals();
+    
+    // Merge with user's unlocked milestones
+    const milestonesWithStatus = allMilestones.map(milestone => {
+      const userMilestone = streak.milestones.find(m => m.streak === milestone.streak);
+      return {
+        ...milestone,
+        isUnlocked: userMilestone?.isUnlocked || false,
+        unlockedAt: userMilestone?.unlockedAt || null,
+        progress: Math.min(100, (streak.currentStreak / milestone.streak) * 100)
+      };
+    });
+
+    const remainingMakeups = streak.makeupCheckIns.monthlyLimit - streak.makeupCheckIns.usedThisMonth;
+
+    res.status(200).json({
+      success: true,
+      data: {
+        currentStreak: streak.currentStreak,
+        longestStreak: streak.longestStreak,
+        totalActiveDays: streak.totalActiveDays,
+        lastActiveDate: streak.lastActiveDate,
+        makeupCheckIns: {
+          monthlyLimit: streak.makeupCheckIns.monthlyLimit,
+          usedThisMonth: streak.makeupCheckIns.usedThisMonth,
+          remainingMakeups
+        },
+        milestones: milestonesWithStatus,
+        nextMilestone: milestonesWithStatus.find(m => !m.isUnlocked)
+      }
+    });
+
+  } catch (error) {
+    console.error('Get streak info error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Lỗi khi lấy thông tin streak',
       error: error.message
     });
   }

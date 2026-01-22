@@ -609,7 +609,9 @@
   "mood": {
     "title": "Theo dõi tâm trạng",
     "howAreYou": "Hôm nay bạn cảm thấy thế nào?",
+    "note": "Ghi chú",
     "notes": "Ghi chú",
+    "notePlaceholder": "Viết về cảm xúc của bạn hôm nay...",
     "notesPlaceholder": "Viết về cảm xúc của bạn hôm nay...",
     "energyLevel": "Mức năng lượng",
     "low": "Thấp",
@@ -817,7 +819,9 @@
     "noData": "Không có dữ liệu",
     "tryAgain": "Thử lại",
     "user": "Người dùng",
-    "language": "vi"
+    "language": "vi",
+    "understood": "Đã hiểu",
+    "optional": "tùy chọn"
   },
   "bottomNav": {
     "dashboard": "Trang chủ",
@@ -998,7 +1002,9 @@
     },
     "energy": "Năng lượng:",
     "emotions": "Cảm xúc:",
-    "notes": "Ghi chú:"
+    "notes": "Ghi chú:",
+    "makeupNote": "Bấm vào ngày bạn muốn điểm danh bù",
+    "makeupFor": "Điểm danh bù cho ngày"
   },
   "moodCheckIn": {
     "title": "Hôm nay bạn cảm thấy thế nào?",
@@ -1039,6 +1045,48 @@
       "Relaxed": "Thư giãn",
       "Worried": "Lo lắng"
     }
+  },
+  "streak": {
+    "title": "Chuỗi điểm danh",
+    "subtitle": "Duy trì chuỗi điểm danh mỗi ngày để mở khóa phần thưởng",
+    "current": "Hiện tại",
+    "longest": "Dài nhất",
+    "makeupLeft": "Còn lại",
+    "days": "ngày",
+    "consecutiveDays": "ngày liên tiếp",
+    "daysToGo": "ngày nữa",
+    "moreDays": "ngày nữa",
+    "nextReward": "Phần thưởng tiếp theo",
+    "rewards": "Phần thưởng của bạn",
+    "rewardsDesc": "Mỗi mốc streak sẽ mở khóa một con vật dễ thương 3D",
+    "unlocked": "Đã mở khóa",
+    "requirement": "Yêu cầu",
+    "unlockedOn": "Đã mở khóa vào",
+    "congratsMessage": "Chúc mừng! Bạn đã mở khóa con vật đặc biệt này!",
+    "keepGoing": "Cố gắng thêm",
+    "makeup": "Điểm danh bù",
+    "makeupDesc": "Bạn có thể điểm danh bù cho những ngày bỏ lỡ",
+    "makeupLimitMonth": "lần mỗi tháng",
+    "makeupUsed": "Đã sử dụng",
+    "makeupRemaining": "Còn lại",
+    "total": "Tổng cộng",
+    "viewAllRewards": "Xem tất cả phần thưởng",
+    "allRewards": "Tất cả phần thưởng",
+    "clickToMakeup": "Click để điểm danh bù",
+    "makeupTitle": "Điểm danh bù",
+    "selectDate": "Chọn ngày cần điểm danh bù",
+    "selectDateFirst": "Vui lòng chọn ngày trước",
+    "makeupSuccess": "Điểm danh bù thành công!",
+    "makeupError": "Lỗi khi điểm danh bù",
+    "submitMakeup": "Xác nhận điểm danh bù",
+    "noMakeupsRemaining": "Bạn đã sử dụng hết lượt điểm danh bù trong tháng này",
+    "noMakeupsTitle": "Hết lượt điểm danh bù",
+    "noMakeupsDesc": "Bạn đã sử dụng hết 3 lượt điểm danh bù trong tháng này. Lượt điểm danh bù sẽ được làm mới vào đầu tháng sau.",
+    "remainingTurns": "lượt còn lại",
+    "thisMonth": "trong tháng này",
+    "remainingAfter": "Sau khi điểm danh này, bạn còn",
+    "makeupCheckIn": "Điểm danh bù",
+    "confirmMakeup": "Xác nhận điểm danh bù"
   },
   "home": {
     "welcome": "Chào mừng đến với S-Techdy",

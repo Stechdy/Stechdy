@@ -609,7 +609,9 @@
   "mood": {
     "title": "Mood Tracking",
     "howAreYou": "How are you feeling today?",
+    "note": "Note",
     "notes": "Notes",
+    "notePlaceholder": "Write about your feelings today...",
     "notesPlaceholder": "Write about your feelings today...",
     "energyLevel": "Energy Level",
     "low": "Low",
@@ -817,7 +819,9 @@
     "noData": "No data available",
     "tryAgain": "Try again",
     "user": "User",
-    "language": "en"
+    "language": "en",
+    "understood": "Got it",
+    "optional": "optional"
   },
   "bottomNav": {
     "dashboard": "Dashboard",
@@ -998,7 +1002,9 @@
     },
     "energy": "Energy:",
     "emotions": "Emotions:",
-    "notes": "Notes:"
+    "notes": "Notes:",
+    "makeupNote": "Click on the day you want to make up",
+    "makeupFor": "Makeup check-in for"
   },
   "moodCheckIn": {
     "title": "How are you feeling today?",
@@ -1039,6 +1045,48 @@
       "Relaxed": "Relaxed",
       "Worried": "Worried"
     }
+  },
+  "streak": {
+    "title": "Check-in Streak",
+    "subtitle": "Maintain your daily check-in streak to unlock rewards",
+    "current": "Current",
+    "longest": "Longest",
+    "makeupLeft": "Left",
+    "days": "days",
+    "consecutiveDays": "consecutive days",
+    "daysToGo": "days to go",
+    "moreDays": "more days",
+    "nextReward": "Next reward",
+    "rewards": "Your Rewards",
+    "rewardsDesc": "Each streak milestone unlocks a cute 3D animal",
+    "unlocked": "Unlocked",
+    "requirement": "Requirement",
+    "unlockedOn": "Unlocked on",
+    "congratsMessage": "Congratulations! You've unlocked this special animal!",
+    "keepGoing": "Keep going for",
+    "makeup": "Makeup Check-in",
+    "makeupDesc": "You can makeup check-ins for missed days",
+    "makeupLimitMonth": "times per month",
+    "makeupUsed": "Used",
+    "makeupRemaining": "Remaining",
+    "total": "Total",
+    "viewAllRewards": "View all rewards",
+    "allRewards": "All Rewards",
+    "clickToMakeup": "Click to makeup",
+    "makeupTitle": "Makeup Check-in",
+    "selectDate": "Select date for makeup check-in",
+    "selectDateFirst": "Please select a date first",
+    "makeupSuccess": "Makeup check-in successful!",
+    "makeupError": "Error during makeup check-in",
+    "submitMakeup": "Submit Makeup",
+    "noMakeupsRemaining": "You have used all makeup check-ins for this month",
+    "noMakeupsTitle": "No Makeup Turns Left",
+    "noMakeupsDesc": "You have used all 3 makeup check-ins for this month. Your makeup turns will be refreshed at the beginning of next month.",
+    "remainingTurns": "turns remaining",
+    "thisMonth": "this month",
+    "remainingAfter": "After this check-in, you will have",
+    "makeupCheckIn": "Makeup Check-in",
+    "confirmMakeup": "Confirm Makeup"
   },
   "home": {
     "welcome": "Welcome to S-Techdy",
