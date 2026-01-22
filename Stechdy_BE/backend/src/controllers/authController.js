@@ -49,7 +49,56 @@ const getVietnamDate = () => {
   return now;
 };
 
-// Update user streak on login
+// Update user dashboard streak on login (separate from mood streak)
+const updateDashboardStreak = async (user) => {
+  try {
+    const today = getVietnamDate();
+    
+    // If no last active date, this is first login or first streak
+    if (!user.lastActiveDate) {
+      user.streakCount = 1;
+      user.lastActiveDate = today;
+      await user.save();
+      console.log(`🔥 Dashboard streak started: 1 day`);
+      return user;
+    }
+    
+    // Get last active date normalized to start of day
+    const lastActive = new Date(user.lastActiveDate);
+    lastActive.setHours(0, 0, 0, 0);
+    
+    // Calculate days difference
+    const daysDiff = Math.floor((today - lastActive) / (1000 * 60 * 60 * 24));
+    
+    console.log(`📅 Dashboard Streak check - Today: ${today.toDateString()}, Last Active: ${lastActive.toDateString()}, Days Diff: ${daysDiff}`);
+    
+    if (daysDiff === 0) {
+      // Same day - already logged in today, don't update streak
+      console.log(`✅ Already logged in today. Current dashboard streak: ${user.streakCount}`);
+      return user;
+    } else if (daysDiff === 1) {
+      // Consecutive day - increment streak
+      user.streakCount += 1;
+      user.lastActiveDate = today;
+      await user.save();
+      console.log(`🔥 Dashboard streak continued! New streak: ${user.streakCount} days`);
+      return user;
+    } else {
+      // Streak broken (more than 1 day gap) - reset to 1
+      user.streakCount = 1;
+      user.lastActiveDate = today;
+      await user.save();
+      console.log(`💔 Dashboard streak broken! Reset to 1 day`);
+      return user;
+    }
+  } catch (error) {
+    console.error('Error updating dashboard streak:', error);
+    return user;
+  }
+};
+
+/*
+// Update user streak on login - DEPRECATED (for mood streak)
 const updateUserStreak = async (userId) => {
   try {
     const today = getVietnamDate();
@@ -120,6 +169,7 @@ const updateUserStreak = async (userId) => {
     return { currentStreak: 0, longestStreak: 0, totalActiveDays: 0, streakHistory: [] };
   }
 };
+*/
 
 // @desc    Register a new user
 // @route   POST /api/auth/register
@@ -153,17 +203,19 @@ exports.register = async (req, res) => {
       });
     }
 
-    // Create user with default streakCount = 1
+    // Create user with initial dashboard streak
+    const today = getVietnamDate();
     const user = await User.create({
       name,
       email,
       passwordHash: password,
       streakCount: 1,
+      lastActiveDate: today,
     });
 
     if (user) {
-      // Create initial streak record for new user
-      const streakData = await updateUserStreak(user._id);
+      // Create empty streak record for new user (will be updated on first mood check-in)
+      await Streak.create({ userId: user._id });
       
       // Generate tokens
       const token = generateToken(user._id);
@@ -182,7 +234,7 @@ exports.register = async (req, res) => {
           email: user.email,
           role: user.role,
           avatarUrl: user.avatarUrl,
-          streakCount: streakData.currentStreak,
+          streakCount: user.streakCount,
           token,
           refreshToken,
         },
@@ -253,9 +305,8 @@ exports.login = async (req, res) => {
     // Reset login attempts on successful login
     await user.resetLoginAttempts();
 
-    // Update streak on login
-    const streakData = await updateUserStreak(user._id);
-    user.streakCount = streakData.currentStreak;
+    // Update dashboard streak (separate from mood streak)
+    await updateDashboardStreak(user);
     
     // Generate tokens
     const token = generateToken(user._id);
@@ -277,7 +328,7 @@ exports.login = async (req, res) => {
         premiumStatus: user.premiumStatus,
         level: user.level,
         xp: user.xp,
-        streakCount: streakData.currentStreak,
+        streakCount: user.streakCount,
         token,
         refreshToken,
       },
@@ -632,8 +683,12 @@ exports.googleLogin = async (req, res) => {
       user.lastLogin = Date.now();
       user.isVerified = true; // Google accounts are verified
       await user.save();
+      
+      // Update dashboard streak for existing user
+      await updateDashboardStreak(user);
     } else {
-      // Create new user with Google info
+      // Create new user with Google info and initial dashboard streak
+      const today = getVietnamDate();
       user = await User.create({
         name,
         email,
@@ -642,17 +697,18 @@ exports.googleLogin = async (req, res) => {
         avatarUrl: picture || null,
         isVerified: true,
         lastLogin: Date.now(),
-        streakCount: 1, // Default streak for new users
+        streakCount: 1,
+        lastActiveDate: today,
       });
+      
+      // Create empty streak record for new user (will be updated on first mood check-in)
+      await Streak.create({ userId: user._id });
     }
 
     // Generate tokens
     const token = generateToken(user._id);
     const refreshToken = generateRefreshToken(user._id);
 
-    // Update streak on Google login
-    const streakData = await updateUserStreak(user._id);
-    user.streakCount = streakData.currentStreak;
     user.refreshToken = refreshToken;
     await user.save();
 
@@ -667,7 +723,7 @@ exports.googleLogin = async (req, res) => {
         avatarUrl: user.avatarUrl,
         premiumStatus: user.premiumStatus,
         authProvider: user.authProvider,
-        streakCount: streakData.currentStreak,
+        streakCount: user.streakCount,
         token,
         refreshToken,
       },

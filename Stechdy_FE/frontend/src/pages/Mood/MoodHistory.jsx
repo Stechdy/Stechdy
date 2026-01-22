@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import BottomNav from "../../components/common/BottomNav";
 import SidebarNav from "../../components/common/SidebarNav";
 import MoodCalendar from "../../components/mood/MoodCalendar";
+import StreakMilestones from "../../components/mood/StreakMilestones";
 import moodService from "../../services/moodService";
 import "./MoodHistory.css";
 
@@ -161,6 +162,9 @@ const MoodHistory = () => {
               </div>
             </div>
           )}
+
+          {/* Streak & Milestones Section */}
+          {!loading && <StreakMilestones />}
 
           {/* Empty State */}
           {!loading && stats && stats.totalEntries === 0 && (
