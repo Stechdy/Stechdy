@@ -127,7 +127,7 @@ studySessionScheduleSchema.index({ timetableId: 1, status: 1 });
 studySessionScheduleSchema.index({ subjectId: 1, date: -1 });
 studySessionScheduleSchema.index({ date: 1, status: 1 });
 
-// Validate max 3 sessions per day per user
+// Log warning for more than 3 sessions per day per user (removed hard validation)
 studySessionScheduleSchema.pre('save', async function(next) {
   if (this.isNew) {
     const sameDaySessions = await this.constructor.countDocuments({
@@ -137,7 +137,8 @@ studySessionScheduleSchema.pre('save', async function(next) {
     });
     
     if (sameDaySessions >= 3) {
-      next(new Error('Maximum 3 study sessions per day'));
+      console.log(`⚠️  Warning: User ${this.userId} has ${sameDaySessions + 1} sessions on ${this.date}`);
+      // No longer throwing error - just log warning
     }
   }
   next();

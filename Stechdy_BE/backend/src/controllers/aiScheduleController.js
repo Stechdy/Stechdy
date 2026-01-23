@@ -19,10 +19,22 @@ const {
 exports.saveAISchedule = async (req, res) => {
   try {
     const userId = req.user._id;
-    const { schedule, input, generated_at, message } = req.body;
+    let { schedule, input, generated_at, message } = req.body;
 
     console.log('🤖 Saving AI generated schedule for user:', userId);
     console.log('📊 Schedule items:', schedule?.length);
+    console.log('🔍 Input type:', typeof input);
+    console.log('🔍 Input value:', JSON.stringify(input, null, 2));
+
+    // Parse input if it's a string
+    if (typeof input === 'string') {
+      try {
+        input = JSON.parse(input);
+        console.log('✅ Parsed input from string');
+      } catch (e) {
+        console.log('⚠️ Failed to parse input string:', e.message);
+      }
+    }
 
     if (!schedule || !Array.isArray(schedule) || schedule.length === 0) {
       return res.status(400).json({
@@ -105,32 +117,52 @@ exports.saveAISchedule = async (req, res) => {
       }
     }
 
-    const aiInput = await AIInput.create({
+    console.log('🔍 safeBusySlots length:', safeBusySlots.length);
+    console.log('🔍 safeBusySlots is array:', Array.isArray(safeBusySlots));
+    if (safeBusySlots.length > 0) {
+      console.log('🔍 First busySlot:', safeBusySlots[0]);
+      console.log('🔍 First busySlot type:', typeof safeBusySlots[0]);
+    }
+
+    // Create AI Input WITHOUT busySlots in structuredData to avoid validation issues
+    const structuredDataObj = {
+      subjects: input?.subjects?.map(s => ({
+        name: typeof s === 'string' ? s : s.name,
+        priority: typeof s === 'string' ? 'medium' : mapPriorityToString(s.priority)
+      })) || [],
+      preferences: {
+        sessionDuration: input?.session_duration_hours ? input.session_duration_hours * 60 : 60,
+        maxSessionsPerDay: 3
+      }
+      // Intentionally NOT including busySlots to avoid validation error
+    };
+
+    const aiInputData = {
       userId,
       semesterId: semester._id,
       inputType: 'fullContext',
-      payload: input || {},
+      payload: {}, // Empty payload to avoid any stringification issues
       status: 'processed',
-      structuredData: {
-        subjects: input?.subjects?.map(s => ({
-          name: typeof s === 'string' ? s : s.name,
-          priority: typeof s === 'string' ? 'medium' : mapPriorityToString(s.priority)
-        })) || [],
-        busySlots: safeBusySlots,
-        preferences: {
-          sessionDuration: input?.session_duration_hours ? input.session_duration_hours * 60 : 60,
-          maxSessionsPerDay: 3
-        }
-      },
+      structuredData: structuredDataObj,
       metadata: {
         source: 'api',
-        processedAt: new Date()
+        processedAt: new Date(),
+        originalInput: input, // Store original input in metadata instead
+        busyTimesCount: safeBusySlots.length // Track busy times without storing in structuredData
       }
-    });
+    };
+
+    console.log('🔍 Creating AIInput without busySlots in structuredData');
+
+    const aiInput = new AIInput(aiInputData);
+    await aiInput.save();
     console.log('📝 Created AI Input:', aiInput._id);
 
     // 4. Group schedule by week and create timetables + sessions
     const weeklyGroups = groupScheduleByWeek(schedule);
+    console.log('📅 Weekly groups count:', weeklyGroups.size);
+    console.log('📅 Weekly groups keys:', Array.from(weeklyGroups.keys()));
+    
     const createdSessions = [];
     const createdTimetables = [];
     
@@ -140,12 +172,17 @@ exports.saveAISchedule = async (req, res) => {
       weekEnd.setDate(weekEnd.getDate() + 6);
       
       // Check if timetable exists for this week
+      const weekStartRangeStart = new Date(weekStart);
+      weekStartRangeStart.setHours(0, 0, 0, 0);
+      const weekStartRangeEnd = new Date(weekStart);
+      weekStartRangeEnd.setHours(23, 59, 59, 999);
+      
       let timetable = await StudyTimetable.findOne({
         userId,
         semesterId: semester._id,
         weekStartDate: {
-          $gte: new Date(weekStart.setHours(0, 0, 0, 0)),
-          $lte: new Date(weekStart.setHours(23, 59, 59, 999))
+          $gte: weekStartRangeStart,
+          $lte: weekStartRangeEnd
         }
       });
       
@@ -273,10 +310,12 @@ exports.saveAISchedule = async (req, res) => {
 
   } catch (error) {
     console.error('❌ Error saving AI schedule:', error);
+    console.error('❌ Error stack:', error.stack);
     res.status(500).json({
       success: false,
       message: 'Failed to save schedule',
-      error: error.message
+      error: error.message,
+      stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
     });
   }
 };
@@ -481,9 +520,13 @@ function groupScheduleByWeek(schedule) {
   // First, flatten schedule if it contains date/sessions structure
   let flatSessions = [];
   
+  console.log('🔍 Grouping schedule, input length:', schedule?.length);
+  console.log('🔍 First schedule item:', JSON.stringify(schedule?.[0], null, 2));
+  
   schedule.forEach(item => {
     if (item.date && item.sessions && Array.isArray(item.sessions)) {
       // Format: {date: "2026-01-19", sessions: [...]}
+      console.log('📋 Processing date item:', item.date, 'with', item.sessions.length, 'sessions');
       item.sessions.forEach(session => {
         flatSessions.push({
           ...session,
@@ -492,9 +535,15 @@ function groupScheduleByWeek(schedule) {
       });
     } else if (item.date && item.start_time) {
       // Format: {date: "2026-01-19", start_time: "08:00", ...}
+      console.log('📋 Processing flat session:', item.date, item.start_time);
       flatSessions.push(item);
     }
   });
+  
+  console.log('🔍 Total flat sessions:', flatSessions.length);
+  if (flatSessions.length > 0) {
+    console.log('🔍 First flat session:', JSON.stringify(flatSessions[0], null, 2));
+  }
   
   // Group by week
   flatSessions.forEach(session => {

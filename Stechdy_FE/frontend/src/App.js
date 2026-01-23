@@ -51,6 +51,7 @@ import HelpSupport from "./pages/HelpSupport/HelpSupport";
 import TermsOfUse from "./pages/TermsOfUse/TermsOfUse";
 import AIGenerator from "./pages/AIGenerator/AIGenerator";
 import ScheduleEditor from "./pages/ScheduleEditor/ScheduleEditor";
+import CalendarEditor from "./pages/CalendarEditor/CalendarEditor";
 import AIChat from "./pages/AIChat/AIChat";
 
 function App() {
@@ -135,6 +136,14 @@ function App() {
               element={
                 <PrivateRoute>
                   <Calendar />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/calendar-editor"
+              element={
+                <PrivateRoute>
+                  <CalendarEditor />
                 </PrivateRoute>
               }
             />
