@@ -76,6 +76,7 @@ app.use("/api/deadlines", require("./routes/deadlineRoutes"));
 app.use("/api/upload", require("./routes/uploadRoutes"));
 app.use('/api/payments', require('./routes/paymentRoutes'));
 app.use('/api/admin', require('./routes/adminRoutes'));
+app.use('/api/debug', require('./routes/debugRoutes'));
 
 // Welcome route
 app.get("/", (req, res) => {

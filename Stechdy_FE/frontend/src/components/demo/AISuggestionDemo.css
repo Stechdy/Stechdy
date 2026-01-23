@@ -1,0 +1,271 @@
+.ai-suggestion-demo {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 20px;
+  color: white;
+}
+
+.demo-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.demo-header h2 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.demo-header p {
+  font-size: 1.1rem;
+  opacity: 0.9;
+}
+
+.demo-info {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 25px;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  backdrop-filter: blur(10px);
+}
+
+.info-item {
+  flex: 1;
+}
+
+.info-item strong {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+.demo-scenarios {
+  margin-bottom: 25px;
+}
+
+.demo-scenarios h3 {
+  margin-bottom: 15px;
+  font-size: 1.3rem;
+}
+
+.scenario-buttons {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 10px;
+}
+
+.scenario-btn {
+  padding: 12px 20px;
+  background: rgba(255, 255, 255, 0.2);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.scenario-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.demo-context {
+  margin-bottom: 25px;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  backdrop-filter: blur(10px);
+}
+
+.demo-context h3 {
+  margin-bottom: 15px;
+  font-size: 1.3rem;
+}
+
+.context-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 15px;
+}
+
+.context-item {
+  text-align: center;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+}
+
+.context-item label {
+  display: block;
+  font-size: 0.85rem;
+  opacity: 0.8;
+  margin-bottom: 5px;
+}
+
+.context-item span {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.demo-action {
+  text-align: center;
+  margin: 30px 0;
+}
+
+.generate-btn {
+  padding: 15px 40px;
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  border: none;
+  border-radius: 50px;
+  color: white;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+}
+
+.generate-btn:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+}
+
+.generate-btn:active {
+  transform: translateY(-1px) scale(1.02);
+}
+
+.demo-result {
+  margin-top: 30px;
+  animation: fadeInUp 0.5s ease;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.demo-result h3 {
+  margin-bottom: 15px;
+  font-size: 1.3rem;
+}
+
+.suggestion-card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 25px;
+  border-radius: 15px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 15px;
+}
+
+.suggestion-icon {
+  font-size: 3rem;
+  flex-shrink: 0;
+  animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.suggestion-text {
+  font-size: 1.3rem;
+  line-height: 1.6;
+  margin: 0;
+  flex: 1;
+}
+
+.tip {
+  text-align: center;
+  font-size: 0.95rem;
+  opacity: 0.8;
+  font-style: italic;
+}
+
+.demo-stats {
+  margin-top: 30px;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  backdrop-filter: blur(10px);
+}
+
+.demo-stats h3 {
+  margin-bottom: 15px;
+  font-size: 1.3rem;
+}
+
+.demo-stats ul {
+  list-style: none;
+  padding: 0;
+}
+
+.demo-stats li {
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 1rem;
+}
+
+.demo-stats li:last-child {
+  border-bottom: none;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .ai-suggestion-demo {
+    padding: 15px;
+  }
+
+  .demo-header h2 {
+    font-size: 1.8rem;
+  }
+
+  .demo-info {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .scenario-buttons {
+    grid-template-columns: 1fr;
+  }
+
+  .context-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .suggestion-card {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .suggestion-text {
+    font-size: 1.1rem;
+  }
+
+  .generate-btn {
+    padding: 12px 30px;
+    font-size: 1rem;
+  }
+}

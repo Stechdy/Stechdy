@@ -73,6 +73,26 @@ const moodService = {
         Authorization: `Bearer ${token}`
       }
     });
+  },
+
+  // Makeup mood check-in
+  makeupMoodCheckIn: async (moodData) => {
+    const token = localStorage.getItem('token');
+    return await api.post('/moods/makeup', moodData, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+  },
+
+  // Get streak info with milestones
+  getStreakInfo: async () => {
+    const token = localStorage.getItem('token');
+    return await api.get('/moods/streak', {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
   }
 };
 

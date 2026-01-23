@@ -143,6 +143,16 @@ const Mood = () => {
       });
 
       if (response.success) {
+        // Emit event to update streak in real-time across components
+        if (response.data?.currentStreak !== undefined && response.data?.longestStreak !== undefined) {
+          window.dispatchEvent(new CustomEvent('streakUpdated', {
+            detail: {
+              currentStreak: response.data.currentStreak,
+              longestStreak: response.data.longestStreak
+            }
+          }));
+        }
+
         setShowSuccess(true);
         setTimeout(() => {
           setShowSuccess(false);

@@ -58,6 +58,10 @@ const userSchema = new mongoose.Schema(
       default: 0,
       min: 0
     },
+    lastActiveDate: {
+      type: Date,
+      default: null
+    },
     level: {
       type: Number,
       default: 1,
