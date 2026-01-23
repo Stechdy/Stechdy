@@ -20,8 +20,12 @@ const getReminderEmailTemplate = (sessionData, actionToken) => {
     year: 'numeric'
   });
 
-  const baseUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
-  const apiUrl = process.env.API_URL || 'http://localhost:3001';
+  const baseUrl = process.env.FRONTEND_URL;
+  const apiUrl = process.env.API_URL || process.env.FRONTEND_URL;
+  
+  if (!baseUrl) {
+    console.error('⚠️ FRONTEND_URL not configured in .env');
+  }
 
   return `
     <!DOCTYPE html>
