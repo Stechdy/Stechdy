@@ -383,7 +383,7 @@
 .ce-event-card {
   background: linear-gradient(135deg, #8AC0D5 0%, #7AB5CA 100%);
   border-radius: 10px;
-  padding: 8px 12px;
+  padding: 8px 10px;          /* giảm padding ngang một chút để có thêm không gian */
   cursor: move;
   transition: all 0.3s ease;
   box-shadow: 0 2px 8px rgba(138, 192, 213, 0.3);
@@ -405,22 +405,23 @@
 }
 
 .ce-event-subject {
-  font-size: 14px;
+  font-size: 13px;                    /* giảm nhẹ từ 14px → dễ xuống dòng hơn */
   font-weight: 700;
-  margin-bottom: 6px;
+  margin-bottom: 4px;                 /* giảm margin */
   line-height: 1.2;
-  word-wrap: break-word;
+  word-break: break-word;             /* tốt hơn word-wrap trong một số trình duyệt */
   overflow: hidden;
   display: -webkit-box;
-  -webkit-line-clamp: 2;
-  line-clamp: 2;
+  -webkit-line-clamp: 2;              /* tối đa 2 dòng */
   -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+  max-height: 2.4em;                  /* giới hạn chiều cao ≈ 2 dòng */
 }
 
 .ce-event-time {
-  font-size: 12px;
+  font-size: 11.5px;                  /* giảm nhẹ cho cân đối */
   opacity: 0.9;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
   line-height: 1.1;
 }
 
@@ -866,11 +867,17 @@
   }
 
   .ce-time-slot {
-    height: 80px;
+    height: 90px;          /* tăng nhẹ để tên môn học có chỗ thở */
+  }
+
+  .ce-event-card {
+    padding: 6px 8px;
   }
 
   .ce-event-subject {
-    font-size: 11px;
+    font-size: 11.5px;
+    -webkit-line-clamp: 2;
+    max-height: 2.4em;
   }
 
   .ce-event-time {
@@ -888,4 +895,3 @@
     padding: 10px 16px;
   }
 }
-
