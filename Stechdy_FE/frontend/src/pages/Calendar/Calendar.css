@@ -326,6 +326,35 @@
   transition: background-color var(--transition-normal), box-shadow var(--transition-normal);
 }
 
+.section-header-with-action {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+.edit-calendar-button {
+  background: linear-gradient(135deg, #8AC0D5 0%, #7AB5CA 100%);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(138, 192, 213, 0.3);
+}
+
+.edit-calendar-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(138, 192, 213, 0.4);
+}
+
+.edit-calendar-button:active {
+  transform: translateY(0);
+}
+
 .section-title {
   font-size: 20px;
   font-weight: 700;
@@ -337,7 +366,7 @@
 .sessions-count {
   font-size: 14px;
   color: var(--text-secondary);
-  margin: 0 0 20px 0;
+  margin: 0;
   transition: color var(--transition-normal);
 }
 

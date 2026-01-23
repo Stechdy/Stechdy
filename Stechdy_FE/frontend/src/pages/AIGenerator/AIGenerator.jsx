@@ -5,11 +5,12 @@ import BottomNav from "../../components/common/BottomNav";
 import SidebarNav from "../../components/common/SidebarNav";
 import config from "../../config";
 import "./AIGenerator.css";
+import i18n from "../../i18n";
 
 const AIGenerator = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
-  
+
   // Form state
   const [subjects, setSubjects] = useState([{ name: "", priority: 3 }]);
   const [startDate, setStartDate] = useState(
@@ -21,7 +22,7 @@ const AIGenerator = () => {
   const [busyTimes, setBusyTimes] = useState([
     { day: "", slots: [] },
   ]);
-  
+
   // UI state
   const [isGenerating, setIsGenerating] = useState(false);
   const [showToast, setShowToast] = useState(false);
@@ -31,6 +32,8 @@ const AIGenerator = () => {
   const [hasExistingSchedule, setHasExistingSchedule] = useState(false);
   const [lastScheduleDate, setLastScheduleDate] = useState(null);
   const [showDeleteConfirmModal, setShowDeleteConfirmModal] = useState(false);
+  const [showDeleteWarningModal, setShowDeleteWarningModal] = useState(false);
+  const [showDeleteSuccessModal, setShowDeleteSuccessModal] = useState(false);
   const [minStartDate, setMinStartDate] = useState(
     new Date().toISOString().split("T")[0]
   );
@@ -56,7 +59,7 @@ const AIGenerator = () => {
           if (data && data.date) {
             setHasExistingSchedule(true);
             setLastScheduleDate(data.date);
-            
+
             // Show confirmation modal
             setShowDeleteConfirmModal(true);
           }
@@ -70,11 +73,17 @@ const AIGenerator = () => {
   }, []);
 
   // Handle delete old schedule confirmation
-  const handleDeleteOldSchedule = async () => {
+  const handleDeleteOldSchedule = () => {
+    // Show warning modal first
+    setShowDeleteConfirmModal(false);
+    setShowDeleteWarningModal(true);
+  };
+
+  const confirmDeleteOldSchedule = async () => {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        `${config.apiUrl}/study-sessions/all`,
+        `${config.apiUrl}/study-sessions/delete-all`,
         {
           method: "DELETE",
           headers: { Authorization: `Bearer ${token}` },
@@ -82,17 +91,19 @@ const AIGenerator = () => {
       );
 
       if (response.ok) {
-        displayToast("Old schedule deleted successfully", "success");
+        setShowDeleteWarningModal(false);
+        setShowDeleteSuccessModal(true);
         setHasExistingSchedule(false);
         setMinStartDate(new Date().toISOString().split("T")[0]);
         setStartDate(new Date().toISOString().split("T")[0]);
       } else {
         displayToast("Failed to delete old schedule", "error");
+        setShowDeleteWarningModal(false);
       }
     } catch (error) {
       displayToast("Error deleting old schedule", "error");
+      setShowDeleteWarningModal(false);
     }
-    setShowDeleteConfirmModal(false);
   };
 
   const handleKeepOldSchedule = () => {
@@ -100,15 +111,10 @@ const AIGenerator = () => {
     const lastDate = new Date(lastScheduleDate);
     lastDate.setDate(lastDate.getDate() + 1);
     const nextDay = lastDate.toISOString().split("T")[0];
-    
+
     setMinStartDate(nextDay);
     setStartDate(nextDay);
     setShowDeleteConfirmModal(false);
-    
-    displayToast(
-      `Start date must be after ${new Date(lastScheduleDate).toLocaleDateString()}`,
-      "info"
-    );
   };
 
   // Subject handlers
@@ -156,13 +162,13 @@ const AIGenerator = () => {
   const toggleBusyTimeSlot = (busyIndex, slot) => {
     const newBusyTimes = [...busyTimes];
     const slots = newBusyTimes[busyIndex].slots;
-    
+
     if (slots.includes(slot)) {
       newBusyTimes[busyIndex].slots = slots.filter((s) => s !== slot);
     } else {
       newBusyTimes[busyIndex].slots = [...slots, slot];
     }
-    
+
     setBusyTimes(newBusyTimes);
   };
 
@@ -204,6 +210,8 @@ const AIGenerator = () => {
             day: bt.day.toLowerCase(),
             start: startTime,
             end: endTime,
+            start_time: startTime,
+            end_time: endTime,
             label: label,
           });
         });
@@ -211,7 +219,7 @@ const AIGenerator = () => {
     });
 
     const validSubjects = subjects.filter((s) => s.name.trim() !== "");
-    
+
     // Check if evening is available (not in busy times)
     const eveningBusy = transformedBusyTimes.some(bt => bt.label === "Evening");
     // If evening is free, we can have 3 slots per day (morning, afternoon, evening)
@@ -222,6 +230,7 @@ const AIGenerator = () => {
       start_date: startDate,
       end_date: finalEndDate,
       duration: durationHours,
+      session_duration_hours: durationHours,
       subjects: validSubjects.map((s) => ({
         name: s.name,
         priority: s.priority || 3,
@@ -303,7 +312,7 @@ const AIGenerator = () => {
 
       // Extract schedule data - handle various response formats from n8n
       let scheduleData = null;
-      
+
       // Case 1: n8n returns array with response object [{success, data: {schedule: [...]}}]
       if (Array.isArray(result) && result.length > 0) {
         const firstItem = result[0];
@@ -336,13 +345,13 @@ const AIGenerator = () => {
         // Save to localStorage for editing in ScheduleEditor
         localStorage.setItem("studySchedule", JSON.stringify(scheduleData));
         localStorage.setItem("studyScheduleInput", JSON.stringify(webhookData));
-        
+
         // Show success message - user will save to DB after editing
         displayToast(
           `Schedule generated with ${scheduleData.schedule.length} days! Review and edit before saving.`,
           "success"
         );
-        
+
         // Increment generation count
         const currentCount = parseInt(
           localStorage.getItem("ai_generation_count") || "0",
@@ -391,7 +400,7 @@ const AIGenerator = () => {
   return (
     <div className="ai-generator-container">
       <SidebarNav />
-      
+
       <div className="ai-generator-wrapper">
         {/* Header */}
         <h1 className="ai-generator-page-title">{t("ai.title") || "AI Schedule Generator"}</h1>
@@ -408,282 +417,278 @@ const AIGenerator = () => {
                     <i className="fas fa-book"></i>
                     {t("ai.subjects") || "Subjects"}
                   </h2>
-              
-              <div className="subjects-list">
-                {subjects.map((subject, index) => (
-                  <div key={index} className="subject-item">
-                    <div className="subject-row">
-                      <input
-                        type="text"
-                        className="subject-input"
-                        placeholder={t("ai.subjectName") || "Subject name..."}
-                        value={subject.name}
-                        onChange={(e) =>
-                          updateSubject(index, "name", e.target.value)
-                        }
-                        required
-                      />
-                    </div>
-                    
-                    <div className="priority-group">
-                      <div className="priority-header">
-                        <label className="priority-label">
-                          {t("ai.priority") || "Priority"}
-                        </label>
-                        {subjects.length > 1 && (
-                          <button
-                            type="button"
-                            className="ag-btn-remove"
-                            onClick={() => removeSubject(index)}
-                            title="Remove subject"
-                          >
-                            <i className="fas fa-times"></i>
-                          </button>
-                        )}
-                      </div>
-                      <div className="priority-pills">
-                        {[1, 2, 3, 4, 5].map((priority) => (
-                          <button
-                            key={priority}
-                            type="button"
-                            className={`pill ${
-                              subject.priority === priority ? "active" : ""
-                            }`}
-                            onClick={() =>
-                              updateSubject(index, "priority", priority)
+
+                  <div className="subjects-list">
+                    {subjects.map((subject, index) => (
+                      <div key={index} className="subject-item">
+                        <div className="subject-row">
+                          <input
+                            type="text"
+                            className="subject-input"
+                            placeholder={t("ai.subjectName") || "Subject name..."}
+                            value={subject.name}
+                            onChange={(e) =>
+                              updateSubject(index, "name", e.target.value)
                             }
-                          >
-                            {priority}
-                          </button>
-                        ))}
+                            required
+                          />
+                        </div>
+
+                        <div className="priority-group">
+                          <div className="priority-header">
+                            <label className="priority-label">
+                              {t("ai.priority") || "Priority"}
+                            </label>
+                            {subjects.length > 1 && (
+                              <button
+                                type="button"
+                                className="ag-btn-remove"
+                                onClick={() => removeSubject(index)}
+                                title="Remove subject"
+                              >
+                                <i className="fas fa-times"></i>
+                              </button>
+                            )}
+                          </div>
+                          <div className="priority-pills">
+                            {[1, 2, 3, 4, 5].map((priority) => (
+                              <button
+                                key={priority}
+                                type="button"
+                                className={`pill ${subject.priority === priority ? "active" : ""
+                                  }`}
+                                onClick={() =>
+                                  updateSubject(index, "priority", priority)
+                                }
+                              >
+                                {priority}
+                              </button>
+                            ))}
+                          </div>
+                          <span className="priority-hint">
+                            {subject.priority === 1 && "Highest"}
+                            {subject.priority === 2 && "High"}
+                            {subject.priority === 3 && "Medium"}
+                            {subject.priority === 4 && "Low"}
+                            {subject.priority === 5 && "Lowest"}
+                          </span>
+                        </div>
                       </div>
-                      <span className="priority-hint">
-                        {subject.priority === 1 && "Highest"}
-                        {subject.priority === 2 && "High"}
-                        {subject.priority === 3 && "Medium"}
-                        {subject.priority === 4 && "Low"}
-                        {subject.priority === 5 && "Lowest"}
+                    ))}
+                  </div>
+
+                  <button
+                    type="button"
+                    className="ag-btn-add"
+                    onClick={addSubject}
+                  >
+                    <i className="fas fa-plus"></i>
+                    {t("ai.addSubject") || "Add Subject"}
+                  </button>
+                </section>
+
+                {/* Date Range Section */}
+                <section className="ag-form-section">
+                  <h2 className="ag-section-title">
+                    <i className="fas fa-calendar-alt"></i>
+                    {t("ai.dateRange") || "Date Range"}
+                  </h2>
+
+                  <div className="date-inputs">
+                    <div className="ag-input-group">
+                      <label htmlFor="start-date">
+                        {t("ai.startDate") || "Start Date"}
+                      </label>
+                      <div className="date-input-wrapper">
+                        <input
+                          type="date"
+                          id="start-date"
+                          className="date-input"
+                          value={startDate}
+                          onChange={(e) => setStartDate(e.target.value)}
+                          min={minStartDate}
+                          required
+                        />
+                        <i className="fas fa-calendar-alt date-icon"></i>
+                      </div>
+                    </div>
+
+                    <div className="ag-input-group">
+                      <label htmlFor="end-date">
+                        {t("ai.endDate") || "End Date (Optional)"}
+                      </label>
+                      <div className="date-input-wrapper">
+                        <input
+                          type="date"
+                          id="end-date"
+                          className="date-input"
+                          value={endDate}
+                          onChange={(e) => setEndDate(e.target.value)}
+                          min={startDate || new Date().toISOString().split("T")[0]}
+                        />
+                        <i className="fas fa-calendar-alt date-icon"></i>
+                      </div>
+                      <span className="input-hint">
+                        {t("ai.endDateHint") || "Leave empty for 30 days from start"}
                       </span>
                     </div>
                   </div>
-                ))}
-              </div>
-              
-              <button
-                type="button"
-                className="ag-btn-add"
-                onClick={addSubject}
-              >
-                <i className="fas fa-plus"></i>
-                {t("ai.addSubject") || "Add Subject"}
-              </button>
-            </section>
-
-            {/* Date Range Section */}
-            <section className="ag-form-section">
-              <h2 className="ag-section-title">
-                <i className="fas fa-calendar-alt"></i>
-                {t("ai.dateRange") || "Date Range"}
-              </h2>
-              
-              <div className="date-inputs">
-                <div className="ag-input-group">
-                  <label htmlFor="start-date">
-                    {t("ai.startDate") || "Start Date"}
-                  </label>
-                  <div className="date-input-wrapper">
-                    <input
-                      type="date"
-                      id="start-date"
-                      className="date-input"
-                      value={startDate}
-                      onChange={(e) => setStartDate(e.target.value)}
-                      min={minStartDate}
-                      required
-                    />
-                    <i className="fas fa-calendar-alt date-icon"></i>
-                  </div>
-                </div>
-                
-                <div className="ag-input-group">
-                  <label htmlFor="end-date">
-                    {t("ai.endDate") || "End Date (Optional)"}
-                  </label>
-                  <div className="date-input-wrapper">
-                    <input
-                      type="date"
-                      id="end-date"
-                      className="date-input"
-                      value={endDate}
-                      onChange={(e) => setEndDate(e.target.value)}
-                      min={startDate || new Date().toISOString().split("T")[0]}
-                    />
-                    <i className="fas fa-calendar-alt date-icon"></i>
-                  </div>
-                  <span className="input-hint">
-                    {t("ai.endDateHint") || "Leave empty for 30 days from start"}
-                  </span>
-                </div>
-              </div>
-            </section>
+                </section>
               </div>
 
               {/* Right Column - Duration & Busy Times */}
               <div className="ai-generator-right-column">
-            {/* Study Duration Section */}
-            <section className="ag-form-section">
-              <h2 className="ag-section-title">
-                <i className="fas fa-clock"></i>
-                {t("ai.studyDuration") || "Study Session Duration"}
-              </h2>
-              
-              <div className="duration-pills">
-                {[
-                  { value: "30", label: "30 min" },
-                  { value: "45", label: "45 min" },
-                  { value: "60", label: "1 hour" },
-                  { value: "90", label: "1.5 hours" },
-                  { value: "custom", label: "Custom" },
-                ].map((option) => (
-                  <button
-                    key={option.value}
-                    type="button"
-                    className={`pill ${
-                      sessionDuration === option.value ? "active" : ""
-                    }`}
-                    onClick={() => setSessionDuration(option.value)}
-                  >
-                    {option.label}
-                  </button>
-                ))}
-              </div>
-              
-              {sessionDuration === "custom" && (
-                <div className="custom-duration">
-                  <input
-                    type="number"
-                    className="custom-input"
-                    placeholder="Minutes..."
-                    value={customDuration}
-                    onChange={(e) => setCustomDuration(e.target.value)}
-                    min="15"
-                    max="240"
-                    step="15"
-                  />
-                  <span className="input-hint">
-                    {t("ai.customHint") || "15-240 minutes"}
-                  </span>
-                </div>
-              )}
-            </section>
+                {/* Study Duration Section */}
+                <section className="ag-form-section">
+                  <h2 className="ag-section-title">
+                    <i className="fas fa-clock"></i>
+                    {t("ai.studyDuration") || "Study Session Duration"}
+                  </h2>
 
-            {/* Busy Times Section */}
-            <section className="ag-form-section">
-              <h2 className="ag-section-title">
-                <i className="fas fa-calendar-times"></i>
-                {t("ai.busyTimes") || "Busy Times (Optional)"}
-              </h2>
-              
-              <div className="busy-times-list">
-                {busyTimes.map((busyTime, index) => (
-                  <div key={index} className="busy-time-item">
-                    <div className="busy-time-row">
-                      <select
-                        className="day-select"
-                        value={busyTime.day}
-                        onChange={(e) =>
-                          updateBusyTimeDay(index, e.target.value)
-                        }
+                  <div className="duration-pills">
+                    {[
+                      { value: "30", label: "30 min" },
+                      { value: "45", label: "45 min" },
+                      { value: "60", label: "1 hour" },
+                      { value: "90", label: "1.5 hours" },
+                      { value: "custom", label: "Custom" },
+                    ].map((option) => (
+                      <button
+                        key={option.value}
+                        type="button"
+                        className={`pill ${sessionDuration === option.value ? "active" : ""
+                          }`}
+                        onClick={() => setSessionDuration(option.value)}
                       >
-                        <option value="">{t("ai.selectDay") || "Select day..."}</option>
-                        {[
-                          { value: "monday", label: "Monday" },
-                          { value: "tuesday", label: "Tuesday" },
-                          { value: "wednesday", label: "Wednesday" },
-                          { value: "thursday", label: "Thursday" },
-                          { value: "friday", label: "Friday" },
-                          { value: "saturday", label: "Saturday" },
-                          { value: "sunday", label: "Sunday" }
-                        ].map(day => {
-                          const isSelected = busyTimes.some((bt, i) => i !== index && bt.day === day.value);
-                          return (
-                            <option 
-                              key={day.value} 
-                              value={day.value}
-                              disabled={isSelected}
-                            >
-                              {day.label}{isSelected ? " (✓)" : ""}
-                            </option>
-                          );
-                        })}
-                      </select>
-                      
-                      {busyTimes.length > 1 && (
-                        <button
-                          type="button"
-                          className="ag-btn-remove"
-                          onClick={() => removeBusyTime(index)}
-                          title="Remove busy time"
-                        >
-                          <i className="fas fa-times"></i>
-                        </button>
-                      )}
-                    </div>
-                    
-                    {busyTime.day && (
-                      <div className="time-slot-selector">
-                        <div className="slot-options">
-                          {[
-                            { value: "morning", label: "Morning", icon: "☀️" },
-                            { value: "afternoon", label: "Afternoon", icon: "🌤️" },
-                            { value: "evening", label: "Evening", icon: "🌙" },
-                          ].map((slot) => (
-                            <button
-                              key={slot.value}
-                              type="button"
-                              className={`slot-option ${
-                                busyTime.slots.includes(slot.value)
-                                  ? "selected"
-                                  : ""
-                              }`}
-                              onClick={() => toggleBusyTimeSlot(index, slot.value)}
-                            >
-                              <span className="slot-icon">{slot.icon}</span>
-                              <span className="slot-name">{slot.label}</span>
-                              <span
-                                className={`slot-status ${
-                                  busyTime.slots.includes(slot.value)
-                                    ? "unavailable"
-                                    : "available"
-                                }`}
-                              >
-                                {busyTime.slots.includes(slot.value)
-                                  ? "Busy"
-                                  : "Available"}
-                              </span>
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-                    )}
+                        {option.label}
+                      </button>
+                    ))}
                   </div>
-                ))}
-              </div>
-              
-              <button
-                type="button"
-                className="ag-btn-add"
-                onClick={addBusyTime}
-                disabled={allDaysSelected()}
-                style={{
-                  opacity: allDaysSelected() ? 0.5 : 1,
-                  cursor: allDaysSelected() ? "not-allowed" : "pointer"
-                }}
-              >
-                <i className="fas fa-plus"></i>
-                {t("ai.addBusyTime") || "Add Busy Time"}
-              </button>
-            </section>
+
+                  {sessionDuration === "custom" && (
+                    <div className="custom-duration">
+                      <input
+                        type="number"
+                        className="custom-input"
+                        placeholder="Minutes..."
+                        value={customDuration}
+                        onChange={(e) => setCustomDuration(e.target.value)}
+                        min="15"
+                        max="240"
+                        step="15"
+                      />
+                      <span className="input-hint">
+                        {t("ai.customHint") || "15-240 minutes"}
+                      </span>
+                    </div>
+                  )}
+                </section>
+
+                {/* Busy Times Section */}
+                <section className="ag-form-section">
+                  <h2 className="ag-section-title">
+                    <i className="fas fa-calendar-times"></i>
+                    {t("ai.busyTimes") || "Busy Times (Optional)"}
+                  </h2>
+
+                  <div className="busy-times-list">
+                    {busyTimes.map((busyTime, index) => (
+                      <div key={index} className="busy-time-item">
+                        <div className="busy-time-row">
+                          <select
+                            className="day-select"
+                            value={busyTime.day}
+                            onChange={(e) =>
+                              updateBusyTimeDay(index, e.target.value)
+                            }
+                          >
+                            <option value="">{t("ai.selectDay") || "Select day..."}</option>
+                            {[
+                              { value: "monday", label: "Monday" },
+                              { value: "tuesday", label: "Tuesday" },
+                              { value: "wednesday", label: "Wednesday" },
+                              { value: "thursday", label: "Thursday" },
+                              { value: "friday", label: "Friday" },
+                              { value: "saturday", label: "Saturday" },
+                              { value: "sunday", label: "Sunday" }
+                            ].map(day => {
+                              const isSelected = busyTimes.some((bt, i) => i !== index && bt.day === day.value);
+                              return (
+                                <option
+                                  key={day.value}
+                                  value={day.value}
+                                  disabled={isSelected}
+                                >
+                                  {day.label}{isSelected ? " (✓)" : ""}
+                                </option>
+                              );
+                            })}
+                          </select>
+
+                          {busyTimes.length > 1 && (
+                            <button
+                              type="button"
+                              className="ag-btn-remove"
+                              onClick={() => removeBusyTime(index)}
+                              title="Remove busy time"
+                            >
+                              <i className="fas fa-times"></i>
+                            </button>
+                          )}
+                        </div>
+
+                        {busyTime.day && (
+                          <div className="time-slot-selector">
+                            <div className="slot-options">
+                              {[
+                                { value: "morning", label: "Morning", icon: "☀️" },
+                                { value: "afternoon", label: "Afternoon", icon: "🌤️" },
+                                { value: "evening", label: "Evening", icon: "🌙" },
+                              ].map((slot) => (
+                                <button
+                                  key={slot.value}
+                                  type="button"
+                                  className={`slot-option ${busyTime.slots.includes(slot.value)
+                                    ? "selected"
+                                    : ""
+                                    }`}
+                                  onClick={() => toggleBusyTimeSlot(index, slot.value)}
+                                >
+                                  <span className="slot-icon">{slot.icon}</span>
+                                  <span className="slot-name">{slot.label}</span>
+                                  <span
+                                    className={`slot-status ${busyTime.slots.includes(slot.value)
+                                      ? "unavailable"
+                                      : "available"
+                                      }`}
+                                  >
+                                    {busyTime.slots.includes(slot.value)
+                                      ? "Busy"
+                                      : "Available"}
+                                  </span>
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+
+                  <button
+                    type="button"
+                    className="ag-btn-add"
+                    onClick={addBusyTime}
+                    disabled={allDaysSelected()}
+                    style={{
+                      opacity: allDaysSelected() ? 0.5 : 1,
+                      cursor: allDaysSelected() ? "not-allowed" : "pointer"
+                    }}
+                  >
+                    <i className="fas fa-plus"></i>
+                    {t("ai.addBusyTime") || "Add Busy Time"}
+                  </button>
+                </section>
               </div>
             </div>
 
@@ -718,8 +723,8 @@ const AIGenerator = () => {
                 toastType === "success"
                   ? "fas fa-check-circle"
                   : toastType === "error"
-                  ? "fas fa-times-circle"
-                  : "fas fa-info-circle"
+                    ? "fas fa-times-circle"
+                    : "fas fa-info-circle"
               }
             ></i>
           </div>
@@ -728,8 +733,8 @@ const AIGenerator = () => {
               {toastType === "success"
                 ? "Success"
                 : toastType === "error"
-                ? "Error"
-                : "Info"}
+                  ? "Error"
+                  : "Info"}
             </div>
             <div className="ag-toast-message">{toastMessage}</div>
           </div>
@@ -741,36 +746,197 @@ const AIGenerator = () => {
         <div className="ag-modal-overlay">
           <div className="ag-modal-content confirm-modal">
             <div className="ag-modal-header">
-              <h2>Existing Schedule Detected</h2>
+              <div className="modal-header-content">
+                <img
+                  src="/Stechdy_logo.png"
+                  alt="S'Techdy"
+                  className="landing-new__logo-img"
+                />
+                <h2>{i18n.language === "vi" ? "Phát hiện lịch học cũ" : "Existing Schedule Detected"}</h2>
+              </div>
             </div>
             <div className="ag-modal-body">
-              <p>
-                You already have a study schedule until{" "}
-                <strong>
+              <p className="modal-main-text">
+                {i18n.language === "vi" ? "Bạn đã có lịch học đến" : "You already have a study schedule until"}{" "}
+                <strong className="highlight-date">
                   {lastScheduleDate
-                    ? new Date(lastScheduleDate).toLocaleDateString()
+                    ? new Date(lastScheduleDate).toLocaleDateString(
+                      i18n.language === "vi" ? "vi-VN" : "en-US",
+                      {
+                        weekday: "short",
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric"
+                      }
+                    )
                     : ""}
                 </strong>
                 .
               </p>
-              <p>
-                Do you want to delete your old schedule and create a new one, or keep
-                the old schedule and start the new one after it ends?
+              <p className="modal-question">
+                {i18n.language === "vi"
+                  ? "Bạn có muốn xóa lịch cũ để tạo lịch mới, hay tiếp tục từ ngày kết thúc lịch cũ?"
+                  : "Do you want to delete your old schedule to create a new one, or continue from when the old schedule ends?"}
               </p>
             </div>
-            <div className="modal-footer">
+            <div className="ag-modal-footer">
               <button
-                className="btn-modal btn-danger"
+                className="ag-btn-modal ag-btn-danger"
                 onClick={handleDeleteOldSchedule}
               >
-                <i className="fas fa-trash"></i> Delete Old Schedule
+                <i className="fas fa-trash"></i>
+                <span>{i18n.language === "vi" ? "Xóa lịch cũ & Tạo mới" : "Delete Old Schedule"}</span>
               </button>
               <button
-                className="btn-modal btn-primary"
+                className="ag-btn-modal ag-btn-primary"
                 onClick={handleKeepOldSchedule}
               >
-                <i className="fas fa-calendar-plus"></i> Keep & Continue After
+                <i className="fas fa-calendar-plus"></i>
+                <span>
+                  {i18n.language === "vi"
+                    ? `Tiếp tục từ ${lastScheduleDate ? new Date(new Date(lastScheduleDate).setDate(new Date(lastScheduleDate).getDate() + 1)).toLocaleDateString("vi-VN", { day: "numeric", month: "numeric" }) : ""}`
+                    : `Continue from ${lastScheduleDate ? new Date(new Date(lastScheduleDate).setDate(new Date(lastScheduleDate).getDate() + 1)).toLocaleDateString("en-US", { month: "short", day: "numeric" }) : ""}`}
+                </span>
               </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Delete Warning Modal */}
+      {showDeleteWarningModal && (
+        <div className="ag-modal-overlay" onClick={() => setShowDeleteWarningModal(false)}>
+          <div className="ag-modal-container" onClick={(e) => e.stopPropagation()}>
+            <div className="ag-modal-header">
+              <div className="modal-header-content">
+                <img
+                  src="/Stechdy_logo.png"
+                  alt="S'Techdy"
+                  className="landing-new__logo-img"
+                />
+                <h2>{i18n.language === "vi" ? "Xác nhận xóa lịch học" : "Confirm Delete Schedule"}</h2>
+              </div>
+            </div>
+            <div className="ag-modal-body">
+              <p className="modal-main-text">
+                {i18n.language === "vi" 
+                  ? "Bạn có chắc chắn muốn xóa tất cả lịch học cũ không?" 
+                  : "Are you sure you want to delete all old schedules?"}
+              </p>
+              <p className="modal-question warning-text">
+                {i18n.language === "vi" 
+                  ? "⚠️ Hành động này không thể hoàn tác!" 
+                  : "⚠️ This action cannot be undone!"}
+              </p>
+            </div>
+            <div className="ag-modal-footer">
+              <button
+                className="ag-btn-modal ag-btn-secondary"
+                onClick={() => setShowDeleteWarningModal(false)}
+              >
+                <i className="fas fa-times"></i>
+                <span>{i18n.language === "vi" ? "Hủy" : "Cancel"}</span>
+              </button>
+              <button
+                className="ag-btn-modal ag-btn-danger"
+                onClick={confirmDeleteOldSchedule}
+              >
+                <i className="fas fa-trash"></i>
+                <span>{i18n.language === "vi" ? "Xác nhận xóa" : "Confirm Delete"}</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Delete Success Modal */}
+      {showDeleteSuccessModal && (
+        <div className="ag-modal-overlay" onClick={() => setShowDeleteSuccessModal(false)}>
+          <div className="ag-modal-content success-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="ag-modal-header">
+              <div className="modal-header-content">
+                <div className="modal-icon-wrapper success">
+                  <i className="fas fa-check-circle modal-icon"></i>
+                </div>
+                <h2>{i18n.language === "vi" ? "Xóa thành công!" : "Successfully Deleted!"}</h2>
+              </div>
+            </div>
+            <div className="ag-modal-body">
+              <p className="modal-main-text">
+                {i18n.language === "vi" 
+                  ? "Tất cả lịch học cũ đã được xóa thành công. Bạn có thể tạo lịch học mới ngay bây giờ." 
+                  : "All old schedules have been successfully deleted. You can now create a new schedule."}
+              </p>
+            </div>
+            <div className="ag-modal-footer">
+              <button
+                className="ag-btn-modal ag-btn-primary"
+                onClick={() => setShowDeleteSuccessModal(false)}
+              >
+                <i className="fas fa-check"></i>
+                <span>{i18n.language === "vi" ? "Đóng" : "Close"}</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* AI Generation Loading Modal - Updated */}
+      {isGenerating && (
+        <div className="ag-loading-overlay">
+          <div className="ag-loading-modal">
+            <div className="ag-loading-header">
+              <div className="ag-loading-icon-wrapper">
+                <i className="fas fa-robot ag-loading-icon"></i>
+                <div className="ag-loading-ring"></div>
+              </div>
+              <h2 className="ag-loading-title">AI đang tạo lịch học...</h2>
+              <p className="ag-loading-subtitle">Phân tích và tối ưu hóa lịch học cá nhân hóa cho bạn</p>
+            </div>
+            
+            <div className="ag-loading-body">
+              <div className="ag-loading-progress">
+                <div className="ag-progress-bar">
+                  <div className="ag-progress-fill"></div>
+                </div>
+                <span className="ag-progress-text">50%</span>
+              </div>
+              
+              <div className="ag-loading-steps">
+                <div className="ag-step">
+                  <div className="ag-step-icon">📚</div>
+                  <div className="ag-step-content">
+                    <div className="ag-step-title">Phân tích môn học</div>
+                    <div className="ag-step-bar">
+                      <div className="ag-step-fill active"></div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="ag-step">
+                  <div className="ag-step-icon">⏰</div>
+                  <div className="ag-step-content">
+                    <div className="ag-step-title">Tối ưu thời gian</div>
+                    <div className="ag-step-bar">
+                      <div className="ag-step-fill active"></div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="ag-step">
+                  <div className="ag-step-icon">🎯</div>
+                  <div className="ag-step-content">
+                    <div className="ag-step-title">Tạo lịch học</div>
+                    <div className="ag-step-bar">
+                      <div className="ag-step-fill"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <p className="ag-loading-hint">
+                Điều này chỉ mất vài giây... Hãy thư giãn và chờ AI làm việc nhé! ✨
+              </p>
             </div>
           </div>
         </div>
