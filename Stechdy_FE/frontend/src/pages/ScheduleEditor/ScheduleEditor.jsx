@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import SidebarNav from "../../components/common/SidebarNav";
 import BottomNav from "../../components/common/BottomNav";
+import config from "../../config";
 import "./ScheduleEditor.css";
 
 const ScheduleEditor = () => {
@@ -22,6 +23,10 @@ const ScheduleEditor = () => {
   const [toastType, setToastType] = useState("info");
   const [isNewEvent, setIsNewEvent] = useState(false); // Track if modal is for new event
   const [modalError, setModalError] = useState(""); // Error message in modal
+  const [showWarningModal, setShowWarningModal] = useState(false);
+  const [warningDays, setWarningDays] = useState([]);
+  const [isApplying, setIsApplying] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   const COLOR_PALETTE = [
     "#5bbec8", "#f472b6", "#fbbf24", "#34d399",
@@ -423,8 +428,162 @@ const ScheduleEditor = () => {
     setModalError(""); // Clear any previous errors
   };
 
+  // Apply first week pattern to all weeks
+  const applyToAllWeeks = () => {
+    setIsApplying(true);
+
+    try {
+      // Get all weeks in the schedule
+      const allWeeks = {};
+      events.forEach(event => {
+        const weekStart = formatDateISO(getWeekStart(new Date(event.date)));
+        if (!allWeeks[weekStart]) {
+          allWeeks[weekStart] = [];
+        }
+        allWeeks[weekStart].push(event);
+      });
+
+      const weekKeys = Object.keys(allWeeks).sort();
+      if (weekKeys.length <= 1) {
+        displayToast("Chỉ có 1 tuần trong lịch học", "info");
+        setIsApplying(false);
+        return;
+      }
+
+      const firstWeekKey = weekKeys[0];
+      const firstWeekEvents = allWeeks[firstWeekKey];
+
+      // Create a pattern from first week (day of week -> sessions)
+      const weekPattern = {};
+      firstWeekEvents.forEach(event => {
+        const eventDate = new Date(event.date);
+        const dayOfWeek = eventDate.getDay(); // 0=Sunday, 1=Monday, etc.
+        
+        if (!weekPattern[dayOfWeek]) {
+          weekPattern[dayOfWeek] = [];
+        }
+        
+        weekPattern[dayOfWeek].push({
+          startTime: event.startTime,
+          endTime: event.endTime,
+          subjectCode: event.subjectCode,
+          status: event.status,
+          timeSlot: event.timeSlot
+        });
+      });
+
+      // Apply pattern to all other weeks
+      let newEvents = [...firstWeekEvents]; // Keep first week as is
+      let globalId = events.length;
+
+      for (let i = 1; i < weekKeys.length; i++) {
+        const weekKey = weekKeys[i];
+        const weekStartDate = new Date(weekKey);
+
+        // For each day of week in the pattern
+        Object.keys(weekPattern).forEach(dayOfWeek => {
+          const dayNum = parseInt(dayOfWeek);
+          const sessions = weekPattern[dayOfWeek];
+
+          // Calculate the actual date for this day in this week
+          const targetDate = new Date(weekStartDate);
+          const currentDay = targetDate.getDay();
+          const diff = dayNum - currentDay;
+          targetDate.setDate(targetDate.getDate() + diff);
+          const dateStr = formatDateISO(targetDate);
+          const dayName = getDayName(dateStr);
+
+          // Create sessions for this day
+          sessions.forEach((session, idx) => {
+            globalId++;
+            newEvents.push({
+              id: `event-${globalId}`,
+              date: dateStr,
+              dayOfWeek: dayName,
+              slot: idx + 1,
+              startTime: session.startTime,
+              endTime: session.endTime,
+              subjectCode: session.subjectCode,
+              sessionNo: idx + 1,
+              status: session.status,
+              timeSlot: session.timeSlot
+            });
+          });
+        });
+      }
+
+      // Update state
+      setEvents(newEvents);
+      setHasChanges(true);
+
+      // Update localStorage
+      const scheduleByDate = {};
+      newEvents.forEach((event) => {
+        if (!scheduleByDate[event.date]) {
+          scheduleByDate[event.date] = {
+            date: event.date,
+            day_of_week: event.dayOfWeek,
+            sessions: []
+          };
+        }
+        scheduleByDate[event.date].sessions.push({
+          subject: event.subjectCode,
+          start_time: event.startTime,
+          end_time: event.endTime,
+          session_no: event.sessionNo,
+          status: event.status
+        });
+      });
+
+      const schedule = Object.values(scheduleByDate).sort((a, b) => a.date.localeCompare(b.date));
+      localStorage.setItem("studySchedule", JSON.stringify({ schedule }));
+
+      displayToast(`Đã áp dụng mẫu tuần đầu cho ${weekKeys.length - 1} tuần còn lại!`, "success");
+    } catch (error) {
+      console.error("Error applying to all weeks:", error);
+      displayToast("Lỗi khi áp dụng cho tất cả tuần", "error");
+    } finally {
+      setIsApplying(false);
+    }
+  };
+
+  // Check for days with more than 3 sessions
+  const checkSessionsPerDay = () => {
+    const sessionsByDate = {};
+    events.forEach((event) => {
+      if (!sessionsByDate[event.date]) {
+        sessionsByDate[event.date] = [];
+      }
+      sessionsByDate[event.date].push(event);
+    });
+
+    const daysOver3 = Object.entries(sessionsByDate)
+      .filter(([date, sessions]) => sessions.length > 3)
+      .map(([date, sessions]) => ({
+        date,
+        count: sessions.length,
+        formattedDate: new Date(date).toLocaleDateString("vi-VN", {
+          weekday: "short",
+          day: "numeric",
+          month: "numeric"
+        })
+      }));
+
+    return daysOver3;
+  };
+
   // Save to database
-  const saveToDatabase = async () => {
+  const saveToDatabase = async (skipWarning = false) => {
+    // Check if there are days with more than 3 sessions
+    if (!skipWarning) {
+      const daysOver3 = checkSessionsPerDay();
+      if (daysOver3.length > 0) {
+        setWarningDays(daysOver3);
+        setShowWarningModal(true);
+        return;
+      }
+    }
+
     setIsSaving(true);
 
     try {
@@ -458,7 +617,7 @@ const ScheduleEditor = () => {
       // Save to backend
       if (token) {
         const response = await fetch(
-          `${process.env.REACT_APP_API_URL || 'http://localhost:3001/api'}/ai-schedule/save`,
+          `${config.apiUrl}/ai-schedule/save`,
           {
             method: "POST",
             headers: {
@@ -477,12 +636,17 @@ const ScheduleEditor = () => {
         const result = await response.json();
 
         if (result.success) {
-          displayToast(`Schedule saved! Created ${result.data.sessionsCreated} sessions.`, "success");
+          console.log(`Schedule saved! Created ${result.data.sessionsCreated} sessions.`);
           setHasChanges(false);
+          setShowSuccessModal(true);
+          
+          // Clear localStorage after successful save
+          localStorage.removeItem("studySchedule");
+          localStorage.removeItem("studyScheduleInput");
           
           setTimeout(() => {
-            navigate("/schedule");
-          }, 1500);
+            navigate("/calendar");
+          }, 2000);
         } else {
           throw new Error(result.message);
         }
@@ -503,6 +667,16 @@ const ScheduleEditor = () => {
     setToastType(type);
     setShowToast(true);
     setTimeout(() => setShowToast(false), 3000);
+  };
+
+  const handleWarningConfirm = () => {
+    setShowWarningModal(false);
+    saveToDatabase(true); // Skip warning check and proceed
+  };
+
+  const handleWarningCancel = () => {
+    setShowWarningModal(false);
+    displayToast("Vui lòng chỉnh sửa lại lịch học để không quá 3 buổi/ngày", "warning");
   };
 
   // Calculate statistics for each subject
@@ -817,12 +991,21 @@ const ScheduleEditor = () => {
           </div>
           <button 
             className="editor-save-all-weeks-btn"
-            onClick={saveToDatabase}
-            disabled={isSaving || !hasChanges}
-            title={t("scheduleEditor.saveAllWeeks")}
+            onClick={applyToAllWeeks}
+            disabled={isApplying}
+            title="Áp dụng mẫu tuần đầu cho tất cả tuần"
           >
-            <i className="fas fa-calendar-check"></i>
-            <span>{t("scheduleEditor.saveAllWeeks")}</span>
+            {isApplying ? (
+              <>
+                <i className="fas fa-spinner fa-spin"></i>
+                <span>Đang áp dụng...</span>
+              </>
+            ) : (
+              <>
+                <i className="fas fa-calendar-check"></i>
+                <span>Apply to All Weeks</span>
+              </>
+            )}
           </button>
         </div>
 
@@ -893,6 +1076,86 @@ const ScheduleEditor = () => {
 
       {/* Edit Modal */}
       {renderEditModal()}
+
+      {/* Warning Modal - More than 3 sessions per day */}
+      {showWarningModal && (
+        <div className="se-modal-overlay">
+          <div className="se-modal-content" style={{ maxWidth: '500px' }}>
+            <div className="se-modal-header">
+              <h2 style={{ color: '#f59e0b', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <i className="fas fa-exclamation-triangle"></i>
+                Cảnh báo
+              </h2>
+            </div>
+            <div className="se-modal-body">
+              <p style={{ marginBottom: '16px', fontSize: '16px' }}>
+                <strong>Bạn không nên học quá 3 buổi trong 1 ngày!</strong>
+              </p>
+              <p style={{ marginBottom: '12px' }}>
+                Các ngày có nhiều hơn 3 buổi học:
+              </p>
+              <ul style={{ 
+                listStyle: 'none', 
+                padding: '0', 
+                margin: '0 0 16px 0',
+                background: '#fef3c7',
+                borderRadius: '8px',
+                padding: '12px'
+              }}>
+                {warningDays.map((day, index) => (
+                  <li key={index} style={{ 
+                    padding: '8px 0',
+                    borderBottom: index < warningDays.length - 1 ? '1px solid #fcd34d' : 'none'
+                  }}>
+                    <strong>{day.formattedDate}</strong>: {day.count} buổi học
+                  </li>
+                ))}
+              </ul>
+              <p style={{ fontSize: '14px', color: '#666' }}>
+                Bạn có muốn tiếp tục lưu lịch học này không?
+              </p>
+            </div>
+            <div className="se-modal-footer">
+              <button 
+                className="se-btn-cancel" 
+                onClick={handleWarningCancel}
+                style={{ flex: 1 }}
+              >
+                <i className="fas fa-times"></i> Hủy - Sửa lại
+              </button>
+              <button 
+                className="se-btn-save" 
+                onClick={handleWarningConfirm}
+                style={{ flex: 1, background: '#f59e0b' }}
+              >
+                <i className="fas fa-check"></i> OK - Tiếp tục
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Success Modal */}
+      {showSuccessModal && (
+        <div className="se-success-modal-overlay">
+          <div className="se-success-modal-content">
+            <div className="se-success-icon">
+              <i className="fas fa-check"></i>
+            </div>
+            <h3>Lưu lịch học thành công!</h3>
+            <p>Lịch học của bạn đã được lưu và đồng bộ thành công.</p>
+            <button 
+              className="se-success-btn"
+              onClick={() => {
+                setShowSuccessModal(false);
+                navigate("/calendar");
+              }}
+            >
+              <i className="fas fa-calendar"></i> Về Lịch Học
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Toast */}
       {showToast && (
