@@ -185,23 +185,33 @@ const Calendar = () => {
 
           {/* Today's Sessions */}
           <div className="sessions-section">
-            <h2 className="section-title">
-              {selectedDate.toDateString() === getVietnamDate().toDateString()
-                ? `${t("calendar.today")}, ${selectedDate.toLocaleDateString(
-                    i18n.language === "vi" ? "vi-VN" : "en-US",
-                    { month: "short", day: "numeric" }
-                  )}`
-                : selectedDate.toLocaleDateString(
-                    i18n.language === "vi" ? "vi-VN" : "en-US",
-                    { month: "short", day: "numeric", year: "numeric" }
-                  )}
-            </h2>
-            <p className="sessions-count">
-              {sessions.length}{" "}
-              {sessions.length !== 1
-                ? t("calendar.studySessions")
-                : t("calendar.studySession")}
-            </p>
+            <div className="section-header-with-action">
+              <div>
+                <h2 className="section-title">
+                  {selectedDate.toDateString() === getVietnamDate().toDateString()
+                    ? `${t("calendar.today")}, ${selectedDate.toLocaleDateString(
+                        i18n.language === "vi" ? "vi-VN" : "en-US",
+                        { month: "short", day: "numeric" }
+                      )}`
+                    : selectedDate.toLocaleDateString(
+                        i18n.language === "vi" ? "vi-VN" : "en-US",
+                        { month: "short", day: "numeric", year: "numeric" }
+                      )}
+                </h2>
+                <p className="sessions-count">
+                  {sessions.length}{" "}
+                  {sessions.length !== 1
+                    ? t("calendar.studySessions")
+                    : t("calendar.studySession")}
+                </p>
+              </div>
+              <button 
+                className="edit-calendar-button"
+                onClick={() => navigate("/calendar-editor")}
+              >
+                ✏️ Edit Calendar
+              </button>
+            </div>
 
             <div className="sessions-list">
               {sessions.length === 0 ? (

@@ -41,9 +41,11 @@ const corsOptions = {
     const allowedOrigins = [
       'https://stechdy.ai.vn',
       'https://www.stechdy.ai.vn',
+      'https://api.stechdy.ai.vn',
       'http://localhost:3000',
-      'http://localhost:3001'
-    ];
+      'http://localhost:3001',
+      process.env.FRONTEND_URL
+    ].filter(Boolean);
     
     // Allow requests with no origin (mobile apps, Postman, etc.)
     if (!origin || allowedOrigins.indexOf(origin) !== -1) {
