@@ -226,6 +226,7 @@
       "confirmPassword": "Confirm password",
       "submit": "Sign up",
       "orContinueWith": "or continue with",
+      "googleSignUp": "Sign up with Google",
       "haveAccount": "Already have an account?",
       "loginNow": "Login now",
       "registerFailed": "Registration failed. Please try again.",
