@@ -137,18 +137,22 @@
 
 .streak-numbers {
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
   gap: 20px;
-  padding: 20px 0;
+  padding: 20px;
   background: rgba(255, 255, 255, 0.1);
   border-radius: 15px;
   backdrop-filter: blur(10px);
+  margin: 0 auto;
+  max-width: 100%;
 }
 
 .streak-stat {
   text-align: center;
   flex: 1;
+  min-width: 80px;
+  max-width: 120px;
 }
 
 .streak-stat-value {
@@ -174,13 +178,42 @@
   margin-top: 20px;
   padding: 15px;
   background: rgba(255, 255, 255, 0.15);
-  border-radius: 10px;
+  border-radius: 12px;
   text-align: center;
   font-size: 14px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.next-milestone-info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.next-milestone-emoji {
+  font-size: 28px;
 }
 
 .next-milestone-text {
   opacity: 0.9;
+}
+
+.next-milestone-progress {
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.next-milestone-progress-bar {
+  height: 100%;
+  background: white;
+  border-radius: 3px;
+  transition: width 0.5s ease;
 }
 
 .next-milestone-animal {
@@ -198,6 +231,8 @@
   margin-top: 20px;
   display: flex;
   justify-content: center;
+  align-items: center;
+  width: 100%;
 }
 
 .streak-rewards-button {
@@ -673,36 +708,126 @@
   
   /* Responsive animal badge */
   .latest-animal-badge {
-    width: 60px;
-    height: 60px;
-    top: 15px;
-    right: 15px;
+    width: 55px;
+    height: 55px;
+    top: 12px;
+    right: 12px;
   }
   
   .animal-badge-emoji {
-    font-size: 28px;
+    font-size: 24px;
   }
   
   .animal-badge-streak {
-    font-size: 10px;
-    padding: 1px 5px;
+    font-size: 9px;
+    padding: 1px 4px;
   }
   
   .streak-stats-card {
-    padding: 20px;
-    padding-right: 85px; /* Make room for badge */
+    padding: 18px;
+    padding-right: 75px; /* Make room for badge */
+    padding-left: 75px; /* Balance with right padding for centering */
+  }
+
+  .streak-header {
+    gap: 12px;
+    margin-bottom: 20px;
+    margin-left: -59px; /* Compensate for extra left padding */
   }
 
   .streak-icon {
-    font-size: 36px;
+    font-size: 32px;
   }
 
   .streak-title {
-    font-size: 20px;
+    font-size: 18px;
+  }
+
+  .streak-subtitle {
+    font-size: 12px;
+  }
+
+  /* Streak numbers section - better mobile layout */
+  .streak-numbers {
+    gap: 15px;
+    padding: 16px;
+    margin: 0;
+  }
+
+  .streak-stat {
+    flex: 1;
+    min-width: 70px;
+    max-width: 100px;
   }
 
   .streak-stat-value {
+    font-size: 32px;
+    margin-bottom: 4px;
+  }
+
+  .streak-stat-label {
+    font-size: 11px;
+    letter-spacing: 0.3px;
+  }
+
+  .streak-divider {
+    height: 35px;
+  }
+
+  /* Rewards button - more compact for mobile */
+  .streak-actions {
+    margin-top: 16px;
+    padding: 0;
+  }
+
+  .streak-rewards-button {
+    padding: 12px 24px;
+    gap: 12px;
+    border-radius: 12px;
+    width: auto;
+    max-width: 280px;
+  }
+
+  .rewards-gift-icon {
     font-size: 28px;
+  }
+
+  .rewards-count {
+    font-size: 18px;
+  }
+
+  .rewards-label {
+    font-size: 11px;
+    letter-spacing: 0.4px;
+  }
+
+  /* Next milestone preview - more compact */
+  .next-milestone-preview {
+    margin-top: 16px;
+    padding: 12px 14px;
+    font-size: 13px;
+    border-radius: 10px;
+  }
+
+  .next-milestone-info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+  }
+
+  .next-milestone-emoji {
+    font-size: 24px;
+  }
+
+  .next-milestone-text {
+    font-size: 13px;
+  }
+
+  .next-milestone-progress {
+    margin-top: 8px;
   }
 
   .milestones-title {
@@ -747,6 +872,182 @@
   .all-milestones-grid {
     grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
     gap: 15px;
+  }
+
+  /* Makeup Modal Mobile */
+  .makeup-modal-content {
+    padding: 30px 20px;
+  }
+
+  .makeup-modal-icon {
+    font-size: 48px;
+  }
+
+  .makeup-modal-title {
+    font-size: 22px;
+  }
+
+  .streak-milestones-container .makeup-mood-button {
+    padding: 10px 4px;
+  }
+
+  .streak-milestones-container .makeup-mood-emoji {
+    font-size: 28px;
+  }
+
+  .streak-milestones-container .makeup-mood-value {
+    font-size: 11px;
+  }
+}
+
+/* Extra Small Mobile Devices (< 480px) */
+@media (max-width: 480px) {
+  /* Make streak card even more compact */
+  .streak-stats-card {
+    padding: 14px;
+    padding-right: 70px;
+    padding-left: 70px; /* Balance with right padding for centering */
+  }
+
+  .latest-animal-badge {
+    width: 50px;
+    height: 50px;
+    top: 10px;
+    right: 10px;
+  }
+
+  .animal-badge-emoji {
+    font-size: 22px;
+  }
+
+  .animal-badge-streak {
+    font-size: 8px;
+    padding: 1px 3px;
+  }
+
+  .streak-header {
+    gap: 10px;
+    margin-bottom: 16px;
+    margin-left: -56px; /* Compensate for extra left padding */
+  }
+
+  .streak-icon {
+    font-size: 28px;
+  }
+
+  .streak-title {
+    font-size: 16px;
+  }
+
+  .streak-subtitle {
+    font-size: 11px;
+  }
+
+  /* Tighter streak numbers */
+  .streak-numbers {
+    gap: 12px;
+    padding: 14px 12px;
+  }
+
+  .streak-stat {
+    min-width: 60px;
+    max-width: 90px;
+  }
+
+  .streak-stat-value {
+    font-size: 28px;
+    margin-bottom: 3px;
+  }
+
+  .streak-stat-label {
+    font-size: 10px;
+    letter-spacing: 0.2px;
+  }
+
+  .streak-divider {
+    height: 30px;
+  }
+
+  /* More compact rewards button */
+  .streak-actions {
+    margin-top: 14px;
+    padding: 0;
+  }
+
+  .streak-rewards-button {
+    padding: 10px 20px;
+    gap: 10px;
+    border-radius: 10px;
+    max-width: 260px;
+  }
+
+  .rewards-gift-icon {
+    font-size: 24px;
+  }
+
+  .rewards-count {
+    font-size: 16px;
+  }
+
+  .rewards-label {
+    font-size: 10px;
+    letter-spacing: 0.3px;
+  }
+
+  /* Compact next milestone */
+  .next-milestone-preview {
+    margin-top: 14px;
+    padding: 10px 12px;
+    font-size: 12px;
+    border-radius: 8px;
+  }
+
+  .next-milestone-info {
+    gap: 6px;
+    margin-bottom: 8px;
+  }
+
+  .next-milestone-emoji {
+    font-size: 20px;
+  }
+
+  .next-milestone-text {
+    font-size: 12px;
+  }
+
+  /* Modals */
+  .milestone-modal-content,
+  .all-milestones-modal-content,
+  .makeup-modal-content {
+    padding: 25px 16px;
+  }
+
+  .all-milestones-grid,
+  .milestones-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .streak-milestones-container .makeup-mood-button {
+    padding: 8px 3px;
+  }
+
+  .streak-milestones-container .makeup-mood-emoji {
+    font-size: 24px;
+  }
+
+  .streak-milestones-container .makeup-mood-value {
+    font-size: 10px;
+  }
+
+  .makeup-form-actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .makeup-cancel-button,
+  .makeup-submit-button {
+    width: 100%;
   }
 }
 
