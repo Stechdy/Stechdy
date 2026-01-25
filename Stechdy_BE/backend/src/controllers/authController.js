@@ -1,24 +1,79 @@
-const User = require('../models/User');
-const Streak = require('../models/Streak');
-const jwt = require('jsonwebtoken');
-const crypto = require('crypto');
-const nodemailer = require('nodemailer');
-const { OAuth2Client } = require('google-auth-library');
+const User = require("../models/User");
+const Streak = require("../models/Streak");
+const jwt = require("jsonwebtoken");
+const crypto = require("crypto");
+const nodemailer = require("nodemailer");
+const { OAuth2Client } = require("google-auth-library");
 
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 // Generate JWT Token
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
-    expiresIn: '7d', // Access token valid for 7 days
+    expiresIn: "7d", // Access token valid for 7 days
   });
 };
 
 // Generate Refresh Token
 const generateRefreshToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_REFRESH_SECRET || process.env.JWT_SECRET, {
-    expiresIn: '30d', // Refresh token valid for 30 days
-  });
+  return jwt.sign(
+    { id },
+    process.env.JWT_REFRESH_SECRET || process.env.JWT_SECRET,
+    {
+      expiresIn: "30d", // Refresh token valid for 30 days
+    },
+  );
+};
+
+// Extract device info from User-Agent header
+const getDeviceInfo = (userAgent) => {
+  if (!userAgent) return "Unknown Device";
+
+  // Detect browser
+  let browser = "Unknown Browser";
+  if (userAgent.includes("Chrome") && !userAgent.includes("Edg"))
+    browser = "Chrome";
+  else if (userAgent.includes("Safari") && !userAgent.includes("Chrome"))
+    browser = "Safari";
+  else if (userAgent.includes("Firefox")) browser = "Firefox";
+  else if (userAgent.includes("Edg")) browser = "Edge";
+  else if (userAgent.includes("Opera") || userAgent.includes("OPR"))
+    browser = "Opera";
+
+  // Detect OS
+  let os = "Unknown OS";
+  if (userAgent.includes("Windows")) os = "Windows";
+  else if (userAgent.includes("Mac OS")) os = "macOS";
+  else if (userAgent.includes("Linux")) os = "Linux";
+  else if (userAgent.includes("Android")) os = "Android";
+  else if (
+    userAgent.includes("iOS") ||
+    userAgent.includes("iPhone") ||
+    userAgent.includes("iPad")
+  )
+    os = "iOS";
+
+  return `${browser} on ${os}`;
+};
+
+// Clean up expired refresh tokens (older than 30 days)
+const cleanupExpiredTokens = (refreshTokens) => {
+  const thirtyDaysAgo = Date.now() - 30 * 24 * 60 * 60 * 1000;
+  return refreshTokens.filter(
+    (rt) => new Date(rt.createdAt).getTime() > thirtyDaysAgo,
+  );
+};
+
+// Limit tokens per user (keep only most recent 5 devices)
+const limitTokensPerUser = (refreshTokens, maxTokens = 5) => {
+  if (refreshTokens.length <= maxTokens) return refreshTokens;
+
+  // Sort by lastUsed (most recent first) and keep only maxTokens
+  return refreshTokens
+    .sort(
+      (a, b) => new Date(b.lastUsed).getTime() - new Date(a.lastUsed).getTime(),
+    )
+    .slice(0, maxTokens);
 };
 
 // Configure email transporter
@@ -28,7 +83,7 @@ const createTransporter = () => {
   }
 
   return nodemailer.createTransport({
-    host: 'smtp.gmail.com',
+    host: "smtp.gmail.com",
     port: 587,
     secure: false, // Use TLS
     auth: {
@@ -36,8 +91,8 @@ const createTransporter = () => {
       pass: process.env.EMAIL_PASSWORD,
     },
     tls: {
-      rejectUnauthorized: false
-    }
+      rejectUnauthorized: false,
+    },
   });
 };
 
@@ -53,7 +108,7 @@ const getVietnamDate = () => {
 const updateDashboardStreak = async (user) => {
   try {
     const today = getVietnamDate();
-    
+
     // If no last active date, this is first login or first streak
     if (!user.lastActiveDate) {
       user.streakCount = 1;
@@ -62,26 +117,32 @@ const updateDashboardStreak = async (user) => {
       console.log(`🔥 Dashboard streak started: 1 day`);
       return user;
     }
-    
+
     // Get last active date normalized to start of day
     const lastActive = new Date(user.lastActiveDate);
     lastActive.setHours(0, 0, 0, 0);
-    
+
     // Calculate days difference
     const daysDiff = Math.floor((today - lastActive) / (1000 * 60 * 60 * 24));
-    
-    console.log(`📅 Dashboard Streak check - Today: ${today.toDateString()}, Last Active: ${lastActive.toDateString()}, Days Diff: ${daysDiff}`);
-    
+
+    console.log(
+      `📅 Dashboard Streak check - Today: ${today.toDateString()}, Last Active: ${lastActive.toDateString()}, Days Diff: ${daysDiff}`,
+    );
+
     if (daysDiff === 0) {
       // Same day - already logged in today, don't update streak
-      console.log(`✅ Already logged in today. Current dashboard streak: ${user.streakCount}`);
+      console.log(
+        `✅ Already logged in today. Current dashboard streak: ${user.streakCount}`,
+      );
       return user;
     } else if (daysDiff === 1) {
       // Consecutive day - increment streak
       user.streakCount += 1;
       user.lastActiveDate = today;
       await user.save();
-      console.log(`🔥 Dashboard streak continued! New streak: ${user.streakCount} days`);
+      console.log(
+        `🔥 Dashboard streak continued! New streak: ${user.streakCount} days`,
+      );
       return user;
     } else {
       // Streak broken (more than 1 day gap) - reset to 1
@@ -92,7 +153,7 @@ const updateDashboardStreak = async (user) => {
       return user;
     }
   } catch (error) {
-    console.error('Error updating dashboard streak:', error);
+    console.error("Error updating dashboard streak:", error);
     return user;
   }
 };
@@ -180,26 +241,26 @@ exports.register = async (req, res) => {
 
     // Validate input
     if (!name || !email || !password) {
-      return res.status(400).json({ 
+      return res.status(400).json({
         success: false,
-        message: 'Vui lòng cung cấp đầy đủ thông tin' 
+        message: "Vui lòng cung cấp đầy đủ thông tin",
       });
     }
 
     // Check if user exists
     const userExists = await User.findOne({ email });
     if (userExists) {
-      return res.status(400).json({ 
+      return res.status(400).json({
         success: false,
-        message: 'Email này đã được đăng ký' 
+        message: "Email này đã được đăng ký",
       });
     }
 
     // Validate password strength
     if (password.length < 6) {
-      return res.status(400).json({ 
+      return res.status(400).json({
         success: false,
-        message: 'Mật khẩu phải có ít nhất 6 ký tự' 
+        message: "Mật khẩu phải có ít nhất 6 ký tự",
       });
     }
 
@@ -216,18 +277,29 @@ exports.register = async (req, res) => {
     if (user) {
       // Create empty streak record for new user (will be updated on first mood check-in)
       await Streak.create({ userId: user._id });
-      
+
       // Generate tokens
       const token = generateToken(user._id);
       const refreshToken = generateRefreshToken(user._id);
-      
-      // Save refresh token to user
-      user.refreshToken = refreshToken;
+
+      // Get device info from User-Agent
+      const deviceInfo = getDeviceInfo(req.headers["user-agent"]);
+
+      // Initialize with single token (single-session)
+      user.refreshTokens = [
+        {
+          token: refreshToken,
+          deviceInfo,
+          createdAt: new Date(),
+          lastUsed: new Date(),
+        },
+      ];
+
       await user.save();
 
       res.status(201).json({
         success: true,
-        message: 'Đăng ký thành công',
+        message: "Đăng ký thành công",
         data: {
           _id: user._id,
           name: user.name,
@@ -241,10 +313,10 @@ exports.register = async (req, res) => {
       });
     }
   } catch (error) {
-    console.error('Register error:', error);
-    res.status(500).json({ 
+    console.error("Register error:", error);
+    res.status(500).json({
       success: false,
-      message: error.message || 'Lỗi máy chủ khi đăng ký' 
+      message: error.message || "Lỗi máy chủ khi đăng ký",
     });
   }
 };
@@ -254,39 +326,40 @@ exports.register = async (req, res) => {
 // @access  Public
 exports.login = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, sessionId } = req.body;
 
     // Validate input
     if (!email || !password) {
-      return res.status(400).json({ 
+      return res.status(400).json({
         success: false,
-        message: 'Vui lòng nhập email và mật khẩu' 
+        message: "Vui lòng nhập email và mật khẩu",
       });
     }
 
     // Check for user email
-    const user = await User.findOne({ email }).select('+passwordHash');
+    const user = await User.findOne({ email }).select("+passwordHash");
 
     if (!user) {
-      return res.status(401).json({ 
+      return res.status(401).json({
         success: false,
-        message: 'Email hoặc mật khẩu không đúng' 
+        message: "Email hoặc mật khẩu không đúng",
       });
     }
 
     // Check if account is locked
     if (user.isLocked) {
-      return res.status(403).json({ 
+      return res.status(403).json({
         success: false,
-        message: 'Tài khoản tạm thời bị khóa do nhiều lần đăng nhập sai. Vui lòng thử lại sau.' 
+        message:
+          "Tài khoản tạm thời bị khóa do nhiều lần đăng nhập sai. Vui lòng thử lại sau.",
       });
     }
 
     // Check if account is active
     if (!user.isActive) {
-      return res.status(403).json({ 
+      return res.status(403).json({
         success: false,
-        message: 'Tài khoản đã bị vô hiệu hóa. Vui lòng liên hệ hỗ trợ.' 
+        message: "Tài khoản đã bị vô hiệu hóa. Vui lòng liên hệ hỗ trợ.",
       });
     }
 
@@ -296,9 +369,9 @@ exports.login = async (req, res) => {
     if (!isPasswordValid) {
       // Increment login attempts
       await user.incLoginAttempts();
-      return res.status(401).json({ 
+      return res.status(401).json({
         success: false,
-        message: 'Email hoặc mật khẩu không đúng' 
+        message: "Email hoặc mật khẩu không đúng",
       });
     }
 
@@ -307,18 +380,58 @@ exports.login = async (req, res) => {
 
     // Update dashboard streak (separate from mood streak)
     await updateDashboardStreak(user);
-    
+
     // Generate tokens
     const token = generateToken(user._id);
     const refreshToken = generateRefreshToken(user._id);
-    
-    // Save refresh token to user
-    user.refreshToken = refreshToken;
-    await user.save();
+
+    // Get device info from User-Agent
+    const deviceInfo = getDeviceInfo(req.headers["user-agent"]);
+
+    // Get user with refreshTokens field
+    const userWithTokens = await User.findById(user._id).select(
+      "+refreshTokens +activeSessionId",
+    );
+
+    // SINGLE-SESSION ENFORCEMENT: Clear all previous sessions
+    // Only keep the newest login session active
+    userWithTokens.refreshTokens = [
+      {
+        token: refreshToken,
+        deviceInfo,
+        createdAt: new Date(),
+        lastUsed: new Date(),
+      },
+    ];
+
+    // Store active session ID for validation on socket connect
+    userWithTokens.activeSessionId = sessionId;
+
+    await userWithTokens.save();
+
+    console.log(
+      `🔐 Single-session login: ${user.email} - Previous sessions invalidated`,
+    );
+    console.log(`📝 Current sessionId: ${sessionId}`);
+
+    // Force logout all other sessions immediately via Socket.IO
+    try {
+      const socketService = require("../services/socketService");
+      socketService.forceLogoutUser(
+        user._id,
+        sessionId,
+        "New login from another device",
+      );
+      console.log(
+        `📤 Force logout signal sent to user ${user.email} (excluding session: ${sessionId})`,
+      );
+    } catch (error) {
+      console.error("Error sending force logout:", error);
+    }
 
     res.json({
       success: true,
-      message: 'Đăng nhập thành công',
+      message: "Đăng nhập thành công",
       data: {
         _id: user._id,
         name: user.name,
@@ -334,10 +447,10 @@ exports.login = async (req, res) => {
       },
     });
   } catch (error) {
-    console.error('Login error:', error);
-    res.status(500).json({ 
+    console.error("Login error:", error);
+    res.status(500).json({
       success: false,
-      message: error.message || 'Lỗi máy chủ khi đăng nhập' 
+      message: error.message || "Lỗi máy chủ khi đăng nhập",
     });
   }
 };
@@ -350,27 +463,27 @@ exports.forgotPassword = async (req, res) => {
     const { email } = req.body;
 
     if (!email) {
-      return res.status(400).json({ 
+      return res.status(400).json({
         success: false,
-        message: 'Vui lòng cung cấp địa chỉ email' 
+        message: "Vui lòng cung cấp địa chỉ email",
       });
     }
 
     const user = await User.findOne({ email });
 
     if (!user) {
-      return res.status(404).json({ 
+      return res.status(404).json({
         success: false,
-        message: 'Không tìm thấy tài khoản với email này' 
+        message: "Không tìm thấy tài khoản với email này",
       });
     }
 
     // Generate reset token
-    const resetToken = crypto.randomBytes(32).toString('hex');
+    const resetToken = crypto.randomBytes(32).toString("hex");
     const resetTokenHash = crypto
-      .createHash('sha256')
+      .createHash("sha256")
       .update(resetToken)
-      .digest('hex');
+      .digest("hex");
 
     // Save reset token to user
     user.resetPasswordToken = resetTokenHash;
@@ -422,20 +535,22 @@ exports.forgotPassword = async (req, res) => {
 
     try {
       const transporter = createTransporter();
-      
+
       // Check if email is configured
       if (!transporter) {
         // In development, log the reset URL
-        console.log('\n=== LINK ĐẶT LẠI MẬT KHẨU ===');
+        console.log("\n=== LINK ĐẶT LẠI MẬT KHẨU ===");
         console.log(`Email: ${user.email}`);
         console.log(`Reset URL: ${resetUrl}`);
         console.log(`Token: ${resetToken}`);
-        console.log('==============================\n');
-        
-        return res.status(200).json({ 
+        console.log("==============================\n");
+
+        return res.status(200).json({
           success: true,
-          message: 'Link đặt lại mật khẩu đã được tạo (Email chưa cấu hình - xem console để lấy link)',
-          resetUrl: process.env.NODE_ENV === 'development' ? resetUrl : undefined
+          message:
+            "Link đặt lại mật khẩu đã được tạo (Email chưa cấu hình - xem console để lấy link)",
+          resetUrl:
+            process.env.NODE_ENV === "development" ? resetUrl : undefined,
         });
       }
 
@@ -443,39 +558,43 @@ exports.forgotPassword = async (req, res) => {
       await transporter.sendMail({
         from: `"S'techdy Support" <${process.env.EMAIL_USER}>`,
         to: user.email,
-        subject: 'Đặt lại mật khẩu - S\'techdy',
+        subject: "Đặt lại mật khẩu - S'techdy",
         html: message,
       });
 
       console.log(`Email đặt lại mật khẩu đã được gửi đến: ${user.email}`);
 
-      res.status(200).json({ 
+      res.status(200).json({
         success: true,
-        message: 'Email đặt lại mật khẩu đã được gửi. Vui lòng kiểm tra hộp thư của bạn.' 
+        message:
+          "Email đặt lại mật khẩu đã được gửi. Vui lòng kiểm tra hộp thư của bạn.",
       });
     } catch (error) {
-      console.error('Lỗi gửi email:', error);
+      console.error("Lỗi gửi email:", error);
       user.resetPasswordToken = undefined;
       user.resetPasswordExpire = undefined;
       await user.save();
 
       // Log for debugging
-      console.log('\n=== THÔNG TIN DEBUG EMAIL ===');
-      console.log('EMAIL_USER:', process.env.EMAIL_USER);
-      console.log('EMAIL_PASSWORD:', process.env.EMAIL_PASSWORD ? '***configured***' : 'NOT SET');
-      console.log('Error:', error.message);
-      console.log('=============================\n');
+      console.log("\n=== THÔNG TIN DEBUG EMAIL ===");
+      console.log("EMAIL_USER:", process.env.EMAIL_USER);
+      console.log(
+        "EMAIL_PASSWORD:",
+        process.env.EMAIL_PASSWORD ? "***configured***" : "NOT SET",
+      );
+      console.log("Error:", error.message);
+      console.log("=============================\n");
 
-      return res.status(500).json({ 
+      return res.status(500).json({
         success: false,
-        message: 'Không thể gửi email. Vui lòng thử lại sau.' 
+        message: "Không thể gửi email. Vui lòng thử lại sau.",
       });
     }
   } catch (error) {
-    console.error('Forgot password error:', error);
-    res.status(500).json({ 
+    console.error("Forgot password error:", error);
+    res.status(500).json({
       success: false,
-      message: error.message || 'Lỗi máy chủ' 
+      message: error.message || "Lỗi máy chủ",
     });
   }
 };
@@ -489,24 +608,24 @@ exports.resetPassword = async (req, res) => {
     const { resetToken } = req.params;
 
     if (!password) {
-      return res.status(400).json({ 
+      return res.status(400).json({
         success: false,
-        message: 'Vui lòng nhập mật khẩu mới' 
+        message: "Vui lòng nhập mật khẩu mới",
       });
     }
 
     if (password.length < 6) {
-      return res.status(400).json({ 
+      return res.status(400).json({
         success: false,
-        message: 'Mật khẩu phải có ít nhất 6 ký tự' 
+        message: "Mật khẩu phải có ít nhất 6 ký tự",
       });
     }
 
     // Hash token
     const resetTokenHash = crypto
-      .createHash('sha256')
+      .createHash("sha256")
       .update(resetToken)
-      .digest('hex');
+      .digest("hex");
 
     // Find user with valid reset token
     const user = await User.findOne({
@@ -515,9 +634,9 @@ exports.resetPassword = async (req, res) => {
     });
 
     if (!user) {
-      return res.status(400).json({ 
+      return res.status(400).json({
         success: false,
-        message: 'Link đặt lại mật khẩu không hợp lệ hoặc đã hết hạn' 
+        message: "Link đặt lại mật khẩu không hợp lệ hoặc đã hết hạn",
       });
     }
 
@@ -527,15 +646,16 @@ exports.resetPassword = async (req, res) => {
     user.resetPasswordExpire = undefined;
     await user.save();
 
-    res.status(200).json({ 
+    res.status(200).json({
       success: true,
-      message: 'Mật khẩu đã được đặt lại thành công. Bạn có thể đăng nhập bằng mật khẩu mới.' 
+      message:
+        "Mật khẩu đã được đặt lại thành công. Bạn có thể đăng nhập bằng mật khẩu mới.",
     });
   } catch (error) {
-    console.error('Reset password error:', error);
-    res.status(500).json({ 
+    console.error("Reset password error:", error);
+    res.status(500).json({
       success: false,
-      message: error.message || 'Lỗi máy chủ' 
+      message: error.message || "Lỗi máy chủ",
     });
   }
 };
@@ -564,28 +684,10 @@ exports.getMe = async (req, res) => {
       },
     });
   } catch (error) {
-    console.error('Get me error:', error);
-    res.status(500).json({ 
+    console.error("Get me error:", error);
+    res.status(500).json({
       success: false,
-      message: error.message || 'Lỗi máy chủ' 
-    });
-  }
-};
-
-// @desc    Logout user
-// @route   POST /api/auth/logout
-// @access  Private
-exports.logout = async (req, res) => {
-  try {
-    res.status(200).json({ 
-      success: true,
-      message: 'Đăng xuất thành công' 
-    });
-  } catch (error) {
-    console.error('Logout error:', error);
-    res.status(500).json({ 
-      success: false,
-      message: error.message || 'Lỗi máy chủ' 
+      message: error.message || "Lỗi máy chủ",
     });
   }
 };
@@ -598,28 +700,28 @@ exports.changePassword = async (req, res) => {
     const { currentPassword, newPassword } = req.body;
 
     if (!currentPassword || !newPassword) {
-      return res.status(400).json({ 
+      return res.status(400).json({
         success: false,
-        message: 'Vui lòng nhập mật khẩu hiện tại và mật khẩu mới' 
+        message: "Vui lòng nhập mật khẩu hiện tại và mật khẩu mới",
       });
     }
 
     if (newPassword.length < 6) {
-      return res.status(400).json({ 
+      return res.status(400).json({
         success: false,
-        message: 'Mật khẩu mới phải có ít nhất 6 ký tự' 
+        message: "Mật khẩu mới phải có ít nhất 6 ký tự",
       });
     }
 
-    const user = await User.findById(req.user._id).select('+passwordHash');
+    const user = await User.findById(req.user._id).select("+passwordHash");
 
     // Check current password
     const isPasswordValid = await user.matchPassword(currentPassword);
 
     if (!isPasswordValid) {
-      return res.status(401).json({ 
+      return res.status(401).json({
         success: false,
-        message: 'Mật khẩu hiện tại không đúng' 
+        message: "Mật khẩu hiện tại không đúng",
       });
     }
 
@@ -627,15 +729,15 @@ exports.changePassword = async (req, res) => {
     user.passwordHash = newPassword;
     await user.save();
 
-    res.status(200).json({ 
+    res.status(200).json({
       success: true,
-      message: 'Đổi mật khẩu thành công' 
+      message: "Đổi mật khẩu thành công",
     });
   } catch (error) {
-    console.error('Change password error:', error);
-    res.status(500).json({ 
+    console.error("Change password error:", error);
+    res.status(500).json({
       success: false,
-      message: error.message || 'Lỗi máy chủ' 
+      message: error.message || "Lỗi máy chủ",
     });
   }
 };
@@ -645,12 +747,12 @@ exports.changePassword = async (req, res) => {
 // @access  Public
 exports.googleLogin = async (req, res) => {
   try {
-    const { credential } = req.body;
+    const { credential, sessionId } = req.body;
 
     if (!credential) {
-      return res.status(400).json({ 
+      return res.status(400).json({
         success: false,
-        message: 'Thiếu credential từ Google' 
+        message: "Thiếu credential từ Google",
       });
     }
 
@@ -664,18 +766,15 @@ exports.googleLogin = async (req, res) => {
     const { sub: googleId, email, name, picture } = payload;
 
     // Check if user exists by googleId or email
-    let user = await User.findOne({ 
-      $or: [
-        { googleId },
-        { email }
-      ]
+    let user = await User.findOne({
+      $or: [{ googleId }, { email }],
     });
 
     if (user) {
       // Update existing user with Google info if not already set
       if (!user.googleId) {
         user.googleId = googleId;
-        user.authProvider = 'google';
+        user.authProvider = "google";
       }
       if (!user.avatarUrl && picture) {
         user.avatarUrl = picture;
@@ -683,7 +782,7 @@ exports.googleLogin = async (req, res) => {
       user.lastLogin = Date.now();
       user.isVerified = true; // Google accounts are verified
       await user.save();
-      
+
       // Update dashboard streak for existing user
       await updateDashboardStreak(user);
     } else {
@@ -693,14 +792,14 @@ exports.googleLogin = async (req, res) => {
         name,
         email,
         googleId,
-        authProvider: 'google',
+        authProvider: "google",
         avatarUrl: picture || null,
         isVerified: true,
         lastLogin: Date.now(),
         streakCount: 1,
         lastActiveDate: today,
       });
-      
+
       // Create empty streak record for new user (will be updated on first mood check-in)
       await Streak.create({ userId: user._id });
     }
@@ -709,12 +808,53 @@ exports.googleLogin = async (req, res) => {
     const token = generateToken(user._id);
     const refreshToken = generateRefreshToken(user._id);
 
-    user.refreshToken = refreshToken;
-    await user.save();
+    // Get device info from User-Agent
+    const deviceInfo = getDeviceInfo(req.headers["user-agent"]);
+
+    // Get user with refreshTokens field
+    const userWithTokens = await User.findById(user._id).select(
+      "+refreshTokens +activeSessionId",
+    );
+
+    // SINGLE-SESSION ENFORCEMENT: Clear all previous sessions
+    // Only keep the newest login session active
+    userWithTokens.refreshTokens = [
+      {
+        token: refreshToken,
+        deviceInfo,
+        createdAt: new Date(),
+        lastUsed: new Date(),
+      },
+    ];
+
+    // Store active session ID for validation on socket connect
+    userWithTokens.activeSessionId = sessionId;
+
+    await userWithTokens.save();
+
+    console.log(
+      `🔐 Single-session Google login: ${user.email} - Previous sessions invalidated`,
+    );
+    console.log(`📝 Current sessionId: ${sessionId}`);
+
+    // Force logout all other sessions immediately via Socket.IO
+    try {
+      const socketService = require("../services/socketService");
+      socketService.forceLogoutUser(
+        user._id,
+        sessionId,
+        "New Google login from another device",
+      );
+      console.log(
+        `📤 Force logout signal sent to user ${user.email} (excluding session: ${sessionId})`,
+      );
+    } catch (error) {
+      console.error("Error sending force logout:", error);
+    }
 
     res.status(200).json({
       success: true,
-      message: 'Đăng nhập Google thành công',
+      message: "Đăng nhập Google thành công",
       data: {
         _id: user._id,
         name: user.name,
@@ -729,10 +869,10 @@ exports.googleLogin = async (req, res) => {
       },
     });
   } catch (error) {
-    console.error('Google login error:', error);
-    res.status(500).json({ 
+    console.error("Google login error:", error);
+    res.status(500).json({
       success: false,
-      message: error.message || 'Lỗi khi đăng nhập bằng Google' 
+      message: error.message || "Lỗi khi đăng nhập bằng Google",
     });
   }
 };
@@ -747,23 +887,70 @@ exports.refreshToken = async (req, res) => {
     if (!refreshToken) {
       return res.status(401).json({
         success: false,
-        message: 'Refresh token không được cung cấp'
+        message: "Refresh token không được cung cấp",
       });
     }
 
     // Verify refresh token
-    const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET || process.env.JWT_SECRET);
-    
-    // Find user with this refresh token
-    const user = await User.findOne({ 
-      _id: decoded.id, 
-      refreshToken 
-    }).select('+refreshToken');
+    const decoded = jwt.verify(
+      refreshToken,
+      process.env.JWT_REFRESH_SECRET || process.env.JWT_SECRET,
+    );
+
+    // Find user with refreshTokens array (also select old refreshToken for backward compatibility)
+    const user = await User.findById(decoded.id).select(
+      "+refreshTokens +refreshToken",
+    );
 
     if (!user) {
       return res.status(401).json({
         success: false,
-        message: 'Refresh token không hợp lệ'
+        message: "Người dùng không tồn tại",
+      });
+    }
+
+    // **BACKWARD COMPATIBILITY**: Check if user has old refreshToken format
+    if (user.refreshToken && !user.refreshTokens) {
+      console.log(`🔄 Migrating user ${user.email} from old token format`);
+
+      // Validate the old token matches
+      if (user.refreshToken !== refreshToken) {
+        return res.status(401).json({
+          success: false,
+          message: "Refresh token không hợp lệ",
+        });
+      }
+
+      // Migrate to new format
+      const deviceInfo = getDeviceInfo(req.headers["user-agent"]);
+      user.refreshTokens = [
+        {
+          token: refreshToken,
+          deviceInfo,
+          createdAt: new Date(),
+          lastUsed: new Date(),
+        },
+      ];
+      user.refreshToken = undefined; // Remove old field
+      await user.save();
+
+      console.log(`✅ User ${user.email} migrated to new token format`);
+    }
+
+    // Clean up expired tokens first
+    if (user.refreshTokens) {
+      user.refreshTokens = cleanupExpiredTokens(user.refreshTokens);
+    }
+
+    // Find the token in the array
+    const tokenIndex = user.refreshTokens?.findIndex(
+      (rt) => rt.token === refreshToken,
+    );
+
+    if (tokenIndex === -1 || !user.refreshTokens) {
+      return res.status(401).json({
+        success: false,
+        message: "Refresh token không hợp lệ hoặc đã hết hạn",
       });
     }
 
@@ -771,31 +958,43 @@ exports.refreshToken = async (req, res) => {
     const newToken = generateToken(user._id);
     const newRefreshToken = generateRefreshToken(user._id);
 
-    // Update refresh token in database
-    user.refreshToken = newRefreshToken;
+    // Get device info
+    const deviceInfo = getDeviceInfo(req.headers["user-agent"]);
+
+    // Update the token in the array
+    user.refreshTokens[tokenIndex] = {
+      token: newRefreshToken,
+      deviceInfo,
+      createdAt: user.refreshTokens[tokenIndex].createdAt,
+      lastUsed: new Date(),
+    };
+
     await user.save();
 
     res.json({
       success: true,
-      message: 'Token đã được làm mới',
+      message: "Token đã được làm mới",
       data: {
         token: newToken,
         refreshToken: newRefreshToken,
       },
     });
   } catch (error) {
-    console.error('Refresh token error:', error);
-    
-    if (error.name === 'JsonWebTokenError' || error.name === 'TokenExpiredError') {
+    console.error("Refresh token error:", error);
+
+    if (
+      error.name === "JsonWebTokenError" ||
+      error.name === "TokenExpiredError"
+    ) {
       return res.status(401).json({
         success: false,
-        message: 'Refresh token không hợp lệ hoặc đã hết hạn'
+        message: "Refresh token không hợp lệ hoặc đã hết hạn",
       });
     }
-    
+
     res.status(500).json({
       success: false,
-      message: error.message || 'Lỗi khi làm mới token'
+      message: error.message || "Lỗi khi làm mới token",
     });
   }
 };
@@ -805,23 +1004,26 @@ exports.refreshToken = async (req, res) => {
 // @access  Private
 exports.logout = async (req, res) => {
   try {
-    // Clear refresh token from database
-    const user = await User.findById(req.user.id);
+    // Get user with refreshTokens array
+    const user = await User.findById(req.user.id).select("+refreshTokens");
+
     if (user) {
-      user.refreshToken = null;
+      // Clear all tokens (single-session enforcement)
+      user.refreshTokens = [];
       await user.save();
+
+      console.log(`🔓 User ${user.email} logged out - Session cleared`);
     }
 
     res.json({
       success: true,
-      message: 'Đăng xuất thành công'
+      message: "Đăng xuất thành công",
     });
   } catch (error) {
-    console.error('Logout error:', error);
+    console.error("Logout error:", error);
     res.status(500).json({
       success: false,
-      message: error.message || 'Lỗi khi đăng xuất'
+      message: error.message || "Lỗi khi đăng xuất",
     });
   }
 };
-
