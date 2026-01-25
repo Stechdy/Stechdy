@@ -1255,5 +1255,10 @@
     "greeting": "Chào buổi sáng! Bạn muốn làm gì?",
     "createSchedulePrompt": "Bạn có thể tạo lịch tự học cho tôi không?",
     "createScheduleResponse": "Tất nhiên! Vui lòng nhấn vào Tạo lịch học để tiếp tục!!!"
+  },
+  "sessionExpired": {
+    "title": "Đã phát hiện có thiết bị khác đăng nhập",
+    "message": "Tài khoản của bạn đã được đăng nhập từ thiết bị khác. Vui lòng đăng nhập lại.",
+    "loginButton": "Đăng nhập lại"
   }
 }
