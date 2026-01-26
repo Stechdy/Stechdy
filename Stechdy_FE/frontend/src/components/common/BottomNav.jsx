@@ -88,7 +88,7 @@ const BottomNav = () => {
 
       <button className="nav-item nav-item-ai" onClick={() => navigate("/ai")}>
         <div className="ai-fab">
-          <img src={`${process.env.PUBLIC_URL}/Stechdy_logo.png`} alt="AI" className="ai-logo" />
+          <img src={`${process.env.PUBLIC_URL}/LogoAIStechdy.png?v=${Date.now()}`} alt="AI" className="ai-logo" />
         </div>
         <span>{t("bottomNav.ai")}</span>
       </button>

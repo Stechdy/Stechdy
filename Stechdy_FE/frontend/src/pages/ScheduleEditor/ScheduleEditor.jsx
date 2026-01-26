@@ -88,7 +88,7 @@ const ScheduleEditor = () => {
       (day.sessions || []).forEach((session) => {
         slotCounter++;
         globalId++;
-        
+
         const startHour = parseInt(session.start_time?.split(":")[0] || "8");
         let timeSlot = "morning";
         if (startHour >= 13 && startHour < 17) timeSlot = "afternoon";
@@ -189,7 +189,7 @@ const ScheduleEditor = () => {
       else if (startHour >= 17) eventSlot = "evening";
       return e.date === dateStr && eventSlot === timeSlotId;
     });
-    
+
     // Sort by start time (earliest first)
     return filteredEvents.sort((a, b) => {
       const parseTime = (timeStr) => {
@@ -234,16 +234,16 @@ const ScheduleEditor = () => {
 
     const newDate = getDateForDay(dayIndex);
     const slot = TIME_SLOTS.find((s) => s.id === timeSlot);
-    
+
     // Check for existing events in this slot (excluding the dragged one)
     const existingEvents = events.filter(
       (e) => e.id !== draggedEvent.id && e.date === newDate && e.timeSlot === timeSlot
     );
-    
+
     // Calculate new times based on time slot
     let newStartTime = slot.startTime;
     let newEndTime = "";
-    
+
     // If there are existing events, find the latest end time and add 30 minutes
     if (existingEvents.length > 0) {
       const latestEvent = existingEvents.reduce((latest, event) => {
@@ -253,7 +253,7 @@ const ScheduleEditor = () => {
         const eventMinutes = eventH * 60 + eventM;
         return eventMinutes > latestMinutes ? event : latest;
       });
-      
+
       // Start 30 minutes after the latest event ends
       const [latestEndH, latestEndM] = latestEvent.endTime.split(":").map(Number);
       const newStartMinutes = latestEndH * 60 + latestEndM + 30;
@@ -261,12 +261,12 @@ const ScheduleEditor = () => {
       const newStartM = newStartMinutes % 60;
       newStartTime = `${String(newStartH).padStart(2, "0")}:${String(newStartM).padStart(2, "0")}`;
     }
-    
+
     // Keep original duration
     const [oldStartH, oldStartM] = draggedEvent.startTime.split(":").map(Number);
     const [oldEndH, oldEndM] = draggedEvent.endTime.split(":").map(Number);
     const durationMinutes = (oldEndH * 60 + oldEndM) - (oldStartH * 60 + oldStartM);
-    
+
     const [newStartH, newStartM] = newStartTime.split(":").map(Number);
     const newEndMinutes = newStartH * 60 + newStartM + durationMinutes;
     const newEndH = Math.floor(newEndMinutes / 60);
@@ -278,13 +278,13 @@ const ScheduleEditor = () => {
       prev.map((event) =>
         event.id === draggedEvent.id
           ? {
-              ...event,
-              date: newDate,
-              startTime: newStartTime,
-              endTime: newEndTime,
-              timeSlot: timeSlot,
-              dayOfWeek: getDayName(newDate)
-            }
+            ...event,
+            date: newDate,
+            startTime: newStartTime,
+            endTime: newEndTime,
+            timeSlot: timeSlot,
+            dayOfWeek: getDayName(newDate)
+          }
           : event
       )
     );
@@ -317,21 +317,21 @@ const ScheduleEditor = () => {
     const hasConflict = events.some((event) => {
       // Skip checking against itself when editing
       if (event.id === editingEvent.id) return false;
-      
+
       // Check if same date
       if (event.date !== editingEvent.date) return false;
-      
+
       // Parse times to minutes for easier comparison
       const parseTime = (timeStr) => {
         const [h, m] = timeStr.split(':').map(Number);
         return h * 60 + m;
       };
-      
+
       const eventStart = parseTime(event.startTime);
       const eventEnd = parseTime(event.endTime);
       const editingStart = parseTime(editingEvent.startTime);
       const editingEnd = parseTime(editingEvent.endTime);
-      
+
       // Check for overlap
       return (
         (editingStart >= eventStart && editingStart < eventEnd) ||
@@ -350,7 +350,7 @@ const ScheduleEditor = () => {
       const [h, m] = timeStr.split(':').map(Number);
       return h * 60 + m;
     };
-    
+
     if (parseTime(editingEvent.startTime) >= parseTime(editingEvent.endTime)) {
       setModalError(t("scheduleEditor.messages.invalidTimeRange"));
       return;
@@ -388,25 +388,25 @@ const ScheduleEditor = () => {
   const handleAddSlot = (dayIndex, timeSlotId) => {
     const dateStr = getDateForDay(dayIndex);
     const slot = TIME_SLOTS.find((s) => s.id === timeSlotId);
-    
+
     // Get subjects from existing events
     const existingSubjects = [...new Set(events.map(e => e.subjectCode))];
     const defaultSubject = existingSubjects.length > 0 ? existingSubjects[0] : "New Subject";
-    
+
     // Generate unique ID
     const newId = `event-${Date.now()}`;
-    
+
     // Calculate default times based on time slot
     let startTime = slot.startTime;
     let endTime = "";
-    
+
     // Default duration: 1.5 hours
     const [startH, startM] = startTime.split(":").map(Number);
     const endMinutes = startH * 60 + startM + 90;
     const endH = Math.floor(endMinutes / 60);
     const endMins = endMinutes % 60;
     endTime = `${String(endH).padStart(2, "0")}:${String(endMins).padStart(2, "0")}`;
-    
+
     const newEvent = {
       id: newId,
       date: dateStr,
@@ -419,7 +419,7 @@ const ScheduleEditor = () => {
       status: "scheduled",
       timeSlot: timeSlotId
     };
-    
+
     // Don't add to events yet - only open modal
     // Event will be added when user clicks Save
     setIsNewEvent(true);
@@ -458,11 +458,11 @@ const ScheduleEditor = () => {
       firstWeekEvents.forEach(event => {
         const eventDate = new Date(event.date);
         const dayOfWeek = eventDate.getDay(); // 0=Sunday, 1=Monday, etc.
-        
+
         if (!weekPattern[dayOfWeek]) {
           weekPattern[dayOfWeek] = [];
         }
-        
+
         weekPattern[dayOfWeek].push({
           startTime: event.startTime,
           endTime: event.endTime,
@@ -639,11 +639,11 @@ const ScheduleEditor = () => {
           console.log(`Schedule saved! Created ${result.data.sessionsCreated} sessions.`);
           setHasChanges(false);
           setShowSuccessModal(true);
-          
+
           // Clear localStorage after successful save
           localStorage.removeItem("studySchedule");
           localStorage.removeItem("studyScheduleInput");
-          
+
           setTimeout(() => {
             navigate("/calendar");
           }, 2000);
@@ -682,7 +682,7 @@ const ScheduleEditor = () => {
   // Calculate statistics for each subject
   const calculateStats = () => {
     const stats = {};
-    
+
     events.forEach(event => {
       const subject = event.subjectCode;
       if (!stats[subject]) {
@@ -691,18 +691,18 @@ const ScheduleEditor = () => {
           totalHours: 0
         };
       }
-      
+
       stats[subject].totalSessions += 1;
-      
+
       // Calculate duration
       const [startH, startM] = event.startTime.split(':').map(Number);
       const [endH, endM] = event.endTime.split(':').map(Number);
       const durationMinutes = (endH * 60 + endM) - (startH * 60 + startM);
       const durationHours = durationMinutes / 60;
-      
+
       stats[subject].totalHours += durationHours;
     });
-    
+
     return stats;
   };
 
@@ -741,7 +741,7 @@ const ScheduleEditor = () => {
             const date = new Date(currentWeekStart);
             date.setDate(date.getDate() + idx);
             const isToday = formatDateISO(new Date()) === formatDateISO(date);
-            
+
             return (
               <div key={day} className={`day-column-header ${isToday ? "today" : ""}`}>
                 <span className="day-name">{day}</span>
@@ -759,7 +759,7 @@ const ScheduleEditor = () => {
               <span className="slot-name">{slot.label}</span>
               <span className="slot-time">{slot.startTime}-{slot.endTime}</span>
             </div>
-            
+
             {DAYS.map((_, dayIdx) => {
               const cellEvents = getEventsForCell(dayIdx, slot.id);
               const isEmpty = cellEvents.length === 0;
@@ -775,7 +775,7 @@ const ScheduleEditor = () => {
                 >
                   {cellEvents.map((event) => {
                     const color = subjectColors[event.subjectCode] || COLOR_PALETTE[0];
-                    
+
                     return (
                       <div
                         key={event.id}
@@ -796,14 +796,14 @@ const ScheduleEditor = () => {
                       </div>
                     );
                   })}
-                  
+
                   {isEmpty && (
                     <div className="empty-slot">
                       <i className="fas fa-plus"></i>
                       <span>{t("scheduleEditor.grid.dropHere")}</span>
                     </div>
                   )}
-                  
+
                   {/* Add Slot Button */}
                   <button
                     className="se-btn-add-slot"
@@ -899,13 +899,28 @@ const ScheduleEditor = () => {
             </div>
           </div>
 
-          <div className="se-modal-footer">
+          {/* <div className="se-modal-footer">
             {!isNewEvent && (
               <button className="se-btn-delete" onClick={() => deleteEvent(editingEvent.id)}>
                 <i className="fas fa-trash"></i> {t("scheduleEditor.modal.delete")}
               </button>
             )}
             <div className="se-btn-group">
+              <button className="se-btn-cancel" onClick={closeEditModal}>
+                {t("scheduleEditor.modal.cancel")}
+              </button>
+              <button className="se-btn-save" onClick={saveEventChanges}>
+                <i className="fas fa-check"></i> {t("scheduleEditor.modal.save")}
+              </button>
+            </div>
+          </div> */}
+          <div className="se-modal-footer">
+            <div className="se-modal-footer__buttons">
+              {!isNewEvent && (
+                <button className="se-btn-delete" onClick={() => deleteEvent(editingEvent.id)}>
+                  <i className="fas fa-trash"></i> {t("scheduleEditor.modal.delete")}
+                </button>
+              )}
               <button className="se-btn-cancel" onClick={closeEditModal}>
                 {t("scheduleEditor.modal.cancel")}
               </button>
@@ -941,8 +956,8 @@ const ScheduleEditor = () => {
             {t("scheduleEditor.title")}
             {hasChanges && <span className="editor-unsaved-badge">●</span>}
           </h1>
-          <button 
-            className="editor-save-btn" 
+          <button
+            className="editor-save-btn"
             onClick={saveToDatabase}
             disabled={isSaving}
           >
@@ -989,7 +1004,7 @@ const ScheduleEditor = () => {
               <span>{t("scheduleEditor.instructions.saveWhenDone")}</span>
             </div>
           </div>
-          <button 
+          <button
             className="editor-save-all-weeks-btn"
             onClick={applyToAllWeeks}
             disabled={isApplying}
@@ -1048,8 +1063,8 @@ const ScheduleEditor = () => {
             <div className="editor-stats-grid">
               {Object.entries(calculateStats()).map(([subject, stats]) => (
                 <div key={subject} className="editor-stat-card">
-                  <div 
-                    className="editor-stat-indicator" 
+                  <div
+                    className="editor-stat-indicator"
                     style={{ backgroundColor: subjectColors[subject] || '#8AC0D5' }}
                   ></div>
                   <div className="editor-stat-content">
@@ -1094,16 +1109,16 @@ const ScheduleEditor = () => {
               <p style={{ marginBottom: '12px' }}>
                 Các ngày có nhiều hơn 3 buổi học:
               </p>
-              <ul style={{ 
-                listStyle: 'none', 
-                padding: '0', 
+              <ul style={{
+                listStyle: 'none',
+                padding: '0',
                 margin: '0 0 16px 0',
                 background: '#fef3c7',
                 borderRadius: '8px',
                 padding: '12px'
               }}>
                 {warningDays.map((day, index) => (
-                  <li key={index} style={{ 
+                  <li key={index} style={{
                     padding: '8px 0',
                     borderBottom: index < warningDays.length - 1 ? '1px solid #fcd34d' : 'none'
                   }}>
@@ -1116,15 +1131,15 @@ const ScheduleEditor = () => {
               </p>
             </div>
             <div className="se-modal-footer">
-              <button 
-                className="se-btn-cancel" 
+              <button
+                className="se-btn-cancel"
                 onClick={handleWarningCancel}
                 style={{ flex: 1 }}
               >
                 <i className="fas fa-times"></i> Hủy - Sửa lại
               </button>
-              <button 
-                className="se-btn-save" 
+              <button
+                className="se-btn-save"
                 onClick={handleWarningConfirm}
                 style={{ flex: 1, background: '#f59e0b' }}
               >
@@ -1144,7 +1159,7 @@ const ScheduleEditor = () => {
             </div>
             <h3>Lưu lịch học thành công!</h3>
             <p>Lịch học của bạn đã được lưu và đồng bộ thành công.</p>
-            <button 
+            <button
               className="se-success-btn"
               onClick={() => {
                 setShowSuccessModal(false);
@@ -1160,12 +1175,11 @@ const ScheduleEditor = () => {
       {/* Toast */}
       {showToast && (
         <div className={`se-toast se-toast-${toastType}`}>
-          <i className={`fas ${
-            toastType === "success" ? "fa-check-circle" :
+          <i className={`fas ${toastType === "success" ? "fa-check-circle" :
             toastType === "error" ? "fa-exclamation-circle" :
-            toastType === "warning" ? "fa-exclamation-triangle" :
-            "fa-info-circle"
-          }`}></i>
+              toastType === "warning" ? "fa-exclamation-triangle" :
+                "fa-info-circle"
+            }`}></i>
           <span>{toastMessage}</span>
         </div>
       )}

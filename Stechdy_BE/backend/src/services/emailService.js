@@ -733,7 +733,7 @@ const sendPaymentNotificationToAdmin = async (paymentData) => {
     const { userName, userEmail, planName, amount, paymentCode, paymentId, submittedAt } = paymentData;
     
     const adminEmail = 'stechdy.work@gmail.com';
-    const adminPanelUrl = `${process.env.FRONTEND_URL || 'http://localhost:3000'}/admin/payments`;
+    const adminPanelUrl = `${process.env.FRONTEND_URL}/admin/payments`;
     
     const formattedDate = new Date(submittedAt).toLocaleString('vi-VN', {
       day: '2-digit',
@@ -1082,7 +1082,7 @@ const sendPaymentConfirmationToUser = async (userData) => {
               </div>
 
               <div style="text-align: center; margin-top: 30px;">
-                <a href="${process.env.FRONTEND_URL || 'http://localhost:3000'}/dashboard" class="btn">
+                <a href="${process.env.FRONTEND_URL}/dashboard" class="btn">
                   🚀 Khám phá ngay
                 </a>
               </div>
