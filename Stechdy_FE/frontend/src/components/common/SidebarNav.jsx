@@ -190,7 +190,7 @@ const SidebarNav = () => {
       icon: (
         <div className="ai-fab">
           <img 
-            src={require("../../assets/STECHDY.webp")} 
+            src={`${process.env.PUBLIC_URL}/LogoAIStechdy.png?v=${Date.now()}`}
             alt="S'Techdy AI" 
             style={{ width: '48px', height: '48px', objectFit: 'contain', borderRadius: '18px' }}
           />

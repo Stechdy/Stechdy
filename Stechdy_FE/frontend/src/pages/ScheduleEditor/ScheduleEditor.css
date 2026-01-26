@@ -906,6 +906,20 @@
   border-color: #8AC0D5;
 }
 
+.se-modal-footer__buttons {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 30px;
+  margin-top: -30px;
+}
+
+.se-btn-delete {
+  margin-right: auto;            /* đẩy Delete sang trái */
+}
+
 .se-form-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -1495,11 +1509,7 @@
     gap: 14px;
   }
 
-  .se-modal-footer {
-    padding: 16px 20px;
-    flex-direction: column-reverse;
-    gap: 10px;
-  }
+
 
   .se-btn-delete {
     width: 100%;
@@ -1716,9 +1726,7 @@
     font-size: 14px;
   }
 
-  .se-modal-footer {
-    padding: 14px 18px;
-  }
+
 
   .se-btn-delete,
   .se-btn-cancel,
