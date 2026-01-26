@@ -38,7 +38,7 @@ const AIGenerator = () => {
     new Date().toISOString().split("T")[0]
   );
 
-  const n8nWebhookUrl = "http://localhost:1234/webhook/gen-schedule-v2";
+  const n8nWebhookUrl = process.env.REACT_APP_N8N_WEBHOOK_URL || "https://n8n.stechdy.ai.vn/webhook/gen-schedule-v2";
 
   // Check for existing schedule on mount
   useEffect(() => {
@@ -748,7 +748,7 @@ const AIGenerator = () => {
             <div className="ag-modal-header">
               <div className="modal-header-content">
                 <img
-                  src="/Stechdy_logo.png"
+                  src={`${process.env.PUBLIC_URL}/LogoAIStechdy.png?v=${Date.now()}`}
                   alt="S'Techdy"
                   className="landing-new__logo-img"
                 />
@@ -810,7 +810,7 @@ const AIGenerator = () => {
             <div className="ag-modal-header">
               <div className="modal-header-content">
                 <img
-                  src="/Stechdy_logo.png"
+                  src={`${process.env.PUBLIC_URL}/LogoAIStechdy.png?v=${Date.now()}`}
                   alt="S'Techdy"
                   className="landing-new__logo-img"
                 />

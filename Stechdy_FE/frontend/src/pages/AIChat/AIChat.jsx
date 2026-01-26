@@ -141,7 +141,7 @@ Otherwise, provide a helpful, friendly response related to studying, productivit
                 {message.sender === "ai" && (
                   <div className="ai-avatar">
                     <img 
-                      src={require("../../assets/STECHDY.webp")} 
+                      src={`${process.env.PUBLIC_URL}/LogoAIStechdy.png?v=${Date.now()}`}
                       alt="AI" 
                     />
                   </div>
@@ -161,7 +161,7 @@ Otherwise, provide a helpful, friendly response related to studying, productivit
               <div className="ai-message ai-message">
                 <div className="ai-avatar">
                   <img 
-                    src={require("../../assets/STECHDY.webp")} 
+                    src={`${process.env.PUBLIC_URL}/LogoAIStechdy.png?v=${Date.now()}`}
                     alt="AI" 
                   />
                 </div>
