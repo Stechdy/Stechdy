@@ -95,6 +95,16 @@
   text-decoration: underline;
 }
 
+/* Hidden Google Login Component */
+.google-login-hidden {
+  display: none !important;
+  position: absolute !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
 .google-login-wrapper {
   width: 100%;
   display: flex;
