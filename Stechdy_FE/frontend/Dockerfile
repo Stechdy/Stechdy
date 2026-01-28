@@ -14,6 +14,8 @@ COPY . .
 
 # Build without CI check - CSS minification issues will be bypassed
 ENV CI=false
+ENV NODE_ENV=production
+ENV GENERATE_SOURCEMAP=false
 RUN npm run build
 
 # Production stage - Nginx
