@@ -44,9 +44,16 @@ export const SocketProvider = ({ children }) => {
       return;
     }
 
+    // Skip socket connection in production if no socket server
+    if (process.env.REACT_APP_ENV === 'production' && !process.env.REACT_APP_SOCKET_URL) {
+      console.log("No socket server configured for production, skipping socket connection");
+      return;
+    }
+
     // Socket.IO runs on base URL, NOT /api endpoint
+    const socketUrl = process.env.REACT_APP_SOCKET_URL;
     const apiUrl = process.env.REACT_APP_API_URL || "http://localhost:3001/api";
-    const serverUrl = apiUrl.replace(/\/api$/, ""); // Remove /api suffix
+    const serverUrl = socketUrl || apiUrl.replace(/\/api$/, ""); // Use socket URL or remove /api suffix
 
     console.log("🔌 Connecting to Socket.IO server...");
     console.log("🌐 Server URL:", serverUrl);
