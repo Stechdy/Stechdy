@@ -71,21 +71,31 @@ const Login = () => {
     setApiError("");
 
     try {
-      const response = await login(formData.email, formData.password);
+      // ALWAYS create NEW sessionId on login (invalidates old sessions)
+      const sessionId = `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+      localStorage.setItem("sessionId", sessionId);
+
+      console.log("🔐 Logging in with NEW sessionId:", sessionId);
+
+      const response = await login(
+        formData.email,
+        formData.password,
+        sessionId,
+      );
 
       if (response.success) {
-        // Store token and user data
+        // Store token and user data (sessionId already in localStorage)
         localStorage.setItem("token", response.data.token);
         if (response.data.refreshToken) {
           localStorage.setItem("refreshToken", response.data.refreshToken);
         }
         localStorage.setItem("user", JSON.stringify(response.data));
 
-        // Redirect based on role
+        // Force reload to reconnect socket with new token
         if (response.data.role === "admin") {
-          navigate("/admin/dashboard");
+          window.location.href = "/admin/dashboard";
         } else {
-          navigate("/dashboard");
+          window.location.href = "/dashboard";
         }
       }
     } catch (error) {
@@ -100,21 +110,30 @@ const Login = () => {
       setLoading(true);
       setApiError("");
 
-      const response = await googleLogin(credentialResponse.credential);
+      // ALWAYS create NEW sessionId on login (invalidates old sessions)
+      const sessionId = `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+      localStorage.setItem("sessionId", sessionId);
+
+      console.log("🔐 Google login with NEW sessionId:", sessionId);
+
+      const response = await googleLogin(
+        credentialResponse.credential,
+        sessionId,
+      );
 
       if (response.success) {
-        // Store token and user data
+        // Store token and user data (sessionId already in localStorage)
         localStorage.setItem("token", response.data.token);
         if (response.data.refreshToken) {
           localStorage.setItem("refreshToken", response.data.refreshToken);
         }
         localStorage.setItem("user", JSON.stringify(response.data));
 
-        // Redirect based on role
+        // Force reload to reconnect socket with new token
         if (response.data.role === "admin") {
-          navigate("/admin/dashboard");
+          window.location.href = "/admin/dashboard";
         } else {
-          navigate("/dashboard");
+          window.location.href = "/dashboard";
         }
       }
     } catch (error) {
@@ -131,7 +150,8 @@ const Login = () => {
   const handleCustomGoogleButtonClick = () => {
     // Trigger click on hidden Google button
     if (googleButtonRef.current) {
-      const googleButton = googleButtonRef.current.querySelector('div[role="button"]');
+      const googleButton =
+        googleButtonRef.current.querySelector('div[role="button"]');
       if (googleButton) {
         googleButton.click();
       }
@@ -224,7 +244,7 @@ const Login = () => {
           <div
             ref={googleButtonRef}
             className="google-login-hidden"
-            style={{ display: 'none' }}
+            style={{ display: "none" }}
           >
             <GoogleLogin
               onSuccess={handleGoogleLogin}
