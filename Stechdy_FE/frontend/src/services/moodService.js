@@ -15,9 +15,6 @@ const moodService = {
   getMoodEntries: async (params = {}) => {
     const token = localStorage.getItem('token');
     const queryString = new URLSearchParams(params).toString();
-    console.log('moodService.getMoodEntries - params:', params);
-    console.log('moodService.getMoodEntries - queryString:', queryString);
-    console.log('moodService.getMoodEntries - full URL:', `/moods${queryString ? `?${queryString}` : ''}`);
     return await api.get(`/moods${queryString ? `?${queryString}` : ''}`, {
       headers: {
         Authorization: `Bearer ${token}`

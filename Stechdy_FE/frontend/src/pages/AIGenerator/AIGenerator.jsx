@@ -41,10 +41,6 @@ const AIGenerator = () => {
 
   const n8nWebhookUrl = process.env.REACT_APP_N8N_WEBHOOK_URL || "http://107.178.213.71/webhook/gen-schedule-v3-lite";
   
-  // Debug: Log webhook URL
-  console.log("N8N Webhook URL:", n8nWebhookUrl);
-  console.log("Environment variable:", process.env.REACT_APP_N8N_WEBHOOK_URL);
-
   // Check for existing schedule on mount
   useEffect(() => {
     const checkExistingSchedule = async () => {
@@ -286,8 +282,6 @@ const AIGenerator = () => {
 
     try {
       const webhookData = transformDataForWebhook();
-      console.log("Request data:", JSON.stringify(webhookData, null, 2));
-      console.log("Making request to URL:", n8nWebhookUrl);
 
       const response = await fetch(n8nWebhookUrl, {
         method: "POST",

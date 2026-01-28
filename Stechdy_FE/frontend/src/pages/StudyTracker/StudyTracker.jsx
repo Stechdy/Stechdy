@@ -76,7 +76,6 @@ const StudyTracker = () => {
 
       if (scheduleResponse.ok) {
         const data = await scheduleResponse.json();
-        console.log('Week schedule:', data);
         setWeekSchedule(data.sessions || []);
         setCurrentWeekNumber(data.weekNumber || 1);
       }
@@ -124,11 +123,6 @@ const StudyTracker = () => {
 
       if (scheduleResponse.ok) {
         const sessions = await scheduleResponse.json();
-        console.log('==================');
-        console.log('Month sessions loaded:', sessions.length);
-        console.log('First 5 sessions:', sessions.slice(0, 5));
-        console.log('Month range:', monthStart.toISOString(), 'to', monthEnd.toISOString());
-        console.log('==================');
         setMonthSessions(sessions || []);
       } else {
         console.error('Failed to fetch month sessions:', scheduleResponse.status);
