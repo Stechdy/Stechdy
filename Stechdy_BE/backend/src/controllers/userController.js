@@ -10,6 +10,62 @@ const generateToken = (id) => {
   });
 };
 
+// Helper function to get Vietnam date (UTC+7)
+// Note: Server runs with TZ=Asia/Ho_Chi_Minh, so new Date() is already Vietnam time
+const getVietnamDate = () => {
+  const now = new Date();
+  now.setHours(0, 0, 0, 0);
+  return now;
+};
+
+// Update user dashboard streak on visit (when accessing the website)
+const updateDashboardStreak = async (user) => {
+  try {
+    const today = getVietnamDate();
+    
+    // If no last active date, this is first visit or first streak
+    if (!user.lastActiveDate) {
+      user.streakCount = 1;
+      user.lastActiveDate = today;
+      await user.save();
+      console.log(`🔥 Dashboard streak started: 1 day`);
+      return user;
+    }
+    
+    // Get last active date normalized to start of day
+    const lastActive = new Date(user.lastActiveDate);
+    lastActive.setHours(0, 0, 0, 0);
+    
+    // Calculate days difference
+    const daysDiff = Math.floor((today - lastActive) / (1000 * 60 * 60 * 24));
+    
+    console.log(`📅 Dashboard Streak check - Today: ${today.toDateString()}, Last Active: ${lastActive.toDateString()}, Days Diff: ${daysDiff}`);
+    
+    if (daysDiff === 0) {
+      // Same day - already visited today, don't update streak
+      console.log(`✅ Already visited today. Current dashboard streak: ${user.streakCount}`);
+      return user;
+    } else if (daysDiff === 1) {
+      // Consecutive day - increment streak
+      user.streakCount += 1;
+      user.lastActiveDate = today;
+      await user.save();
+      console.log(`🔥 Dashboard streak continued! New streak: ${user.streakCount} days`);
+      return user;
+    } else {
+      // Streak broken (more than 1 day gap) - reset to 1
+      user.streakCount = 1;
+      user.lastActiveDate = today;
+      await user.save();
+      console.log(`💔 Dashboard streak broken! Reset to 1 day`);
+      return user;
+    }
+  } catch (error) {
+    console.error('Error updating dashboard streak:', error);
+    return user;
+  }
+};
+
 // @desc    Register a new user
 // @route   POST /api/users/register
 // @access  Public
@@ -76,9 +132,12 @@ exports.loginUser = async (req, res) => {
 exports.getUserProfile = async (req, res) => {
   try {
     console.log('👤 Fetching profile for user:', req.user._id);
-    const user = await User.findById(req.user._id).select('-passwordHash');
+    let user = await User.findById(req.user._id).select('-passwordHash');
 
     if (user) {
+      // Update streak on each visit to the website (not just on login)
+      user = await updateDashboardStreak(user);
+      
       console.log('✅ User found:', user.name, 'Streak:', user.streakCount);
       res.json({
         _id: user._id,
