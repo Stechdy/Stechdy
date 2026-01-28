@@ -814,3 +814,42 @@ exports.getSessionsByRange = async (req, res) => {
     res.status(500).json({ message: 'Server error', error: error.message });
   }
 };
+
+// AI Schedule Generation Proxy
+exports.generateAISchedule = async (req, res) => {
+  try {
+    const n8nWebhookUrl = 'http://107.178.213.71/webhook/gen-schedule-v3-lite';
+    
+    console.log('🤖 Proxying AI schedule generation request to n8n...');
+    console.log('Request body:', req.body);
+    
+    const response = await fetch(n8nWebhookUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(req.body),
+    });
+
+    if (!response.ok) {
+      console.error('❌ N8N webhook error:', response.status, response.statusText);
+      return res.status(response.status).json({
+        error: 'N8N webhook failed',
+        status: response.status,
+        statusText: response.statusText
+      });
+    }
+
+    const result = await response.json();
+    console.log('✅ N8N webhook success:', result);
+    
+    // Forward the response back to frontend
+    res.json(result);
+  } catch (error) {
+    console.error('❌ Error proxying to n8n webhook:', error);
+    res.status(500).json({ 
+      message: 'Server error during AI schedule generation proxy',
+      error: error.message 
+    });
+  }
+};

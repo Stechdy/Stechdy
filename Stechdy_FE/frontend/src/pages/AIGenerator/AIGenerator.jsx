@@ -250,7 +250,7 @@ const AIGenerator = () => {
 
   // Handle form submit
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    if (e) e.preventDefault();
 
     const validSubjects = subjects.filter((s) => s.name.trim() !== "");
     if (validSubjects.length === 0) {
@@ -282,11 +282,14 @@ const AIGenerator = () => {
 
     try {
       const webhookData = transformDataForWebhook();
-
-      const response = await fetch(n8nWebhookUrl, {
+      const token = localStorage.getItem("token");
+      
+      // Use backend proxy instead of direct webhook call to avoid Mixed Content issues
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/study-sessions/generate-ai-schedule`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
         },
         body: JSON.stringify(webhookData),
       });
@@ -376,7 +379,7 @@ const AIGenerator = () => {
         error.message.includes("NetworkError")
       ) {
         userMessage =
-          "Cannot connect to n8n server. Please check:\n1. n8n is running on 107.178.213.71\n2. The workflow is activated";
+          "Cannot connect to AI schedule generation service. Please check your internet connection and try again.";
       } else if (error.message.includes("500")) {
         userMessage = "Server error during schedule generation. Please try again.";
       }
