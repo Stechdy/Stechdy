@@ -66,4 +66,7 @@ router.delete('/delete-all', studySessionController.deleteAllStudySessions);
 // Delete a study session
 router.delete('/:id', studySessionController.deleteStudySession);
 
+// AI Schedule Generation Proxy (to avoid Mixed Content issues)
+router.post('/generate-ai-schedule', studySessionController.generateAISchedule);
+
 module.exports = router;

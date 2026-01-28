@@ -1,20 +1,20 @@
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api';
+const API_URL = process.env.REACT_APP_API_URL || "http://localhost:3001/api";
 
 // Login
-export const login = async (email, password) => {
+export const login = async (email, password, sessionId) => {
   try {
     const response = await fetch(`${API_URL}/auth/login`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({ email, password, sessionId }),
     });
 
     const data = await response.json();
 
     if (!response.ok) {
-      throw new Error(data.message || 'Login failed');
+      throw new Error(data.message || "Login failed");
     }
 
     return data;
@@ -27,9 +27,9 @@ export const login = async (email, password) => {
 export const register = async (name, email, password) => {
   try {
     const response = await fetch(`${API_URL}/auth/register`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({ name, email, password }),
     });
@@ -37,7 +37,7 @@ export const register = async (name, email, password) => {
     const data = await response.json();
 
     if (!response.ok) {
-      throw new Error(data.message || 'Registration failed');
+      throw new Error(data.message || "Registration failed");
     }
 
     return data;
@@ -50,9 +50,9 @@ export const register = async (name, email, password) => {
 export const forgotPassword = async (email) => {
   try {
     const response = await fetch(`${API_URL}/auth/forgot-password`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({ email }),
     });
@@ -60,7 +60,7 @@ export const forgotPassword = async (email) => {
     const data = await response.json();
 
     if (!response.ok) {
-      throw new Error(data.message || 'Failed to send reset email');
+      throw new Error(data.message || "Failed to send reset email");
     }
 
     return data;
@@ -72,18 +72,21 @@ export const forgotPassword = async (email) => {
 // Reset Password
 export const resetPassword = async (resetToken, password) => {
   try {
-    const response = await fetch(`${API_URL}/auth/reset-password/${resetToken}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
+    const response = await fetch(
+      `${API_URL}/auth/reset-password/${resetToken}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ password }),
       },
-      body: JSON.stringify({ password }),
-    });
+    );
 
     const data = await response.json();
 
     if (!response.ok) {
-      throw new Error(data.message || 'Failed to reset password');
+      throw new Error(data.message || "Failed to reset password");
     }
 
     return data;
@@ -95,24 +98,24 @@ export const resetPassword = async (resetToken, password) => {
 // Get current user
 export const getMe = async () => {
   try {
-    const token = localStorage.getItem('token');
-    
+    const token = localStorage.getItem("token");
+
     if (!token) {
-      throw new Error('No token found');
+      throw new Error("No token found");
     }
 
     const response = await fetch(`${API_URL}/auth/me`, {
-      method: 'GET',
+      method: "GET",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
     });
 
     const data = await response.json();
 
     if (!response.ok) {
-      throw new Error(data.message || 'Failed to get user data');
+      throw new Error(data.message || "Failed to get user data");
     }
 
     return data;
@@ -124,41 +127,44 @@ export const getMe = async () => {
 // Logout
 export const logout = async () => {
   try {
-    const token = localStorage.getItem('token');
-    
+    const token = localStorage.getItem("token");
+    const refreshToken = localStorage.getItem("refreshToken");
+
     if (token) {
       // Call logout endpoint to clear refresh token on server
+      // Send refreshToken to identify which device session to remove
       await fetch(`${API_URL}/auth/logout`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
+        body: JSON.stringify({ refreshToken }),
       });
     }
   } catch (error) {
-    console.error('Logout error:', error);
+    console.error("Logout error:", error);
   } finally {
     // Always clear local storage
-    localStorage.removeItem('token');
-    localStorage.removeItem('refreshToken');
-    localStorage.removeItem('user');
+    localStorage.removeItem("token");
+    localStorage.removeItem("refreshToken");
+    localStorage.removeItem("user");
   }
 };
 
 // Refresh Access Token
 export const refreshAccessToken = async () => {
   try {
-    const refreshToken = localStorage.getItem('refreshToken');
-    
+    const refreshToken = localStorage.getItem("refreshToken");
+
     if (!refreshToken) {
-      throw new Error('No refresh token found');
+      throw new Error("No refresh token found");
     }
 
     const response = await fetch(`${API_URL}/auth/refresh-token`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({ refreshToken }),
     });
@@ -166,15 +172,15 @@ export const refreshAccessToken = async () => {
     const data = await response.json();
 
     if (!response.ok) {
-      throw new Error(data.message || 'Failed to refresh token');
+      throw new Error(data.message || "Failed to refresh token");
     }
 
     // Update tokens in localStorage
     if (data.data.token) {
-      localStorage.setItem('token', data.data.token);
+      localStorage.setItem("token", data.data.token);
     }
     if (data.data.refreshToken) {
-      localStorage.setItem('refreshToken', data.data.refreshToken);
+      localStorage.setItem("refreshToken", data.data.refreshToken);
     }
 
     return data;
@@ -188,17 +194,17 @@ export const refreshAccessToken = async () => {
 // Change Password
 export const changePassword = async (currentPassword, newPassword) => {
   try {
-    const token = localStorage.getItem('token');
-    
+    const token = localStorage.getItem("token");
+
     if (!token) {
-      throw new Error('No token found');
+      throw new Error("No token found");
     }
 
     const response = await fetch(`${API_URL}/auth/change-password`, {
-      method: 'PUT',
+      method: "PUT",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({ currentPassword, newPassword }),
     });
@@ -206,7 +212,7 @@ export const changePassword = async (currentPassword, newPassword) => {
     const data = await response.json();
 
     if (!response.ok) {
-      throw new Error(data.message || 'Failed to change password');
+      throw new Error(data.message || "Failed to change password");
     }
 
     return data;
@@ -217,31 +223,31 @@ export const changePassword = async (currentPassword, newPassword) => {
 
 // Check if user is authenticated
 export const isAuthenticated = () => {
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem("token");
   return !!token;
 };
 
 // Get user role
 export const getUserRole = () => {
-  const user = JSON.parse(localStorage.getItem('user'));
+  const user = JSON.parse(localStorage.getItem("user"));
   return user?.role || null;
 };
 
 // Google Login
-export const googleLogin = async (credential) => {
+export const googleLogin = async (credential, sessionId) => {
   try {
     const response = await fetch(`${API_URL}/auth/google`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify({ credential }),
+      body: JSON.stringify({ credential, sessionId }),
     });
 
     const data = await response.json();
 
     if (!response.ok) {
-      throw new Error(data.message || 'Google login failed');
+      throw new Error(data.message || "Google login failed");
     }
 
     return data;
@@ -253,14 +259,14 @@ export const googleLogin = async (credential) => {
 // Refresh user data from server (to get latest premium status)
 export const refreshUserData = async () => {
   try {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
     if (!token) return null;
 
     const response = await fetch(`${API_URL}/auth/me`, {
-      method: 'GET',
+      method: "GET",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
     });
 
@@ -268,15 +274,15 @@ export const refreshUserData = async () => {
 
     if (response.ok && data.success) {
       // Update local storage with new user data
-      const currentUser = JSON.parse(localStorage.getItem('user'));
+      const currentUser = JSON.parse(localStorage.getItem("user"));
       const updatedUser = { ...currentUser, ...data.user };
-      localStorage.setItem('user', JSON.stringify(updatedUser));
+      localStorage.setItem("user", JSON.stringify(updatedUser));
       return updatedUser;
     }
 
     return null;
   } catch (error) {
-    console.error('Error refreshing user data:', error);
+    console.error("Error refreshing user data:", error);
     return null;
   }
 };

@@ -1255,5 +1255,10 @@
     "greeting": "Good morning! What do you want to do?",
     "createSchedulePrompt": "Can you create Self-study schedule for me?",
     "createScheduleResponse": "Of course! Please press on create Schedule to continue!!!"
+  },
+  "sessionExpired": {
+    "title": "Another Device Login Detected",
+    "message": "Your account has been logged in from another device. Please login again.",
+    "loginButton": "Login Again"
   }
 }
