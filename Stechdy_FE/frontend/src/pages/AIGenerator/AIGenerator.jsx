@@ -34,11 +34,16 @@ const AIGenerator = () => {
   const [showDeleteConfirmModal, setShowDeleteConfirmModal] = useState(false);
   const [showDeleteWarningModal, setShowDeleteWarningModal] = useState(false);
   const [showDeleteSuccessModal, setShowDeleteSuccessModal] = useState(false);
+  const [showErrorModal, setShowErrorModal] = useState(false);
   const [minStartDate, setMinStartDate] = useState(
     new Date().toISOString().split("T")[0]
   );
 
-  const n8nWebhookUrl = process.env.REACT_APP_N8N_WEBHOOK_URL || "https://n8n.stechdy.ai.vn/webhook/gen-schedule-v2";
+  const n8nWebhookUrl = process.env.REACT_APP_N8N_WEBHOOK_URL || "http://107.178.213.71/webhook/gen-schedule-v3-lite";
+  
+  // Debug: Log webhook URL
+  console.log("N8N Webhook URL:", n8nWebhookUrl);
+  console.log("Environment variable:", process.env.REACT_APP_N8N_WEBHOOK_URL);
 
   // Check for existing schedule on mount
   useEffect(() => {
@@ -282,6 +287,7 @@ const AIGenerator = () => {
     try {
       const webhookData = transformDataForWebhook();
       console.log("Request data:", JSON.stringify(webhookData, null, 2));
+      console.log("Making request to URL:", n8nWebhookUrl);
 
       const response = await fetch(n8nWebhookUrl, {
         method: "POST",
@@ -376,12 +382,13 @@ const AIGenerator = () => {
         error.message.includes("NetworkError")
       ) {
         userMessage =
-          "Cannot connect to n8n server. Please check:\n1. n8n is running on localhost:5678\n2. The workflow is activated";
+          "Cannot connect to n8n server. Please check:\n1. n8n is running on 107.178.213.71\n2. The workflow is activated";
       } else if (error.message.includes("500")) {
         userMessage = "Server error during schedule generation. Please try again.";
       }
 
-      displayToast(userMessage, "error");
+      // Show error modal instead of toast for schedule generation errors
+      setShowErrorModal(true);
     } finally {
       setIsGenerating(false);
     }
@@ -887,8 +894,8 @@ const AIGenerator = () => {
           <div className="ag-loading-modal">
             <div className="ag-loading-header">
               <div className="ag-loading-icon-wrapper">
-                <i className="fas fa-robot ag-loading-icon"></i>
                 <div className="ag-loading-ring"></div>
+                <i className="fas fa-robot ag-loading-icon"></i>
               </div>
               <h2 className="ag-loading-title">AI đang tạo lịch học...</h2>
               <p className="ag-loading-subtitle">Phân tích và tối ưu hóa lịch học cá nhân hóa cho bạn</p>
@@ -899,7 +906,7 @@ const AIGenerator = () => {
                 <div className="ag-progress-bar">
                   <div className="ag-progress-fill"></div>
                 </div>
-                <span className="ag-progress-text">50%</span>
+                <span className="ag-progress-text ag-progress-animated">0%</span>
               </div>
               
               <div className="ag-loading-steps">
@@ -908,7 +915,7 @@ const AIGenerator = () => {
                   <div className="ag-step-content">
                     <div className="ag-step-title">Phân tích môn học</div>
                     <div className="ag-step-bar">
-                      <div className="ag-step-fill active"></div>
+                      <div className="ag-step-fill step-1"></div>
                     </div>
                   </div>
                 </div>
@@ -918,7 +925,7 @@ const AIGenerator = () => {
                   <div className="ag-step-content">
                     <div className="ag-step-title">Tối ưu thời gian</div>
                     <div className="ag-step-bar">
-                      <div className="ag-step-fill active"></div>
+                      <div className="ag-step-fill step-2"></div>
                     </div>
                   </div>
                 </div>
@@ -928,7 +935,7 @@ const AIGenerator = () => {
                   <div className="ag-step-content">
                     <div className="ag-step-title">Tạo lịch học</div>
                     <div className="ag-step-bar">
-                      <div className="ag-step-fill"></div>
+                      <div className="ag-step-fill step-3"></div>
                     </div>
                   </div>
                 </div>
@@ -937,6 +944,52 @@ const AIGenerator = () => {
               <p className="ag-loading-hint">
                 Điều này chỉ mất vài giây... Hãy thư giãn và chờ AI làm việc nhé! ✨
               </p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Error Modal */}
+      {showErrorModal && (
+        <div className="ag-loading-overlay">
+          <div className="ag-error-modal">
+            <div className="ag-error-header">
+              <div className="ag-error-icon">
+                <i className="fas fa-exclamation-triangle"></i>
+              </div>
+              <h2 className="ag-error-title">Đã xảy ra lỗi!</h2>
+              <p className="ag-error-subtitle">Không thể tạo lịch học lúc này</p>
+            </div>
+            
+            <div className="ag-error-body">
+              <div className="ag-error-message">
+                <p>Có lỗi xảy ra trong quá trình tạo lịch học. Điều này có thể do:</p>
+                <ul>
+                  <li>Mất kết nối internet</li>
+                  <li>Server đang bận</li>
+                  <li>Dữ liệu nhập vào không hợp lệ</li>
+                </ul>
+              </div>
+              
+              <div className="ag-error-actions">
+                <button 
+                  className="ag-error-btn ag-error-retry"
+                  onClick={() => {
+                    setShowErrorModal(false);
+                    handleSubmit();
+                  }}
+                >
+                  <i className="fas fa-redo"></i>
+                  Thử lại
+                </button>
+                <button 
+                  className="ag-error-btn ag-error-cancel"
+                  onClick={() => setShowErrorModal(false)}
+                >
+                  <i className="fas fa-times"></i>
+                  Đóng
+                </button>
+              </div>
             </div>
           </div>
         </div>

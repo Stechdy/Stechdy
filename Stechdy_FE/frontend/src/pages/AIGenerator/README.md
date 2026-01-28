@@ -32,7 +32,7 @@ Form-based interface for generating study schedules using n8n workflow automatio
 ### 5. Form Submission
 - Validates required fields
 - Shows loading spinner during generation
-- Connects to n8n webhook at `http://localhost:1234/webhook/gen-schedule-v2`
+- Connects to n8n webhook at `http://107.178.213.71/webhook/gen-schedule-v3-lite`
 - Saves schedule to localStorage
 - Redirects to /calendar on success
 
