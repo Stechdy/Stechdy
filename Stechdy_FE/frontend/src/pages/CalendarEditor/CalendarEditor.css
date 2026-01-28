@@ -1,0 +1,897 @@
+/* Calendar Editor Styles - Matching Schedule Editor Design */
+
+/* Import base styles from ScheduleEditor - we'll override as needed */
+
+/* ============== Container ============== */
+.calendar-editor-container {
+  min-height: 100vh;
+  background: linear-gradient(
+    180deg,
+    #e8d5f0 0%,
+    #f5e6f0 15%,
+    #f8f0f5 30%,
+    #f5f0f8 50%,
+    #f0e8f5 70%,
+    #f5e0f0 85%,
+    #f8d8e8 100%
+  );
+  padding-bottom: 80px;
+  font-family: var(--font-family);
+  display: flex;
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .calendar-editor-container {
+  background: linear-gradient(
+    180deg,
+    #1a1625 0%,
+    #1e1a2e 15%,
+    #221e35 30%,
+    #1e1a2e 50%,
+    #1a1625 70%,
+    #1e1a2e 85%,
+    #221e35 100%
+  );
+}
+
+/* ============== Wrapper ============== */
+.calendar-editor-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin-left: 0;
+  width: 100%;
+  overflow-x: auto;
+}
+
+@media (min-width: 769px) {
+  .calendar-editor-wrapper {
+    margin-left: 130px;
+    margin-right: 70px;
+  }
+  
+  .calendar-editor-container {
+    padding-bottom: 0;
+  }
+}
+
+/* ============== Header ============== */
+.calendar-editor-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  background: transparent;
+  position: relative;
+}
+
+.ce-back-button {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .ce-back-button {
+  background: rgba(30, 26, 46, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.ce-back-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.ce-back-button:active {
+  transform: scale(0.95);
+}
+
+.ce-back-button svg {
+  width: 24px;
+  height: 24px;
+}
+
+.ce-page-title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+[data-theme="dark"] .ce-page-title {
+  background: linear-gradient(135deg, #F0C5D5 0%, #D4B5D8 50%, #8AC0D5 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.ce-unsaved-badge {
+  color: #f59e0b;
+  font-size: 0.6em;
+  margin-left: 4px;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.ce-save-button {
+  border-radius: 12px;
+  border: none;
+  background: var(--bg-card);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 10px 20px;
+  height: 40px;
+}
+
+.ce-save-button:hover:not(:disabled) {
+  background: linear-gradient(135deg, #f472b6 0%, #ec4899 100%);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(244, 114, 182, 0.3);
+}
+
+.ce-save-button:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+.ce-save-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.ce-save-button.has-changes {
+  background: linear-gradient(135deg, #8AC0D5 0%, #7AB5CA 100%);
+  color: white;
+}
+
+.spinner-small {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top: 2px solid white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+/* ============== Loading ============== */
+.ce-loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  gap: 1rem;
+}
+
+.ce-spinner {
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #8AC0D5;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.ce-loading-container p {
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+/* ============== Week Navigation ============== */
+.ce-week-navigation {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 20px;
+  background: transparent;
+}
+
+.ce-week-nav-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  border: none;
+  background: var(--bg-card);
+  color: var(--text-primary);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ce-week-nav-btn:hover {
+  background: linear-gradient(135deg, #f472b6 0%, #ec4899 100%);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(244, 114, 182, 0.3);
+}
+
+.ce-week-nav-btn:active {
+  transform: scale(0.95);
+}
+
+.ce-week-display {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+  min-width: 150px;
+  text-align: center;
+  background: var(--bg-card);
+  padding: 10px 20px;
+  border-radius: 12px;
+}
+
+/* ============== Schedule Grid ============== */
+.ce-schedule-grid-container {
+  padding: 0 20px 40px;
+  width: 100%;
+  overflow-x: auto;
+}
+
+.ce-schedule-grid {
+  display: grid;
+  grid-template-columns: 140px repeat(7, 1fr);
+  gap: 16px;
+  margin-top: 20px;
+  background: var(--bg-card);
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: var(--shadow-card);
+  min-width: 1000px;
+  width: 100%;
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ============== Time Labels ============== */
+.ce-time-labels {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-top: 60px;
+}
+
+.ce-time-label {
+  height: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-align: center;
+  line-height: 1.3;
+  padding: 10px;
+  background: rgba(138, 192, 213, 0.1);
+  border-radius: 12px;
+  gap: 4px;
+}
+
+.ce-slot-icon {
+  font-size: 20px;
+}
+
+.ce-slot-text {
+  font-weight: 700;
+  color: var(--text-primary);
+  font-size: 12px;
+}
+
+.ce-slot-time {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+/* ============== Day Column ============== */
+.ce-day-column {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ce-day-header {
+  height: 60px;
+  background: linear-gradient(135deg, #8AC0D5 0%, #7AB5CA 100%);
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(138, 192, 213, 0.2);
+}
+
+.ce-day-name {
+  font-size: 12px;
+  font-weight: 600;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.ce-day-number {
+  font-size: 20px;
+  font-weight: 700;
+  color: white;
+}
+
+/* ============== Time Slot ============== */
+.ce-time-slot {
+  height: 120px;
+  border: 2px dashed rgba(138, 192, 213, 0.3);
+  border-radius: 12px;
+  background: rgba(248, 240, 245, 0.5);
+  transition: all 0.3s ease;
+  padding: 10px;
+  position: relative;
+}
+
+[data-theme="dark"] .ce-time-slot {
+  background: rgba(30, 26, 46, 0.3);
+  border-color: rgba(138, 192, 213, 0.2);
+}
+
+.ce-time-slot.occupied {
+  border-style: solid;
+  border-color: rgba(138, 192, 213, 0.5);
+  background: rgba(138, 192, 213, 0.05);
+}
+
+.ce-time-slot.empty:hover {
+  border-color: rgba(138, 192, 213, 0.6);
+  background: rgba(138, 192, 213, 0.1);
+}
+
+/* ============== Event Card ============== */
+.ce-event-card {
+  background: linear-gradient(135deg, #8AC0D5 0%, #7AB5CA 100%);
+  border-radius: 10px;
+  padding: 8px 10px;          /* giảm padding ngang một chút để có thêm không gian */
+  cursor: move;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(138, 192, 213, 0.3);
+  color: white;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.ce-event-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(138, 192, 213, 0.4);
+}
+
+.ce-event-card:active {
+  cursor: grabbing;
+  transform: scale(0.98);
+}
+
+.ce-event-subject {
+  font-size: 13px;                    /* giảm nhẹ từ 14px → dễ xuống dòng hơn */
+  font-weight: 700;
+  margin-bottom: 4px;                 /* giảm margin */
+  line-height: 1.2;
+  word-break: break-word;             /* tốt hơn word-wrap trong một số trình duyệt */
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;              /* tối đa 2 dòng */
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+  max-height: 2.4em;                  /* giới hạn chiều cao ≈ 2 dòng */
+}
+
+.ce-event-time {
+  font-size: 11.5px;                  /* giảm nhẹ cho cân đối */
+  opacity: 0.9;
+  margin-bottom: 6px;
+  line-height: 1.1;
+}
+
+.ce-event-actions {
+  display: flex;
+  gap: 6px;
+  justify-content: flex-end;
+}
+
+.ce-event-actions button {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  border-radius: 6px;
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  font-size: 12px;
+  color: white;
+}
+
+.ce-event-actions button:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.1);
+}
+
+.ce-event-actions button:active {
+  transform: scale(0.95);
+}
+
+/* ============== Modal ============== */
+.ce-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: ceFadeIn 0.2s ease;
+}
+
+@keyframes ceFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.ce-modal-content {
+  background: var(--bg-card);
+  border-radius: 20px;
+  padding: 24px;
+  max-width: 400px;
+  width: 90%;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  animation: ceSlideUp 0.3s ease;
+}
+
+@keyframes ceSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.ce-modal-content h2 {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 20px 0;
+}
+
+.ce-form-group {
+  margin-bottom: 16px;
+}
+
+.ce-form-group label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+}
+
+.ce-form-group select,
+.ce-form-group input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid rgba(138, 192, 213, 0.3);
+  border-radius: 12px;
+  background: var(--bg-page);
+  color: var(--text-primary);
+  font-size: 14px;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+.ce-form-group select:focus,
+.ce-form-group input:focus {
+  outline: none;
+  border-color: #8AC0D5;
+  box-shadow: 0 0 0 3px rgba(138, 192, 213, 0.1);
+}
+
+.ce-modal-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 24px;
+}
+
+.ce-modal-actions button {
+  padding: 10px 20px;
+  border-radius: 12px;
+  border: none;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: var(--bg-page);
+  color: var(--text-secondary);
+}
+
+.ce-modal-actions button.ce-btn-primary {
+  background: linear-gradient(135deg, #8AC0D5 0%, #7AB5CA 100%);
+  color: white;
+}
+
+.ce-modal-actions button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(138, 192, 213, 0.3);
+}
+
+.ce-modal-actions button:active {
+  transform: scale(0.95);
+}
+
+/* Warning Modal */
+.ce-warning-modal ul {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0;
+}
+
+.ce-warning-modal li {
+  padding: 0.5rem;
+  background: #fff3cd;
+  border-left: 3px solid #ffc107;
+  margin-bottom: 0.5rem;
+  border-radius: 8px;
+  color: #856404;
+}
+
+[data-theme="dark"] .ce-warning-modal li {
+  background: rgba(255, 193, 7, 0.1);
+  color: #ffc107;
+}
+
+/* Success Modal */
+.ce-success-modal {
+  text-align: center;
+  max-width: 400px;
+}
+
+.ce-success-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+  font-size: 30px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+}
+
+.ce-success-modal h2 {
+  color: #10b981;
+  margin-bottom: 12px;
+}
+
+.ce-success-modal p {
+  color: var(--text-secondary);
+  margin-bottom: 24px;
+}
+
+/* ============== Statistics Section ============== */
+.ce-stats-container {
+  padding: 30px 20px 40px;
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  clear: both;
+}
+
+.ce-stats-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 20px 0;
+  text-align: center;
+}
+
+.ce-stats-overview {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.ce-stat-item-overview {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px 24px;
+  background: var(--bg-card);
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(138, 192, 213, 0.1);
+  border: 1px solid rgba(138, 192, 213, 0.2);
+  min-width: 200px;
+  transition: all 0.3s ease;
+}
+
+.ce-stat-item-overview:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(138, 192, 213, 0.2);
+}
+
+.ce-stat-icon {
+  font-size: 2rem;
+  min-width: 50px;
+}
+
+.ce-stat-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ce-stat-label {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.ce-stat-value {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #8AC0D5;
+  background: linear-gradient(135deg, #8AC0D5 0%, #7AB5CA 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.ce-stats-by-subject {
+  margin-top: 30px;
+}
+
+.ce-stats-subtitle {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 16px 0;
+  text-align: center;
+}
+
+.ce-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.ce-stat-card {
+  padding: 16px;
+  background: var(--bg-card);
+  border-radius: 12px;
+  border: 1px solid rgba(138, 192, 213, 0.2);
+  box-shadow: 0 2px 8px rgba(138, 192, 213, 0.08);
+  transition: all 0.3s ease;
+}
+
+.ce-stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(138, 192, 213, 0.15);
+  border-color: rgba(138, 192, 213, 0.4);
+}
+
+.ce-stat-card-subject {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ce-stat-card-details {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ce-stat-card-item {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ce-stat-card-item:first-child {
+  color: #8AC0D5;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+/* ============== Toast (Calendar Editor Style) ============== */
+.ce-toast {
+  position: fixed;
+  bottom: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  padding: 12px 20px;
+  border-radius: 50px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  z-index: 1100;
+  animation: ceToastSlideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-weight: 500;
+  font-size: 0.9rem;
+  max-width: 300px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.ce-toast-icon {
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ce-toast-message {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+[data-theme="dark"] .ce-toast {
+  background: rgba(30, 26, 46, 0.95);
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+@keyframes ceToastSlideUp {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+.ce-toast-success {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.95) 0%, rgba(5, 150, 105, 0.95) 100%);
+  color: white;
+  border: none;
+}
+
+.ce-toast-error {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.95) 0%, rgba(220, 38, 38, 0.95) 100%);
+  color: white;
+  border: none;
+}
+
+.ce-toast-info {
+  background: linear-gradient(135deg, rgba(138, 192, 213, 0.95) 0%, rgba(107, 160, 181, 0.95) 100%);
+  color: white;
+  border: none;
+}
+
+.ce-toast-warning {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.95) 0%, rgba(217, 119, 6, 0.95) 100%);
+  color: white;
+  border: none;
+}
+
+/* ============== Responsive ============== */
+@media (max-width: 768px) {
+  .calendar-editor-header h1 {
+    font-size: 18px;
+  }
+
+  .ce-schedule-grid {
+    min-width: auto;
+    grid-template-columns: 80px repeat(7, 100px);
+    overflow-x: auto;
+  }
+
+  .ce-time-label {
+    font-size: 11px;
+    padding: 4px;
+  }
+
+  .ce-day-header {
+    height: 50px;
+  }
+
+  .ce-day-name {
+    font-size: 10px;
+  }
+
+  .ce-day-number {
+    font-size: 16px;
+  }
+
+  .ce-time-slot {
+    height: 90px;          /* tăng nhẹ để tên môn học có chỗ thở */
+  }
+
+  .ce-event-card {
+    padding: 6px 8px;
+  }
+
+  .ce-event-subject {
+    font-size: 11.5px;
+    -webkit-line-clamp: 2;
+    max-height: 2.4em;
+  }
+
+  .ce-event-time {
+    font-size: 10px;
+  }
+  
+  .ce-save-button span {
+    display: none;
+  }
+  
+  .ce-toast {
+    bottom: 80px;
+    max-width: 250px;
+    font-size: 0.85rem;
+    padding: 10px 16px;
+  }
+}

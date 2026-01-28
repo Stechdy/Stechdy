@@ -75,6 +75,13 @@
   box-shadow: 0 6px 20px rgba(138, 192, 213, 0.5);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   border: 4px solid var(--bg-card);
+  overflow: hidden;
+}
+
+.ai-fab .ai-logo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .nav-item-ai:hover .ai-fab {

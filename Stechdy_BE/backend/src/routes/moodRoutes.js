@@ -7,7 +7,9 @@ const {
   getMoodByDate,
   getMoodStats,
   deleteMoodEntry,
-  generateMoodInsight
+  generateMoodInsight,
+  makeupMoodCheckIn,
+  getStreakInfo
 } = require('../controllers/moodController');
 const { protect } = require('../middleware/auth');
 
@@ -21,6 +23,10 @@ router.get('/today', getTodayMood);
 router.get('/stats', getMoodStats);
 router.get('/date/:date', getMoodByDate);
 router.delete('/:id', deleteMoodEntry);
+
+// Streak and Makeup routes
+router.post('/makeup', makeupMoodCheckIn);
+router.get('/streak', getStreakInfo);
 
 // AI Insight
 router.post('/:id/insight', generateMoodInsight);

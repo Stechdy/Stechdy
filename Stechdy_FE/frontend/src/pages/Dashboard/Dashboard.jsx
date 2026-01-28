@@ -11,6 +11,7 @@ import QuoteCard from "../../components/quote/QuoteCard";
 import QuoteModal from "../../components/quote/QuoteModal";
 import moodService from "../../services/moodService";
 import { getVietnamTime, getVietnamDate } from "../../utils/helpers";
+import { getRandomAISuggestion } from "../../utils/aiSuggestions";
 import config from "../../config";
 import "./Dashboard.css";
 
@@ -152,7 +153,16 @@ const Dashboard = () => {
       setStudyProgress(data.studyProgress || { current: 0, goal: 360 });
       setStreak(data.streak || 0);
       setUpcomingSessions(data.upcomingSessions || []);
-      setAiSuggestion(data.aiSuggestion || "");
+      
+      // Always generate a fresh random suggestion on load
+      const progressPercent = ((data.studyProgress?.current || 0) / (data.studyProgress?.goal || 360)) * 100;
+      const freshSuggestion = getRandomAISuggestion(t, {
+        progressPercent,
+        completedMinutes: data.studyProgress?.current || 0,
+        upcomingSessionsCount: data.upcomingSessions?.length || 0,
+        consecutiveStudyMinutes: data.studyProgress?.current || 0,
+      });
+      setAiSuggestion(freshSuggestion);
     }
   };
 
@@ -264,19 +274,16 @@ const Dashboard = () => {
           });
       }
 
-      // Generate AI suggestion based on progress
-      let suggestion = t("dashboard.aiSuggestions.takeBreak");
+      // Generate AI suggestion based on progress and context
       const progressPercent = (completedMinutes / goalMinutes) * 100;
-
-      if (progressPercent >= 80) {
-        suggestion = t("dashboard.aiSuggestions.greatProgress");
-      } else if (progressPercent >= 50) {
-        suggestion = t("dashboard.aiSuggestions.halfwayThrough");
-      } else if (upcomingSessions.length > 2) {
-        suggestion = t("dashboard.aiSuggestions.multipleSessions");
-      } else if (completedMinutes >= 120) {
-        suggestion = t("dashboard.aiSuggestions.twoHoursBreak");
-      }
+      
+      // Get random AI suggestion with context
+      const suggestion = getRandomAISuggestion(t, {
+        progressPercent,
+        completedMinutes,
+        upcomingSessionsCount: upcomingSessions.length,
+        consecutiveStudyMinutes: completedMinutes, // You can track this separately if needed
+      });
 
       const dashboardData = {
         studyProgress: { current: completedMinutes, goal: goalMinutes },
@@ -516,6 +523,35 @@ const Dashboard = () => {
             <div className="ai-card gradient-card">
               <div className="ai-icon">🤖</div>
               <p className="ai-text">{aiSuggestion}</p>
+            </div>
+          </section>
+
+          {/* AI Generator Card */}
+          <section className="ai-generator-section">
+            <div 
+              className="ai-generator-card gradient-card"
+              onClick={() => navigate("/ai-generator")}
+              style={{ cursor: "pointer" }}
+            >
+              <div className="ai-generator-content">
+                <div className="ai-generator-icon">
+                  <i className="fas fa-magic"></i>
+                </div>
+                <div className="ai-generator-info">
+                  <h3 className="ai-generator-title">
+                    {t("dashboard.aiGeneratorTitle") || "AI Schedule Generator"}
+                  </h3>
+                  <p className="ai-generator-description">
+                    {t("dashboard.aiGeneratorDesc") || "Generate optimal study schedules with AI-powered algorithms"}
+                  </p>
+                </div>
+              </div>
+              <div className="ai-generator-action">
+                <span className="ai-generator-badge">
+                  {t("dashboard.tryNow") || "Try Now"}
+                </span>
+                <i className="fas fa-arrow-right"></i>
+              </div>
             </div>
           </section>
         </main>

@@ -39,7 +39,8 @@ const AIGenerator = () => {
     new Date().toISOString().split("T")[0]
   );
 
-  const n8nWebhookUrl = process.env.REACT_APP_N8N_WEBHOOK_URL || "http://107.178.213.71/webhook/gen-schedule-v3-lite";
+  // Using backend proxy instead of direct webhook call
+  // const n8nWebhookUrl = process.env.REACT_APP_N8N_WEBHOOK_URL || "http://107.178.213.71:5678/webhook/gen-schedule-v3-lite";
   
   // Check for existing schedule on mount
   useEffect(() => {

@@ -11,11 +11,6 @@ import "./StudyTracker.css";
 const WaterDrop = ({ percentage, day, date, isToday, onClick }) => {
   const fillHeight = Math.min(Math.max(percentage, 0), 100);
   
-  // Debug log
-  if (fillHeight > 0) {
-    console.log(`WaterDrop ${date}: ${fillHeight}%`);
-  }
-  
   return (
     <div 
       className={`streak-day ${isToday ? 'today' : ''}`} 
@@ -81,7 +76,6 @@ const StudyTracker = () => {
 
       if (scheduleResponse.ok) {
         const data = await scheduleResponse.json();
-        console.log('Week schedule:', data);
         setWeekSchedule(data.sessions || []);
         setCurrentWeekNumber(data.weekNumber || 1);
       }
@@ -129,11 +123,6 @@ const StudyTracker = () => {
 
       if (scheduleResponse.ok) {
         const sessions = await scheduleResponse.json();
-        console.log('==================');
-        console.log('Month sessions loaded:', sessions.length);
-        console.log('First 5 sessions:', sessions.slice(0, 5));
-        console.log('Month range:', monthStart.toISOString(), 'to', monthEnd.toISOString());
-        console.log('==================');
         setMonthSessions(sessions || []);
       } else {
         console.error('Failed to fetch month sessions:', scheduleResponse.status);
@@ -364,11 +353,11 @@ const StudyTracker = () => {
 
   const renderStatusIcon = (status, color) => {
     if (status === "no-slot") {
-      return <div className="status-icon no-slot">−</div>;
+      return <div className="st-status-icon no-slot">−</div>;
     }
     if (status === "absent") {
       return (
-        <div className="status-icon absent" style={{ backgroundColor: color }}>
+        <div className="st-status-icon absent" style={{ backgroundColor: color }}>
           ×
         </div>
       );
@@ -376,7 +365,7 @@ const StudyTracker = () => {
     if (status === "scheduled") {
       return (
         <div
-          className="status-icon scheduled"
+          className="st-status-icon scheduled"
           style={{ backgroundColor: color }}
         >
           −
@@ -384,7 +373,7 @@ const StudyTracker = () => {
       );
     }
     return (
-      <div className="status-icon present" style={{ backgroundColor: color }}>
+      <div className="st-status-icon present" style={{ backgroundColor: color }}>
         ✓
       </div>
     );
@@ -403,19 +392,19 @@ const StudyTracker = () => {
     <div className="study-tracker-container">
       <SidebarNav />
       <div className="study-tracker">
-        <header className="tracker-header">
-          <div className="header-spacer"></div>
-          <h1 className="tracker-page-title">{t("studyTracker.title")}</h1>
+        <header className="st-tracker-header">
+          <div className="st-header-spacer"></div>
+          <h1 className="st-tracker-page-title">{t("studyTracker.title")}</h1>
           <NotificationBell />
         </header>
 
         {/* Main Content */}
-        <main className="tracker-main">
+        <main className="st-tracker-main">
           {/* Weekly Schedule */}
-          <section className="weekly-schedule">
-            <div className="schedule-header">
+          <section className="st-weekly-schedule">
+            <div className="st-schedule-header">
               <h2>{t("studyTracker.weeklySchedule")}</h2>
-              <div className="week-navigation">
+              <div className="st-week-navigation">
                 <button onClick={() => setWeekOffset(weekOffset - 1)}>‹</button>
                 <span>
                   {t("studyTracker.week")} {currentWeekNumber}
@@ -424,11 +413,11 @@ const StudyTracker = () => {
               </div>
             </div>
 
-            <div className="schedule-grid">
-              <div className="schedule-row header-row">
-                <div className="time-slot-label"></div>
+            <div className="st-schedule-grid">
+              <div className="st-schedule-row header-row">
+                <div className="st-time-slot-label"></div>
                 {weekDates.map((day, idx) => {
-                  if (!day) return <div key={idx} className="empty-day"></div>;
+                  if (!day) return <div key={idx} className="st-empty-day"></div>;
                   
                   const today = getVietnamDate();
                   today.setHours(0, 0, 0, 0);
@@ -439,25 +428,25 @@ const StudyTracker = () => {
                   return (
                     <div
                       key={idx}
-                      className={`day-header ${isToday ? "today" : ""}`}
+                      className={`st-day-header ${isToday ? "today" : ""}`}
                     >
-                      <div className="day-name">{day.day}</div>
-                      <div className="day-date">{day.date}</div>
+                      <div className="st-day-name">{day.day}</div>
+                      <div className="st-day-date">{day.date}</div>
                     </div>
                   );
                 })}
               </div>
 
               {timeSlots.map((slot, slotIdx) => (
-                <div key={slotIdx} className="schedule-row">
-                  <div className="time-slot-label">
+                <div key={slotIdx} className="st-schedule-row">
+                  <div className="st-time-slot-label">
                     {t(timeSlotKeys[slotIdx])}
                   </div>
                   {weekDates.map((day, dayIdx) => {
                     const status = getWeekSessionStatus(day.fullDate, slot);
                     const color = getWeekSessionColor(day.fullDate, slot);
                     return (
-                      <div key={dayIdx} className="schedule-cell">
+                      <div key={dayIdx} className="st-schedule-cell">
                         {renderStatusIcon(status, color)}
                       </div>
                     );
@@ -466,35 +455,35 @@ const StudyTracker = () => {
               ))}
             </div>
 
-            <div className="schedule-legend">
-              <div className="legend-item">
-                <div className="legend-icon present">✓</div>
+            <div className="st-schedule-legend">
+              <div className="st-legend-item">
+                <div className="st-legend-icon present">✓</div>
                 <span>{t("studyTracker.present")}</span>
               </div>
-              <div className="legend-item">
-                <div className="legend-icon absent">×</div>
+              <div className="st-legend-item">
+                <div className="st-legend-icon absent">×</div>
                 <span>{t("studyTracker.absent")}</span>
               </div>
-              <div className="legend-item">
-                <div className="legend-icon no-slot">−</div>
+              <div className="st-legend-item">
+                <div className="st-legend-icon no-slot">−</div>
                 <span>{t("studyTracker.noSlot")}</span>
               </div>
             </div>
           </section>
 
           {/* Subject Legend */}
-          <section className="subject-legend">
+          <section className="st-subject-legend">
             <h3>{t("studyTracker.subjectLegend")}</h3>
-            <div className="subjects-grid">
+            <div className="st-subjects-grid">
               {subjects.map((subject, idx) => (
                 <div
                   key={idx}
-                  className="subject-item"
+                  className="st-subject-item"
                   onClick={() => navigate(`/subject/${subject._id}`)}
                   style={{ cursor: "pointer" }}
                 >
                   <div
-                    className="subject-color"
+                    className="st-subject-color"
                     style={{ backgroundColor: subject.color }}
                   ></div>
                   <span>{subject.subjectName}</span>
@@ -504,28 +493,28 @@ const StudyTracker = () => {
           </section>
 
           {/* Today's Progress */}
-          <section className="today-progress">
+          <section className="st-today-progress">
             <h3>{t("studyTracker.todaysProgress")}</h3>
             {todayProgress.map((item, idx) => (
-              <div key={idx} className="progress-item">
-                <div className="progress-header">
-                  <div className="progress-label">
+              <div key={idx} className="st-progress-item">
+                <div className="st-progress-header">
+                  <div className="st-progress-label">
                     <div
-                      className="progress-dot"
+                      className="st-progress-dot"
                       style={{ backgroundColor: item.color }}
                     ></div>
                     <span>
                       {item.subjectKey ? t(item.subjectKey) : item.subject}
                     </span>
                   </div>
-                  <span className="progress-time">
+                  <span className="st-progress-time">
                     {Math.floor(item.completed / 60)}h {item.completed % 60}m /{" "}
                     {Math.floor(item.goal / 60)}h
                   </span>
                 </div>
-                <div className="progress-bar-container">
+                <div className="st-progress-bar-container">
                   <div
-                    className="progress-bar-fill"
+                    className="st-progress-bar-fill"
                     style={{
                       width: `${Math.min(
                         (item.completed / item.goal) * 100,
@@ -540,10 +529,10 @@ const StudyTracker = () => {
           </section>
 
           {/* Study Streak Calendar */}
-          <section className="streak-calendar">
-            <div className="streak-header">
+          <section className="st-streak-calendar">
+            <div className="st-streak-header">
               <h3>{t("studyTracker.streakCalendar")}</h3>
-              <div className="week-navigation">
+              <div className="st-week-navigation">
                 <button onClick={() => setMonthOffset(monthOffset - 1)}>‹</button>
                 <span>
                   {currentMonth.toLocaleDateString(i18n.language || 'en-US', { month: 'long', year: 'numeric' })}
@@ -552,11 +541,11 @@ const StudyTracker = () => {
               </div>
             </div>
             
-            <div className="water-drops-grid">
+            <div className="st-water-drops-grid">
               {monthDates.map((dayInfo, idx) => {
                 // Handle empty days (null values for alignment)
                 if (!dayInfo) {
-                  return <div key={idx} className="empty-day"></div>;
+                  return <div key={idx} className="st-empty-day"></div>;
                 }
                 
                 const today = getVietnamDate();
@@ -582,47 +571,47 @@ const StudyTracker = () => {
             </div>
 
             {/* Streak Stats */}
-            <div className="streak-stats">
-              <div className="streak-stat-item">
-                <span className="streak-icon">🔥</span>
-                <div className="streak-stat-info">
-                  <span className="streak-stat-value">
+            <div className="st-streak-stats">
+              <div className="st-streak-stat-item">
+                <span className="st-streak-icon">🔥</span>
+                <div className="st-streak-stat-info">
+                  <span className="st-streak-stat-value">
                     {streakData.currentStreak || 0}
                   </span>
-                  <span className="streak-stat-label">
+                  <span className="st-streak-stat-label">
                     {t("studyTracker.currentStreak")}
                   </span>
                 </div>
               </div>
-              <div className="streak-stat-item">
-                <span className="streak-icon">🏆</span>
-                <div className="streak-stat-info">
-                  <span className="streak-stat-value">
+              <div className="st-streak-stat-item">
+                <span className="st-streak-icon">🏆</span>
+                <div className="st-streak-stat-info">
+                  <span className="st-streak-stat-value">
                     {streakData.longestStreak || 0}
                   </span>
-                  <span className="streak-stat-label">
+                  <span className="st-streak-stat-label">
                     {t("studyTracker.longestStreak")}
                   </span>
                 </div>
               </div>
-              <div className="streak-stat-item">
-                <span className="streak-icon">📅</span>
-                <div className="streak-stat-info">
-                  <span className="streak-stat-value">
+              <div className="st-streak-stat-item">
+                <span className="st-streak-icon">📅</span>
+                <div className="st-streak-stat-info">
+                  <span className="st-streak-stat-value">
                     {streakData.totalActiveDays || 0}
                   </span>
-                  <span className="streak-stat-label">
+                  <span className="st-streak-stat-label">
                     {t("studyTracker.totalDays")}
                   </span>
                 </div>
               </div>
-              <div className="streak-stat-item">
-                <span className="streak-icon">⏱️</span>
-                <div className="streak-stat-info">
-                  <span className="streak-stat-value">
+              <div className="st-streak-stat-item">
+                <span className="st-streak-icon">⏱️</span>
+                <div className="st-streak-stat-info">
+                  <span className="st-streak-stat-value">
                     {streakData.totalHours || 0}h
                   </span>
-                  <span className="streak-stat-label">
+                  <span className="st-streak-stat-label">
                     {t("studyTracker.studyHours")}
                   </span>
                 </div>

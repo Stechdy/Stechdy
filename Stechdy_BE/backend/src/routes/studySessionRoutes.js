@@ -30,11 +30,17 @@ router.get('/', studySessionController.getStudySessions);
 // Get sessions by subject (for subject detail page)
 router.get('/subject/:subjectId', studySessionController.getSessionsBySubject);
 
+// Get latest session date (for checking existing schedule)
+router.get('/latest', studySessionController.getLatestSession);
+
 // Get a single study session
 router.get('/:id', studySessionController.getStudySession);
 
 // Create a new study session
 router.post('/', studySessionController.createStudySession);
+
+// Bulk update study sessions (for calendar editor) - MUST be before /:id
+router.put('/bulk-update', studySessionController.bulkUpdateSessions);
 
 // Update a study session
 router.put('/:id', studySessionController.updateStudySession);
@@ -53,6 +59,9 @@ router.post('/:id/end', studySessionController.endSession);
 
 // Reschedule a study session
 router.post('/:id/reschedule', studySessionController.rescheduleStudySession);
+
+// Delete all study sessions (for AI regeneration)
+router.delete('/delete-all', studySessionController.deleteAllStudySessions);
 
 // Delete a study session
 router.delete('/:id', studySessionController.deleteStudySession);

@@ -6,6 +6,13 @@ import SidebarNav from "../../components/common/SidebarNav";
 import moodService from "../../services/moodService";
 import "./Mood.css";
 
+// Import mood images
+import upsetImg from "../../assets/Upset.png";
+import sadImg from "../../assets/Sad.png";
+import normalImg from "../../assets/Normal.png";
+import happyImg from "../../assets/Happy.png";
+import veryHappyImg from "../../assets/Veryhappy.png";
+
 const Mood = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -19,11 +26,11 @@ const Mood = () => {
 
   // Mood options
   const moods = [
-    { value: 1, emoji: "😢", label: t("mood.moods.upset") },
-    { value: 2, emoji: "😔", label: t("mood.moods.sad") },
-    { value: 3, emoji: "😐", label: t("mood.moods.normal") },
-    { value: 4, emoji: "😊", label: t("mood.moods.happy") },
-    { value: 5, emoji: "😄", label: t("mood.moods.veryHappy") },
+    { value: 1, image: upsetImg, label: t("mood.moods.upset") },
+    { value: 2, image: sadImg, label: t("mood.moods.sad") },
+    { value: 3, image: normalImg, label: t("mood.moods.normal") },
+    { value: 4, image: happyImg, label: t("mood.moods.happy") },
+    { value: 5, image: veryHappyImg, label: t("mood.moods.veryHappy") },
   ];
 
   // Energy icons based on level with better visuals
@@ -143,6 +150,16 @@ const Mood = () => {
       });
 
       if (response.success) {
+        // Emit event to update streak in real-time across components
+        if (response.data?.currentStreak !== undefined && response.data?.longestStreak !== undefined) {
+          window.dispatchEvent(new CustomEvent('streakUpdated', {
+            detail: {
+              currentStreak: response.data.currentStreak,
+              longestStreak: response.data.longestStreak
+            }
+          }));
+        }
+
         setShowSuccess(true);
         setTimeout(() => {
           setShowSuccess(false);
@@ -194,7 +211,7 @@ const Mood = () => {
                 }`}
                 onClick={() => setSelectedMood(mood.value)}
               >
-                <span className="mood-emoji">{mood.emoji}</span>
+                <img src={mood.image} alt={mood.label} className="mood-image" />
                 <span className="mood-label">{mood.label}</span>
               </button>
             ))}

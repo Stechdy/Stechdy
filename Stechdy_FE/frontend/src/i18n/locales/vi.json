@@ -226,6 +226,7 @@
       "confirmPassword": "Xác nhận mật khẩu",
       "submit": "Đăng ký",
       "orContinueWith": "hoặc tiếp tục với",
+      "googleSignUp": "Đăng ký bằng Google",
       "haveAccount": "Đã có tài khoản?",
       "loginNow": "Đăng nhập ngay",
       "registerFailed": "Đăng ký thất bại. Vui lòng thử lại.",
@@ -315,7 +316,7 @@
     "title": "Cài đặt Thông báo & Âm thanh",
     "notifications": "Thông báo",
     "notificationsDesc": "Quản lý các thông báo bạn muốn nhận",
-    "sound": "Âm thanh",
+    "soundLabel": "Âm thanh",
     "soundDesc": "Tùy chỉnh âm thanh thông báo",
     "enableNotifications": "Bật Thông báo",
     "enableNotificationsDesc": "Bật hoặc tắt tất cả thông báo",
@@ -413,17 +414,205 @@
     "pleaseStartServer": "Vui lòng khởi động máy chủ để xem các buổi học",
     "unableToConnect": "Không thể kết nối với máy chủ. Vui lòng kiểm tra kết nối backend.",
     "aiSuggestions": {
+      "motivation": [
+        "Hãy tin vào bản thân! Bạn có thể làm được điều này 🌟",
+        "Mỗi phút học đều là một bước tiến! Cố lên 💪",
+        "Thành công bắt đầu từ hôm nay. Hãy tận dụng tối đa! 🚀",
+        "Bạn đang làm rất tốt! Tiếp tục duy trì nhé ⭐",
+        "Học tập là đầu tư tốt nhất cho tương lai 📚",
+        "Mỗi bài học là một cơ hội mới để phát triển 🌱",
+        "Hành trình ngàn dặm bắt đầu từ những bước chân nhỏ 👣",
+        "Bạn mạnh mẽ hơn bạn nghĩ! Tiến lên 💫"
+      ],
+      "break": [
+        "Hãy nghỉ ngơi 15 phút nhé ☕",
+        "Đã đến lúc thư giãn đầu óc rồi! Nghỉ ngơi nào 🌸",
+        "Bạn đã học chăm chỉ! Hãy nghỉ ngơi để tái tạo năng lượng 🔋",
+        "Nghỉ ngơi cũng là một phần của quá trình học tập! ☕",
+        "Đứng dậy vận động 5 phút sẽ giúp bạn tập trung hơn 🏃",
+        "Hít thở sâu và thư giãn một chút nhé 🧘‍♀️"
+      ],
+      "focus": [
+        "Tập trung vào nhiệm vụ hiện tại, thành công sẽ đến! 🎯",
+        "Tắt thông báo để tập trung tối đa nhé 📵",
+        "Một bước một chân đi, đừng vội vàng 🐢",
+        "Kỹ thuật Pomodoro: 25 phút tập trung + 5 phút nghỉ ⏰",
+        "Loại bỏ mọi phiền nhiễu, hãy tập trung 100% 🎧",
+        "Môi trường yên tĩnh = học tập hiệu quả 🤫"
+      ],
+      "progress": [
+        "Tiến độ tuyệt vời hôm nay! Bạn sắp hoàn thành mục tiêu 🎉",
+        "Bạn đã hoàn thành một nửa! Tiếp tục cố gắng nhé 💪",
+        "Wow! 80% hoàn thành rồi! Cố lên một chút nữa 🌈",
+        "Bạn đang tiến bộ từng ngày! Tuyệt vời 📈",
+        "Mục tiêu đang đến gần! Đừng bỏ cuộc nhé 🏆",
+        "Từng phút học đều có giá trị. Bạn làm tốt lắm! ⭐"
+      ],
+      "morning": [
+        "Chào buổi sáng! Hãy bắt đầu ngày mới với động lực học tập 🌅",
+        "Buổi sáng là thời gian vàng để học! Tận dụng nào 🌞",
+        "Một ngày năng suất bắt đầu từ buổi sáng! Chúc bạn học tốt 🌻",
+        "Não bộ hoạt động tốt nhất vào buổi sáng. Hãy tối ưu hóa! 🧠"
+      ],
+      "afternoon": [
+        "Buổi chiều tràn đầy năng lượng! Tiếp tục học thôi 🌤️",
+        "Đã ăn trưa chưa? Năng lượng là quan trọng đấy! 🍱",
+        "Giữ vững phong độ học tập buổi chiều nhé 💪",
+        "Buổi chiều lý tưởng để ôn tập và củng cố kiến thức 📖"
+      ],
+      "evening": [
+        "Buổi tối là thời gian hoàn hảo để ôn lại bài học 🌙",
+        "Chuẩn bị cho ngày mai từ hôm nay! Học tập hiệu quả 🌃",
+        "Buổi tối yên tĩnh giúp bạn tập trung tốt hơn 🌆",
+        "Kết thúc ngày với một buổi học thật tuyệt! ✨"
+      ],
+      "multipleSessions": [
+        "Bạn có nhiều buổi học hôm nay. Hãy tập trung và nghỉ ngơi! 🧘",
+        "Lịch học dày đặc! Hãy chia nhỏ và chinh phục từng phần 📅",
+        "Nhiều buổi học = nhiều kiến thức mới! Bạn làm được mà 💫"
+      ],
+      "longSession": [
+        "Bạn đã học hơn 2 giờ. Đến giờ nghỉ ngơi rồi! ☕",
+        "Marathon học tập! Đừng quên nghỉ giải lao nhé 🏃‍♀️",
+        "Học lâu mà không nghỉ sẽ giảm hiệu quả đấy! 🔋"
+      ],
       "takeBreak": "Hãy nghỉ ngơi 15 phút nhé",
       "greatProgress": "Tiến độ tuyệt vời hôm nay! Bạn sắp hoàn thành mục tiêu học tập 🎉",
       "halfwayThrough": "Bạn đã hoàn thành một nửa! Tiếp tục cố gắng nhé 💪",
-      "multipleSessions": "Bạn có nhiều buổi học hôm nay. Hãy tập trung và nghỉ ngơi! 🧘",
       "twoHoursBreak": "Bạn đã học hơn 2 giờ. Đến giờ nghỉ ngơi rồi! ☕"
+    },
+    "aiGeneratorTitle": "Tạo lịch học bằng AI",
+    "aiGeneratorDesc": "Tạo lịch học tối ưu với thuật toán AI thông minh",
+    "tryNow": "Thử ngay",
+    "viewProfile": "Xem hồ sơ"
+  },
+  "ai": {
+    "title": "Tạo lịch học bằng AI",
+    "subtitle": "Để AI tạo lịch học hoàn hảo cho bạn",
+    "subjects": "Môn học",
+    "subjectName": "Tên môn học...",
+    "addSubject": "Thêm môn học",
+    "priority": "Độ ưu tiên",
+    "dateRange": "Khoảng thời gian",
+    "startDate": "Ngày bắt đầu",
+    "endDate": "Ngày kết thúc (Tùy chọn)",
+    "endDateHint": "Để trống để mặc định 30 ngày",
+    "studyDuration": "Thời lượng mỗi buổi học",
+    "customHint": "15-240 phút",
+    "busyTimes": "Thời gian bận (Tùy chọn)",
+    "selectDay": "Chọn ngày...",
+    "addBusyTime": "Thêm thời gian bận",
+    "generateSchedule": "Tạo lịch học",
+    "generating": "Đang tạo...",
+    "workflowOverview": "Tổng quan quy trình AI",
+    "workflowDescription": "AI của chúng tôi sử dụng thuật toán lập lịch tiên tiến được hỗ trợ bởi n8n để tạo lịch học tối ưu dựa trên ưu tiên, thời gian rảnh và mô hình học tập của bạn.",
+    "schedulesGenerated": "Lịch đã tạo",
+    "avgTime": "Thời gian TB",
+    "successRate": "Tỷ lệ thành công",
+    "algorithmProcess": "Quy trình thuật toán",
+    "keyFeatures": "Tính năng chính",
+    "getStarted": "Bắt đầu",
+    "viewSchedule": "Xem lịch học",
+    "testConnection": "Kiểm tra kết nối n8n",
+    "viewAlgorithm": "Xem thông tin thuật toán"
+  },
+  "schedule": {
+    "title": "Lịch học AI",
+    "editTitle": "Chỉnh sửa lịch học",
+    "regenerate": "Tạo lại",
+    "export": "Xuất file",
+    "noSchedule": "Chưa có lịch học",
+    "generatePrompt": "Tạo lịch học AI để bắt đầu",
+    "generateNew": "Tạo lịch học mới",
+    "noSessionsWeek": "Không có buổi học nào trong tuần này",
+    "subject": "Môn học",
+    "session": "Buổi",
+    "saveToDatabase": "Lưu vào cơ sở dữ liệu",
+    "saving": "Đang lưu...",
+    "editSession": "Chỉnh sửa buổi học",
+    "deleteSession": "Xóa buổi học",
+    "dragDropHint": "Kéo thả để di chuyển buổi học",
+    "clickToEdit": "Nhấp vào buổi học để chỉnh sửa",
+    "morning": "Buổi sáng",
+    "afternoon": "Buổi chiều",
+    "evening": "Buổi tối"
+  },
+  "scheduleEditor": {
+    "title": "Chỉnh sửa lịch học",
+    "unsavedChanges": "Chưa lưu thay đổi",
+    "save": "Lưu",
+    "saving": "Đang lưu...",
+    "backToGenerator": "Quay lại AI Generator",
+    "weekNavigation": "Điều hướng tuần",
+    "previousWeek": "Tuần trước",
+    "nextWeek": "Tuần sau",
+    "instructions": {
+      "clickToEdit": "Nhấp vào buổi học để chỉnh sửa",
+      "dragAndDrop": "Kéo thả để di chuyển buổi học",
+      "saveWhenDone": "Lưu khi hoàn tất chỉnh sửa"
+    },
+    "saveAllWeeks": "Áp dụng cho tất cả tuần",
+    "timeSlots": {
+      "morning": "Buổi sáng",
+      "afternoon": "Buổi chiều",
+      "evening": "Buổi tối"
+    },
+    "grid": {
+      "time": "Thời gian",
+      "dropHere": "Thả vào đây",
+      "addSlot": "Thêm slot"
+    },
+    "modal": {
+      "addNewSession": "Thêm buổi học mới",
+      "editSession": "Chỉnh sửa buổi học",
+      "subject": "Môn học",
+      "startTime": "Giờ bắt đầu",
+      "endTime": "Giờ kết thúc",
+      "date": "Ngày",
+      "delete": "Xóa",
+      "cancel": "Hủy",
+      "save": "Lưu"
+    },
+    "messages": {
+      "sessionAdded": "✓ Đã thêm buổi học",
+      "sessionUpdated": "✓ Đã cập nhật",
+      "sessionDeleted": "✓ Đã xóa",
+      "timeConflict": "Trùng giờ! Vui lòng chọn giờ khác.",
+      "invalidTimeRange": "Giờ kết thúc phải sau giờ bắt đầu!",
+      "deleteConfirm": "Bạn có chắc chắn muốn xóa buổi học này không?",
+      "schedulesSaved": "Đã lưu lịch học! Tạo {{count}} buổi học.",
+      "scheduleSavedLocal": "Đã lưu lịch học cục bộ! Đăng nhập để đồng bộ lên cloud.",
+      "saveFailed": "Lỗi khi lưu lịch học: {{error}}"
+    },
+    "noEvents": {
+      "title": "Không có lịch học để chỉnh sửa",
+      "description": "Tạo lịch học trước để chỉnh sửa tại đây",
+      "generateButton": "Tạo lịch học mới"
+    },
+    "legend": {
+      "title": "Môn học:"
+    },
+    "statistics": {
+      "title": "Thống kê học tập",
+      "hours": "giờ",
+      "sessions": "buổi học"
+    },
+    "days": {
+      "mon": "T2",
+      "tue": "T3",
+      "wed": "T4",
+      "thu": "T5",
+      "fri": "T6",
+      "sat": "T7",
+      "sun": "CN"
     }
   },
   "mood": {
     "title": "Theo dõi tâm trạng",
     "howAreYou": "Hôm nay bạn cảm thấy thế nào?",
+    "note": "Ghi chú",
     "notes": "Ghi chú",
+    "notePlaceholder": "Viết về cảm xúc của bạn hôm nay...",
     "notesPlaceholder": "Viết về cảm xúc của bạn hôm nay...",
     "energyLevel": "Mức năng lượng",
     "low": "Thấp",
@@ -631,7 +820,9 @@
     "noData": "Không có dữ liệu",
     "tryAgain": "Thử lại",
     "user": "Người dùng",
-    "language": "vi"
+    "language": "vi",
+    "understood": "Đã hiểu",
+    "optional": "tùy chọn"
   },
   "bottomNav": {
     "dashboard": "Trang chủ",
@@ -812,7 +1003,9 @@
     },
     "energy": "Năng lượng:",
     "emotions": "Cảm xúc:",
-    "notes": "Ghi chú:"
+    "notes": "Ghi chú:",
+    "makeupNote": "Bấm vào ngày bạn muốn điểm danh bù",
+    "makeupFor": "Điểm danh bù cho ngày"
   },
   "moodCheckIn": {
     "title": "Hôm nay bạn cảm thấy thế nào?",
@@ -853,6 +1046,48 @@
       "Relaxed": "Thư giãn",
       "Worried": "Lo lắng"
     }
+  },
+  "streak": {
+    "title": "Chuỗi điểm danh",
+    "subtitle": "Duy trì chuỗi điểm danh mỗi ngày để mở khóa phần thưởng",
+    "current": "Hiện tại",
+    "longest": "Dài nhất",
+    "makeupLeft": "Còn lại",
+    "days": "ngày",
+    "consecutiveDays": "ngày liên tiếp",
+    "daysToGo": "ngày nữa",
+    "moreDays": "ngày nữa",
+    "nextReward": "Phần thưởng tiếp theo",
+    "rewards": "Phần thưởng của bạn",
+    "rewardsDesc": "Mỗi mốc streak sẽ mở khóa một con vật dễ thương 3D",
+    "unlocked": "Đã mở khóa",
+    "requirement": "Yêu cầu",
+    "unlockedOn": "Đã mở khóa vào",
+    "congratsMessage": "Chúc mừng! Bạn đã mở khóa con vật đặc biệt này!",
+    "keepGoing": "Cố gắng thêm",
+    "makeup": "Điểm danh bù",
+    "makeupDesc": "Bạn có thể điểm danh bù cho những ngày bỏ lỡ",
+    "makeupLimitMonth": "lần mỗi tháng",
+    "makeupUsed": "Đã sử dụng",
+    "makeupRemaining": "Còn lại",
+    "total": "Tổng cộng",
+    "viewAllRewards": "Xem tất cả phần thưởng",
+    "allRewards": "Tất cả phần thưởng",
+    "clickToMakeup": "Click để điểm danh bù",
+    "makeupTitle": "Điểm danh bù",
+    "selectDate": "Chọn ngày cần điểm danh bù",
+    "selectDateFirst": "Vui lòng chọn ngày trước",
+    "makeupSuccess": "Điểm danh bù thành công!",
+    "makeupError": "Lỗi khi điểm danh bù",
+    "submitMakeup": "Xác nhận điểm danh bù",
+    "noMakeupsRemaining": "Bạn đã sử dụng hết lượt điểm danh bù trong tháng này",
+    "noMakeupsTitle": "Hết lượt điểm danh bù",
+    "noMakeupsDesc": "Bạn đã sử dụng hết 3 lượt điểm danh bù trong tháng này. Lượt điểm danh bù sẽ được làm mới vào đầu tháng sau.",
+    "remainingTurns": "lượt còn lại",
+    "thisMonth": "trong tháng này",
+    "remainingAfter": "Sau khi điểm danh này, bạn còn",
+    "makeupCheckIn": "Điểm danh bù",
+    "confirmMakeup": "Xác nhận điểm danh bù"
   },
   "home": {
     "welcome": "Chào mừng đến với S-Techdy",
@@ -1013,5 +1248,17 @@
       "excellence": "xuất sắc",
       "beginning": "bắt đầu"
     }
+  },
+  "aiChat": {
+    "addNewSchedule": "Thêm lịch học mới",
+    "inputPlaceholder": "Hỏi tôi mọi thứ",
+    "greeting": "Chào buổi sáng! Bạn muốn làm gì?",
+    "createSchedulePrompt": "Bạn có thể tạo lịch tự học cho tôi không?",
+    "createScheduleResponse": "Tất nhiên! Vui lòng nhấn vào Tạo lịch học để tiếp tục!!!"
+  },
+  "sessionExpired": {
+    "title": "Đã phát hiện có thiết bị khác đăng nhập",
+    "message": "Tài khoản của bạn đã được đăng nhập từ thiết bị khác. Vui lòng đăng nhập lại.",
+    "loginButton": "Đăng nhập lại"
   }
 }

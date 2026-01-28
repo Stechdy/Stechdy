@@ -159,6 +159,27 @@ exports.getStudySessions = async (req, res) => {
   }
 };
 
+// Get latest session date (for checking existing schedule)
+exports.getLatestSession = async (req, res) => {
+  try {
+    const userId = req.user._id;
+
+    const latestSession = await StudySessionSchedule.findOne({ userId })
+      .sort({ date: -1 })
+      .select('date')
+      .lean();
+
+    if (!latestSession) {
+      return res.json({ date: null });
+    }
+
+    res.json({ date: latestSession.date });
+  } catch (error) {
+    console.error('Error fetching latest session:', error);
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
+
 // Get a single study session
 exports.getStudySession = async (req, res) => {
   try {
@@ -291,6 +312,85 @@ exports.updateStudySession = async (req, res) => {
   }
 };
 
+// Bulk update study sessions (for calendar editor)
+exports.bulkUpdateSessions = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const { sessions } = req.body;
+
+    console.log('🔄 Bulk updating sessions for user:', userId);
+    console.log('📊 Number of sessions to update:', sessions?.length);
+
+    if (!sessions || !Array.isArray(sessions)) {
+      return res.status(400).json({ 
+        success: false,
+        message: 'Invalid request. Sessions array required.' 
+      });
+    }
+
+    let updated = 0;
+    const errors = [];
+
+    for (const sessionUpdate of sessions) {
+      try {
+        const session = await StudySessionSchedule.findOne({ 
+          _id: sessionUpdate.sessionId, 
+          userId 
+        });
+
+        if (!session) {
+          errors.push(`Session ${sessionUpdate.sessionId} not found`);
+          continue;
+        }
+
+        // Update fields
+        if (sessionUpdate.date) {
+          session.date = new Date(sessionUpdate.date);
+          const dayOfWeek = session.date.getDay();
+          session.dayOfWeek = dayOfWeek;
+        }
+        
+        if (sessionUpdate.startTime) session.startTime = sessionUpdate.startTime;
+        if (sessionUpdate.endTime) session.endTime = sessionUpdate.endTime;
+        if (sessionUpdate.status) session.status = sessionUpdate.status;
+        
+        // Mark as user edited
+        session.isUserEdited = true;
+        session.editHistory.push({
+          editedAt: new Date(),
+          field: 'bulk_update',
+          oldValue: 'calendar_editor',
+          newValue: 'updated'
+        });
+
+        await session.save();
+        updated++;
+      } catch (error) {
+        errors.push(`Error updating session ${sessionUpdate.sessionId}: ${error.message}`);
+      }
+    }
+
+    console.log(`✅ Bulk update completed: ${updated} sessions updated`);
+    if (errors.length > 0) {
+      console.log('⚠️ Errors:', errors);
+    }
+
+    res.json({
+      success: true,
+      message: `Updated ${updated} sessions`,
+      updated,
+      errors: errors.length > 0 ? errors : undefined
+    });
+  } catch (error) {
+    console.error('❌ Error bulk updating sessions:', error);
+    res.status(500).json({ 
+      success: false,
+      message: 'Server error', 
+      error: error.message 
+    });
+  }
+};
+
 // Complete a study session
 exports.completeStudySession = async (req, res) => {
   try {
@@ -383,6 +483,28 @@ exports.deleteStudySession = async (req, res) => {
     res.json({ message: 'Study session deleted successfully' });
   } catch (error) {
     console.error('Error deleting study session:', error);
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
+
+// Delete all study sessions for current user
+exports.deleteAllStudySessions = async (req, res) => {
+  try {
+    const userId = req.user._id;
+
+    // Delete all study sessions
+    const sessionResult = await StudySessionSchedule.deleteMany({ userId });
+
+    // Delete all subjects
+    const subjectResult = await Subject.deleteMany({ userId });
+
+    res.json({ 
+      message: 'All study sessions and subjects deleted successfully',
+      deletedSessions: sessionResult.deletedCount,
+      deletedSubjects: subjectResult.deletedCount
+    });
+  } catch (error) {
+    console.error('Error deleting all study sessions:', error);
     res.status(500).json({ message: 'Server error', error: error.message });
   }
 };

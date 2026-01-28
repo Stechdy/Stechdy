@@ -1,215 +1,243 @@
-const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs');
+const mongoose = require("mongoose");
+const bcrypt = require("bcryptjs");
 
 const userSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: [true, 'Name is required'],
+      required: [true, "Name is required"],
       trim: true,
-      minlength: [2, 'Name must be at least 2 characters'],
-      maxlength: [100, 'Name must not exceed 100 characters']
+      minlength: [2, "Name must be at least 2 characters"],
+      maxlength: [100, "Name must not exceed 100 characters"],
     },
     email: {
       type: String,
-      required: [true, 'Email is required'],
+      required: [true, "Email is required"],
       unique: true,
       lowercase: true,
       trim: true,
-      match: [/^\S+@\S+\.\S+$/, 'Please provide a valid email address']
+      match: [/^\S+@\S+\.\S+$/, "Please provide a valid email address"],
     },
     passwordHash: {
       type: String,
-      required: function() {
+      required: function () {
         // Password is required only for non-OAuth users
         return !this.googleId;
       },
-      select: false
+      select: false,
     },
     googleId: {
       type: String,
       unique: true,
-      sparse: true
+      sparse: true,
     },
     authProvider: {
       type: String,
-      enum: ['local', 'google'],
-      default: 'local'
+      enum: ["local", "google"],
+      default: "local",
     },
     avatarUrl: {
       type: String,
-      default: null
+      default: null,
     },
     premiumStatus: {
       type: String,
-      enum: ['free', 'premium'],
-      default: 'free'
+      enum: ["free", "premium"],
+      default: "free",
     },
     premiumExpiryDate: {
       type: Date,
-      default: null
+      default: null,
     },
     joinedAt: {
       type: Date,
-      default: Date.now
+      default: Date.now,
     },
     streakCount: {
       type: Number,
       default: 0,
-      min: 0
+      min: 0,
+    },
+    lastActiveDate: {
+      type: Date,
+      default: null,
     },
     level: {
       type: Number,
       default: 1,
-      min: 1
+      min: 1,
     },
     xp: {
       type: Number,
       default: 0,
-      min: 0
+      min: 0,
     },
     timezone: {
       type: String,
-      default: 'UTC',
-      trim: true
+      default: "UTC",
+      trim: true,
     },
     settings: {
       notification: {
         type: Boolean,
-        default: true
+        default: true,
       },
       sounds: {
         type: Boolean,
-        default: true
+        default: true,
       },
       privacy: {
         type: String,
-        enum: ['public', 'private', 'friends'],
-        default: 'private'
-      }
+        enum: ["public", "private", "friends"],
+        default: "private",
+      },
     },
     notificationSettings: {
       dailyEmail: {
         type: Boolean,
-        default: true
+        default: true,
       },
       studyReminder: {
         type: Boolean,
-        default: true
+        default: true,
       },
       deadlineReminder: {
         type: Boolean,
-        default: true
+        default: true,
       },
       weeklyReport: {
         type: Boolean,
-        default: false
+        default: false,
       },
       aiSuggestions: {
         type: Boolean,
-        default: true
-      }
+        default: true,
+      },
     },
     role: {
       type: String,
-      enum: ['user', 'admin', 'moderator'],
-      default: 'user'
+      enum: ["user", "admin", "moderator"],
+      default: "user",
     },
     isActive: {
       type: Boolean,
-      default: true
+      default: true,
     },
     isVerified: {
       type: Boolean,
-      default: false
+      default: false,
     },
     lastLogin: {
       type: Date,
-      default: null
+      default: null,
     },
     loginAttempts: {
       type: Number,
-      default: 0
+      default: 0,
     },
     lockUntil: {
       type: Date,
-      default: null
+      default: null,
     },
     bio: {
       type: String,
-      maxlength: [500, 'Bio must not exceed 500 characters'],
-      default: ''
+      maxlength: [500, "Bio must not exceed 500 characters"],
+      default: "",
     },
     phone: {
       type: String,
-      default: null
+      default: null,
     },
     address: {
       street: String,
       city: String,
       state: String,
       country: String,
-      zipCode: String
+      zipCode: String,
     },
     socialLinks: {
       facebook: String,
       twitter: String,
       linkedin: String,
-      instagram: String
+      instagram: String,
     },
     preferences: {
       emailNotifications: {
         type: Boolean,
-        default: true
+        default: true,
       },
       pushNotifications: {
         type: Boolean,
-        default: true
+        default: true,
       },
       newsletter: {
         type: Boolean,
-        default: false
-      }
+        default: false,
+      },
     },
     deletedAt: {
       type: Date,
-      default: null
+      default: null,
     },
     deletedBy: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
-      default: null
+      ref: "User",
+      default: null,
     },
     lastModifiedBy: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
-      default: null
+      ref: "User",
+      default: null,
     },
     resetPasswordToken: {
       type: String,
-      default: null
+      default: null,
     },
     resetPasswordExpire: {
       type: Date,
-      default: null
+      default: null,
     },
     verificationToken: {
       type: String,
-      default: null
+      default: null,
     },
     verificationTokenExpire: {
       type: Date,
-      default: null
+      default: null,
     },
-    refreshToken: {
+    refreshTokens: {
+      type: [
+        {
+          token: {
+            type: String,
+            required: true,
+          },
+          deviceInfo: {
+            type: String,
+            default: "Unknown Device",
+          },
+          createdAt: {
+            type: Date,
+            default: Date.now,
+          },
+          lastUsed: {
+            type: Date,
+            default: Date.now,
+          },
+        },
+      ],
+      default: [],
+      select: false,
+    },
+    activeSessionId: {
       type: String,
       default: null,
-      select: false
-    }
+      select: false,
+    },
   },
   {
-    timestamps: true
-  }
+    timestamps: true,
+  },
 );
 
 // Indexes (email already has unique: true, so no need for separate index)
@@ -222,20 +250,20 @@ userSchema.index({ lastLogin: -1 });
 userSchema.index({ deletedAt: 1 });
 
 // Virtual for mood history
-userSchema.virtual('moodHistory', {
-  ref: 'MoodTracking',
-  localField: '_id',
-  foreignField: 'userId'
+userSchema.virtual("moodHistory", {
+  ref: "MoodTracking",
+  localField: "_id",
+  foreignField: "userId",
 });
 
 // Virtual for account lock status
-userSchema.virtual('isLocked').get(function() {
+userSchema.virtual("isLocked").get(function () {
   return !!(this.lockUntil && this.lockUntil > Date.now());
 });
 
 // Hash password before saving
-userSchema.pre('save', async function (next) {
-  if (!this.isModified('passwordHash')) {
+userSchema.pre("save", async function (next) {
+  if (!this.isModified("passwordHash")) {
     next();
   }
   const salt = await bcrypt.genSalt(10);
@@ -248,53 +276,53 @@ userSchema.methods.matchPassword = async function (enteredPassword) {
 };
 
 // Method to check if user is premium
-userSchema.methods.isPremium = function() {
-  return this.premiumStatus === 'premium';
+userSchema.methods.isPremium = function () {
+  return this.premiumStatus === "premium";
 };
 
 // Method to check if user is admin or moderator
-userSchema.methods.isAdminOrModerator = function() {
-  return this.role === 'admin' || this.role === 'moderator';
+userSchema.methods.isAdminOrModerator = function () {
+  return this.role === "admin" || this.role === "moderator";
 };
 
 // Method to increment login attempts
-userSchema.methods.incLoginAttempts = function() {
+userSchema.methods.incLoginAttempts = function () {
   // If we have a previous lock that has expired, restart at 1
   if (this.lockUntil && this.lockUntil < Date.now()) {
     return this.updateOne({
       $set: { loginAttempts: 1 },
-      $unset: { lockUntil: 1 }
+      $unset: { lockUntil: 1 },
     });
   }
-  
+
   // Otherwise increment
   const updates = { $inc: { loginAttempts: 1 } };
-  
+
   // Lock account after 5 failed attempts for 2 hours
   const MAX_LOGIN_ATTEMPTS = 5;
   const LOCK_TIME = 2 * 60 * 60 * 1000; // 2 hours
-  
+
   if (this.loginAttempts + 1 >= MAX_LOGIN_ATTEMPTS && !this.isLocked) {
     updates.$set = { lockUntil: Date.now() + LOCK_TIME };
   }
-  
+
   return this.updateOne(updates);
 };
 
 // Method to reset login attempts
-userSchema.methods.resetLoginAttempts = function() {
+userSchema.methods.resetLoginAttempts = function () {
   return this.updateOne({
     $set: { loginAttempts: 0, lastLogin: Date.now() },
-    $unset: { lockUntil: 1 }
+    $unset: { lockUntil: 1 },
   });
 };
 
 // Soft delete method
-userSchema.methods.softDelete = function(deletedBy) {
+userSchema.methods.softDelete = function (deletedBy) {
   this.deletedAt = Date.now();
   this.deletedBy = deletedBy;
   this.isActive = false;
   return this.save();
 };
 
-module.exports = mongoose.model('User', userSchema);
+module.exports = mongoose.model("User", userSchema);

@@ -41,9 +41,11 @@ const corsOptions = {
     const allowedOrigins = [
       'https://stechdy.ai.vn',
       'https://www.stechdy.ai.vn',
+      'https://api.stechdy.ai.vn',
       'http://localhost:3000',
-      'http://localhost:3001'
-    ];
+      'http://localhost:3001',
+      process.env.FRONTEND_URL
+    ].filter(Boolean);
     
     // Allow requests with no origin (mobile apps, Postman, etc.)
     if (!origin || allowedOrigins.indexOf(origin) !== -1) {
@@ -68,6 +70,7 @@ app.use("/api/users", require("./routes/userRoutes"));
 app.use("/api/products", require("./routes/productRoutes"));
 app.use("/api/subjects", require("./routes/subjectRoutes"));
 app.use("/api/study-sessions", require("./routes/studySessionRoutes"));
+app.use("/api/ai-schedule", require("./routes/aiScheduleRoutes"));
 app.use("/api/moods", require("./routes/moodRoutes"));
 app.use("/api/notifications", require("./routes/notificationRoutes"));
 app.use("/api/session-reminder", require("./routes/sessionReminderRoutes"));
@@ -75,6 +78,7 @@ app.use("/api/deadlines", require("./routes/deadlineRoutes"));
 app.use("/api/upload", require("./routes/uploadRoutes"));
 app.use('/api/payments', require('./routes/paymentRoutes'));
 app.use('/api/admin', require('./routes/adminRoutes'));
+app.use('/api/debug', require('./routes/debugRoutes'));
 
 // Welcome route
 app.get("/", (req, res) => {

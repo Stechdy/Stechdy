@@ -15,9 +15,6 @@ const moodService = {
   getMoodEntries: async (params = {}) => {
     const token = localStorage.getItem('token');
     const queryString = new URLSearchParams(params).toString();
-    console.log('moodService.getMoodEntries - params:', params);
-    console.log('moodService.getMoodEntries - queryString:', queryString);
-    console.log('moodService.getMoodEntries - full URL:', `/moods${queryString ? `?${queryString}` : ''}`);
     return await api.get(`/moods${queryString ? `?${queryString}` : ''}`, {
       headers: {
         Authorization: `Bearer ${token}`
@@ -69,6 +66,26 @@ const moodService = {
   generateInsight: async (id) => {
     const token = localStorage.getItem('token');
     return await api.post(`/moods/${id}/insight`, {}, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+  },
+
+  // Makeup mood check-in
+  makeupMoodCheckIn: async (moodData) => {
+    const token = localStorage.getItem('token');
+    return await api.post('/moods/makeup', moodData, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+  },
+
+  // Get streak info with milestones
+  getStreakInfo: async () => {
+    const token = localStorage.getItem('token');
+    return await api.get('/moods/streak', {
       headers: {
         Authorization: `Bearer ${token}`
       }
