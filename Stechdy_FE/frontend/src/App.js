@@ -53,6 +53,7 @@ import AIGenerator from "./pages/AIGenerator/AIGenerator";
 import ScheduleEditor from "./pages/ScheduleEditor/ScheduleEditor";
 import CalendarEditor from "./pages/CalendarEditor/CalendarEditor";
 import AIChat from "./pages/AIChat/AIChat";
+import CelebrationTest from "./pages/Test/CelebrationTest";
 
 function App() {
   return (
@@ -254,6 +255,7 @@ function App() {
             <Route path="/about" element={<About />} />
             <Route path="/help-support" element={<HelpSupport />} />
             <Route path="/terms-of-use" element={<TermsOfUse />} />
+            <Route path="/test/celebration" element={<CelebrationTest />} />
             {/* Legacy routes for authenticated users */}
             <Route
               path="/help"
