@@ -2,7 +2,15 @@ import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
 import { useTranslation } from "react-i18next";
 import moodService from "../../services/moodService";
+import CelebrationModal from "../common/CelebrationModal";
 import "./MoodCalendar.css";
+
+// Import mood images
+import upsetImg from "../../assets/Upset.png";
+import sadImg from "../../assets/Sad.png";
+import normalImg from "../../assets/Normal.png";
+import happyImg from "../../assets/Happy.png";
+import veryHappyImg from "../../assets/Veryhappy.png";
 
 // UTC Date Helper Functions - ensure consistent date handling across the app
 const dateUtils = {
@@ -62,6 +70,12 @@ const MoodCalendar = () => {
   const [showNoMakeupsModal, setShowNoMakeupsModal] = useState(false);
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
+  const [celebration, setCelebration] = useState({
+    show: false,
+    emoji: "",
+    title: "",
+    message: "",
+  });
 
   // Update language when it changes
   useEffect(() => {
@@ -104,12 +118,15 @@ const MoodCalendar = () => {
     return emotion;
   };
 
-  const moodEmojis = {
-    1: "😢",
-    2: "😔",
-    3: "😐",
-    4: "😊",
-    5: "😄",
+  const getMoodImage = (moodValue) => {
+    const moodImages = {
+      1: upsetImg,
+      2: sadImg,
+      3: normalImg,
+      4: happyImg,
+      5: veryHappyImg,
+    };
+    return moodImages[moodValue];
   };
 
   const moodLabelKeys = {
@@ -307,10 +324,6 @@ const MoodCalendar = () => {
         // Close modal first
         closeMakeupModal();
         
-        // Then show success popup
-        setSuccessMessage(response.message || t("streak.makeupSuccess") || "Điểm danh bù thành công!");
-        setShowSuccessPopup(true);
-        
         // Reload data
         loadMonthMoods();
         loadStreakData();
@@ -322,6 +335,35 @@ const MoodCalendar = () => {
             longestStreak: response.data.longestStreak 
           }
         }));
+        
+        // Check for milestones and show celebration
+        const hasNewMilestones = response.data?.newMilestones && response.data.newMilestones.length > 0;
+        const currentStreak = response.data?.currentStreak;
+
+        if (hasNewMilestones) {
+          // Determine celebration content
+          const milestone = response.data.newMilestones[0];
+          const celebrationEmoji = milestone.emoji || "🎖️";
+          const celebrationTitle = milestone.name || t("celebration.newMilestone") || "Cột mốc mới!";
+          const celebrationMessage = milestone.description || t("celebration.streakAchieved", { days: currentStreak }) || `Bạn đã đạt ${currentStreak} ngày streak!`;
+
+          // Show celebration
+          setCelebration({
+            show: true,
+            emoji: celebrationEmoji,
+            title: celebrationTitle,
+            message: celebrationMessage,
+          });
+
+          // Close celebration after 6.5 seconds
+          setTimeout(() => {
+            setCelebration({ show: false, emoji: "", title: "", message: "" });
+          }, 6500);
+        } else {
+          // No milestone, show success popup
+          setSuccessMessage(response.message || t("streak.makeupSuccess") || "Điểm danh bù thành công!");
+          setShowSuccessPopup(true);
+        }
       }
     } catch (error) {
       console.error("Error making makeup check-in:", error);
@@ -335,10 +377,14 @@ const MoodCalendar = () => {
     }
   };
   
-  const getMoodEmoji = (mood) => {
-    const emojis = ['😢', '😕', '😐', '🙂', '😄'];
-    return emojis[mood - 1] || '😐';
-  };
+  // Mood options with images (same as Mood page)
+  const moodOptions = [
+    { value: 1, image: upsetImg, label: t("mood.moods.upset") || "Buồn" },
+    { value: 2, image: sadImg, label: t("mood.moods.sad") || "Hơi buồn" },
+    { value: 3, image: normalImg, label: t("mood.moods.normal") || "Bình thường" },
+    { value: 4, image: happyImg, label: t("mood.moods.happy") || "Vui" },
+    { value: 5, image: veryHappyImg, label: t("mood.moods.veryHappy") || "Rất vui" },
+  ];
 
   const monthNameKeys = [
     "moodCalendar.months.january",
@@ -367,6 +413,18 @@ const MoodCalendar = () => {
 
   return (
     <div className="mood-calendar">
+      {/* Celebration Modal - Render to body for full screen */}
+      {ReactDOM.createPortal(
+        <CelebrationModal
+          show={celebration.show}
+          emoji={celebration.emoji}
+          title={celebration.title}
+          message={celebration.message}
+          onClose={() => setCelebration({ show: false, emoji: "", title: "", message: "" })}
+        />,
+        document.body
+      )}
+      
       {/* Makeup Check-in Instruction */}
       {streakData && streakData.makeupCheckIns.remainingMakeups > 0 && (
         <div className="makeup-instruction">
@@ -431,7 +489,9 @@ const MoodCalendar = () => {
                 <>
                   <span className="day-number">{day}</span>
                   {mood && (
-                    <span className="day-mood">{moodEmojis[mood.mood]}</span>
+                    <span className="day-mood">
+                      <img src={getMoodImage(mood.mood)} alt={t(moodLabelKeys[mood.mood])} />
+                    </span>
                   )}
                 </>
               )}
@@ -456,7 +516,7 @@ const MoodCalendar = () => {
             <div className="modal-content">
               <div className="modal-mood">
                 <span className="modal-emoji">
-                  {moodEmojis[selectedMood.mood]}
+                  <img src={getMoodImage(selectedMood.mood)} alt={t(moodLabelKeys[selectedMood.mood])} />
                 </span>
                 <span className="modal-label">
                   {t(moodLabelKeys[selectedMood.mood])}
@@ -528,13 +588,14 @@ const MoodCalendar = () => {
               <div className="makeup-mood-selector">
                 <label>{t("mood.selectMood") || "Chọn tâm trạng"}:</label>
                 <div className="mood-options">
-                  {[1, 2, 3, 4, 5].map((mood) => (
+                  {moodOptions.map((mood) => (
                     <button
-                      key={mood}
-                      className={`mood-option ${makeupMoodData.mood === mood ? 'selected' : ''}`}
-                      onClick={() => setMakeupMoodData({...makeupMoodData, mood})}
+                      key={mood.value}
+                      className={`mood-option ${makeupMoodData.mood === mood.value ? 'selected' : ''}`}
+                      onClick={() => setMakeupMoodData({...makeupMoodData, mood: mood.value})}
                     >
-                      {getMoodEmoji(mood)}
+                      <img src={mood.image} alt={mood.label} className="mood-image" />
+                      <span className="mood-label">{mood.label}</span>
                     </button>
                   ))}
                 </div>
@@ -569,7 +630,7 @@ const MoodCalendar = () => {
               
               {/* Submit Button */}
               <button className="makeup-submit-btn" onClick={handleMakeupSubmit}>
-                ✅ {t("streak.confirmMakeup") || "Xác nhận điểm danh bù"}
+                 {t("streak.confirmMakeup") || "Xác nhận điểm danh bù"}
               </button>
               
               <p className="makeup-remaining-info">

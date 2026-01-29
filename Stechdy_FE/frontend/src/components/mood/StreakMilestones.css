@@ -363,51 +363,71 @@
   border-color: #667eea;
 }
 
+/* Makeup Mood Selector - Match Mood page design */
 .streak-milestones-container .makeup-mood-selector {
   display: flex;
-  gap: 10px;
+  gap: 12px;
   justify-content: space-between;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  padding: 4px 0;
 }
 
-.streak-milestones-container .makeup-mood-button {
+.streak-milestones-container .makeup-mood-option {
   flex: 1;
+  min-width: 80px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
-  padding: 12px 6px;
+  gap: 8px;
+  padding: 16px 8px;
   background: white;
-  border: 2px solid transparent;
+  border: 2px solid #e2e8f0;
   border-radius: 16px;
   cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
-.streak-milestones-container .makeup-mood-button:hover {
-  transform: scale(0.98);
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+.streak-milestones-container .makeup-mood-option:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  border-color: #cbd5e0;
 }
 
-.streak-milestones-container .makeup-mood-button.selected {
+.streak-milestones-container .makeup-mood-option.selected {
   border-color: #667eea;
-  background: white;
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+  background: linear-gradient(135deg, #f8f9ff 0%, #f0f4ff 100%);
+  box-shadow: 0 4px 16px rgba(102, 126, 234, 0.25);
+  transform: translateY(-4px);
 }
 
-.streak-milestones-container .makeup-mood-emoji {
-  font-size: 36px;
-  line-height: 1;
+.streak-milestones-container .makeup-mood-image {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  transition: transform 0.3s ease;
 }
 
-.streak-milestones-container .makeup-mood-value {
-  font-size: 12px;
+.streak-milestones-container .makeup-mood-option:hover .makeup-mood-image {
+  transform: scale(1.1);
+}
+
+.streak-milestones-container .makeup-mood-option.selected .makeup-mood-image {
+  transform: scale(1.15);
+  filter: drop-shadow(0 2px 4px rgba(102, 126, 234, 0.3));
+}
+
+.streak-milestones-container .makeup-mood-label {
+  font-size: 11px;
   font-weight: 600;
-  color: #718096;
+  color: #4a5568;
+  text-align: center;
+  line-height: 1.2;
   transition: color 0.2s ease;
 }
 
-.streak-milestones-container .makeup-mood-button.selected .makeup-mood-value {
+.streak-milestones-container .makeup-mood-option.selected .makeup-mood-label {
   color: #667eea;
   font-weight: 700;
 }
@@ -887,16 +907,23 @@
     font-size: 22px;
   }
 
-  .streak-milestones-container .makeup-mood-button {
-    padding: 10px 4px;
+  .streak-milestones-container .makeup-mood-selector {
+    gap: 8px;
   }
 
-  .streak-milestones-container .makeup-mood-emoji {
-    font-size: 28px;
+  .streak-milestones-container .makeup-mood-option {
+    min-width: 70px;
+    padding: 12px 6px;
+    gap: 6px;
   }
 
-  .streak-milestones-container .makeup-mood-value {
-    font-size: 11px;
+  .streak-milestones-container .makeup-mood-image {
+    width: 40px;
+    height: 40px;
+  }
+
+  .streak-milestones-container .makeup-mood-label {
+    font-size: 10px;
   }
 }
 
@@ -1028,16 +1055,23 @@
     gap: 12px;
   }
 
-  .streak-milestones-container .makeup-mood-button {
-    padding: 8px 3px;
+  .streak-milestones-container .makeup-mood-selector {
+    gap: 6px;
   }
 
-  .streak-milestones-container .makeup-mood-emoji {
-    font-size: 24px;
+  .streak-milestones-container .makeup-mood-option {
+    min-width: 60px;
+    padding: 10px 4px;
+    gap: 4px;
   }
 
-  .streak-milestones-container .makeup-mood-value {
-    font-size: 10px;
+  .streak-milestones-container .makeup-mood-image {
+    width: 32px;
+    height: 32px;
+  }
+
+  .streak-milestones-container .makeup-mood-label {
+    font-size: 9px;
   }
 
   .makeup-form-actions {

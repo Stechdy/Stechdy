@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import BottomNav from "../../components/common/BottomNav";
 import SidebarNav from "../../components/common/SidebarNav";
+import CelebrationModal from "../../components/common/CelebrationModal";
 import moodService from "../../services/moodService";
 import "./Mood.css";
 
@@ -23,6 +24,12 @@ const Mood = () => {
   const [showSuccess, setShowSuccess] = useState(false);
   const [todayMood, setTodayMood] = useState(null);
   const [iconAnimate, setIconAnimate] = useState(false);
+  const [celebration, setCelebration] = useState({
+    show: false,
+    emoji: "",
+    title: "",
+    message: "",
+  });
 
   // Mood options
   const moods = [
@@ -160,11 +167,53 @@ const Mood = () => {
           }));
         }
 
-        setShowSuccess(true);
-        setTimeout(() => {
-          setShowSuccess(false);
-          navigate("/mood/history");
-        }, 2000);
+        // Check for milestones and show celebration
+        const hasNewBadge = response.data?.newBadge;
+        const hasNewMilestones = response.data?.newMilestones && response.data.newMilestones.length > 0;
+        const currentStreak = response.data?.currentStreak;
+
+        if (hasNewBadge || hasNewMilestones || (currentStreak && currentStreak % 7 === 0 && currentStreak >= 7)) {
+          // Determine celebration content
+          let celebrationEmoji = "🎉";
+          let celebrationTitle = t("celebration.congratulations") || "Chúc mừng!";
+          let celebrationMessage = "";
+
+          if (hasNewBadge) {
+            celebrationEmoji = "🏆";
+            celebrationTitle = t("celebration.newBadge") || "Huy hiệu mới!";
+            celebrationMessage = t("celebration.badgeEarned", { badge: response.data.newBadge }) || `Bạn đã nhận được huy hiệu "${response.data.newBadge}"! 🌟`;
+          } else if (hasNewMilestones) {
+            const milestone = response.data.newMilestones[0];
+            celebrationEmoji = milestone.emoji || "🎖️";
+            celebrationTitle = milestone.name || t("celebration.newMilestone") || "Cột mốc mới!";
+            celebrationMessage = milestone.description || t("celebration.streakAchieved", { days: currentStreak }) || `Bạn đã đạt ${currentStreak} ngày streak!`;
+          } else if (currentStreak % 7 === 0) {
+            celebrationEmoji = "🔥";
+            celebrationTitle = t("celebration.streakMilestone", { days: currentStreak }) || `${currentStreak} ngày streak!`;
+            celebrationMessage = t("celebration.keepGoing") || "Bạn đang làm rất tốt! Tiếp tục duy trì nhé! 💪";
+          }
+
+          // Show celebration
+          setCelebration({
+            show: true,
+            emoji: celebrationEmoji,
+            title: celebrationTitle,
+            message: celebrationMessage,
+          });
+
+          // Close celebration and navigate after 6.5 seconds
+          setTimeout(() => {
+            setCelebration({ show: false, emoji: "", title: "", message: "" });
+            navigate("/mood/history");
+          }, 6500);
+        } else {
+          // No milestone, show success toast and navigate
+          setShowSuccess(true);
+          setTimeout(() => {
+            setShowSuccess(false);
+            navigate("/mood/history");
+          }, 2000);
+        }
       }
     } catch (error) {
       console.error("Error saving mood:", error);
@@ -178,6 +227,15 @@ const Mood = () => {
     <div className="mood-page-container">
       <SidebarNav />
       <div className="mood-page">
+        {/* Celebration Modal */}
+        <CelebrationModal
+          show={celebration.show}
+          emoji={celebration.emoji}
+          title={celebration.title}
+          message={celebration.message}
+          onClose={() => setCelebration({ show: false, emoji: "", title: "", message: "" })}
+        />
+
         {/* Success notification */}
         {showSuccess && (
           <div className="success-toast">{t("mood.savedSuccess")}</div>
