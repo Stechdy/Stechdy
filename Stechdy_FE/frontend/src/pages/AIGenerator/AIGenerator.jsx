@@ -14,14 +14,12 @@ const AIGenerator = () => {
   // Form state
   const [subjects, setSubjects] = useState([{ name: "", priority: 3 }]);
   const [startDate, setStartDate] = useState(
-    new Date().toISOString().split("T")[0]
+    new Date().toISOString().split("T")[0],
   );
   const [endDate, setEndDate] = useState("");
   const [sessionDuration, setSessionDuration] = useState("45");
   const [customDuration, setCustomDuration] = useState("45");
-  const [busyTimes, setBusyTimes] = useState([
-    { day: "", slots: [] },
-  ]);
+  const [busyTimes, setBusyTimes] = useState([{ day: "", slots: [] }]);
 
   // UI state
   const [isGenerating, setIsGenerating] = useState(false);
@@ -36,12 +34,12 @@ const AIGenerator = () => {
   const [showDeleteSuccessModal, setShowDeleteSuccessModal] = useState(false);
   const [showErrorModal, setShowErrorModal] = useState(false);
   const [minStartDate, setMinStartDate] = useState(
-    new Date().toISOString().split("T")[0]
+    new Date().toISOString().split("T")[0],
   );
 
   // Using backend proxy instead of direct webhook call
   // const n8nWebhookUrl = process.env.REACT_APP_N8N_WEBHOOK_URL || "http://107.178.213.71:5678/webhook/gen-schedule-v3-lite";
-  
+
   // Check for existing schedule on mount
   useEffect(() => {
     const checkExistingSchedule = async () => {
@@ -49,12 +47,9 @@ const AIGenerator = () => {
         const token = localStorage.getItem("token");
         if (!token) return;
 
-        const response = await fetch(
-          `${config.apiUrl}/study-sessions/latest`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
+        const response = await fetch(`${config.apiUrl}/study-sessions/latest`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
 
         if (response.ok) {
           const data = await response.json();
@@ -89,7 +84,7 @@ const AIGenerator = () => {
         {
           method: "DELETE",
           headers: { Authorization: `Bearer ${token}` },
-        }
+        },
       );
 
       if (response.ok) {
@@ -157,7 +152,9 @@ const AIGenerator = () => {
 
   // Check if all days are selected
   const allDaysSelected = () => {
-    const selectedDays = busyTimes.filter(bt => bt.day !== "").map(bt => bt.day);
+    const selectedDays = busyTimes
+      .filter((bt) => bt.day !== "")
+      .map((bt) => bt.day);
     return selectedDays.length >= 7;
   };
 
@@ -176,11 +173,13 @@ const AIGenerator = () => {
 
   // Transform form data to n8n format
   const transformDataForWebhook = () => {
-    const finalEndDate = endDate || (() => {
-      const end = new Date(startDate);
-      end.setDate(end.getDate() + 30);
-      return end.toISOString().split("T")[0];
-    })();
+    const finalEndDate =
+      endDate ||
+      (() => {
+        const end = new Date(startDate);
+        end.setDate(end.getDate() + 30);
+        return end.toISOString().split("T")[0];
+      })();
 
     const sessionMinutes =
       sessionDuration === "custom"
@@ -223,10 +222,15 @@ const AIGenerator = () => {
     const validSubjects = subjects.filter((s) => s.name.trim() !== "");
 
     // Check if evening is available (not in busy times)
-    const eveningBusy = transformedBusyTimes.some(bt => bt.label === "Evening");
+    const eveningBusy = transformedBusyTimes.some(
+      (bt) => bt.label === "Evening",
+    );
     // If evening is free, we can have 3 slots per day (morning, afternoon, evening)
     const slotsPerDay = eveningBusy ? 2 : 3;
-    const maxSubjectsPerDay = Math.min(Math.max(validSubjects.length, slotsPerDay), slotsPerDay);
+    const maxSubjectsPerDay = Math.min(
+      Math.max(validSubjects.length, slotsPerDay),
+      slotsPerDay,
+    );
 
     return {
       start_date: startDate,
@@ -274,7 +278,7 @@ const AIGenerator = () => {
     if (new Date(startDate) < new Date(minStartDate)) {
       displayToast(
         `Start date must be ${new Date(minStartDate).toLocaleDateString()} or later`,
-        "error"
+        "error",
       );
       return;
     }
@@ -284,16 +288,19 @@ const AIGenerator = () => {
     try {
       const webhookData = transformDataForWebhook();
       const token = localStorage.getItem("token");
-      
+
       // Use backend proxy instead of direct webhook call to avoid Mixed Content issues
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/study-sessions/generate-ai-schedule`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`,
+      const response = await fetch(
+        `${process.env.REACT_APP_API_URL}/study-sessions/generate-ai-schedule`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(webhookData),
         },
-        body: JSON.stringify(webhookData),
-      });
+      );
 
       const contentType = response.headers.get("content-type");
       let result;
@@ -308,7 +315,7 @@ const AIGenerator = () => {
 
       if (!response.ok) {
         throw new Error(
-          result.error?.message || `HTTP error! status: ${response.status}`
+          result.error?.message || `HTTP error! status: ${response.status}`,
         );
       }
 
@@ -320,7 +327,10 @@ const AIGenerator = () => {
       // Case 1: n8n returns array with response object [{success, data: {schedule: [...]}}]
       if (Array.isArray(result) && result.length > 0) {
         const firstItem = result[0];
-        if (firstItem?.data?.schedule && Array.isArray(firstItem.data.schedule)) {
+        if (
+          firstItem?.data?.schedule &&
+          Array.isArray(firstItem.data.schedule)
+        ) {
           scheduleData = firstItem.data;
           console.log("Extracted from array[0].data:", scheduleData);
         } else if (firstItem?.schedule && Array.isArray(firstItem.schedule)) {
@@ -345,7 +355,12 @@ const AIGenerator = () => {
       console.log("Final scheduleData:", scheduleData);
       console.log("Schedule array length:", scheduleData?.schedule?.length);
 
-      if (scheduleData && scheduleData.schedule && Array.isArray(scheduleData.schedule) && scheduleData.schedule.length > 0) {
+      if (
+        scheduleData &&
+        scheduleData.schedule &&
+        Array.isArray(scheduleData.schedule) &&
+        scheduleData.schedule.length > 0
+      ) {
         // Save to localStorage for editing in ScheduleEditor
         localStorage.setItem("studySchedule", JSON.stringify(scheduleData));
         localStorage.setItem("studyScheduleInput", JSON.stringify(webhookData));
@@ -353,23 +368,31 @@ const AIGenerator = () => {
         // Show success message - user will save to DB after editing
         displayToast(
           `Schedule generated with ${scheduleData.schedule.length} days! Review and edit before saving.`,
-          "success"
+          "success",
         );
 
         // Increment generation count
         const currentCount = parseInt(
           localStorage.getItem("ai_generation_count") || "0",
-          10
+          10,
         );
-        localStorage.setItem("ai_generation_count", (currentCount + 1).toString());
+        localStorage.setItem(
+          "ai_generation_count",
+          (currentCount + 1).toString(),
+        );
 
         // Redirect to schedule editor page to review/edit before final save
         setTimeout(() => {
           navigate("/schedule-editor");
         }, 1500);
       } else {
-        console.error("Unexpected response structure:", JSON.stringify(result, null, 2));
-        throw new Error("Unexpected response format. Check browser console for details.");
+        console.error(
+          "Unexpected response structure:",
+          JSON.stringify(result, null, 2),
+        );
+        throw new Error(
+          "Unexpected response format. Check browser console for details.",
+        );
       }
     } catch (error) {
       console.error("Error:", error);
@@ -382,7 +405,8 @@ const AIGenerator = () => {
         userMessage =
           "Cannot connect to AI schedule generation service. Please check your internet connection and try again.";
       } else if (error.message.includes("500")) {
-        userMessage = "Server error during schedule generation. Please try again.";
+        userMessage =
+          "Server error during schedule generation. Please try again.";
       }
 
       // Show error modal instead of toast for schedule generation errors
@@ -408,7 +432,9 @@ const AIGenerator = () => {
 
       <div className="ai-generator-wrapper">
         {/* Header */}
-        <h1 className="ai-generator-page-title">{t("ai.title") || "AI Schedule Generator"}</h1>
+        <h1 className="ai-generator-page-title">
+          {t("ai.title") || "AI Schedule Generator"}
+        </h1>
 
         {/* Main Content with 2-column layout */}
         <main className="ai-generator-content">
@@ -430,7 +456,9 @@ const AIGenerator = () => {
                           <input
                             type="text"
                             className="subject-input"
-                            placeholder={t("ai.subjectName") || "Subject name..."}
+                            placeholder={
+                              t("ai.subjectName") || "Subject name..."
+                            }
                             value={subject.name}
                             onChange={(e) =>
                               updateSubject(index, "name", e.target.value)
@@ -460,8 +488,9 @@ const AIGenerator = () => {
                               <button
                                 key={priority}
                                 type="button"
-                                className={`pill ${subject.priority === priority ? "active" : ""
-                                  }`}
+                                className={`pill ${
+                                  subject.priority === priority ? "active" : ""
+                                }`}
                                 onClick={() =>
                                   updateSubject(index, "priority", priority)
                                 }
@@ -529,12 +558,15 @@ const AIGenerator = () => {
                           className="date-input"
                           value={endDate}
                           onChange={(e) => setEndDate(e.target.value)}
-                          min={startDate || new Date().toISOString().split("T")[0]}
+                          min={
+                            startDate || new Date().toISOString().split("T")[0]
+                          }
                         />
                         <i className="fas fa-calendar-alt date-icon"></i>
                       </div>
                       <span className="input-hint">
-                        {t("ai.endDateHint") || "Leave empty for 30 days from start"}
+                        {t("ai.endDateHint") ||
+                          "Leave empty for 30 days from start"}
                       </span>
                     </div>
                   </div>
@@ -561,8 +593,9 @@ const AIGenerator = () => {
                       <button
                         key={option.value}
                         type="button"
-                        className={`pill ${sessionDuration === option.value ? "active" : ""
-                          }`}
+                        className={`pill ${
+                          sessionDuration === option.value ? "active" : ""
+                        }`}
                         onClick={() => setSessionDuration(option.value)}
                       >
                         {option.label}
@@ -607,7 +640,9 @@ const AIGenerator = () => {
                               updateBusyTimeDay(index, e.target.value)
                             }
                           >
-                            <option value="">{t("ai.selectDay") || "Select day..."}</option>
+                            <option value="">
+                              {t("ai.selectDay") || "Select day..."}
+                            </option>
                             {[
                               { value: "monday", label: "Monday" },
                               { value: "tuesday", label: "Tuesday" },
@@ -615,16 +650,19 @@ const AIGenerator = () => {
                               { value: "thursday", label: "Thursday" },
                               { value: "friday", label: "Friday" },
                               { value: "saturday", label: "Saturday" },
-                              { value: "sunday", label: "Sunday" }
-                            ].map(day => {
-                              const isSelected = busyTimes.some((bt, i) => i !== index && bt.day === day.value);
+                              { value: "sunday", label: "Sunday" },
+                            ].map((day) => {
+                              const isSelected = busyTimes.some(
+                                (bt, i) => i !== index && bt.day === day.value,
+                              );
                               return (
                                 <option
                                   key={day.value}
                                   value={day.value}
                                   disabled={isSelected}
                                 >
-                                  {day.label}{isSelected ? " (✓)" : ""}
+                                  {day.label}
+                                  {isSelected ? " (✓)" : ""}
                                 </option>
                               );
                             })}
@@ -646,26 +684,44 @@ const AIGenerator = () => {
                           <div className="time-slot-selector">
                             <div className="slot-options">
                               {[
-                                { value: "morning", label: "Morning", icon: "☀️" },
-                                { value: "afternoon", label: "Afternoon", icon: "🌤️" },
-                                { value: "evening", label: "Evening", icon: "🌙" },
+                                {
+                                  value: "morning",
+                                  label: "Morning",
+                                  icon: "☀️",
+                                },
+                                {
+                                  value: "afternoon",
+                                  label: "Afternoon",
+                                  icon: "🌤️",
+                                },
+                                {
+                                  value: "evening",
+                                  label: "Evening",
+                                  icon: "🌙",
+                                },
                               ].map((slot) => (
                                 <button
                                   key={slot.value}
                                   type="button"
-                                  className={`slot-option ${busyTime.slots.includes(slot.value)
-                                    ? "selected"
-                                    : ""
-                                    }`}
-                                  onClick={() => toggleBusyTimeSlot(index, slot.value)}
+                                  className={`slot-option ${
+                                    busyTime.slots.includes(slot.value)
+                                      ? "selected"
+                                      : ""
+                                  }`}
+                                  onClick={() =>
+                                    toggleBusyTimeSlot(index, slot.value)
+                                  }
                                 >
                                   <span className="slot-icon">{slot.icon}</span>
-                                  <span className="slot-name">{slot.label}</span>
+                                  <span className="slot-name">
+                                    {slot.label}
+                                  </span>
                                   <span
-                                    className={`slot-status ${busyTime.slots.includes(slot.value)
-                                      ? "unavailable"
-                                      : "available"
-                                      }`}
+                                    className={`slot-status ${
+                                      busyTime.slots.includes(slot.value)
+                                        ? "unavailable"
+                                        : "available"
+                                    }`}
                                   >
                                     {busyTime.slots.includes(slot.value)
                                       ? "Busy"
@@ -687,7 +743,7 @@ const AIGenerator = () => {
                     disabled={allDaysSelected()}
                     style={{
                       opacity: allDaysSelected() ? 0.5 : 1,
-                      cursor: allDaysSelected() ? "not-allowed" : "pointer"
+                      cursor: allDaysSelected() ? "not-allowed" : "pointer",
                     }}
                   >
                     <i className="fas fa-plus"></i>
@@ -757,23 +813,29 @@ const AIGenerator = () => {
                   alt="S'Techdy"
                   className="landing-new__logo-img"
                 />
-                <h2>{i18n.language === "vi" ? "Phát hiện lịch học cũ" : "Existing Schedule Detected"}</h2>
+                <h2>
+                  {i18n.language === "vi"
+                    ? "Phát hiện lịch học cũ"
+                    : "Existing Schedule Detected"}
+                </h2>
               </div>
             </div>
             <div className="ag-modal-body">
               <p className="modal-main-text">
-                {i18n.language === "vi" ? "Bạn đã có lịch học đến" : "You already have a study schedule until"}{" "}
+                {i18n.language === "vi"
+                  ? "Bạn đã có lịch học đến"
+                  : "You already have a study schedule until"}{" "}
                 <strong className="highlight-date">
                   {lastScheduleDate
                     ? new Date(lastScheduleDate).toLocaleDateString(
-                      i18n.language === "vi" ? "vi-VN" : "en-US",
-                      {
-                        weekday: "short",
-                        year: "numeric",
-                        month: "long",
-                        day: "numeric"
-                      }
-                    )
+                        i18n.language === "vi" ? "vi-VN" : "en-US",
+                        {
+                          weekday: "short",
+                          year: "numeric",
+                          month: "long",
+                          day: "numeric",
+                        },
+                      )
                     : ""}
                 </strong>
                 .
@@ -790,7 +852,11 @@ const AIGenerator = () => {
                 onClick={handleDeleteOldSchedule}
               >
                 <i className="fas fa-trash"></i>
-                <span>{i18n.language === "vi" ? "Xóa lịch cũ & Tạo mới" : "Delete Old Schedule"}</span>
+                <span>
+                  {i18n.language === "vi"
+                    ? "Xóa lịch cũ & Tạo mới"
+                    : "Delete Old Schedule"}
+                </span>
               </button>
               <button
                 className="ag-btn-modal ag-btn-primary"
@@ -810,8 +876,14 @@ const AIGenerator = () => {
 
       {/* Delete Warning Modal */}
       {showDeleteWarningModal && (
-        <div className="ag-modal-overlay" onClick={() => setShowDeleteWarningModal(false)}>
-          <div className="ag-modal-container" onClick={(e) => e.stopPropagation()}>
+        <div
+          className="ag-modal-overlay"
+          onClick={() => setShowDeleteWarningModal(false)}
+        >
+          <div
+            className="ag-modal-container"
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className="ag-modal-header">
               <div className="modal-header-content">
                 <img
@@ -819,18 +891,22 @@ const AIGenerator = () => {
                   alt="S'Techdy"
                   className="landing-new__logo-img"
                 />
-                <h2>{i18n.language === "vi" ? "Xác nhận xóa lịch học" : "Confirm Delete Schedule"}</h2>
+                <h2>
+                  {i18n.language === "vi"
+                    ? "Xác nhận xóa lịch học"
+                    : "Confirm Delete Schedule"}
+                </h2>
               </div>
             </div>
             <div className="ag-modal-body">
               <p className="modal-main-text">
-                {i18n.language === "vi" 
-                  ? "Bạn có chắc chắn muốn xóa tất cả lịch học cũ không?" 
+                {i18n.language === "vi"
+                  ? "Bạn có chắc chắn muốn xóa tất cả lịch học cũ không?"
                   : "Are you sure you want to delete all old schedules?"}
               </p>
               <p className="modal-question warning-text">
-                {i18n.language === "vi" 
-                  ? "⚠️ Hành động này không thể hoàn tác!" 
+                {i18n.language === "vi"
+                  ? "⚠️ Hành động này không thể hoàn tác!"
                   : "⚠️ This action cannot be undone!"}
               </p>
             </div>
@@ -847,7 +923,9 @@ const AIGenerator = () => {
                 onClick={confirmDeleteOldSchedule}
               >
                 <i className="fas fa-trash"></i>
-                <span>{i18n.language === "vi" ? "Xác nhận xóa" : "Confirm Delete"}</span>
+                <span>
+                  {i18n.language === "vi" ? "Xác nhận xóa" : "Confirm Delete"}
+                </span>
               </button>
             </div>
           </div>
@@ -856,20 +934,30 @@ const AIGenerator = () => {
 
       {/* Delete Success Modal */}
       {showDeleteSuccessModal && (
-        <div className="ag-modal-overlay" onClick={() => setShowDeleteSuccessModal(false)}>
-          <div className="ag-modal-content success-modal" onClick={(e) => e.stopPropagation()}>
+        <div
+          className="ag-modal-overlay"
+          onClick={() => setShowDeleteSuccessModal(false)}
+        >
+          <div
+            className="ag-modal-content success-modal"
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className="ag-modal-header">
               <div className="modal-header-content">
                 <div className="modal-icon-wrapper success">
                   <i className="fas fa-check-circle modal-icon"></i>
                 </div>
-                <h2>{i18n.language === "vi" ? "Xóa thành công!" : "Successfully Deleted!"}</h2>
+                <h2>
+                  {i18n.language === "vi"
+                    ? "Xóa thành công!"
+                    : "Successfully Deleted!"}
+                </h2>
               </div>
             </div>
             <div className="ag-modal-body">
               <p className="modal-main-text">
-                {i18n.language === "vi" 
-                  ? "Tất cả lịch học cũ đã được xóa thành công. Bạn có thể tạo lịch học mới ngay bây giờ." 
+                {i18n.language === "vi"
+                  ? "Tất cả lịch học cũ đã được xóa thành công. Bạn có thể tạo lịch học mới ngay bây giờ."
                   : "All old schedules have been successfully deleted. You can now create a new schedule."}
               </p>
             </div>
@@ -896,17 +984,19 @@ const AIGenerator = () => {
                 <i className="fas fa-robot ag-loading-icon"></i>
               </div>
               <h2 className="ag-loading-title">AI đang tạo lịch học...</h2>
-              <p className="ag-loading-subtitle">Phân tích và tối ưu hóa lịch học cá nhân hóa cho bạn</p>
+              <p className="ag-loading-subtitle">
+                Phân tích và tối ưu hóa lịch học cá nhân hóa cho bạn
+              </p>
             </div>
-            
+
             <div className="ag-loading-body">
               <div className="ag-loading-progress">
                 <div className="ag-progress-bar">
                   <div className="ag-progress-fill"></div>
                 </div>
-                <span className="ag-progress-text ag-progress-animated">0%</span>
+                <span className="ag-progress-text ag-progress-animated"></span>
               </div>
-              
+
               <div className="ag-loading-steps">
                 <div className="ag-step">
                   <div className="ag-step-icon">📚</div>
@@ -917,7 +1007,7 @@ const AIGenerator = () => {
                     </div>
                   </div>
                 </div>
-                
+
                 <div className="ag-step">
                   <div className="ag-step-icon">⏰</div>
                   <div className="ag-step-content">
@@ -927,7 +1017,7 @@ const AIGenerator = () => {
                     </div>
                   </div>
                 </div>
-                
+
                 <div className="ag-step">
                   <div className="ag-step-icon">🎯</div>
                   <div className="ag-step-content">
@@ -938,9 +1028,10 @@ const AIGenerator = () => {
                   </div>
                 </div>
               </div>
-              
+
               <p className="ag-loading-hint">
-                Điều này chỉ mất vài giây... Hãy thư giãn và chờ AI làm việc nhé! ✨
+                Điều này chỉ mất vài giây... Hãy thư giãn và chờ AI làm việc
+                nhé! ✨
               </p>
             </div>
           </div>
@@ -956,21 +1047,26 @@ const AIGenerator = () => {
                 <i className="fas fa-exclamation-triangle"></i>
               </div>
               <h2 className="ag-error-title">Đã xảy ra lỗi!</h2>
-              <p className="ag-error-subtitle">Không thể tạo lịch học lúc này</p>
+              <p className="ag-error-subtitle">
+                Không thể tạo lịch học lúc này
+              </p>
             </div>
-            
+
             <div className="ag-error-body">
               <div className="ag-error-message">
-                <p>Có lỗi xảy ra trong quá trình tạo lịch học. Điều này có thể do:</p>
+                <p>
+                  Có lỗi xảy ra trong quá trình tạo lịch học. Điều này có thể
+                  do:
+                </p>
                 <ul>
                   <li>Mất kết nối internet</li>
                   <li>Server đang bận</li>
                   <li>Dữ liệu nhập vào không hợp lệ</li>
                 </ul>
               </div>
-              
+
               <div className="ag-error-actions">
-                <button 
+                <button
                   className="ag-error-btn ag-error-retry"
                   onClick={() => {
                     setShowErrorModal(false);
@@ -980,7 +1076,7 @@ const AIGenerator = () => {
                   <i className="fas fa-redo"></i>
                   Thử lại
                 </button>
-                <button 
+                <button
                   className="ag-error-btn ag-error-cancel"
                   onClick={() => setShowErrorModal(false)}
                 >
