@@ -2,7 +2,16 @@ import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import moodService from "../../services/moodService";
 import browserNotificationService from "../../services/browserNotificationService";
+import CelebrationModal from "../common/CelebrationModal";
 import "./StreakMilestones.css";
+
+// Import mood images
+import upsetImg from "../../assets/Upset.png";
+import sadImg from "../../assets/Sad.png";
+import normalImg from "../../assets/Normal.png";
+import happyImg from "../../assets/Happy.png";
+import veryHappyImg from "../../assets/Veryhappy.png";
+
 
 const StreakMilestones = () => {
   const { t } = useTranslation();
@@ -21,6 +30,12 @@ const StreakMilestones = () => {
   });
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
+  const [celebration, setCelebration] = useState({
+    show: false,
+    emoji: "",
+    title: "",
+    message: "",
+  });
 
   useEffect(() => {
     loadStreakData();
@@ -118,18 +133,41 @@ const StreakMilestones = () => {
         // Close modal first
         closeMakeupModal();
         
-        // Then show success popup
-        setSuccessMessage(response.message || t("streak.makeupSuccess"));
-        setShowSuccessPopup(true);
-        
         // Reload streak data
         loadStreakData();
         
-        // Show notification if new milestone unlocked
-        if (response.data?.newMilestones && response.data.newMilestones.length > 0) {
+        // Check for milestones and show celebration
+        const hasNewMilestones = response.data?.newMilestones && response.data.newMilestones.length > 0;
+        const currentStreak = response.data?.currentStreak;
+
+        if (hasNewMilestones) {
+          // Determine celebration content
+          const milestone = response.data.newMilestones[0];
+          const celebrationEmoji = milestone.emoji || "🎖️";
+          const celebrationTitle = milestone.name || t("celebration.newMilestone") || "Cột mốc mới!";
+          const celebrationMessage = milestone.description || t("celebration.streakAchieved", { days: currentStreak }) || `Bạn đã đạt ${currentStreak} ngày streak!`;
+
+          // Show celebration
+          setCelebration({
+            show: true,
+            emoji: celebrationEmoji,
+            title: celebrationTitle,
+            message: celebrationMessage,
+          });
+
+          // Close celebration after 6.5 seconds
+          setTimeout(() => {
+            setCelebration({ show: false, emoji: "", title: "", message: "" });
+          }, 6500);
+          
+          // Show browser notification
           response.data.newMilestones.forEach(milestone => {
             browserNotificationService.notifyMilestoneUnlocked(milestone);
           });
+        } else {
+          // No milestone, show success popup
+          setSuccessMessage(response.message || t("streak.makeupSuccess"));
+          setShowSuccessPopup(true);
         }
       }
     } catch (error) {
@@ -143,10 +181,14 @@ const StreakMilestones = () => {
     }
   };
 
-  const getMoodEmoji = (mood) => {
-    const emojis = ['😢', '😕', '😐', '🙂', '😄'];
-    return emojis[mood - 1] || '😐';
-  };
+  // Mood options with images (same as Mood page)
+  const moods = [
+    { value: 1, image: upsetImg, label: t("mood.moods.upset") || "Buồn" },
+    { value: 2, image: sadImg, label: t("mood.moods.sad") || "Hơi buồn" },
+    { value: 3, image: normalImg, label: t("mood.moods.normal") || "Bình thường" },
+    { value: 4, image: happyImg, label: t("mood.moods.happy") || "Vui" },
+    { value: 5, image: veryHappyImg, label: t("mood.moods.veryHappy") || "Rất vui" },
+  ];
 
   if (loading) {
     return (
@@ -172,6 +214,14 @@ const StreakMilestones = () => {
 
   return (
     <div className="streak-milestones-container">
+      {/* Celebration Modal */}
+      <CelebrationModal
+        show={celebration.show}
+        emoji={celebration.emoji}
+        title={celebration.title}
+        message={celebration.message}
+        onClose={() => setCelebration({ show: false, emoji: "", title: "", message: "" })}
+      />
       {/* Streak Stats Card */}
       <div className="streak-stats-card">
         {/* Latest Unlocked Animal Badge */}
@@ -272,14 +322,14 @@ const StreakMilestones = () => {
               <div className="makeup-form-group">
                 <label className="makeup-form-label">{t("mood.selectMood")}</label>
                 <div className="makeup-mood-selector">
-                  {[1, 2, 3, 4, 5].map((mood) => (
+                  {moods.map((mood) => (
                     <button
-                      key={mood}
-                      className={`makeup-mood-button ${makeupMoodData.mood === mood ? 'selected' : ''}`}
-                      onClick={() => setMakeupMoodData({ ...makeupMoodData, mood })}
+                      key={mood.value}
+                      className={`makeup-mood-option ${makeupMoodData.mood === mood.value ? 'selected' : ''}`}
+                      onClick={() => setMakeupMoodData({ ...makeupMoodData, mood: mood.value })}
                     >
-                      <span className="makeup-mood-emoji">{getMoodEmoji(mood)}</span>
-                      <span className="makeup-mood-value">{mood}</span>
+                      <img src={mood.image} alt={mood.label} className="makeup-mood-image" />
+                      <span className="makeup-mood-label">{mood.label}</span>
                     </button>
                   ))}
                 </div>

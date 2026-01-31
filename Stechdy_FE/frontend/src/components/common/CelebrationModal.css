@@ -1,0 +1,369 @@
+/* Celebration Modal Overlay */
+.celebration-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Celebration Content */
+.celebration-content {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  animation: scaleIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+@keyframes scaleIn {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Emoji Container */
+.celebration-emoji-container {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 2rem;
+}
+
+.celebration-emoji {
+  font-size: 10rem;
+  animation: bounce 0.8s ease-in-out infinite, rotate 3s ease-in-out infinite;
+  display: inline-block;
+  filter: drop-shadow(0 0 30px rgba(255, 215, 0, 0.8));
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-20px) scale(1.1);
+  }
+}
+
+@keyframes rotate {
+  0%,
+  100% {
+    transform: rotate(-10deg);
+  }
+  50% {
+    transform: rotate(10deg);
+  }
+}
+
+/* Glow effect behind emoji */
+.celebration-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(255, 215, 0, 0.6), transparent);
+  border-radius: 50%;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.3);
+    opacity: 0.8;
+  }
+}
+
+/* Title and Message */
+.celebration-title {
+  font-size: 3rem;
+  font-weight: bold;
+  color: #ffd700;
+  margin-bottom: 1rem;
+  text-shadow: 0 0 20px rgba(255, 215, 0, 0.8), 0 0 40px rgba(255, 215, 0, 0.6);
+  animation: textGlow 1.5s ease-in-out infinite;
+}
+
+.celebration-message {
+  font-size: 1.5rem;
+  color: #fff;
+  max-width: 600px;
+  margin: 0 auto;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+@keyframes textGlow {
+  0%,
+  100% {
+    text-shadow: 0 0 20px rgba(255, 215, 0, 0.8), 0 0 40px rgba(255, 215, 0, 0.6);
+  }
+  50% {
+    text-shadow: 0 0 30px rgba(255, 215, 0, 1), 0 0 60px rgba(255, 215, 0, 0.8);
+  }
+}
+
+/* Fireworks */
+.fireworks-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.firework {
+  position: absolute;
+  top: 60%;
+  width: 0;
+  height: 0;
+  animation: fireworkLaunch 1.5s ease-out infinite;
+}
+
+@keyframes fireworkLaunch {
+  0% {
+    top: 100%;
+    opacity: 1;
+  }
+  50% {
+    top: 20%;
+    opacity: 1;
+  }
+  100% {
+    top: 20%;
+    opacity: 0;
+  }
+}
+
+.firework-spark {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: linear-gradient(45deg, #ff69b4, #ffd700, #00ced1, #ff6347);
+  animation: sparkExplosion 1s ease-out forwards;
+}
+
+.firework-spark:nth-child(1) {
+  animation-delay: 0.5s;
+  transform: translate(0, 0);
+}
+.firework-spark:nth-child(2) {
+  animation-delay: 0.5s;
+  transform: translate(0, 0);
+}
+.firework-spark:nth-child(3) {
+  animation-delay: 0.5s;
+  transform: translate(0, 0);
+}
+.firework-spark:nth-child(4) {
+  animation-delay: 0.5s;
+  transform: translate(0, 0);
+}
+.firework-spark:nth-child(5) {
+  animation-delay: 0.5s;
+  transform: translate(0, 0);
+}
+.firework-spark:nth-child(6) {
+  animation-delay: 0.5s;
+  transform: translate(0, 0);
+}
+.firework-spark:nth-child(7) {
+  animation-delay: 0.5s;
+  transform: translate(0, 0);
+}
+.firework-spark:nth-child(8) {
+  animation-delay: 0.5s;
+  transform: translate(0, 0);
+}
+
+@keyframes sparkExplosion {
+  0% {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.firework-spark:nth-child(1) {
+  animation-name: spark1;
+}
+.firework-spark:nth-child(2) {
+  animation-name: spark2;
+}
+.firework-spark:nth-child(3) {
+  animation-name: spark3;
+}
+.firework-spark:nth-child(4) {
+  animation-name: spark4;
+}
+.firework-spark:nth-child(5) {
+  animation-name: spark5;
+}
+.firework-spark:nth-child(6) {
+  animation-name: spark6;
+}
+.firework-spark:nth-child(7) {
+  animation-name: spark7;
+}
+.firework-spark:nth-child(8) {
+  animation-name: spark8;
+}
+
+@keyframes spark1 {
+  100% {
+    transform: translate(60px, -60px) scale(0);
+  }
+}
+@keyframes spark2 {
+  100% {
+    transform: translate(85px, 0) scale(0);
+  }
+}
+@keyframes spark3 {
+  100% {
+    transform: translate(60px, 60px) scale(0);
+  }
+}
+@keyframes spark4 {
+  100% {
+    transform: translate(0, 85px) scale(0);
+  }
+}
+@keyframes spark5 {
+  100% {
+    transform: translate(-60px, 60px) scale(0);
+  }
+}
+@keyframes spark6 {
+  100% {
+    transform: translate(-85px, 0) scale(0);
+  }
+}
+@keyframes spark7 {
+  100% {
+    transform: translate(-60px, -60px) scale(0);
+  }
+}
+@keyframes spark8 {
+  100% {
+    transform: translate(0, -85px) scale(0);
+  }
+}
+
+/* Confetti */
+.confetti-container {
+  position: absolute;
+  top: -10%;
+  left: 0;
+  width: 100%;
+  height: 110%;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.confetti {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  top: -10%;
+  animation: confettiFall 3s linear infinite;
+  opacity: 0.9;
+}
+
+@keyframes confettiFall {
+  0% {
+    top: -10%;
+    transform: translateX(0) rotateZ(0deg);
+  }
+  100% {
+    top: 110%;
+    transform: translateX(100px) rotateZ(720deg);
+  }
+}
+
+.confetti:nth-child(odd) {
+  animation-duration: 2.5s;
+}
+
+.confetti:nth-child(even) {
+  animation-duration: 3.5s;
+}
+
+/* Sparkles */
+.sparkles-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.sparkle {
+  position: absolute;
+  font-size: 1.5rem;
+  animation: sparkleFloat 2s ease-in-out infinite;
+  opacity: 0;
+}
+
+@keyframes sparkleFloat {
+  0%,
+  100% {
+    opacity: 0;
+    transform: scale(0) rotate(0deg);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.5) rotate(180deg);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .celebration-emoji {
+    font-size: 6rem;
+  }
+
+  .celebration-title {
+    font-size: 2rem;
+  }
+
+  .celebration-message {
+    font-size: 1.2rem;
+    padding: 0 1rem;
+  }
+}

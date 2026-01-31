@@ -654,6 +654,55 @@ exports.getStreakInfo = async (req, res) => {
     // Reset monthly makeups if new month
     streak.resetMonthlyMakeups();
     
+    // IMPORTANT: Validate and recalculate current streak in real-time
+    // This ensures that if the user hasn't checked in for >1 day, streak resets to 0
+    const now = new Date();
+    const today = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 0, 0, 0, 0));
+    
+    if (streak.streakHistory && streak.streakHistory.length > 0) {
+      // Find most recent check-in
+      const sortedHistory = [...streak.streakHistory].sort((a, b) => 
+        new Date(b.date) - new Date(a.date)
+      );
+      
+      const mostRecentEntry = new Date(sortedHistory[0].date);
+      const mostRecentDate = new Date(Date.UTC(
+        mostRecentEntry.getUTCFullYear(), 
+        mostRecentEntry.getUTCMonth(), 
+        mostRecentEntry.getUTCDate(), 
+        0, 0, 0, 0
+      ));
+      
+      // Calculate days since last check-in
+      const daysSinceLastCheckIn = Math.floor((today - mostRecentDate) / (1000 * 60 * 60 * 24));
+      
+      // If last check-in is more than 1 day ago, streak should be 0
+      if (daysSinceLastCheckIn > 1) {
+        streak.currentStreak = 0;
+      }
+      // If last check-in is yesterday or today, recalculate to ensure accuracy
+      else {
+        // Recalculate streak from history
+        let consecutiveDays = 1;
+        for (let i = 1; i < sortedHistory.length; i++) {
+          const prevEntry = new Date(sortedHistory[i - 1].date);
+          const currEntry = new Date(sortedHistory[i].date);
+          
+          const prevDate = new Date(Date.UTC(prevEntry.getUTCFullYear(), prevEntry.getUTCMonth(), prevEntry.getUTCDate()));
+          const currDate = new Date(Date.UTC(currEntry.getUTCFullYear(), currEntry.getUTCMonth(), currEntry.getUTCDate()));
+          
+          const daysDiff = Math.floor((prevDate - currDate) / (1000 * 60 * 60 * 24));
+          
+          if (daysDiff === 1) {
+            consecutiveDays++;
+          } else {
+            break;
+          }
+        }
+        streak.currentStreak = consecutiveDays;
+      }
+    }
+    
     // Initialize milestones
     streak.checkMilestones();
     await streak.save();
