@@ -100,8 +100,11 @@ const Register = () => {
         }
         localStorage.setItem("user", JSON.stringify(response.data));
 
-        // Redirect to dashboard
-        navigate("/dashboard");
+        // Clear onboarding flag for new users
+        localStorage.removeItem("onboardingCompleted");
+
+        // Redirect to onboarding for new users
+        navigate("/onboarding");
       }
     } catch (error) {
       setApiError(error.message || t("auth.register.registerFailed"));

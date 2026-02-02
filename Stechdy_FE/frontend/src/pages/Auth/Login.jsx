@@ -91,9 +91,14 @@ const Login = () => {
         }
         localStorage.setItem("user", JSON.stringify(response.data));
 
+        // Check if onboarding is completed
+        const hasCompletedOnboarding = localStorage.getItem("onboardingCompleted");
+
         // Force reload to reconnect socket with new token
         if (response.data.role === "admin") {
           window.location.href = "/admin/dashboard";
+        } else if (hasCompletedOnboarding !== "true") {
+          window.location.href = "/onboarding";
         } else {
           window.location.href = "/dashboard";
         }
@@ -129,9 +134,14 @@ const Login = () => {
         }
         localStorage.setItem("user", JSON.stringify(response.data));
 
+        // Check if onboarding is completed
+        const hasCompletedOnboarding = localStorage.getItem("onboardingCompleted");
+
         // Force reload to reconnect socket with new token
         if (response.data.role === "admin") {
           window.location.href = "/admin/dashboard";
+        } else if (hasCompletedOnboarding !== "true") {
+          window.location.href = "/onboarding";
         } else {
           window.location.href = "/dashboard";
         }
