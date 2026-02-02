@@ -19,6 +19,30 @@ const Calendar = () => {
     fetchSessionsForDate(selectedDate);
   }, [selectedDate]);
 
+  // Auto-select date when week changes
+  useEffect(() => {
+    const weekDays = getWeekDays();
+    const today = getVietnamDate();
+    
+    // Check if current week contains today
+    const isCurrentWeek = weekDays.some(
+      day => day.toDateString() === today.toDateString()
+    );
+    
+    if (isCurrentWeek) {
+      // If current week, select today
+      if (selectedDate.toDateString() !== today.toDateString()) {
+        setSelectedDate(today);
+      }
+    } else {
+      // If other week, select Monday (first day of week)
+      const monday = weekDays[0];
+      if (selectedDate.toDateString() !== monday.toDateString()) {
+        setSelectedDate(monday);
+      }
+    }
+  }, [weekOffset]);
+
   const fetchSessionsForDate = async (date) => {
     try {
       const token = localStorage.getItem("token");
@@ -137,6 +161,7 @@ const Calendar = () => {
         ];
 
   return (
+
     <div className="calendar-page-container">
       <SidebarNav />
       <div className="calendar-page">
@@ -213,13 +238,32 @@ const Calendar = () => {
               </button>
             </div>
 
-            <div className="sessions-list">
-              {sessions.length === 0 ? (
-                <div className="no-sessions">
-                  <p>{t("calendar.noSessions")}</p>
+            {sessions.length === 0 ? (
+              <div className="no-sessions-container">
+                <div className="no-sessions-header">
+                  <h3 className="no-sessions-title">{t("calendar.noSessionsToday")}</h3>
                 </div>
-              ) : (
-                sessions.map((session) => {
+                <button 
+                  className="ai-suggestion-card"
+                  onClick={() => navigate("/ai-generator")}
+                >
+                  <div className="ai-mascot">
+                    <img src="/logoAIStechdy.png" alt="AI Stechdy" />
+                  </div>
+                  <div className="ai-suggestion-content">
+                    <span className="ai-suggestion-title">{t("calendar.createSchedule")}</span>
+                    <span className="ai-suggestion-subtitle">{t("calendar.useAI")}</span>
+                  </div>
+                  <div className="ai-arrow-container">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                      <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  </div>
+                </button>
+              </div>
+            ) : (
+              <div className="sessions-list">
+                {sessions.map((session) => {
                   const statusBadge = getStatusBadge(session.status);
 
                   return (
@@ -254,12 +298,11 @@ const Calendar = () => {
                       </span>
                     </div>
                   );
-                })
-              )}
-            </div>
+                })}
+              </div>
+            )}
           </div>
         </main>
-
         <BottomNav />
       </div>
     </div>

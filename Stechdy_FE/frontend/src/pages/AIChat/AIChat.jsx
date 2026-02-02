@@ -15,6 +15,11 @@ const AIChat = () => {
   const messagesEndRef = useRef(null);
   const chatContainerRef = useRef(null);
 
+  // Usage tracking for free users
+  const [remainingMessages, setRemainingMessages] = useState(10);
+  const [isPremium, setIsPremium] = useState(null); // null = loading, false = free, true = premium
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
+
   const GEMINI_API_KEY = process.env.REACT_APP_GEMINI_API_KEY || "AIzaSyDUT9bNZBUdWIgDdUVycn_lMqiDXsuj5WI";
   
   // Initialize Gemini AI
@@ -22,6 +27,45 @@ const AIChat = () => {
   const model = genAI.getGenerativeModel({ model: "gemini-3-flash-preview" });
 
   useEffect(() => {
+    // Check user premium status and usage
+    const checkUserStatus = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        if (token) {
+          const response = await fetch(`${process.env.REACT_APP_API_URL || 'http://localhost:3001/api'}/users/profile`, {
+            headers: { Authorization: `Bearer ${token}` }
+          });
+          if (response.ok) {
+            const userData = await response.json();
+            console.log('User data:', userData); // Debug log
+            // Check premium status - can be isPremium boolean OR premiumStatus string
+            const userIsPremium = userData.isPremium === true || userData.premiumStatus === 'premium' || userData.user?.isPremium === true || userData.user?.premiumStatus === 'premium';
+            setIsPremium(userIsPremium);
+            console.log('Is Premium:', userIsPremium, 'premiumStatus:', userData.premiumStatus); // Debug log
+          } else {
+            console.log('No user data in response'); // Debug log
+            setIsPremium(false); // Default to free if no data
+          }
+        } else {
+          console.log('No token found'); // Debug log  
+          setIsPremium(false); // Default to free if no token
+        }
+      } catch (error) {
+        console.error("Error checking user status:", error);
+        setIsPremium(false); // Default to free if error occurs
+      }
+
+      // Load remaining messages from localStorage for free users
+      const today = new Date().toDateString();
+      const savedData = localStorage.getItem(`aiChatUsage_${today}`);
+      if (savedData) {
+        const { remaining } = JSON.parse(savedData);
+        setRemainingMessages(remaining);
+      }
+    };
+    
+    checkUserStatus();
+    
     // Initial greeting message
     const initialMessage = {
       id: Date.now(),
@@ -45,6 +89,12 @@ const AIChat = () => {
     
     if (!inputMessage.trim() || isLoading) return;
 
+    // Check if free user has remaining messages
+    if (isPremium === false && remainingMessages <= 0) {
+      setShowUpgradeModal(true);
+      return;
+    }
+
     const userMessage = {
       id: Date.now(),
       text: inputMessage,
@@ -56,6 +106,19 @@ const AIChat = () => {
     const currentInput = inputMessage;
     setInputMessage("");
     setIsLoading(true);
+
+    // Update remaining messages for free users
+    if (isPremium === false) {
+      const newRemaining = remainingMessages - 1;
+      setRemainingMessages(newRemaining);
+      
+      // Save to localStorage
+      const today = new Date().toDateString();
+      localStorage.setItem(`aiChatUsage_${today}`, JSON.stringify({
+        remaining: newRemaining,
+        date: today
+      }));
+    }
 
     try {
       const prompt = `You are S'Techdy AI, a helpful study assistant. The user asked: "${currentInput}". 
@@ -178,19 +241,27 @@ Otherwise, provide a helpful, friendly response related to studying, productivit
 
         {/* Input Area */}
         <div className="ai-input-container">
+          {(isPremium === false || isPremium === null) && (
+            <div className="ai-usage-counter-bottom">
+              <span className="usage-text">{remainingMessages}/10 {t("aiChat.remainingQuestions")}</span>
+              <button className="upgrade-btn" onClick={() => navigate('/pricing')}>
+                ✨ {t("aiChat.premium")}
+              </button>
+            </div>
+          )}
           <form onSubmit={handleSendMessage} className="ai-input-form">
             <input
               type="text"
               className="ai-input"
-              placeholder={t("aiChat.inputPlaceholder") || "Ask me everything"}
+              placeholder={!isPremium && remainingMessages <= 0 ? "Hết lượt sử dụng miễn phí" : (t("aiChat.inputPlaceholder") || "Ask me everything")}
               value={inputMessage}
               onChange={(e) => setInputMessage(e.target.value)}
-              disabled={isLoading}
+                disabled={isLoading || (isPremium === false && remainingMessages <= 0)}
             />
             <button
               type="submit"
               className="ai-send-btn"
-              disabled={!inputMessage.trim() || isLoading}
+              disabled={!inputMessage.trim() || isLoading || (!isPremium && remainingMessages <= 0)}
             >
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
                 <path
@@ -212,6 +283,38 @@ Otherwise, provide a helpful, friendly response related to studying, productivit
           </form>
         </div>
       </div>
+
+      {/* Upgrade Modal */}
+      {showUpgradeModal && (
+        <div className="upgrade-modal-overlay" onClick={() => setShowUpgradeModal(false)}>
+          <div className="upgrade-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="upgrade-modal-header">
+              <h3>🚀 Hết lượt sử dụng miễn phí!</h3>
+              <button className="modal-close" onClick={() => setShowUpgradeModal(false)}>×</button>
+            </div>
+            <div className="upgrade-modal-content">
+              <p>Bạn đã sử dụng hết 10 câu hỏi miễn phí hôm nay.</p>
+              <div className="premium-features">
+                <h4>✨ Ưu đãi Premium:</h4>
+                <ul>
+                  <li>✓ Không giới hạn câu hỏi AI</li>
+                  <li>✓ Không giới hạn tạo lịch học</li>
+                  <li>✓ Phân tích chi tiết hơn</li>
+                  <li>✓ Ưu tiên hỗ trợ</li>
+                </ul>
+              </div>
+              <div className="upgrade-modal-actions">
+                <button className="upgrade-now-btn" onClick={() => navigate('/pricing')}>
+                  Đăng ký Premium
+                </button>
+                <button className="maybe-later-btn" onClick={() => setShowUpgradeModal(false)}>
+                  Để sau
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       <BottomNav />
     </div>

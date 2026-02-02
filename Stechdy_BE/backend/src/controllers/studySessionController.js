@@ -940,7 +940,7 @@ exports.getSessionsByRange = async (req, res) => {
 // AI Schedule Generation Proxy
 exports.generateAISchedule = async (req, res) => {
   try {
-    const n8nWebhookUrl = 'https://tamastran.duckdns.org/webhook/gen-schedule-v3-lite';
+    const n8nWebhookUrl = process.env.N8N_WEBHOOK_URL || 'https://tamastran.duckdns.org/webhook/gen-schedule-v3-lite';
     
     console.log('🤖 Proxying AI schedule generation request to n8n...');
     console.log('Request body:', req.body);

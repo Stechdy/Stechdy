@@ -1,4 +1,7 @@
 {
+  "common": {
+    "user": "Người dùng"
+  },
   "nav": {
     "features": "Tính năng",
     "howItWorks": "Cách hoạt động",
@@ -1254,7 +1257,46 @@
     "inputPlaceholder": "Hỏi tôi mọi thứ",
     "greeting": "Chào buổi sáng! Bạn muốn làm gì?",
     "createSchedulePrompt": "Bạn có thể tạo lịch tự học cho tôi không?",
-    "createScheduleResponse": "Tất nhiên! Vui lòng nhấn vào Tạo lịch học để tiếp tục!!!"
+    "createScheduleResponse": "Tất nhiên! Vui lòng nhấn vào Tạo lịch học để tiếp tục!!!",
+    "remainingQuestions": "câu hỏi còn lại",
+    "premium": "Premium"
+  },
+  "aiGenerator": {
+    "remainingGenerations": "lần tạo còn lại",
+    "premium": "Premium"
+  },
+  "calendar": {
+    "title": "Lịch",
+    "week": "Tuần",
+    "today": "Hôm nay",
+    "studySessions": "buổi học",
+    "studySession": "buổi học",
+    "noSessions": "Không có buổi học nào được lên lịch cho ngày này",
+    "noSessionsToday": "Không có buổi học nào hôm nay",
+    "createSchedule": "Tạo lịch học thông minh",
+    "useAI": "Sử dụng AI để tạo lịch học phù hợp với bạn!",
+    "completed": "Hoàn thành",
+    "missed": "Bỏ lỡ",
+    "scheduled": "Đã lên lịch",
+    "noSubject": "Không có môn học"
+  },
+  "dashboard": {
+    "goodMorning": "Chào buổi sáng",
+    "goodAfternoon": "Chào buổi chiều",
+    "goodEvening": "Chào buổi tối",
+    "currentStreak": "Chuỗi ngày hiện tại",
+    "days": "ngày",
+    "todaysProgress": "TIẺ N ĐỘ HÔM NAY",
+    "aiSuggestion": "GỢI Ý TỪ AI",
+    "upcomingSessions": "CÁC BUỔI HỌC SẮP TỚI",
+    "noSessions": "Không có buổi học sắp tới",
+    "createWithAI": "Tạo lịch học bằng AI thông minh ✨",
+    "viewProfile": "Xem thông tin cá nhân",
+    "missedSession": "Bỏ lỡ buổi học",
+    "missedSessionText": "Bạn đã bỏ lỡ",
+    "aSession": "một buổi học",
+    "asMissed": "hôm nay",
+    "moreMissedToday": "buổi học bỏ lỡ khác hôm nay"
   },
   "sessionExpired": {
     "title": "Đã phát hiện có thiết bị khác đăng nhập",

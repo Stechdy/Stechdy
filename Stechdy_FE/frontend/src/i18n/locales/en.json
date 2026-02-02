@@ -1,4 +1,7 @@
 {
+  "common": {
+    "user": "User"
+  },
   "nav": {
     "features": "Features",
     "howItWorks": "How It Works",
@@ -1254,7 +1257,46 @@
     "inputPlaceholder": "Ask me everything",
     "greeting": "Good morning! What do you want to do?",
     "createSchedulePrompt": "Can you create Self-study schedule for me?",
-    "createScheduleResponse": "Of course! Please press on create Schedule to continue!!!"
+    "createScheduleResponse": "Of course! Please press on create Schedule to continue!!!",
+    "remainingQuestions": "questions remaining",
+    "premium": "Premium"
+  },
+  "aiGenerator": {
+    "remainingGenerations": "generations remaining",
+    "premium": "Premium"
+  },
+  "calendar": {
+    "title": "Calendar",
+    "week": "Week",
+    "today": "Today",
+    "studySessions": "study sessions",
+    "studySession": "study session",
+    "noSessions": "No sessions scheduled for this day",
+    "noSessionsToday": "No sessions scheduled today",
+    "createSchedule": "Create smart schedule",
+    "useAI": "Use AI to create a schedule that fits you!",
+    "completed": "Completed",
+    "missed": "Missed",
+    "scheduled": "Scheduled",
+    "noSubject": "No subject"
+  },
+  "dashboard": {
+    "goodMorning": "Good morning",
+    "goodAfternoon": "Good afternoon",
+    "goodEvening": "Good evening",
+    "currentStreak": "Current Streak",
+    "days": "days",
+    "todaysProgress": "TODAY'S PROGRESS",
+    "aiSuggestion": "AI SUGGESTION",
+    "upcomingSessions": "UPCOMING SESSIONS",
+    "noSessions": "No upcoming sessions",
+    "createWithAI": "Create schedule with smart AI ✨",
+    "viewProfile": "View profile",
+    "missedSession": "Missed session",
+    "missedSessionText": "You missed",
+    "aSession": "a session",
+    "asMissed": "today",
+    "moreMissedToday": "more missed sessions today"
   },
   "sessionExpired": {
     "title": "Another Device Login Detected",

@@ -17,7 +17,7 @@ import "./Dashboard.css";
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [userData, setUserData] = useState(null);
   const [studyProgress, setStudyProgress] = useState({ current: 0, goal: 360 });
   const [streak, setStreak] = useState(12);
@@ -28,6 +28,7 @@ const Dashboard = () => {
   const [showQuoteModal, setShowQuoteModal] = useState(false);
   const [activeSession, setActiveSession] = useState(null);
   const [missedSessions, setMissedSessions] = useState([]);
+  const [currentQuote, setCurrentQuote] = useState(null);
 
   // Get time-based greeting
   const getGreeting = () => {
@@ -120,6 +121,19 @@ const Dashboard = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Refresh AI suggestion when language changes
+  useEffect(() => {
+    const suggestion = getRandomAISuggestion(i18n.language, {
+      progressPercent: (studyProgress.current / studyProgress.goal) * 100,
+      completedMinutes: studyProgress.current,
+      upcomingSessionsCount: upcomingSessions.length,
+      consecutiveStudyMinutes: studyProgress.current,
+    });
+    if (suggestion) {
+      setAiSuggestion(suggestion);
+    }
+  }, [i18n.language]);
+
   // Check if user needs mood check-in
   const checkMoodCheckIn = async () => {
     const lastSkipped = localStorage.getItem("moodCheckInSkipped");
@@ -156,13 +170,18 @@ const Dashboard = () => {
       
       // Always generate a fresh random suggestion on load
       const progressPercent = ((data.studyProgress?.current || 0) / (data.studyProgress?.goal || 360)) * 100;
-      const freshSuggestion = getRandomAISuggestion(t, {
+      const freshSuggestion = getRandomAISuggestion(i18n.language, {
         progressPercent,
         completedMinutes: data.studyProgress?.current || 0,
         upcomingSessionsCount: data.upcomingSessions?.length || 0,
         consecutiveStudyMinutes: data.studyProgress?.current || 0,
       });
-      setAiSuggestion(freshSuggestion);
+      
+      // Fallback if suggestion is empty
+      const fallbackText = i18n.language?.startsWith('en') 
+        ? "Believe in yourself! You can do this 🌟"
+        : "Hãy tin vào bản thân! Bạn có thể làm được điều này 🌟";
+      setAiSuggestion(freshSuggestion || fallbackText);
     }
   };
 
@@ -277,13 +296,19 @@ const Dashboard = () => {
       // Generate AI suggestion based on progress and context
       const progressPercent = (completedMinutes / goalMinutes) * 100;
       
-      // Get random AI suggestion with context
-      const suggestion = getRandomAISuggestion(t, {
+      // Get random AI suggestion with context - pass language from i18n
+      const suggestion = getRandomAISuggestion(i18n.language, {
         progressPercent,
         completedMinutes,
         upcomingSessionsCount: upcomingSessions.length,
-        consecutiveStudyMinutes: completedMinutes, // You can track this separately if needed
+        consecutiveStudyMinutes: completedMinutes,
       });
+      
+      // Fallback if suggestion is empty
+      const fallbackMsg = i18n.language?.startsWith('en') 
+        ? "Believe in yourself! You can do this 🌟"
+        : "Hãy tin vào bản thân! Bạn có thể làm được điều này 🌟";
+      const finalSuggestion = suggestion || fallbackMsg;
 
       const dashboardData = {
         studyProgress: { current: completedMinutes, goal: goalMinutes },
@@ -299,12 +324,12 @@ const Dashboard = () => {
                   color: "#8AC0D5",
                 },
               ],
-        aiSuggestion: suggestion,
+        aiSuggestion: finalSuggestion,
       };
 
       setStudyProgress(dashboardData.studyProgress);
       setUpcomingSessions(dashboardData.upcomingSessions);
-      setAiSuggestion(dashboardData.aiSuggestion);
+      setAiSuggestion(finalSuggestion);
 
       // Cache dashboard data
       localStorage.setItem("dashboardData", JSON.stringify(dashboardData));
@@ -383,8 +408,14 @@ const Dashboard = () => {
                   </div>
                   <div className="streak-icon">🔥</div>
                 </div>
-                <QuoteCard onClick={() => setShowQuoteModal(true)} />
               </div>
+
+              {/* Quote Card - Standalone */}
+              <QuoteCard 
+                onClick={() => setShowQuoteModal(true)} 
+                currentQuote={currentQuote}
+                onQuoteChange={setCurrentQuote}
+              />
 
               {/* Missed Sessions Alert */}
               {missedSessions.length > 0 && (
@@ -476,29 +507,66 @@ const Dashboard = () => {
                   {t("dashboard.upcomingSessions")}
                 </h2>
                 <div className="dashboard-dashboard-sessions-list">
-                  {upcomingSessions.map((session) => (
-                    <div
-                      key={session.id}
-                      className="dashboard-session-card"
-                      onClick={() =>
-                        session.subjectId &&
-                        navigate(`/subject/${session.subjectId}`)
-                      }
-                      style={{
-                        cursor: session.subjectId ? "pointer" : "default",
-                      }}
+                  {upcomingSessions.length > 0 && upcomingSessions[0].subject !== t("dashboard.noSessions") ? (
+                    upcomingSessions.map((session) => (
+                      <div
+                        key={session.id}
+                        className="dashboard-session-card"
+                        onClick={() =>
+                          session.subjectId &&
+                          navigate(`/subject/${session.subjectId}`)
+                        }
+                        style={{
+                          cursor: session.subjectId ? "pointer" : "default",
+                        }}
+                      >
+                        <div className="dashboard-session-left">
+                          <div
+                            className="dashboard-session-indicator"
+                            style={{ backgroundColor: session.color }}
+                          ></div>
+                          <div className="dashboard-session-info">
+                            <h3 className="dashboard-session-subject">
+                              {session.subject}
+                            </h3>
+                            <p className="dashboard-session-time">
+                              {session.time}
+                            </p>
+                          </div>
+                        </div>
+                        <svg
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                        >
+                          <path
+                            d="M9 18L15 12L9 6"
+                            stroke="#9CA3AF"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      </div>
+                    ))
+                  ) : (
+                    <div 
+                      className="dashboard-session-card ai-generator-suggestion"
+                      onClick={() => navigate("/ai-generator")}
+                      style={{ cursor: "pointer" }}
                     >
                       <div className="dashboard-session-left">
                         <div
                           className="dashboard-session-indicator"
-                          style={{ backgroundColor: session.color }}
+                          style={{ backgroundColor: "#FF69B4" }}
                         ></div>
                         <div className="dashboard-session-info">
                           <h3 className="dashboard-session-subject">
-                            {session.subject}
+                            {t("dashboard.noSessions")}
                           </h3>
                           <p className="dashboard-session-time">
-                            {session.time}
+                            {t("dashboard.createWithAI")}
                           </p>
                         </div>
                       </div>
@@ -510,14 +578,14 @@ const Dashboard = () => {
                       >
                         <path
                           d="M9 18L15 12L9 6"
-                          stroke="#9CA3AF"
+                          stroke="#FF69B4"
                           strokeWidth="2"
                           strokeLinecap="round"
                           strokeLinejoin="round"
                         />
                       </svg>
                     </div>
-                  ))}
+                  )}
                 </div>
               </section>
             </div>
@@ -526,40 +594,18 @@ const Dashboard = () => {
           {/* AI Suggestion - Full Width */}
           <section className="ai-section ai-section-full">
             <h2 className="section-title">{t("dashboard.aiSuggestion")}</h2>
-            <div className="ai-card gradient-card">
-              <div className="ai-icon">🤖</div>
+            <div 
+              className="ai-card gradient-card"
+              onClick={() => navigate("/ai")}
+              style={{ cursor: "pointer" }}
+            >
+              <div className="ai-icon">
+                <img src="/LogoAIStechdy.png" alt="AI Stechdy" style={{width: '80px', height: '80px'}} />
+              </div>
               <p className="ai-text">{aiSuggestion}</p>
             </div>
           </section>
 
-          {/* AI Generator Card */}
-          <section className="ai-generator-section">
-            <div 
-              className="ai-generator-card gradient-card"
-              onClick={() => navigate("/ai-generator")}
-              style={{ cursor: "pointer" }}
-            >
-              <div className="ai-generator-content">
-                <div className="ai-generator-icon">
-                  <i className="fas fa-magic"></i>
-                </div>
-                <div className="ai-generator-info">
-                  <h3 className="ai-generator-title">
-                    {t("dashboard.aiGeneratorTitle") || "AI Schedule Generator"}
-                  </h3>
-                  <p className="ai-generator-description">
-                    {t("dashboard.aiGeneratorDesc") || "Generate optimal study schedules with AI-powered algorithms"}
-                  </p>
-                </div>
-              </div>
-              <div className="ai-generator-action">
-                <span className="ai-generator-badge">
-                  {t("dashboard.tryNow") || "Try Now"}
-                </span>
-                <i className="fas fa-arrow-right"></i>
-              </div>
-            </div>
-          </section>
         </main>
 
         {/* Mood Check-in Modal */}
@@ -572,6 +618,8 @@ const Dashboard = () => {
         <QuoteModal
           isOpen={showQuoteModal}
           onClose={() => setShowQuoteModal(false)}
+          currentQuote={currentQuote}
+          onQuoteChange={setCurrentQuote}
         />
       </div>
 

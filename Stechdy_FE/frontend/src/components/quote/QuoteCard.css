@@ -1,42 +1,103 @@
 /* Quote Card Styles */
 .quote-card {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.85) 100%);
-  backdrop-filter: blur(12px);
-  border: 2px solid rgba(255, 255, 255, 0.6);
-  border-radius: var(--border-radius-lg);
+  background: transparent;
+  border: none;
   padding: var(--spacing-md) var(--spacing-lg);
   color: var(--text-inverse);
   cursor: pointer;
   transition: all var(--transition-normal);
-  display: flex;
-  align-items: flex-start;
-  gap: var(--spacing-sm);
-  margin-top: var(--spacing-sm);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15), 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .quote-card:hover {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.95) 100%);
   transform: translateY(-3px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2), 0 4px 12px rgba(0, 0, 0, 0.15);
-  border-color: rgba(255, 255, 255, 0.8);
 }
 
 .quote-card:active {
   transform: translateY(0);
 }
 
-.quote-icon {
-  font-size: 28px;
-  flex-shrink: 0;
-  line-height: 1;
-  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.2));
-  transform: scale(1);
-  transition: transform 0.2s ease;
+.mascot-container {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-md);
+  position: relative;
 }
 
-.quote-card:hover .quote-icon {
+.mascot-avatar {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.mascot-image {
+  width: 150px;
+  height: 150px;
+  transition: transform 0.3s ease;
+  animation: mascotBounce 2s ease-in-out infinite;
+  backdrop-filter: blur(4px);
+}
+
+.quote-card:hover .mascot-image {
   transform: scale(1.1);
+  animation-play-state: paused;
+}
+
+@keyframes mascotBounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-5px);
+  }
+  60% {
+    transform: translateY(-3px);
+  }
+}
+
+.speech-bubble {
+  position: relative;
+  background: rgba(255, 255, 255, 0.95);
+  border: 2px solid rgba(138, 192, 213, 0.5);
+  border-radius: 18px;
+  padding: var(--spacing-sm) var(--spacing-md);
+  margin-left: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  animation: speechAppear 0.5s ease-out;
+  backdrop-filter: blur(8px);
+  margin-top: 30px;
+}
+
+@keyframes speechAppear {
+  0% {
+    opacity: 0;
+    transform: scale(0.8) translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.speech-tail {
+  position: absolute;
+  left: -12px;
+  top: 20px;
+  width: 0;
+  height: 0;
+  border-top: 10px solid transparent;
+  border-right: 15px solid rgba(255, 255, 255, 0.95);
+  border-bottom: 10px solid transparent;
+}
+
+.speech-tail::before {
+  content: '';
+  position: absolute;
+  left: 2px;
+  top: -12px;
+  width: 0;
+  height: 0;
+  border-top: 12px solid transparent;
+  border-right: 17px solid rgba(138, 192, 213, 0.5);
+  border-bottom: 12px solid transparent;
 }
 
 .quote-content {
@@ -92,22 +153,17 @@
 }
 
 /* Dark Theme Support */
-[data-theme="dark"] .quote-card {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.12) 100%);
-  border: 2px solid rgba(255, 255, 255, 0.25);
-}
-
 [data-theme="dark"] .quote-card:hover {
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.18) 100%);
   border-color: rgba(255, 255, 255, 0.35);
 }
 
 [data-theme="dark"] .quote-text {
-  color: #ffffff;
+  color: #000000;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 [data-theme="dark"] .quote-author {
-  color: rgba(255, 255, 255, 0.95);
+  color: rgba(0, 0, 0, 0.95);
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
