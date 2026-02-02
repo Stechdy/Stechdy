@@ -1090,7 +1090,47 @@
     "thisMonth": "this month",
     "remainingAfter": "After this check-in, you will have",
     "makeupCheckIn": "Makeup Check-in",
-    "confirmMakeup": "Confirm Makeup"
+    "confirmMakeup": "Confirm Makeup",
+    "makeupSuccessMessage": "Successfully completed makeup check-in! You have {{remaining}} makeup turns remaining this month"
+  },
+  "celebration": {
+    "congratulations": "Congratulations!",
+    "newBadge": "New Badge!",
+    "badgeEarned": "You earned the \"{{badge}}\" badge! 🌟",
+    "newMilestone": "New Milestone!",
+    "streakAchieved": "You've reached {{days}} day streak!",
+    "streakMilestone": "{{days}} Day Streak!",
+    "keepGoing": "You're doing great! Keep it up! 💪",
+    "milestones": {
+      "bunny": {
+        "name": "Cute Bunny",
+        "description": "You've maintained a 3-day streak!"
+      },
+      "fox": {
+        "name": "Clever Fox",
+        "description": "One week of persistence - Amazing!"
+      },
+      "panda": {
+        "name": "Peaceful Panda",
+        "description": "2 weeks in a row - You're extraordinary!"
+      },
+      "penguin": {
+        "name": "Happy Penguin",
+        "description": "1 perfect month - You're a superstar!"
+      },
+      "owl": {
+        "name": "Wise Owl",
+        "description": "2 months streak - Wisdom and patience!"
+      },
+      "dragon": {
+        "name": "Legendary Dragon",
+        "description": "3 legendary months - Unmatched power!"
+      },
+      "unicorn": {
+        "name": "Magical Unicorn",
+        "description": "6 magical months - You're extraordinary!"
+      }
+    }
   },
   "home": {
     "welcome": "Welcome to S-Techdy",

@@ -97,13 +97,10 @@ const MILESTONE_ANIMALS = [
   { streak: 3, animalId: 'bunny', name: 'Cute Bunny', emoji: '🐰', description: 'Bạn đã duy trì 3 ngày streak!' },
   { streak: 7, animalId: 'fox', name: 'Clever Fox', emoji: '🦊', description: 'Một tuần kiên trì - Thật tuyệt vời!' },
   { streak: 14, animalId: 'panda', name: 'Peaceful Panda', emoji: '🐼', description: '2 tuần liên tiếp - Bạn thật phi thường!' },
-  { streak: 21, animalId: 'koala', name: 'Sleepy Koala', emoji: '🐨', description: '3 tuần streak - Sự kiên trì đáng ngưỡng mộ!' },
   { streak: 30, animalId: 'penguin', name: 'Happy Penguin', emoji: '🐧', description: '1 tháng hoàn hảo - Bạn là siêu sao!' },
-  { streak: 45, animalId: 'dolphin', name: 'Smart Dolphin', emoji: '🐬', description: '45 ngày duy trì - Không gì cản nổi bạn!' },
   { streak: 60, animalId: 'owl', name: 'Wise Owl', emoji: '🦉', description: '2 tháng streak - Trí tuệ và kiên nhẫn!' },
   { streak: 90, animalId: 'dragon', name: 'Legendary Dragon', emoji: '🐉', description: '3 tháng huyền thoại - Sức mạnh vô song!' },
-  { streak: 180, animalId: 'unicorn', name: 'Magical Unicorn', emoji: '🦄', description: '6 tháng kỳ diệu - Bạn thật phi thường!' },
-  { streak: 365, animalId: 'phoenix', name: 'Eternal Phoenix', emoji: '🔥', description: '1 năm bất diệt - Huyền thoại tái sinh!' }
+  { streak: 180, animalId: 'unicorn', name: 'Magical Unicorn', emoji: '🦄', description: '6 tháng kỳ diệu - Bạn thật phi thường!' }
 ];
 
 // Method to reset monthly makeup check-ins

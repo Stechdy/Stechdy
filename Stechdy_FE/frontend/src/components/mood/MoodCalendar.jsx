@@ -344,8 +344,11 @@ const MoodCalendar = () => {
           // Determine celebration content
           const milestone = response.data.newMilestones[0];
           const celebrationEmoji = milestone.emoji || "🎖️";
-          const celebrationTitle = milestone.name || t("celebration.newMilestone") || "Cột mốc mới!";
-          const celebrationMessage = milestone.description || t("celebration.streakAchieved", { days: currentStreak }) || `Bạn đã đạt ${currentStreak} ngày streak!`;
+          
+          // Use translation keys based on animalId instead of backend text
+          const animalId = milestone.animalId || 'bunny';
+          const celebrationTitle = t(`celebration.milestones.${animalId}.name`) || milestone.name || t("celebration.newMilestone");
+          const celebrationMessage = t(`celebration.milestones.${animalId}.description`) || milestone.description || t("celebration.streakAchieved", { days: currentStreak });
 
           // Show celebration
           setCelebration({
@@ -361,7 +364,8 @@ const MoodCalendar = () => {
           }, 6500);
         } else {
           // No milestone, show success popup
-          setSuccessMessage(response.message || t("streak.makeupSuccess") || "Điểm danh bù thành công!");
+          const remainingMakeups = response.data?.remainingMakeups || 0;
+          setSuccessMessage(t("streak.makeupSuccessMessage", { remaining: remainingMakeups }));
           setShowSuccessPopup(true);
         }
       }
@@ -372,7 +376,7 @@ const MoodCalendar = () => {
       closeMakeupModal();
       
       // Then show error popup
-      setSuccessMessage(error.response?.data?.message || t("streak.makeupError") || "Lỗi khi điểm danh bù");
+      setSuccessMessage(t("streak.makeupError"));
       setShowSuccessPopup(true);
     }
   };
@@ -570,7 +574,7 @@ const MoodCalendar = () => {
           <div className="mood-modal makeup-modal" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
               <h3>
-                🔄 {t("streak.makeupCheckIn") || "Điểm danh bù"}
+                 {t("streak.makeupCheckIn") || "Điểm danh bù"}
               </h3>
               <button className="close-btn" onClick={closeMakeupModal}>
                 ×
@@ -650,7 +654,7 @@ const MoodCalendar = () => {
           <div className="mood-modal no-makeups-modal" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
               <h3>
-                📅 {t("streak.noMakeupsTitle") || "Hết lượt điểm danh bù"}
+                 {t("streak.noMakeupsTitle") || "Hết lượt điểm danh bù"}
               </h3>
               <button className="close-btn" onClick={() => setShowNoMakeupsModal(false)}>
                 ×
@@ -690,13 +694,13 @@ const MoodCalendar = () => {
         <div className="milestone-modal-overlay" onClick={() => setShowSuccessPopup(false)}>
           <div className="success-popup-content" onClick={(e) => e.stopPropagation()}>
             <div className="success-popup-icon">✅</div>
-            <h2 className="success-popup-title">{t("common.success") || "Thông báo"}</h2>
+            <h2 className="success-popup-title">{t("common.success")}</h2>
             <p className="success-popup-message">{successMessage}</p>
             <button 
               className="success-popup-button" 
               onClick={() => setShowSuccessPopup(false)}
             >
-              {t("common.ok") || "OK"}
+              {t("common.ok")}
             </button>
           </div>
         </div>,
