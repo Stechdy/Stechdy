@@ -6,6 +6,7 @@ import SidebarNav from "../../components/common/SidebarNav";
 import config from "../../config";
 import "./AIGenerator.css";
 import i18n from "../../i18n";
+import veryHappyImg from "../../assets/Veryhappy.png";
 
 const AIGenerator = () => {
   const navigate = useNavigate();
@@ -33,6 +34,8 @@ const AIGenerator = () => {
   const [showDeleteWarningModal, setShowDeleteWarningModal] = useState(false);
   const [showDeleteSuccessModal, setShowDeleteSuccessModal] = useState(false);
   const [showErrorModal, setShowErrorModal] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [generatedDaysCount, setGeneratedDaysCount] = useState(0);
   const [minStartDate, setMinStartDate] = useState(
     new Date().toISOString().split("T")[0],
   );
@@ -362,12 +365,6 @@ const AIGenerator = () => {
         localStorage.setItem("studySchedule", JSON.stringify(scheduleData));
         localStorage.setItem("studyScheduleInput", JSON.stringify(webhookData));
 
-        // Show success message - user will save to DB after editing
-        displayToast(
-          `Schedule generated with ${scheduleData.schedule.length} days! Review and edit before saving.`,
-          "success",
-        );
-
         // Increment generation count
         const currentCount = parseInt(
           localStorage.getItem("ai_generation_count") || "0",
@@ -378,10 +375,9 @@ const AIGenerator = () => {
           (currentCount + 1).toString(),
         );
 
-        // Redirect to schedule editor page to review/edit before final save
-        setTimeout(() => {
-          navigate("/schedule-editor");
-        }, 1500);
+        // Show success modal
+        setGeneratedDaysCount(scheduleData.schedule.length);
+        setShowSuccessModal(true);
       } else {
         console.error(
           "Unexpected response structure:",
@@ -942,7 +938,7 @@ const AIGenerator = () => {
             <div className="ag-modal-header">
               <div className="modal-header-content">
                 <div className="modal-icon-wrapper success">
-                  <i className="fas fa-check-circle modal-icon"></i>
+                  <img src={veryHappyImg} alt="Success" className="modal-icon" />
                 </div>
                 <h2>
                   {i18n.language === "vi"
@@ -1030,6 +1026,69 @@ const AIGenerator = () => {
                 Điều này chỉ mất vài giây... Hãy thư giãn và chờ AI làm việc
                 nhé! ✨
               </p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Success Modal */}
+      {showSuccessModal && (
+        <div className="ag-loading-overlay">
+          <div className="ag-success-modal">
+            <div className="ag-success-header">
+              <div className="ag-success-icon">
+                <img src={veryHappyImg} alt="Success" />
+              </div>
+              <h2 className="ag-success-title">
+                {i18n.language === "vi"
+                  ? "Tạo lịch thành công!"
+                  : "Schedule Created Successfully!"}
+              </h2>
+              <p className="ag-success-subtitle">
+                {i18n.language === "vi"
+                  ? `Đã tạo ${generatedDaysCount} ngày học`
+                  : `Generated ${generatedDaysCount} study days`}
+              </p>
+            </div>
+
+            <div className="ag-success-body">
+              <div className="ag-success-message">
+                <p>
+                  {i18n.language === "vi"
+                    ? "Lịch học AI đã được tạo thành công! Bạn có thể:"
+                    : "Your AI schedule has been created successfully! You can:"}
+                </p>
+                <ul>
+                  <li>
+                    {i18n.language === "vi"
+                      ? "Xem và chỉnh sửa lịch học"
+                      : "Review and edit the schedule"}
+                  </li>
+                  <li>
+                    {i18n.language === "vi"
+                      ? "Điều chỉnh thời gian học"
+                      : "Adjust study times"}
+                  </li>
+                  <li>
+                    {i18n.language === "vi"
+                      ? "Lưu vào lịch học của bạn"
+                      : "Save to your calendar"}
+                  </li>
+                </ul>
+              </div>
+
+              <div className="ag-success-actions">
+                <button
+                  className="ag-success-btn ag-success-primary"
+                  onClick={() => {
+                    setShowSuccessModal(false);
+                    navigate("/schedule-editor");
+                  }}
+                >
+                  <i className="fas fa-edit"></i>
+                  {i18n.language === "vi" ? "Xem & Chỉnh sửa" : "Review & Edit"}
+                </button>
+              </div>
             </div>
           </div>
         </div>

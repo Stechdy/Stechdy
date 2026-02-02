@@ -440,28 +440,34 @@ const Dashboard = () => {
                 <h2 className="section-title">
                   {t("dashboard.todaysProgress")}
                 </h2>
-                <div
-                  className="progress-card"
-                  onClick={() => navigate("/study-tracker")}
-                  style={{ cursor: "pointer" }}
-                >
-                  <div className="progress-header">
-                    <span className="progress-label">
-                      {t("dashboard.studyTime")}
-                    </span>
-                    <span className="progress-time">
-                      {Math.floor(studyProgress.current / 60)}h{" "}
-                      {studyProgress.current % 60}m /{" "}
-                      {Math.floor(studyProgress.goal / 60)}h
-                    </span>
+                {studyProgress.goal === 0 || upcomingSessions.length === 0 ? (
+                  <div className="progress-card free-day-card">
+                    <div className="free-day-content">
+                      <span className="free-day-emoji">🌟</span>
+                      <span className="free-day-text">Enjoy your free day</span>
+                    </div>
                   </div>
-                  <div className="progress-bar">
-                    <div
-                      className="progress-fill"
-                      style={{ width: `${progressPercentage}%` }}
-                    ></div>
+                ) : (
+                  <div
+                    className="progress-card"
+                    onClick={() => navigate("/study-tracker")}
+                    style={{ cursor: "pointer" }}
+                    title={`${Math.floor(studyProgress.current / 60)}h ${studyProgress.current % 60}m / ${Math.floor(studyProgress.goal / 60)}h`}
+                  >
+                    <div className="progress-bar">
+                      <div
+                        className="progress-fill"
+                        style={{ width: `${progressPercentage}%` }}
+                      >
+                        <span className="progress-tooltip">
+                          {Math.floor(studyProgress.current / 60)}h{" "}
+                          {studyProgress.current % 60}m /{" "}
+                          {Math.floor(studyProgress.goal / 60)}h
+                        </span>
+                      </div>
+                    </div>
                   </div>
-                </div>
+                )}
               </section>
 
               {/* Upcoming Sessions */}
