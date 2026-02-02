@@ -248,7 +248,13 @@ const Calendar = () => {
                   onClick={() => navigate("/ai-generator")}
                 >
                   <div className="ai-mascot">
-                    <img src="/logoAIStechdy.png" alt="AI Stechdy" />
+                    <img 
+                      src={`${process.env.PUBLIC_URL}/LogoAIStechdy.png`}
+                      alt="AI Stechdy"
+                      onError={(e) => {
+                        e.target.style.display = 'none';
+                      }}
+                    />
                   </div>
                   <div className="ai-suggestion-content">
                     <span className="ai-suggestion-title">{t("calendar.createSchedule")}</span>

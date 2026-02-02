@@ -496,14 +496,36 @@
     "subjectName": "Subject name...",
     "addSubject": "Add Subject",
     "priority": "Priority",
+    "priorityHighest": "Highest",
+    "priorityHigh": "High",
+    "priorityMedium": "Medium",
+    "priorityLow": "Low",
+    "priorityLowest": "Lowest",
     "dateRange": "Date Range",
     "startDate": "Start Date",
     "endDate": "End Date (Optional)",
     "endDateHint": "Leave empty for 30 days from start",
     "studyDuration": "Study Session Duration",
+    "duration30": "30 min",
+    "duration45": "45 min",
+    "duration60": "1 hour",
+    "duration90": "1.5 hours",
+    "durationCustom": "Custom",
     "customHint": "15-240 minutes",
     "busyTimes": "Busy Times (Optional)",
     "selectDay": "Select day...",
+    "monday": "Monday",
+    "tuesday": "Tuesday",
+    "wednesday": "Wednesday",
+    "thursday": "Thursday",
+    "friday": "Friday",
+    "saturday": "Saturday",
+    "sunday": "Sunday",
+    "slotMorning": "Morning",
+    "slotAfternoon": "Afternoon",
+    "slotEvening": "Evening",
+    "statusBusy": "Busy",
+    "statusAvailable": "Available",
     "addBusyTime": "Add Busy Time",
     "generateSchedule": "Generate Schedule",
     "generating": "Generating...",
@@ -1342,5 +1364,100 @@
     "title": "Another Device Login Detected",
     "message": "Your account has been logged in from another device. Please login again.",
     "loginButton": "Login Again"
+  },
+  "onboarding": {
+    "skip": "Skip",
+    "back": "Back",
+    "next": "Continue",
+    "start": "Get Started!",
+    "welcome": {
+      "title": "Welcome to Stechdy! 🎉",
+      "subtitle": "Your amazing learning journey starts here",
+      "description": "Let's explore the features and set up your account!"
+    },
+    "features": {
+      "dashboard": {
+        "title": "Smart Dashboard",
+        "description": "View your learning progress overview, track streaks and get daily AI suggestions",
+        "h1": "📈 Visual learning statistics",
+        "h2": "🔥 Daily streak tracking",
+        "h3": "🤖 Smart AI suggestions"
+      },
+      "timer": {
+        "title": "Pomodoro Timer",
+        "description": "Focus on studying effectively with Pomodoro technique and time tracking",
+        "h1": "🍅 Effective Pomodoro method",
+        "h2": "⏰ Flexible time customization",
+        "h3": "📝 Notes while studying"
+      },
+      "calendar": {
+        "title": "Smart Calendar",
+        "description": "Schedule your study sessions, manage deadlines and never miss any event",
+        "h1": "📌 Effective deadline management",
+        "h2": "🔔 Smart reminders",
+        "h3": "🤖 AI auto-generates schedule"
+      },
+      "mood": {
+        "title": "Mood Tracking",
+        "description": "Record your emotions daily and better understand your mental health",
+        "h1": "💭 Daily emotion journal",
+        "h2": "📊 Mood trend analysis",
+        "h3": "💡 Mental health suggestions"
+      },
+      "ai": {
+        "title": "Smart AI Assistant",
+        "description": "Chat with AI for study support and 24/7 question answering",
+        "h1": "💬 AI chat for study support",
+        "h2": "📚 Auto-generate study schedule",
+        "h3": "🎯 Personalized suggestions"
+      }
+    },
+    "questions": {
+      "goal": {
+        "title": "What's your study goal?",
+        "exam": "🎓 Exam preparation",
+        "skill": "💻 Learn new skills",
+        "habit": "📖 Build study habits",
+        "language": "🌍 Learn languages",
+        "other": "✨ Other goals"
+      },
+      "hours": {
+        "title": "How many hours do you want to study daily?",
+        "1": "😌 1-2 hours (Light)",
+        "3": "📚 3-4 hours (Moderate)",
+        "5": "💪 5-6 hours (Dedicated)",
+        "7": "🔥 7+ hours (Intensive)"
+      },
+      "challenges": {
+        "title": "What challenges do you face when studying?",
+        "subtitle": "(Select multiple)",
+        "focus": "😵 Hard to focus",
+        "time": "⏳ Lack of time",
+        "motivation": "😴 Lack of motivation",
+        "plan": "📋 Don't know how to plan",
+        "stress": "😰 Stress and anxiety"
+      },
+      "time": {
+        "title": "When do you study best?",
+        "morning": "🌅 Early morning (5-9am)",
+        "afternoon": "☀️ Midday (9am-2pm)",
+        "evening": "🌆 Evening (2-7pm)",
+        "night": "🌙 Night (7pm+)"
+      },
+      "motivation": {
+        "title": "What motivates you to study?",
+        "career": "💼 Future career",
+        "knowledge": "🧠 Passion for knowledge",
+        "competition": "🏆 Competition, excellence",
+        "family": "👨‍👩‍👧 Family expectations",
+        "personal": "🌟 Personal growth"
+      }
+    },
+    "complete": {
+      "title": "Awesome! You're all set! 🚀",
+      "subtitle": "We understand you better now",
+      "description": "Let's start your exciting learning journey with Stechdy!",
+      "summary": "About you:"
+    }
   }
 }
