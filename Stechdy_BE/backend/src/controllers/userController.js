@@ -387,3 +387,53 @@ exports.updateUserSettings = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+// @desc    Get user onboarding status
+// @route   GET /api/users/onboarding
+// @access  Private
+exports.getOnboardingStatus = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id);
+    
+    res.json({
+      onboardingCompleted: user.onboardingCompleted || false,
+      onboardingPreferences: user.onboardingPreferences || null,
+    });
+  } catch (error) {
+    console.error('Error fetching onboarding status:', error);
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// @desc    Complete user onboarding
+// @route   PUT /api/users/onboarding
+// @access  Private
+exports.completeOnboarding = async (req, res) => {
+  try {
+    const { preferences } = req.body;
+    
+    const user = await User.findById(req.user._id);
+    
+    user.onboardingCompleted = true;
+    if (preferences) {
+      user.onboardingPreferences = {
+        studyGoal: preferences.studyGoal,
+        studyHours: preferences.studyHours,
+        challenges: preferences.challenges || [],
+        preferredTime: preferences.preferredTime,
+        motivation: preferences.motivation,
+      };
+    }
+    
+    await user.save();
+    
+    res.json({
+      message: 'Onboarding completed successfully',
+      onboardingCompleted: true,
+      onboardingPreferences: user.onboardingPreferences,
+    });
+  } catch (error) {
+    console.error('Error completing onboarding:', error);
+    res.status(500).json({ message: error.message });
+  }
+};
