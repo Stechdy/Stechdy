@@ -148,6 +148,17 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: null,
     },
+    onboardingCompleted: {
+      type: Boolean,
+      default: false,
+    },
+    onboardingPreferences: {
+      studyGoal: String,
+      studyHours: String,
+      challenges: [String],
+      preferredTime: String,
+      motivation: String,
+    },
     address: {
       street: String,
       city: String,

@@ -9,6 +9,8 @@ const {
   getCurrentUser,
   getUserSettings,
   updateUserSettings,
+  getOnboardingStatus,
+  completeOnboarding,
 } = require('../controllers/userController');
 const { protect } = require('../middleware/auth');
 
@@ -18,5 +20,6 @@ router.get('/me', protect, getCurrentUser);
 router.route('/profile').get(protect, getUserProfile).put(protect, updateUserProfile);
 router.get('/streak', protect, getUserStreak);
 router.route('/settings').get(protect, getUserSettings).put(protect, updateUserSettings);
+router.route('/onboarding').get(protect, getOnboardingStatus).put(protect, completeOnboarding);
 
 module.exports = router;
