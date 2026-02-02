@@ -54,6 +54,7 @@ import ScheduleEditor from "./pages/ScheduleEditor/ScheduleEditor";
 import CalendarEditor from "./pages/CalendarEditor/CalendarEditor";
 import AIChat from "./pages/AIChat/AIChat";
 import CelebrationTest from "./pages/Test/CelebrationTest";
+import Onboarding from "./pages/Onboarding/Onboarding";
 
 function App() {
   return (
@@ -124,6 +125,14 @@ function App() {
             />
 
             {/* Private Routes - User Dashboard */}
+            <Route
+              path="/onboarding"
+              element={
+                <PrivateRoute>
+                  <Onboarding />
+                </PrivateRoute>
+              }
+            />
             <Route
               path="/dashboard"
               element={

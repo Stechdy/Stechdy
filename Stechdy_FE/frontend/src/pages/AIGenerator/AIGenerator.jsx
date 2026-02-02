@@ -542,11 +542,11 @@ const AIGenerator = () => {
                             ))}
                           </div>
                           <span className="priority-hint">
-                            {subject.priority === 1 && "Highest"}
-                            {subject.priority === 2 && "High"}
-                            {subject.priority === 3 && "Medium"}
-                            {subject.priority === 4 && "Low"}
-                            {subject.priority === 5 && "Lowest"}
+                            {subject.priority === 1 && (t("ai.priorityHighest") || "Highest")}
+                            {subject.priority === 2 && (t("ai.priorityHigh") || "High")}
+                            {subject.priority === 3 && (t("ai.priorityMedium") || "Medium")}
+                            {subject.priority === 4 && (t("ai.priorityLow") || "Low")}
+                            {subject.priority === 5 && (t("ai.priorityLowest") || "Lowest")}
                           </span>
                         </div>
                       </div>
@@ -626,11 +626,11 @@ const AIGenerator = () => {
 
                   <div className="duration-pills">
                     {[
-                      { value: "30", label: "30 min" },
-                      { value: "45", label: "45 min" },
-                      { value: "60", label: "1 hour" },
-                      { value: "90", label: "1.5 hours" },
-                      { value: "custom", label: "Custom" },
+                      { value: "30", label: t("ai.duration30") || "30 min" },
+                      { value: "45", label: t("ai.duration45") || "45 min" },
+                      { value: "60", label: t("ai.duration60") || "1 hour" },
+                      { value: "90", label: t("ai.duration90") || "1.5 hours" },
+                      { value: "custom", label: t("ai.durationCustom") || "Custom" },
                     ].map((option) => (
                       <button
                         key={option.value}
@@ -686,13 +686,13 @@ const AIGenerator = () => {
                               {t("ai.selectDay") || "Select day..."}
                             </option>
                             {[
-                              { value: "monday", label: "Monday" },
-                              { value: "tuesday", label: "Tuesday" },
-                              { value: "wednesday", label: "Wednesday" },
-                              { value: "thursday", label: "Thursday" },
-                              { value: "friday", label: "Friday" },
-                              { value: "saturday", label: "Saturday" },
-                              { value: "sunday", label: "Sunday" },
+                              { value: "monday", label: t("ai.monday") || "Monday" },
+                              { value: "tuesday", label: t("ai.tuesday") || "Tuesday" },
+                              { value: "wednesday", label: t("ai.wednesday") || "Wednesday" },
+                              { value: "thursday", label: t("ai.thursday") || "Thursday" },
+                              { value: "friday", label: t("ai.friday") || "Friday" },
+                              { value: "saturday", label: t("ai.saturday") || "Saturday" },
+                              { value: "sunday", label: t("ai.sunday") || "Sunday" },
                             ].map((day) => {
                               const isSelected = busyTimes.some(
                                 (bt, i) => i !== index && bt.day === day.value,
@@ -728,17 +728,17 @@ const AIGenerator = () => {
                               {[
                                 {
                                   value: "morning",
-                                  label: "Morning",
+                                  label: t("ai.slotMorning") || "Morning",
                                   icon: "☀️",
                                 },
                                 {
                                   value: "afternoon",
-                                  label: "Afternoon",
+                                  label: t("ai.slotAfternoon") || "Afternoon",
                                   icon: "🌤️",
                                 },
                                 {
                                   value: "evening",
-                                  label: "Evening",
+                                  label: t("ai.slotEvening") || "Evening",
                                   icon: "🌙",
                                 },
                               ].map((slot) => (
@@ -766,8 +766,8 @@ const AIGenerator = () => {
                                     }`}
                                   >
                                     {busyTime.slots.includes(slot.value)
-                                      ? "Busy"
-                                      : "Available"}
+                                      ? (t("ai.statusBusy") || "Busy")
+                                      : (t("ai.statusAvailable") || "Available")}
                                   </span>
                                 </button>
                               ))}

@@ -496,14 +496,36 @@
     "subjectName": "Tên môn học...",
     "addSubject": "Thêm môn học",
     "priority": "Độ ưu tiên",
+    "priorityHighest": "Cao nhất",
+    "priorityHigh": "Cao",
+    "priorityMedium": "Trung bình",
+    "priorityLow": "Thấp",
+    "priorityLowest": "Thấp nhất",
     "dateRange": "Khoảng thời gian",
     "startDate": "Ngày bắt đầu",
     "endDate": "Ngày kết thúc (Tùy chọn)",
     "endDateHint": "Để trống để mặc định 30 ngày",
     "studyDuration": "Thời lượng mỗi buổi học",
+    "duration30": "30 phút",
+    "duration45": "45 phút",
+    "duration60": "1 giờ",
+    "duration90": "1.5 giờ",
+    "durationCustom": "Tùy chỉnh",
     "customHint": "15-240 phút",
     "busyTimes": "Thời gian bận (Tùy chọn)",
     "selectDay": "Chọn ngày...",
+    "monday": "Thứ hai",
+    "tuesday": "Thứ ba",
+    "wednesday": "Thứ tư",
+    "thursday": "Thứ năm",
+    "friday": "Thứ sáu",
+    "saturday": "Thứ bảy",
+    "sunday": "Chủ nhật",
+    "slotMorning": "Sáng",
+    "slotAfternoon": "Chiều",
+    "slotEvening": "Tối",
+    "statusBusy": "Bận",
+    "statusAvailable": "Rảnh",
     "addBusyTime": "Thêm thời gian bận",
     "generateSchedule": "Tạo lịch học",
     "generating": "Đang tạo...",
@@ -1342,5 +1364,100 @@
     "title": "Đã phát hiện có thiết bị khác đăng nhập",
     "message": "Tài khoản của bạn đã được đăng nhập từ thiết bị khác. Vui lòng đăng nhập lại.",
     "loginButton": "Đăng nhập lại"
+  },
+  "onboarding": {
+    "skip": "Bỏ qua",
+    "back": "Quay lại",
+    "next": "Tiếp tục",
+    "start": "Bắt đầu ngay!",
+    "welcome": {
+      "title": "Chào mừng đến với Stechdy! 🎉",
+      "subtitle": "Hành trình học tập tuyệt vời của bạn bắt đầu từ đây",
+      "description": "Hãy cùng khám phá các tính năng và thiết lập tài khoản của bạn nhé!"
+    },
+    "features": {
+      "dashboard": {
+        "title": "Trang chủ thông minh",
+        "description": "Xem tổng quan tiến độ học tập, theo dõi streak và nhận gợi ý AI mỗi ngày",
+        "h1": "📈 Thống kê học tập trực quan",
+        "h2": "🔥 Theo dõi streak hàng ngày",
+        "h3": "🤖 Gợi ý AI thông minh"
+      },
+      "timer": {
+        "title": "Pomodoro Timer",
+        "description": "Tập trung học tập hiệu quả với kỹ thuật Pomodoro và theo dõi thời gian",
+        "h1": "🍅 Phương pháp Pomodoro hiệu quả",
+        "h2": "⏰ Tùy chỉnh thời gian linh hoạt",
+        "h3": "📝 Ghi chú trong khi học"
+      },
+      "calendar": {
+        "title": "Lịch học thông minh",
+        "description": "Lên lịch học tập, quản lý deadline và không bỏ lỡ bất kỳ sự kiện nào",
+        "h1": "📌 Quản lý deadline hiệu quả",
+        "h2": "🔔 Nhắc nhở thông minh",
+        "h3": "🤖 AI tạo lịch tự động"
+      },
+      "mood": {
+        "title": "Theo dõi tâm trạng",
+        "description": "Ghi lại cảm xúc mỗi ngày và hiểu rõ hơn về sức khỏe tinh thần của bạn",
+        "h1": "💭 Nhật ký cảm xúc hàng ngày",
+        "h2": "📊 Phân tích xu hướng tâm trạng",
+        "h3": "💡 Gợi ý cải thiện tinh thần"
+      },
+      "ai": {
+        "title": "Trợ lý AI thông minh",
+        "description": "Chat với AI để được hỗ trợ học tập, giải đáp thắc mắc 24/7",
+        "h1": "💬 Chat AI hỗ trợ học tập",
+        "h2": "📚 Tạo lịch học tự động",
+        "h3": "🎯 Gợi ý cá nhân hóa"
+      }
+    },
+    "questions": {
+      "goal": {
+        "title": "Mục tiêu học tập của bạn là gì?",
+        "exam": "🎓 Chuẩn bị thi cử",
+        "skill": "💻 Học kỹ năng mới",
+        "habit": "📖 Xây dựng thói quen học",
+        "language": "🌍 Học ngoại ngữ",
+        "other": "✨ Mục tiêu khác"
+      },
+      "hours": {
+        "title": "Bạn muốn học bao nhiêu giờ mỗi ngày?",
+        "1": "😌 1-2 giờ (Nhẹ nhàng)",
+        "3": "📚 3-4 giờ (Vừa phải)",
+        "5": "💪 5-6 giờ (Chăm chỉ)",
+        "7": "🔥 7+ giờ (Cày cuốc)"
+      },
+      "challenges": {
+        "title": "Bạn gặp khó khăn gì khi học?",
+        "subtitle": "(Có thể chọn nhiều)",
+        "focus": "😵 Khó tập trung",
+        "time": "⏳ Thiếu thời gian",
+        "motivation": "😴 Thiếu động lực",
+        "plan": "📋 Không biết lên kế hoạch",
+        "stress": "😰 Áp lực, lo lắng"
+      },
+      "time": {
+        "title": "Bạn học tốt nhất vào thời điểm nào?",
+        "morning": "🌅 Sáng sớm (5-9h)",
+        "afternoon": "☀️ Buổi trưa (9-14h)",
+        "evening": "🌆 Chiều tối (14-19h)",
+        "night": "🌙 Đêm khuya (19h+)"
+      },
+      "motivation": {
+        "title": "Điều gì thúc đẩy bạn học tập?",
+        "career": "💼 Sự nghiệp tương lai",
+        "knowledge": "🧠 Đam mê kiến thức",
+        "competition": "🏆 Cạnh tranh, vượt trội",
+        "family": "👨‍👩‍👧 Gia đình kỳ vọng",
+        "personal": "🌟 Phát triển bản thân"
+      }
+    },
+    "complete": {
+      "title": "Tuyệt vời! Bạn đã sẵn sàng! 🚀",
+      "subtitle": "Chúng tôi đã hiểu bạn hơn rồi",
+      "description": "Hãy bắt đầu hành trình học tập đầy thú vị cùng Stechdy nhé!",
+      "summary": "Tóm tắt về bạn:"
+    }
   }
 }
