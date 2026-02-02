@@ -10,6 +10,8 @@ import Normal from "../../assets/Normal.png";
 import Veryhappy from "../../assets/Veryhappy.png";
 import ideaIcon from "../../assets/idea.png";
 
+const API_URL = process.env.REACT_APP_API_URL || "http://localhost:3001/api";
+
 // ========================================
 // 📸 THAY ĐỔI LINK ẢNH TẠI ĐÂY
 // Các ảnh này dùng cho phần giới thiệu tính năng
@@ -35,11 +37,82 @@ const Onboarding = () => {
     motivation: "",
   });
   const [isAnimating, setIsAnimating] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const currentLanguage = i18n.language || "vi";
 
   const changeLanguage = (lang) => {
     i18n.changeLanguage(lang);
     localStorage.setItem("language", lang);
+  };
+
+  // Check onboarding status from server
+  const checkOnboardingStatus = async () => {
+    const token = localStorage.getItem("token");
+    
+    if (!token) {
+      // No token = not logged in, redirect to login
+      setIsLoading(false);
+      navigate("/login");
+      return;
+    }
+
+    try {
+      const response = await fetch(`${API_URL}/users/onboarding`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        if (data.onboardingCompleted) {
+          // User already completed onboarding, redirect to dashboard
+          localStorage.setItem("onboardingCompleted", "true");
+          navigate("/dashboard");
+          return;
+        }
+      }
+    } catch (error) {
+      console.error("Error checking onboarding status:", error);
+      // If API fails, fallback to localStorage
+      const hasCompletedOnboarding = localStorage.getItem("onboardingCompleted");
+      if (hasCompletedOnboarding === "true") {
+        navigate("/dashboard");
+        return;
+      }
+    }
+    
+    setIsLoading(false);
+  };
+
+  // Save onboarding completion to server
+  const saveOnboardingToServer = async (preferences) => {
+    const token = localStorage.getItem("token");
+    
+    if (!token) {
+      return false;
+    }
+
+    try {
+      const response = await fetch(`${API_URL}/users/onboarding`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ preferences }),
+      });
+
+      if (response.ok) {
+        return true;
+      }
+    } catch (error) {
+      console.error("Error saving onboarding status:", error);
+    }
+    
+    return false;
   };
 
   // Welcome + Feature slides + Interview questions
@@ -211,12 +284,10 @@ const Onboarding = () => {
   const progress = ((currentStep + 1) / totalSteps) * 100;
 
   useEffect(() => {
-    // Check if user has completed onboarding before
-    const hasCompletedOnboarding = localStorage.getItem("onboardingCompleted");
-    if (hasCompletedOnboarding === "true") {
-      navigate("/dashboard");
-    }
-  }, [navigate]);
+    // Check onboarding status from server on mount
+    checkOnboardingStatus();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     // Trigger confetti on completion
@@ -274,12 +345,15 @@ const Onboarding = () => {
   };
 
   const handleSkip = () => {
+    // Save to server (skip = completed but no preferences)
+    saveOnboardingToServer({});
     localStorage.setItem("onboardingCompleted", "true");
     navigate("/dashboard");
   };
 
-  const handleComplete = () => {
-    // Save user preferences
+  const handleComplete = async () => {
+    // Save user preferences to server
+    await saveOnboardingToServer(answers);
     localStorage.setItem("onboardingCompleted", "true");
     localStorage.setItem("userPreferences", JSON.stringify(answers));
     navigate("/dashboard");
@@ -451,6 +525,27 @@ const Onboarding = () => {
         return null;
     }
   };
+
+  // Show loading state while checking onboarding status
+  if (isLoading) {
+    return (
+      <div className="ob-page">
+        <div className="ob-bg">
+          <div className="ob-bg-gradient"></div>
+        </div>
+        <div style={{ 
+          display: 'flex', 
+          justifyContent: 'center', 
+          alignItems: 'center', 
+          height: '100vh',
+          color: '#6366f1',
+          fontSize: '1.2rem'
+        }}>
+          Loading...
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="ob-page">
