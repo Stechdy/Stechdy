@@ -355,15 +355,56 @@
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .celebration-emoji {
-    font-size: 6rem;
+    font-size: 5rem;
+  }
+
+  .celebration-glow {
+    width: 150px;
+    height: 150px;
   }
 
   .celebration-title {
-    font-size: 2rem;
+    font-size: 1.8rem;
+    padding: 0 1rem;
+    word-wrap: break-word;
+    max-width: 90vw;
   }
 
   .celebration-message {
-    font-size: 1.2rem;
+    font-size: 1rem;
+    padding: 0 1.5rem;
+    max-width: 85vw;
+    word-wrap: break-word;
+  }
+
+  .celebration-content {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .celebration-emoji {
+    font-size: 4rem;
+  }
+
+  .celebration-glow {
+    width: 120px;
+    height: 120px;
+  }
+
+  .celebration-title {
+    font-size: 1.5rem;
     padding: 0 1rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .celebration-message {
+    font-size: 0.9rem;
+    padding: 0 1rem;
+    line-height: 1.5;
+  }
+
+  .celebration-emoji-container {
+    margin-bottom: 1.5rem;
   }
 }

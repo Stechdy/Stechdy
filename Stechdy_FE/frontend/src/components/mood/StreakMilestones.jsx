@@ -144,8 +144,8 @@ const StreakMilestones = () => {
           // Determine celebration content
           const milestone = response.data.newMilestones[0];
           const celebrationEmoji = milestone.emoji || "🎖️";
-          const celebrationTitle = milestone.name || t("celebration.newMilestone") || "Cột mốc mới!";
-          const celebrationMessage = milestone.description || t("celebration.streakAchieved", { days: currentStreak }) || `Bạn đã đạt ${currentStreak} ngày streak!`;
+          const celebrationTitle = milestone.name || t("celebration.newMilestone");
+          const celebrationMessage = milestone.description || t("celebration.streakAchieved", { days: currentStreak });
 
           // Show celebration
           setCelebration({
@@ -166,7 +166,8 @@ const StreakMilestones = () => {
           });
         } else {
           // No milestone, show success popup
-          setSuccessMessage(response.message || t("streak.makeupSuccess"));
+          const remainingMakeups = response.data?.remainingMakeups || 0;
+          setSuccessMessage(t("streak.makeupSuccessMessage", { remaining: remainingMakeups }));
           setShowSuccessPopup(true);
         }
       }

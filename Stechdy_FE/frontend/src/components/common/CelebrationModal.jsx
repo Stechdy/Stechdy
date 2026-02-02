@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import "./CelebrationModal.css";
 
 const CelebrationModal = ({ show, emoji, title, message, onClose }) => {
+  const { t } = useTranslation();
   const [fireworks, setFireworks] = useState([]);
   const [confetti, setConfetti] = useState([]);
 
@@ -96,8 +98,8 @@ const CelebrationModal = ({ show, emoji, title, message, onClose }) => {
           <div className="celebration-emoji">{emoji || "🎉"}</div>
           <div className="celebration-glow"></div>
         </div>
-        <h2 className="celebration-title">{title || "Chúc mừng!"}</h2>
-        <p className="celebration-message">{message || "Bạn thật tuyệt vời!"}</p>
+        <h2 className="celebration-title">{title || t("celebration.congratulations")}</h2>
+        <p className="celebration-message">{message || t("celebration.keepGoing")}</p>
       </div>
 
       {/* Sparkles */}

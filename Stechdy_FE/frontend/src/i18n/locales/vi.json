@@ -1087,7 +1087,47 @@
     "thisMonth": "trong tháng này",
     "remainingAfter": "Sau khi điểm danh này, bạn còn",
     "makeupCheckIn": "Điểm danh bù",
-    "confirmMakeup": "Xác nhận điểm danh bù"
+    "confirmMakeup": "Xác nhận điểm danh bù",
+    "makeupSuccessMessage": "Đã điểm danh bù thành công! Còn {{remaining}} lần điểm danh bù trong tháng này"
+  },
+  "celebration": {
+    "congratulations": "Chúc mừng!",
+    "newBadge": "Huy hiệu mới!",
+    "badgeEarned": "Bạn đã nhận được huy hiệu \"{{badge}}\"! 🌟",
+    "newMilestone": "Cột mốc mới!",
+    "streakAchieved": "Bạn đã đạt {{days}} ngày streak!",
+    "streakMilestone": "{{days}} ngày streak!",
+    "keepGoing": "Bạn đang làm rất tốt! Tiếp tục duy trì nhé! 💪",
+    "milestones": {
+      "bunny": {
+        "name": "Thỏ Dễ Thương",
+        "description": "Bạn đã duy trì 3 ngày streak!"
+      },
+      "fox": {
+        "name": "Cáo Thông Minh",
+        "description": "Một tuần kiên trì - Thật tuyệt vời!"
+      },
+      "panda": {
+        "name": "Gấu Trúc Hiền Hòa",
+        "description": "2 tuần liên tiếp - Bạn thật phi thường!"
+      },
+      "penguin": {
+        "name": "Chim Cánh Cụt Vui Vẻ",
+        "description": "1 tháng hoàn hảo - Bạn là siêu sao!"
+      },
+      "owl": {
+        "name": "Cú Mèo Khôn Ngoan",
+        "description": "2 tháng streak - Trí tuệ và kiên nhẫn!"
+      },
+      "dragon": {
+        "name": "Rồng Huyền Thoại",
+        "description": "3 tháng huyền thoại - Sức mạnh vô song!"
+      },
+      "unicorn": {
+        "name": "Kỳ Lân Kỳ Diệu",
+        "description": "6 tháng kỳ diệu - Bạn thật phi thường!"
+      }
+    }
   },
   "home": {
     "welcome": "Chào mừng đến với S-Techdy",

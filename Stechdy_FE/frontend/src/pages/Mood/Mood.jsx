@@ -175,22 +175,22 @@ const Mood = () => {
         if (hasNewBadge || hasNewMilestones || (currentStreak && currentStreak % 7 === 0 && currentStreak >= 7)) {
           // Determine celebration content
           let celebrationEmoji = "🎉";
-          let celebrationTitle = t("celebration.congratulations") || "Chúc mừng!";
+          let celebrationTitle = t("celebration.congratulations");
           let celebrationMessage = "";
 
           if (hasNewBadge) {
             celebrationEmoji = "🏆";
-            celebrationTitle = t("celebration.newBadge") || "Huy hiệu mới!";
-            celebrationMessage = t("celebration.badgeEarned", { badge: response.data.newBadge }) || `Bạn đã nhận được huy hiệu "${response.data.newBadge}"! 🌟`;
+            celebrationTitle = t("celebration.newBadge");
+            celebrationMessage = t("celebration.badgeEarned", { badge: response.data.newBadge });
           } else if (hasNewMilestones) {
             const milestone = response.data.newMilestones[0];
             celebrationEmoji = milestone.emoji || "🎖️";
-            celebrationTitle = milestone.name || t("celebration.newMilestone") || "Cột mốc mới!";
-            celebrationMessage = milestone.description || t("celebration.streakAchieved", { days: currentStreak }) || `Bạn đã đạt ${currentStreak} ngày streak!`;
+            celebrationTitle = milestone.name || t("celebration.newMilestone");
+            celebrationMessage = milestone.description || t("celebration.streakAchieved", { days: currentStreak });
           } else if (currentStreak % 7 === 0) {
             celebrationEmoji = "🔥";
-            celebrationTitle = t("celebration.streakMilestone", { days: currentStreak }) || `${currentStreak} ngày streak!`;
-            celebrationMessage = t("celebration.keepGoing") || "Bạn đang làm rất tốt! Tiếp tục duy trì nhé! 💪";
+            celebrationTitle = t("celebration.streakMilestone", { days: currentStreak });
+            celebrationMessage = t("celebration.keepGoing");
           }
 
           // Show celebration
