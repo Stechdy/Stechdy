@@ -5,6 +5,7 @@ import SidebarNav from "../../components/common/SidebarNav";
 import BottomNav from "../../components/common/BottomNav";
 import config from "../../config";
 import "./CalendarEditor.css";
+import veryHappyImg from "../../assets/Veryhappy.png";
 
 const CalendarEditor = () => {
   const navigate = useNavigate();
@@ -182,7 +183,27 @@ const CalendarEditor = () => {
       return;
     }
 
-    // Move event
+    // Determine time slot and auto-adjust start/end time
+    let newStartTime, newEndTime, newTimeSlot;
+    
+    if (targetSlot === 1) {
+      // Morning slot: 08:00-12:00
+      newStartTime = "08:00";
+      newEndTime = "09:30";
+      newTimeSlot = "morning";
+    } else if (targetSlot === 2) {
+      // Afternoon slot: 13:00-17:00
+      newStartTime = "13:00";
+      newEndTime = "14:30";
+      newTimeSlot = "afternoon";
+    } else {
+      // Evening slot: 18:00-22:00
+      newStartTime = "18:00";
+      newEndTime = "19:30";
+      newTimeSlot = "evening";
+    }
+
+    // Move event with updated time
     const updatedEvents = events.map((ev) => {
       if (ev.id === draggedEvent.id) {
         return {
@@ -190,6 +211,9 @@ const CalendarEditor = () => {
           date: targetDate,
           dayOfWeek: getDayName(targetDate),
           slot: targetSlot,
+          startTime: newStartTime,
+          endTime: newEndTime,
+          timeSlot: newTimeSlot,
         };
       }
       return ev;
@@ -248,8 +272,11 @@ const CalendarEditor = () => {
         date: event.date,
         startTime: event.startTime,
         endTime: event.endTime,
-        status: event.status
+        status: event.status || "scheduled",
+        subjectId: event.subjectId
       }));
+
+      console.log('📤 Sending sessions to update:', sessionsToUpdate);
 
       // Send bulk update request
       const response = await fetch(
@@ -268,6 +295,8 @@ const CalendarEditor = () => {
       console.log('Response ok:', response.ok);
 
       if (!response.ok) {
+        const errorText = await response.text();
+        console.error('Error response:', errorText);
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
 
@@ -354,7 +383,7 @@ const CalendarEditor = () => {
             </svg>
           </button>
           <h1 className="ce-page-title">
-            📅 Edit Calendar
+            Edit Calendar
             {hasChanges && <span className="ce-unsaved-badge">●</span>}
           </h1>
           <button
@@ -369,7 +398,7 @@ const CalendarEditor = () => {
               </>
             ) : hasChanges ? (
               <>
-                <span>💾</span> <span>Save Changes</span>
+              <span>Save Changes</span>
               </>
             ) : (
               <span>No Changes</span>
@@ -574,7 +603,9 @@ const CalendarEditor = () => {
       {showSuccessModal && (
         <div className="ce-modal-overlay">
           <div className="ce-modal-content ce-success-modal">
-            <div className="ce-success-icon">✓</div>
+            <div className="ce-success-icon">
+              <img src={veryHappyImg} alt="Success" />
+            </div>
             <h2>Schedule Updated Successfully!</h2>
             <p>Your calendar has been saved with all changes.</p>
             <div className="ce-modal-actions">

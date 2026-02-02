@@ -226,13 +226,11 @@
 }
 
 .ai-avatar {
-  width: 40px;
-  height: 40px;
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
   overflow: hidden;
   flex-shrink: 0;
-  background: white;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .ai-avatar img {
@@ -379,6 +377,7 @@
   padding: 8px 8px 8px 20px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.9);
+
 }
 
 [data-theme="dark"] .ai-input-form {
@@ -555,5 +554,211 @@
   .ai-create-schedule-btn {
     padding: 12px 20px;
     font-size: 14px;
+  }
+}
+
+/* ============== Usage Tracking ============== */
+.ai-header-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.ai-usage-counter {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+
+.usage-text {
+  font-size: 14px;
+  color: #666;
+  font-weight: 500;
+}
+
+.upgrade-btn {
+  background: linear-gradient(135deg, #FF6B9D, #C44ED8);
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 8px 16px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.upgrade-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(255, 107, 157, 0.3);
+}
+
+/* ============== Upgrade Modal ============== */
+.upgrade-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+}
+
+.upgrade-modal {
+  background: white;
+  border-radius: 16px;
+  max-width: 400px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.upgrade-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.upgrade-modal-header h3 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: #333;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: #666;
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.modal-close:hover {
+  background: #f0f0f0;
+  color: #333;
+}
+
+.upgrade-modal-content {
+  padding: 20px;
+}
+
+.upgrade-modal-content p {
+  color: #666;
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+.premium-features {
+  background: #f8f9ff;
+  padding: 16px;
+  border-radius: 12px;
+  margin: 16px 0;
+}
+
+.premium-features h4 {
+  margin: 0 0 12px 0;
+  font-size: 16px;
+  color: #333;
+}
+
+.premium-features ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.premium-features li {
+  padding: 4px 0;
+  color: #555;
+  font-size: 14px;
+}
+
+.upgrade-modal-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.upgrade-now-btn {
+  flex: 1;
+  background: linear-gradient(135deg, #FF6B9D, #C44ED8);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 24px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.upgrade-now-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(255, 107, 157, 0.3);
+}
+
+.maybe-later-btn {
+  flex: 1;
+  background: transparent;
+  color: #666;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 12px 24px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.maybe-later-btn:hover {
+  border-color: #ccc;
+  background: #f8f8f8;
+}
+
+@media (max-width: 480px) {
+  .upgrade-modal {
+    width: 95%;
+    margin: 20px;
+  }
+  
+  .upgrade-modal-actions {
+    flex-direction: column;
+  }
+  
+  .ai-usage-counter {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .usage-text {
+    font-size: 12px;
   }
 }

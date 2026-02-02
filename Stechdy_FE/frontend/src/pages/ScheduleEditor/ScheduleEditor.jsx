@@ -5,6 +5,7 @@ import SidebarNav from "../../components/common/SidebarNav";
 import BottomNav from "../../components/common/BottomNav";
 import config from "../../config";
 import "./ScheduleEditor.css";
+import veryHappyImg from "../../assets/Veryhappy.png";
 
 const ScheduleEditor = () => {
   const navigate = useNavigate();
@@ -1155,7 +1156,7 @@ const ScheduleEditor = () => {
         <div className="se-success-modal-overlay">
           <div className="se-success-modal-content">
             <div className="se-success-icon">
-              <i className="fas fa-check"></i>
+              <img src={veryHappyImg} alt="Very Happy" style={{ width: "80px", height: "80px" }} />
             </div>
             <h3>Lưu lịch học thành công!</h3>
             <p>Lịch học của bạn đã được lưu và đồng bộ thành công.</p>
