@@ -20,7 +20,7 @@ const NotificationSettings = () => {
       studyReminders: true,
       moodCheckIn: true,
       achievements: true,
-      email: false,
+      email: true,
       push: true,
     },
     sound: {
@@ -94,41 +94,13 @@ const NotificationSettings = () => {
     }));
   };
 
-  const handleVolumeChange = (e) => {
-    const volume = parseInt(e.target.value, 10);
-    setSettings((prev) => ({
-      ...prev,
-      sound: {
-        ...prev.sound,
-        volume,
-      },
-    }));
-  };
-
-  const handleSoundChange = (soundType) => {
-    setSettings((prev) => ({
-      ...prev,
-      sound: {
-        ...prev.sound,
-        timerSound: soundType,
-      },
-    }));
-  };
-
-  const playTestSound = () => {
-    // Play a test notification sound
-    const audio = new Audio(`/sounds/${settings.sound.timerSound}.mp3`);
-    audio.volume = settings.sound.volume / 100;
-    audio.play().catch((err) => console.error("Error playing sound:", err));
-  };
-
   if (loading) {
     return (
-      <div className="notification-settings-page">
+      <div className="noti-settings-page">
         <SidebarNav />
-        <div className="notification-settings-wrapper">
-          <div className="loading-container">
-            <div className="spinner"></div>
+        <div className="noti-settings-wrapper">
+          <div className="noti-settings-loading">
+            <div className="noti-settings-spinner"></div>
             <p>{t("common.loading")}</p>
           </div>
         </div>
@@ -138,14 +110,14 @@ const NotificationSettings = () => {
   }
 
   return (
-    <div className="notification-settings-page">
+    <div className="noti-settings-page">
       <SidebarNav />
-      <div className="notification-settings-wrapper">
-        <div className="notification-settings-content">
+      <div className="noti-settings-wrapper">
+        <div className="noti-settings-content">
           {/* Header */}
-          <div className="settings-header">
+          <div className="noti-settings-header">
             <button
-              className="back-button"
+              className="noti-settings-back-btn"
               onClick={() => navigate("/account")}
               aria-label="Go back"
             >
@@ -159,15 +131,15 @@ const NotificationSettings = () => {
                 />
               </svg>
             </button>
-            <h1 className="settings-title">
+            <h1 className="noti-settings-title">
               {t("notificationSettings.title") || "Notification Settings"}
             </h1>
           </div>
 
           {/* Notification Settings Section */}
-          <div className="settings-section">
-            <div className="section-header">
-              <div className="section-icon notification-icon">
+          <div className="noti-settings-section">
+            <div className="noti-settings-section-header">
+              <div className="noti-settings-section-icon noti-settings-icon-bell">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
                   <path
                     d="M18 8A6 6 0 106 8C6 15 3 17 3 17H21S18 15 18 8Z"
@@ -185,124 +157,124 @@ const NotificationSettings = () => {
                   />
                 </svg>
               </div>
-              <div className="section-info">
+              <div className="noti-settings-section-info">
                 <h2>{t("notificationSettings.notifications") || "Notifications"}</h2>
                 <p>{t("notificationSettings.notificationsDesc") || "Manage what notifications you receive"}</p>
               </div>
             </div>
 
-            <div className="settings-list">
+            <div className="noti-settings-list">
               {/* Master Toggle */}
-              <div className="setting-item">
-                <div className="setting-info">
+              <div className="noti-settings-item">
+                <div className="noti-settings-item-info">
                   <h3>{t("notificationSettings.enableNotifications") || "Enable Notifications"}</h3>
                   <p>{t("notificationSettings.enableNotificationsDesc") || "Turn all notifications on or off"}</p>
                 </div>
-                <label className="toggle-switch">
+                <label className="noti-settings-toggle">
                   <input
                     type="checkbox"
                     checked={settings.notification.enabled}
                     onChange={() => handleToggle("notification", "enabled")}
                   />
-                  <span className="slider"></span>
+                  <span className="noti-settings-toggle-slider"></span>
                 </label>
               </div>
 
               {settings.notification.enabled && (
                 <>
                   {/* Task Reminders */}
-                  <div className="setting-item">
-                    <div className="setting-info">
+                  <div className="noti-settings-item">
+                    <div className="noti-settings-item-info">
                       <h3>{t("notificationSettings.taskReminders") || "Task Reminders"}</h3>
                       <p>{t("notificationSettings.taskRemindersDesc") || "Get notified about upcoming tasks and deadlines"}</p>
                     </div>
-                    <label className="toggle-switch">
+                    <label className="noti-settings-toggle">
                       <input
                         type="checkbox"
                         checked={settings.notification.taskReminders}
                         onChange={() => handleToggle("notification", "taskReminders")}
                       />
-                      <span className="slider"></span>
+                      <span className="noti-settings-toggle-slider"></span>
                     </label>
                   </div>
 
                   {/* Study Reminders */}
-                  <div className="setting-item">
-                    <div className="setting-info">
+                  <div className="noti-settings-item">
+                    <div className="noti-settings-item-info">
                       <h3>{t("notificationSettings.studyReminders") || "Study Session Reminders"}</h3>
                       <p>{t("notificationSettings.studyRemindersDesc") || "Reminders for scheduled study sessions"}</p>
                     </div>
-                    <label className="toggle-switch">
+                    <label className="noti-settings-toggle">
                       <input
                         type="checkbox"
                         checked={settings.notification.studyReminders}
                         onChange={() => handleToggle("notification", "studyReminders")}
                       />
-                      <span className="slider"></span>
+                      <span className="noti-settings-toggle-slider"></span>
                     </label>
                   </div>
 
                   {/* Mood Check-in */}
-                  <div className="setting-item">
-                    <div className="setting-info">
+                  <div className="noti-settings-item">
+                    <div className="noti-settings-item-info">
                       <h3>{t("notificationSettings.moodCheckIn") || "Mood Check-in Reminders"}</h3>
                       <p>{t("notificationSettings.moodCheckInDesc") || "Daily reminders to log your mood"}</p>
                     </div>
-                    <label className="toggle-switch">
+                    <label className="noti-settings-toggle">
                       <input
                         type="checkbox"
                         checked={settings.notification.moodCheckIn}
                         onChange={() => handleToggle("notification", "moodCheckIn")}
                       />
-                      <span className="slider"></span>
+                      <span className="noti-settings-toggle-slider"></span>
                     </label>
                   </div>
 
                   {/* Achievements */}
-                  <div className="setting-item">
-                    <div className="setting-info">
+                  <div className="noti-settings-item">
+                    <div className="noti-settings-item-info">
                       <h3>{t("notificationSettings.achievements") || "Achievements & Milestones"}</h3>
                       <p>{t("notificationSettings.achievementsDesc") || "Celebrate your progress and achievements"}</p>
                     </div>
-                    <label className="toggle-switch">
+                    <label className="noti-settings-toggle">
                       <input
                         type="checkbox"
                         checked={settings.notification.achievements}
                         onChange={() => handleToggle("notification", "achievements")}
                       />
-                      <span className="slider"></span>
+                      <span className="noti-settings-toggle-slider"></span>
                     </label>
                   </div>
 
                   {/* Email Notifications */}
-                  <div className="setting-item">
-                    <div className="setting-info">
+                  <div className="noti-settings-item">
+                    <div className="noti-settings-item-info">
                       <h3>{t("notificationSettings.emailNotifications") || "Email Notifications"}</h3>
                       <p>{t("notificationSettings.emailNotificationsDesc") || "Receive notifications via email"}</p>
                     </div>
-                    <label className="toggle-switch">
+                    <label className="noti-settings-toggle">
                       <input
                         type="checkbox"
                         checked={settings.notification.email}
                         onChange={() => handleToggle("notification", "email")}
                       />
-                      <span className="slider"></span>
+                      <span className="noti-settings-toggle-slider"></span>
                     </label>
                   </div>
 
                   {/* Push Notifications */}
-                  <div className="setting-item">
-                    <div className="setting-info">
+                  <div className="noti-settings-item">
+                    <div className="noti-settings-item-info">
                       <h3>{t("notificationSettings.pushNotifications") || "Push Notifications"}</h3>
                       <p>{t("notificationSettings.pushNotificationsDesc") || "Receive push notifications in-app"}</p>
                     </div>
-                    <label className="toggle-switch">
+                    <label className="noti-settings-toggle">
                       <input
                         type="checkbox"
                         checked={settings.notification.push}
                         onChange={() => handleToggle("notification", "push")}
                       />
-                      <span className="slider"></span>
+                      <span className="noti-settings-toggle-slider"></span>
                     </label>
                   </div>
                 </>
@@ -311,15 +283,15 @@ const NotificationSettings = () => {
           </div>
 
           {/* Save Button */}
-          <div className="settings-actions">
+          <div className="noti-settings-actions">
             <button
-              className="save-settings-btn"
+              className="noti-settings-save-btn"
               onClick={handleSaveSettings}
               disabled={saving}
             >
               {saving ? (
                 <>
-                  <div className="button-spinner"></div>
+                  <div className="noti-settings-btn-spinner"></div>
                   {t("common.saving") || "Saving..."}
                 </>
               ) : (

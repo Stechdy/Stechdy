@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import "./QuoteModal.css";
 
-const QuoteModal = ({ isOpen, onClose }) => {
+const QuoteModal = ({ isOpen, onClose, currentQuote: propCurrentQuote, onQuoteChange }) => {
   const { t, i18n } = useTranslation();
-  const [currentQuote, setCurrentQuote] = useState(null);
+  const [currentQuote, setCurrentQuote] = useState(propCurrentQuote || null);
   const [isRefreshing, setIsRefreshing] = useState(false);
 
   // Complete quotes collection
@@ -189,14 +189,22 @@ const QuoteModal = ({ isOpen, onClose }) => {
 
   useEffect(() => {
     if (isOpen) {
-      setCurrentQuote(getDailyQuote());
+      if (propCurrentQuote) {
+        setCurrentQuote(propCurrentQuote);
+      } else {
+        setCurrentQuote(getDailyQuote());
+      }
     }
-  }, [isOpen, i18n.language]);
+  }, [isOpen, propCurrentQuote, i18n.language]);
 
   const handleRefresh = () => {
     setIsRefreshing(true);
     setTimeout(() => {
-      setCurrentQuote(getRandomQuote());
+      const newQuote = getRandomQuote();
+      setCurrentQuote(newQuote);
+      if (onQuoteChange) {
+        onQuoteChange(newQuote);
+      }
       setIsRefreshing(false);
     }, 300);
   };

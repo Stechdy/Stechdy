@@ -6,6 +6,7 @@ import SidebarNav from "../../components/common/SidebarNav";
 import config from "../../config";
 import "./AIGenerator.css";
 import i18n from "../../i18n";
+import veryHappyImg from "../../assets/Veryhappy.png";
 
 const AIGenerator = () => {
   const navigate = useNavigate();
@@ -33,16 +34,47 @@ const AIGenerator = () => {
   const [showDeleteWarningModal, setShowDeleteWarningModal] = useState(false);
   const [showDeleteSuccessModal, setShowDeleteSuccessModal] = useState(false);
   const [showErrorModal, setShowErrorModal] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [generatedDaysCount, setGeneratedDaysCount] = useState(0);
   const [minStartDate, setMinStartDate] = useState(
     new Date().toISOString().split("T")[0],
   );
 
+  // Usage tracking for free users
+  const [remainingGenerations, setRemainingGenerations] = useState(4);
+  const [isPremium, setIsPremium] = useState(null); // null = loading, false = free, true = premium
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
 
   useEffect(() => {
     const checkExistingSchedule = async () => {
       try {
         const token = localStorage.getItem("token");
         if (!token) return;
+
+        // Check user premium status
+        const userResponse = await fetch(`${config.apiUrl}/users/profile`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        if (userResponse.ok) {
+          const userData = await userResponse.json();
+          console.log('AI Generator User data:', userData); // Debug log
+          // Check premium status - can be isPremium boolean OR premiumStatus string  
+          const userIsPremium = userData.isPremium === true || userData.premiumStatus === 'premium' || userData.user?.isPremium === true || userData.user?.premiumStatus === 'premium';
+          setIsPremium(userIsPremium);
+          console.log('AI Generator Is Premium:', userIsPremium, 'premiumStatus:', userData.premiumStatus); // Debug log
+        } else {
+          console.log('AI Generator: API response not OK:', userResponse.status); // Debug log
+          setIsPremium(false); // Default to free if API fails
+        }
+
+        // Load remaining generations from localStorage for free users
+        const today = new Date().toDateString();
+        const savedData = localStorage.getItem(`aiGeneratorUsage_${today}`);
+        if (savedData) {
+          const { remaining } = JSON.parse(savedData);
+          setRemainingGenerations(remaining);
+        }
 
         const response = await fetch(`${config.apiUrl}/study-sessions/latest`, {
           headers: { Authorization: `Bearer ${token}` },
@@ -254,6 +286,12 @@ const AIGenerator = () => {
   const handleSubmit = async (e) => {
     if (e) e.preventDefault();
 
+    // Check if free user has remaining generations
+    if (isPremium === false && remainingGenerations <= 0) {
+      setShowUpgradeModal(true);
+      return;
+    }
+
     const validSubjects = subjects.filter((s) => s.name.trim() !== "");
     if (validSubjects.length === 0) {
       displayToast("Please add at least one subject", "error");
@@ -362,12 +400,6 @@ const AIGenerator = () => {
         localStorage.setItem("studySchedule", JSON.stringify(scheduleData));
         localStorage.setItem("studyScheduleInput", JSON.stringify(webhookData));
 
-        // Show success message - user will save to DB after editing
-        displayToast(
-          `Schedule generated with ${scheduleData.schedule.length} days! Review and edit before saving.`,
-          "success",
-        );
-
         // Increment generation count
         const currentCount = parseInt(
           localStorage.getItem("ai_generation_count") || "0",
@@ -378,10 +410,22 @@ const AIGenerator = () => {
           (currentCount + 1).toString(),
         );
 
-        // Redirect to schedule editor page to review/edit before final save
-        setTimeout(() => {
-          navigate("/schedule-editor");
-        }, 1500);
+        // Show success modal
+        setGeneratedDaysCount(scheduleData.schedule.length);
+        setShowSuccessModal(true);
+
+        // Update remaining generations for free users
+        if (isPremium === false) {
+          const newRemaining = remainingGenerations - 1;
+          setRemainingGenerations(newRemaining);
+          
+          // Save to localStorage
+          const today = new Date().toDateString();
+          localStorage.setItem(`aiGeneratorUsage_${today}`, JSON.stringify({
+            remaining: newRemaining,
+            date: today
+          }));
+        }
       } else {
         console.error(
           "Unexpected response structure:",
@@ -399,14 +443,13 @@ const AIGenerator = () => {
         error.message.includes("Failed to fetch") ||
         error.message.includes("NetworkError")
       ) {
-        userMessage =
-          "Cannot connect to AI schedule generation service. Please check your internet connection and try again.";
+        userMessage = "Cannot connect to AI schedule generation service. Please check your internet connection and try again.";
       } else if (error.message.includes("500")) {
-        userMessage =
-          "Server error during schedule generation. Please try again.";
+        userMessage = "Server error during schedule generation. Please try again.";
       }
 
       // Show error modal instead of toast for schedule generation errors
+      setErrorMessage(userMessage);
       setShowErrorModal(true);
     } finally {
       setIsGenerating(false);
@@ -429,9 +472,11 @@ const AIGenerator = () => {
 
       <div className="ai-generator-wrapper">
         {/* Header */}
-        <h1 className="ai-generator-page-title">
-          {t("ai.title") || "AI Schedule Generator"}
-        </h1>
+        <div className="ai-generator-header">
+          <h1 className="ai-generator-page-title">
+            {t("ai.title") || "AI Schedule Generator"}
+          </h1>
+        </div>
 
         {/* Main Content with 2-column layout */}
         <main className="ai-generator-content">
@@ -750,11 +795,21 @@ const AIGenerator = () => {
               </div>
             </div>
 
+            {/* Usage Counter for Free Users */}
+            {(isPremium === false || isPremium === null) && (
+              <div className="ai-usage-counter-bottom">
+                <span className="usage-text">{remainingGenerations}/4 {t("aiGenerator.remainingGenerations")}</span>
+                <button className="upgrade-btn" onClick={() => navigate('/pricing')}>
+                  ✨ {t("aiGenerator.premium")}
+                </button>
+              </div>
+            )}
+
             {/* Submit Button - Full Width */}
             <button
               type="submit"
               className="ag-btn-generate"
-              disabled={isGenerating}
+              disabled={isGenerating || (isPremium === false && remainingGenerations <= 0)}
             >
               {isGenerating ? (
                 <>
@@ -942,7 +997,7 @@ const AIGenerator = () => {
             <div className="ag-modal-header">
               <div className="modal-header-content">
                 <div className="modal-icon-wrapper success">
-                  <i className="fas fa-check-circle modal-icon"></i>
+                  <img src={veryHappyImg} alt="Success" className="modal-icon" />
                 </div>
                 <h2>
                   {i18n.language === "vi"
@@ -1035,6 +1090,69 @@ const AIGenerator = () => {
         </div>
       )}
 
+      {/* Success Modal */}
+      {showSuccessModal && (
+        <div className="ag-loading-overlay">
+          <div className="ag-success-modal">
+            <div className="ag-success-header">
+              <div className="ag-success-icon">
+                <img src={veryHappyImg} alt="Success" />
+              </div>
+              <h2 className="ag-success-title">
+                {i18n.language === "vi"
+                  ? "Tạo lịch thành công!"
+                  : "Schedule Created Successfully!"}
+              </h2>
+              <p className="ag-success-subtitle">
+                {i18n.language === "vi"
+                  ? `Đã tạo ${generatedDaysCount} ngày học`
+                  : `Generated ${generatedDaysCount} study days`}
+              </p>
+            </div>
+
+            <div className="ag-success-body">
+              <div className="ag-success-message">
+                <p>
+                  {i18n.language === "vi"
+                    ? "Lịch học AI đã được tạo thành công! Bạn có thể:"
+                    : "Your AI schedule has been created successfully! You can:"}
+                </p>
+                <ul>
+                  <li>
+                    {i18n.language === "vi"
+                      ? "Xem và chỉnh sửa lịch học"
+                      : "Review and edit the schedule"}
+                  </li>
+                  <li>
+                    {i18n.language === "vi"
+                      ? "Điều chỉnh thời gian học"
+                      : "Adjust study times"}
+                  </li>
+                  <li>
+                    {i18n.language === "vi"
+                      ? "Lưu vào lịch học của bạn"
+                      : "Save to your calendar"}
+                  </li>
+                </ul>
+              </div>
+
+              <div className="ag-success-actions">
+                <button
+                  className="ag-success-btn ag-success-primary"
+                  onClick={() => {
+                    setShowSuccessModal(false);
+                    navigate("/schedule-editor");
+                  }}
+                >
+                  <i className="fas fa-edit"></i>
+                  {i18n.language === "vi" ? "Xem & Chỉnh sửa" : "Review & Edit"}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Error Modal */}
       {showErrorModal && (
         <div className="ag-loading-overlay">
@@ -1051,15 +1169,7 @@ const AIGenerator = () => {
 
             <div className="ag-error-body">
               <div className="ag-error-message">
-                <p>
-                  Có lỗi xảy ra trong quá trình tạo lịch học. Điều này có thể
-                  do:
-                </p>
-                <ul>
-                  <li>Mất kết nối internet</li>
-                  <li>Server đang bận</li>
-                  <li>Dữ liệu nhập vào không hợp lệ</li>
-                </ul>
+                <p>{errorMessage || "Có lỗi xảy ra trong quá trình tạo lịch học."}</p>
               </div>
 
               <div className="ag-error-actions">
@@ -1079,6 +1189,38 @@ const AIGenerator = () => {
                 >
                   <i className="fas fa-times"></i>
                   Đóng
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Upgrade Modal */}
+      {showUpgradeModal && (
+        <div className="upgrade-modal-overlay" onClick={() => setShowUpgradeModal(false)}>
+          <div className="upgrade-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="upgrade-modal-header">
+              <h3>🚀 Hết lượt tạo lịch miễn phí!</h3>
+              <button className="modal-close" onClick={() => setShowUpgradeModal(false)}>×</button>
+            </div>
+            <div className="upgrade-modal-content">
+              <p>Bạn đã sử dụng hết 4 lượt tạo lịch học miễn phí hôm nay.</p>
+              <div className="premium-features">
+                <h4>✨ Ưu đãi Premium:</h4>
+                <ul>
+                  <li>✓ Không giới hạn tạo lịch học</li>
+                  <li>✓ Không giới hạn câu hỏi AI</li>
+                  <li>✓ Phân tích chi tiết hơn</li>
+                  <li>✓ Ưu tiên hỗ trợ</li>
+                </ul>
+              </div>
+              <div className="upgrade-modal-actions">
+                <button className="upgrade-now-btn" onClick={() => navigate('/pricing')}>
+                  Đăng ký Premium
+                </button>
+                <button className="maybe-later-btn" onClick={() => setShowUpgradeModal(false)}>
+                  Để sau
                 </button>
               </div>
             </div>

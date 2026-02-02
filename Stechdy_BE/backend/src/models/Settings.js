@@ -31,7 +31,7 @@ const settingsSchema = new mongoose.Schema({
     },
     email: {
       type: Boolean,
-      default: false
+      default: true
     },
     push: {
       type: Boolean,

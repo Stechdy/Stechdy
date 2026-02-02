@@ -597,10 +597,10 @@
 }
 
 .ce-success-icon {
-  width: 60px;
-  height: 60px;
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  background: transparent;
   color: white;
   font-size: 30px;
   font-weight: bold;
@@ -608,7 +608,28 @@
   align-items: center;
   justify-content: center;
   margin: 0 auto 20px;
-  box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+  box-shadow: none;
+  animation: successIconPulse 0.6s ease-in-out;
+}
+
+.ce-success-icon img {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+}
+
+@keyframes successIconPulse {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 .ce-success-modal h2 {

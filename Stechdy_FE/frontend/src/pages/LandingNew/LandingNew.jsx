@@ -484,7 +484,7 @@ const LandingNew = () => {
       <nav className="landing-new__navbar">
         <Link to="/" className="landing-new__logo">
           <img
-            src="/Stechdy_logo.png"
+            src="/Logo_RemoveBG.png"
             alt="S'Techdy"
             className="landing-new__logo-img"
           />

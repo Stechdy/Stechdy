@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import IdeaMascot from "../../assets/idea.png";
 import "./QuoteCard.css";
 
-const QuoteCard = ({ onClick }) => {
+const QuoteCard = ({ onClick, currentQuote: propCurrentQuote, onQuoteChange }) => {
   const { t, i18n } = useTranslation();
-  const [currentQuote, setCurrentQuote] = useState(null);
+  const [currentQuote, setCurrentQuote] = useState(propCurrentQuote || null);
 
   // Motivational quotes collection (Vietnamese and English)
   const quotes = {
@@ -109,17 +110,43 @@ const QuoteCard = ({ onClick }) => {
   };
 
   useEffect(() => {
-    setCurrentQuote(getDailyQuote());
-  }, [i18n.language]);
+    if (propCurrentQuote) {
+      setCurrentQuote(propCurrentQuote);
+    } else {
+      const quote = getDailyQuote();
+      setCurrentQuote(quote);
+      if (onQuoteChange) {
+        onQuoteChange(quote);
+      }
+    }
+  }, [propCurrentQuote, i18n.language]);
+
+  // Update parent when quote changes
+  useEffect(() => {
+    if (currentQuote && onQuoteChange && !propCurrentQuote) {
+      onQuoteChange(currentQuote);
+    }
+  }, [currentQuote, onQuoteChange, propCurrentQuote]);
 
   if (!currentQuote) return null;
 
   return (
     <div className="quote-card" onClick={onClick}>
-      <div className="quote-icon">💭</div>
-      <div className="quote-content">
-        <p className="quote-text">"{currentQuote.text}"</p>
-        <p className="quote-author">— {currentQuote.author}</p>
+      <div className="mascot-container">
+        <div className="mascot-avatar">
+          <img 
+            src={IdeaMascot}
+            alt="Idea Mascot" 
+            className="mascot-image"
+          />
+        </div>
+        <div className="speech-bubble">
+          <div className="quote-content">
+            <p className="quote-text">"{currentQuote.text}"</p>
+            <p className="quote-author">— {currentQuote.author}</p>
+          </div>
+          <div className="speech-tail"></div>
+        </div>
       </div>
     </div>
   );
