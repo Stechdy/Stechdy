@@ -481,24 +481,24 @@
     padding: 24px 16px;
   }
   
-  /* Mobile mood options */
-  .mood-options {
+  /* Mobile mood options - only for makeup modal */
+  .makeup-modal .mood-options {
     gap: 6px;
   }
   
-  .mood-option {
+  .makeup-modal .mood-option {
     min-width: 55px;
     max-width: 65px;
     padding: 10px 6px;
     gap: 4px;
   }
   
-  .mood-option .mood-image {
-    width: 32px;
-    height: 32px;
+  .makeup-modal .mood-option .mood-image {
+    width: 50px;
+    height: 50px;
   }
   
-  .mood-option .mood-label {
+  .makeup-modal .mood-option .mood-label {
     font-size: 8px;
   }
 }
