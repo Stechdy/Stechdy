@@ -26,7 +26,6 @@ const AdminReports = () => {
       const data = await response.json();
       setReport(data.data);
     } catch (err) {
-      console.error('Error:', err);
     } finally {
       setLoading(false);
     }

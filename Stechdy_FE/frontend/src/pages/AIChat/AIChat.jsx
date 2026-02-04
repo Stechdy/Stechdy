@@ -47,7 +47,6 @@ const AIChat = () => {
           setIsPremium(false); // Default to free if no token
         }
       } catch (error) {
-        console.error("Error checking user status:", error);
         setIsPremium(false); // Default to free if error occurs
       }
 
@@ -139,7 +138,6 @@ Otherwise, provide a helpful, friendly response related to studying, productivit
         throw new Error("Invalid response from AI");
       }
     } catch (error) {
-      console.error("Error sending message to Gemini:", error);
       const errorMessage = {
         id: Date.now() + 1,
         text: "Sorry, I'm having trouble connecting right now. Please try again later.",

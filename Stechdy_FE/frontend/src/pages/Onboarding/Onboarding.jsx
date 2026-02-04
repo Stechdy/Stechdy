@@ -75,7 +75,6 @@ const Onboarding = () => {
         }
       }
     } catch (error) {
-      console.error("Error checking onboarding status:", error);
       // If API fails, fallback to localStorage
       const hasCompletedOnboarding = localStorage.getItem("onboardingCompleted");
       if (hasCompletedOnboarding === "true") {
@@ -109,7 +108,6 @@ const Onboarding = () => {
         return true;
       }
     } catch (error) {
-      console.error("Error saving onboarding status:", error);
     }
     
     return false;

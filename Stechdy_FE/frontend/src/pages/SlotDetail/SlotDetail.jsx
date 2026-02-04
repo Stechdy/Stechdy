@@ -71,7 +71,6 @@ const SlotDetail = () => {
         });
       }
     } catch (error) {
-      console.error("Error fetching session:", error);
     }
   };
 
@@ -87,7 +86,6 @@ const SlotDetail = () => {
         setSubjects(data);
       }
     } catch (error) {
-      console.error("Error fetching subjects:", error);
     }
   };
 
@@ -107,7 +105,6 @@ const SlotDetail = () => {
         setWeekSessions(sessions);
       }
     } catch (error) {
-      console.error("Error fetching week sessions:", error);
       setWeekSessions([]);
     }
   };
@@ -134,7 +131,6 @@ const SlotDetail = () => {
         setSelectedDateSessions(sessions);
       }
     } catch (error) {
-      console.error("Error fetching sessions for selected date:", error);
       setSelectedDateSessions([]);
     }
   };
@@ -159,7 +155,6 @@ const SlotDetail = () => {
         setIsEditing(false);
       }
     } catch (error) {
-      console.error("Error updating session:", error);
     }
   };
 
@@ -188,7 +183,6 @@ const SlotDetail = () => {
             navigate("/calendar");
           }
         } catch (error) {
-          console.error("Error updating session:", error);
         }
       },
     });
@@ -216,7 +210,6 @@ const SlotDetail = () => {
             navigate("/calendar");
           }
         } catch (error) {
-          console.error("Error deleting session:", error);
         }
       },
     });
@@ -325,7 +318,6 @@ const SlotDetail = () => {
         setTimeout(() => navigate("/calendar"), 300);
       }
     } catch (error) {
-      console.error("Error moving session:", error);
     }
   };
 

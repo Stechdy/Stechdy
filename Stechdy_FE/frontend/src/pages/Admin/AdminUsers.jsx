@@ -55,7 +55,6 @@ const AdminUsers = () => {
       setUsers(data.data.users);
       setPagination(data.data.pagination);
     } catch (err) {
-      console.error('Error fetching users:', err);
     } finally {
       setLoading(false);
     }

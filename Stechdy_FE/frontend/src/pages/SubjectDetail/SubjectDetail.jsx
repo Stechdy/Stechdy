@@ -77,7 +77,6 @@ const SubjectDetail = () => {
 
       setLoading(false);
     } catch (error) {
-      console.error("Error fetching subject data:", error);
       setLoading(false);
     }
   };
@@ -108,7 +107,6 @@ const SubjectDetail = () => {
         fetchSubjectData();
       }
     } catch (error) {
-      console.error("Error adding deadline:", error);
     }
   };
 

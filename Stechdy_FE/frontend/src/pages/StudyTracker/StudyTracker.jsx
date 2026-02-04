@@ -80,7 +80,6 @@ const StudyTracker = () => {
         setCurrentWeekNumber(data.weekNumber || 1);
       }
     } catch (error) {
-      console.error("Error fetching weekly schedule:", error);
     }
   };
 
@@ -125,7 +124,6 @@ const StudyTracker = () => {
         const sessions = await scheduleResponse.json();
         setMonthSessions(sessions || []);
       } else {
-        console.error('Failed to fetch month sessions:', scheduleResponse.status);
         setMonthSessions([]);
       }
 
@@ -158,7 +156,6 @@ const StudyTracker = () => {
         setStreakData(streak);
       }
     } catch (error) {
-      console.error("Error fetching month data:", error);
     }
   };
 

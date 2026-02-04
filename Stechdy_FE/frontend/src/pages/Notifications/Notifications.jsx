@@ -63,7 +63,6 @@ const Notifications = () => {
         setNotifications(response.data);
       }
     } catch (error) {
-      console.error("Error loading notifications:", error);
     } finally {
       setLoading(false);
     }
@@ -76,7 +75,6 @@ const Notifications = () => {
         prev.map((n) => (n._id === id ? { ...n, isRead: true } : n))
       );
     } catch (error) {
-      console.error("Error marking as read:", error);
     }
   };
 
@@ -85,7 +83,6 @@ const Notifications = () => {
       await notificationService.markAllAsRead();
       setNotifications((prev) => prev.map((n) => ({ ...n, isRead: true })));
     } catch (error) {
-      console.error("Error marking all as read:", error);
     }
   };
 
@@ -95,7 +92,6 @@ const Notifications = () => {
       setNotifications((prev) => prev.filter((n) => n._id !== id));
       setSelectedNotifs((prev) => prev.filter((nId) => nId !== id));
     } catch (error) {
-      console.error("Error deleting notification:", error);
     }
   };
 
@@ -110,7 +106,6 @@ const Notifications = () => {
       setSelectedNotifs([]);
       setSelectMode(false);
     } catch (error) {
-      console.error("Error deleting notifications:", error);
     }
   };
 

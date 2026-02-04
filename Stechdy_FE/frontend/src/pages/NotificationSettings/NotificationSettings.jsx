@@ -51,7 +51,6 @@ const NotificationSettings = () => {
         }
       }
     } catch (error) {
-      console.error("Error loading settings:", error);
       // Fallback to localStorage
       const savedSettings = localStorage.getItem("notificationSettings");
       if (savedSettings) {
@@ -75,7 +74,6 @@ const NotificationSettings = () => {
         throw new Error(response.message || "Failed to save");
       }
     } catch (error) {
-      console.error("Error saving settings:", error);
       // Save to localStorage as fallback
       localStorage.setItem("notificationSettings", JSON.stringify(settings));
       alert(t("notificationSettings.saveFailed") || "Failed to save settings to server, but saved locally");

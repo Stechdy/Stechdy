@@ -77,7 +77,6 @@ export const SocketProvider = ({ children }) => {
     });
 
     newSocket.on("connect_error", (error) => {
-      console.error("❌ Socket.IO connection error:", error.message);
       setIsConnected(false);
 
       // Check if error is due to session termination
@@ -91,7 +90,6 @@ export const SocketProvider = ({ children }) => {
     });
 
     newSocket.on("error", (error) => {
-      console.error("❌ Socket.IO error:", error);
     });
 
     // Notification events

@@ -26,7 +26,6 @@ const AdminRevenue = () => {
       const data = await response.json();
       setStats(data.data);
     } catch (err) {
-      console.error('Error:', err);
     } finally {
       setLoading(false);
     }

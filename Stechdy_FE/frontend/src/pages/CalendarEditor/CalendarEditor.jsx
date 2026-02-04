@@ -101,10 +101,8 @@ const CalendarEditor = () => {
         setEvents(finalEvents);
         // Successfully loaded sessions silently
       } else {
-        console.error("Failed to load schedule");
       }
     } catch (error) {
-      console.error("Error fetching schedule:", error);
       // Error handled silently
     } finally {
       setIsLoading(false);
@@ -123,7 +121,6 @@ const CalendarEditor = () => {
         setSubjects(data);
       }
     } catch (error) {
-      console.error("Error fetching subjects:", error);
     }
   };
 
@@ -291,7 +288,6 @@ const CalendarEditor = () => {
 
       if (!response.ok) {
         const errorText = await response.text();
-        console.error('Error response:', errorText);
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
 
@@ -304,7 +300,6 @@ const CalendarEditor = () => {
         throw new Error(result.message || 'Unknown error');
       }
     } catch (error) {
-      console.error("Error saving schedule:", error);
       alert("Failed to save schedule: " + error.message);
     } finally {
       setIsSaving(false);

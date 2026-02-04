@@ -48,7 +48,6 @@ const NotificationTable = () => {
         setUnreadCount(response.unreadCount);
       }
     } catch (error) {
-      console.error("Error loading notifications:", error);
     } finally {
       setLoading(false);
     }
@@ -59,7 +58,6 @@ const NotificationTable = () => {
       await notificationService.markAsRead(id);
       loadNotifications();
     } catch (error) {
-      console.error("Error marking as read:", error);
     }
   };
 
@@ -68,7 +66,6 @@ const NotificationTable = () => {
       await notificationService.markAsUnread(id);
       loadNotifications();
     } catch (error) {
-      console.error("Error marking as unread:", error);
     }
   };
 
@@ -79,7 +76,6 @@ const NotificationTable = () => {
       setSelectedIds([]);
       setSelectAll(false);
     } catch (error) {
-      console.error("Error marking all as read:", error);
     }
   };
 
@@ -90,7 +86,6 @@ const NotificationTable = () => {
       setSelectedIds([]);
       setSelectAll(false);
     } catch (error) {
-      console.error("Error marking selected as read:", error);
     }
   };
 
@@ -100,7 +95,6 @@ const NotificationTable = () => {
       loadNotifications();
       setSelectedIds(selectedIds.filter((selectedId) => selectedId !== id));
     } catch (error) {
-      console.error("Error deleting notification:", error);
     }
   };
 
@@ -112,7 +106,6 @@ const NotificationTable = () => {
       setSelectedIds([]);
       setSelectAll(false);
     } catch (error) {
-      console.error("Error deleting selected notifications:", error);
     }
   };
 

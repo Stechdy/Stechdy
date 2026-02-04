@@ -54,7 +54,6 @@ const PaymentModal = ({ isOpen, onClose, planData }) => {
 
       setPaymentInfo(data.payment);
     } catch (err) {
-      console.error("Error creating payment request:", err);
       setError(err.message || "Đã có lỗi xảy ra. Vui lòng thử lại.");
     } finally {
       setLoading(false);
@@ -87,7 +86,6 @@ const PaymentModal = ({ isOpen, onClose, planData }) => {
 
       setSubmitted(true);
     } catch (err) {
-      console.error("Error submitting payment:", err);
       setError(err.message || "Đã có lỗi xảy ra. Vui lòng thử lại.");
     } finally {
       setLoading(false);

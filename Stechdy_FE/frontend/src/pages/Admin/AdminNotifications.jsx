@@ -64,7 +64,6 @@ const AdminNotifications = () => {
       // Reset form
       setForm({ title: '', message: '', targetUsers: 'all' });
     } catch (err) {
-      console.error('Error sending notification:', err);
       alert(`Có lỗi xảy ra khi gửi thông báo: ${err.message}`);
     } finally {
       setLoading(false);

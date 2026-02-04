@@ -10,7 +10,6 @@ const settingsService = {
         data: response.data,
       };
     } catch (error) {
-      console.error('Error getting settings:', error);
       return {
         success: false,
         message: error.message || 'Failed to load settings',
@@ -27,7 +26,6 @@ const settingsService = {
         data: response.data,
       };
     } catch (error) {
-      console.error('Error updating settings:', error);
       return {
         success: false,
         message: error.message || 'Failed to update settings',
@@ -44,7 +42,6 @@ const settingsService = {
         data: response.data,
       };
     } catch (error) {
-      console.error('Error updating notification preferences:', error);
       return {
         success: false,
         message: error.message || 'Failed to update notification preferences',
@@ -61,7 +58,6 @@ const settingsService = {
         data: response.data,
       };
     } catch (error) {
-      console.error('Error updating sound preferences:', error);
       return {
         success: false,
         message: error.message || 'Failed to update sound preferences',
@@ -78,7 +74,6 @@ const settingsService = {
         data: response.data,
       };
     } catch (error) {
-      console.error('Error updating theme preferences:', error);
       return {
         success: false,
         message: error.message || 'Failed to update theme preferences',
@@ -95,7 +90,6 @@ const settingsService = {
         data: response.data,
       };
     } catch (error) {
-      console.error('Error updating language:', error);
       return {
         success: false,
         message: error.message || 'Failed to update language',

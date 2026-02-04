@@ -87,7 +87,6 @@ export const ThemeProvider = ({ children }) => {
     try {
       localStorage.setItem(THEME_KEY, themeMode);
     } catch (error) {
-      console.error("Failed to save theme preference:", error);
     }
   }, [themeMode, resolveTheme, applyTheme]);
 

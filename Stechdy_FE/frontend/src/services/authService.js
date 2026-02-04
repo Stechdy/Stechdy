@@ -143,7 +143,6 @@ export const logout = async () => {
       });
     }
   } catch (error) {
-    console.error("Logout error:", error);
   } finally {
     // Always clear local storage
     localStorage.removeItem("token");
@@ -282,7 +281,6 @@ export const refreshUserData = async () => {
 
     return null;
   } catch (error) {
-    console.error("Error refreshing user data:", error);
     return null;
   }
 };

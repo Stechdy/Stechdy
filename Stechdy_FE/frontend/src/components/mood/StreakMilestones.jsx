@@ -77,7 +77,6 @@ const StreakMilestones = () => {
         setStreakData(response.data);
       }
     } catch (error) {
-      console.error("Error loading streak data:", error);
     } finally {
       setLoading(false);
     }
@@ -171,7 +170,6 @@ const StreakMilestones = () => {
         }
       }
     } catch (error) {
-      console.error("Error making makeup check-in:", error);
       // Close modal first
       closeMakeupModal();
       

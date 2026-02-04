@@ -137,7 +137,6 @@ studySessionScheduleSchema.pre('save', async function(next) {
     });
     
     if (sameDaySessions >= 3) {
-      console.log(`⚠️  Warning: User ${this.userId} has ${sameDaySessions + 1} sessions on ${this.date}`);
       // No longer throwing error - just log warning
     }
   }

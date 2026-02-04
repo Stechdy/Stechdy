@@ -19,7 +19,6 @@ const BottomNav = () => {
       const response = await moodService.getTodayMood();
       setHasTodayMood(response.success && response.data);
     } catch (error) {
-      console.error("Error checking today mood:", error);
       setHasTodayMood(false);
     }
   };

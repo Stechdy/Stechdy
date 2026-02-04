@@ -88,7 +88,6 @@ const AIGenerator = () => {
           }
         }
       } catch (error) {
-        console.error("Error checking existing schedule:", error);
       }
     };
 
@@ -341,7 +340,6 @@ const AIGenerator = () => {
         result = await response.json();
       } else {
         const text = await response.text();
-        console.error("Non-JSON response:", text);
         throw new Error(text || `Server error: ${response.status}`);
       }
 
@@ -415,17 +413,11 @@ const AIGenerator = () => {
           }));
         }
       } else {
-        console.error(
-          "Unexpected response structure:",
-          JSON.stringify(result, null, 2),
-        );
         throw new Error(
           "Unexpected response format. Check browser console for details.",
         );
       }
     } catch (error) {
-      console.error("Error:", error);
-
       let userMessage = error.message;
       if (
         error.message.includes("Failed to fetch") ||

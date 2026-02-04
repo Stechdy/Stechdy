@@ -7,7 +7,6 @@ class BrowserNotificationService {
   // Check if notifications are supported and permission status
   checkPermission() {
     if (!('Notification' in window)) {
-      console.warn('This browser does not support notifications');
       return false;
     }
     this.permission = Notification.permission;
@@ -29,7 +28,6 @@ class BrowserNotificationService {
       this.permission = permission;
       return permission === 'granted';
     } catch (error) {
-      console.error('Error requesting notification permission:', error);
       return false;
     }
   }
@@ -37,7 +35,6 @@ class BrowserNotificationService {
   // Show a notification
   showNotification(title, options = {}) {
     if (this.permission !== 'granted') {
-      console.warn('Notification permission not granted');
       return null;
     }
 
@@ -54,7 +51,6 @@ class BrowserNotificationService {
       this.handleNotificationClick(notification);
       return notification;
     } catch (error) {
-      console.error('Error showing notification:', error);
       return null;
     }
   }

@@ -58,7 +58,6 @@ const Dashboard = () => {
         setActiveSession(data);
       }
     } catch (error) {
-      console.error("Error fetching active session:", error);
     }
   }, []);
 
@@ -87,7 +86,6 @@ const Dashboard = () => {
         setMissedSessions(data);
       }
     } catch (error) {
-      console.error("Error fetching missed sessions:", error);
     }
   }, []);
 
@@ -149,7 +147,6 @@ const Dashboard = () => {
         setTimeout(() => setShowMoodModal(true), 2000); // Show after 2 seconds
       }
     } catch (error) {
-      console.error("Error checking mood:", error);
     }
   };
 
@@ -334,7 +331,6 @@ const Dashboard = () => {
       // Cache dashboard data
       localStorage.setItem("dashboardData", JSON.stringify(dashboardData));
     } catch (error) {
-      console.error("Error fetching dashboard data:", error);
       // Fallback to mock data on error
       const today = new Date();
       const tomorrow = new Date(today);

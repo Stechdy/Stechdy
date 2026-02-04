@@ -70,7 +70,6 @@ const NotificationBell = () => {
         }
       }
     } catch (error) {
-      console.error("Error loading notifications:", error);
     }
   };
 
@@ -93,7 +92,6 @@ const NotificationBell = () => {
       await notificationService.markAsRead(id);
       loadNotifications();
     } catch (error) {
-      console.error("Error marking as read:", error);
     }
   };
 
@@ -103,7 +101,6 @@ const NotificationBell = () => {
       await notificationService.markAllAsRead();
       loadNotifications();
     } catch (error) {
-      console.error("Error marking all as read:", error);
     } finally {
       setLoading(false);
     }
@@ -114,7 +111,6 @@ const NotificationBell = () => {
       await notificationService.deleteNotification(id);
       loadNotifications();
     } catch (error) {
-      console.error("Error deleting notification:", error);
     }
   };
 

@@ -73,7 +73,6 @@ const Calendar = () => {
         setSessions(mappedData);
       }
     } catch (error) {
-      console.error("Error fetching sessions:", error);
     }
   };
 

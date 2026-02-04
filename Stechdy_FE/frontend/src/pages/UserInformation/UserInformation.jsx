@@ -104,7 +104,6 @@ const UserInformation = () => {
       });
       setLoading(false);
     } catch (err) {
-      console.error("Error fetching user data:", err);
       const errorMessage = handleApiError(err);
       toast.error(errorMessage, {
         position: "top-center",

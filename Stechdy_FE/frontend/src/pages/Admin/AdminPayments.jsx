@@ -82,7 +82,6 @@ const AdminPayments = () => {
       
       setPayments(paginatedPayments);
     } catch (error) {
-      console.error("Error fetching payments:", error);
     } finally {
       setLoading(false);
     }
@@ -120,7 +119,6 @@ const AdminPayments = () => {
       alert(status === "verified" ? "✅ Đã duyệt thanh toán!" : "❌ Đã từ chối thanh toán!");
       fetchPayments();
     } catch (error) {
-      console.error("Error verifying payment:", error);
       alert("Có lỗi xảy ra khi xử lý thanh toán");
     } finally {
       setProcessing(null);

@@ -107,7 +107,6 @@ const apiService = {
       };
       return await handleRequest(url, fetchOptions);
     } catch (error) {
-      console.error('API GET Error:', error);
       throw error;
     }
   },
@@ -126,7 +125,6 @@ const apiService = {
       };
       return await handleRequest(url, fetchOptions);
     } catch (error) {
-      console.error('API POST Error:', error);
       throw error;
     }
   },
@@ -145,7 +143,6 @@ const apiService = {
       };
       return await handleRequest(url, fetchOptions);
     } catch (error) {
-      console.error('API PUT Error:', error);
       throw error;
     }
   },
@@ -163,7 +160,6 @@ const apiService = {
       };
       return await handleRequest(url, fetchOptions);
     } catch (error) {
-      console.error('API DELETE Error:', error);
       throw error;
     }
   },

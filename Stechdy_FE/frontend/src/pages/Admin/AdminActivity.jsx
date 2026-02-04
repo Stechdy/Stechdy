@@ -23,7 +23,6 @@ const AdminActivity = () => {
       const data = await response.json();
       setActivities(data.data);
     } catch (err) {
-      console.error('Error:', err);
     } finally {
       setLoading(false);
     }

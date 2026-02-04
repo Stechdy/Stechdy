@@ -138,7 +138,6 @@ const Mood = () => {
         setEnergyLevel(response.data.energyLevel || 5);
       }
     } catch (error) {
-      console.error("Error loading today mood:", error);
     }
   };
 
@@ -216,7 +215,6 @@ const Mood = () => {
         }
       }
     } catch (error) {
-      console.error("Error saving mood:", error);
       alert(t("mood.errorSaving"));
     } finally {
       setLoading(false);

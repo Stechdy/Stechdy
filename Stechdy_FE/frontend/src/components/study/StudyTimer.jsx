@@ -113,7 +113,6 @@ const StudyTimer = ({ session, onEnd, onRefresh }) => {
         if (onRefresh) onRefresh();
       }
     } catch (error) {
-      console.error("Error pausing session:", error);
     } finally {
       setIsLoading(false);
     }
@@ -142,7 +141,6 @@ const StudyTimer = ({ session, onEnd, onRefresh }) => {
         if (onRefresh) onRefresh();
       }
     } catch (error) {
-      console.error("Error resuming session:", error);
     } finally {
       setIsLoading(false);
     }
@@ -176,7 +174,6 @@ const StudyTimer = ({ session, onEnd, onRefresh }) => {
         if (onEnd) onEnd(data);
       }
     } catch (error) {
-      console.error("Error ending session:", error);
     } finally {
       setIsLoading(false);
     }

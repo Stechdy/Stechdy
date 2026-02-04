@@ -149,7 +149,6 @@ const MoodCalendar = () => {
         setStreakData(response.data);
       }
     } catch (error) {
-      console.error("Error loading streak data:", error);
     }
   };
 
@@ -173,10 +172,8 @@ const MoodCalendar = () => {
       if (response.success) {
         setMoods(response.data);
       } else {
-        console.warn('Calendar response not successful:', response);
       }
     } catch (error) {
-      console.error("Error loading moods:", error);
     } finally {
       setLoading(false);
     }
@@ -353,8 +350,6 @@ const MoodCalendar = () => {
         }
       }
     } catch (error) {
-      console.error("Error making makeup check-in:", error);
-      
       // Close modal first
       closeMakeupModal();
       

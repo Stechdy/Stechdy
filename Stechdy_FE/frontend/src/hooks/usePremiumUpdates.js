@@ -23,7 +23,6 @@ const usePremiumUpdates = () => {
           user.premiumExpiryDate = data.premiumExpiryDate;
           localStorage.setItem('user', JSON.stringify(user));
         } catch (error) {
-          console.error('Error updating user in localStorage:', error);
         }
       }
 

@@ -78,10 +78,8 @@ const MoodHistory = () => {
       if (response.success) {
         setStats(response.data);
       } else {
-        console.warn('Stats request not successful:', response);
       }
     } catch (error) {
-      console.error("Error loading stats:", error);
     } finally {
       setLoading(false);
     }

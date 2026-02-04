@@ -166,7 +166,6 @@ const ScheduleEditor = () => {
           assignSubjectColors(normalizedEvents);
         }
       } catch (error) {
-        console.error("Error parsing schedule:", error);
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -541,7 +540,6 @@ const ScheduleEditor = () => {
 
       displayToast(`Đã áp dụng mẫu tuần đầu cho ${weekKeys.length - 1} tuần còn lại!`, "success");
     } catch (error) {
-      console.error("Error applying to all weeks:", error);
       displayToast("Lỗi khi áp dụng cho tất cả tuần", "error");
     } finally {
       setIsApplying(false);
@@ -655,7 +653,6 @@ const ScheduleEditor = () => {
         setHasChanges(false);
       }
     } catch (error) {
-      console.error("Error saving schedule:", error);
       displayToast("Failed to save schedule: " + error.message, "error");
     } finally {
       setIsSaving(false);
