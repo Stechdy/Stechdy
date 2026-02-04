@@ -16,7 +16,6 @@ const AdminLayout = ({ children }) => {
   };
 
   const handleThemeToggle = () => {
-    console.log('Theme toggle clicked! Current isDark:', isDark);
     toggleTheme();
   };
 

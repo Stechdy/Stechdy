@@ -58,13 +58,10 @@ const AIGenerator = () => {
         });
         if (userResponse.ok) {
           const userData = await userResponse.json();
-          console.log('AI Generator User data:', userData); // Debug log
           // Check premium status - can be isPremium boolean OR premiumStatus string  
           const userIsPremium = userData.isPremium === true || userData.premiumStatus === 'premium' || userData.user?.isPremium === true || userData.user?.premiumStatus === 'premium';
           setIsPremium(userIsPremium);
-          console.log('AI Generator Is Premium:', userIsPremium, 'premiumStatus:', userData.premiumStatus); // Debug log
         } else {
-          console.log('AI Generator: API response not OK:', userResponse.status); // Debug log
           setIsPremium(false); // Default to free if API fails
         }
 
@@ -354,8 +351,6 @@ const AIGenerator = () => {
         );
       }
 
-      console.log("Response:", result);
-
       // Extract schedule data - handle various response formats from n8n
       let scheduleData = null;
 
@@ -367,10 +362,8 @@ const AIGenerator = () => {
           Array.isArray(firstItem.data.schedule)
         ) {
           scheduleData = firstItem.data;
-          console.log("Extracted from array[0].data:", scheduleData);
         } else if (firstItem?.schedule && Array.isArray(firstItem.schedule)) {
           scheduleData = firstItem;
-          console.log("Extracted from array[0]:", scheduleData);
         } else {
           // Assume the array itself is the schedule
           scheduleData = { schedule: result };
@@ -379,16 +372,11 @@ const AIGenerator = () => {
       // Case 2: Direct response {success, data: {schedule: [...]}}
       else if (result.success && result.data?.schedule) {
         scheduleData = result.data;
-        console.log("Extracted from result.data:", scheduleData);
       }
       // Case 3: Direct {schedule: [...]}
       else if (result.schedule && Array.isArray(result.schedule)) {
         scheduleData = result;
-        console.log("Extracted direct schedule:", scheduleData);
       }
-
-      console.log("Final scheduleData:", scheduleData);
-      console.log("Schedule array length:", scheduleData?.schedule?.length);
 
       if (
         scheduleData &&

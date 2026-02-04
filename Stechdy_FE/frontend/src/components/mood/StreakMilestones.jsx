@@ -42,7 +42,6 @@ const StreakMilestones = () => {
     
     // Listen for streak updates from other components
     const handleStreakUpdate = () => {
-      console.log('Streak updated event received, reloading streak data...');
       loadStreakData();
     };
     

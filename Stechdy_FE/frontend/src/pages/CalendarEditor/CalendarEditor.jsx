@@ -276,8 +276,6 @@ const CalendarEditor = () => {
         subjectId: event.subjectId
       }));
 
-      console.log('📤 Sending sessions to update:', sessionsToUpdate);
-
       // Send bulk update request
       const response = await fetch(
         `${config.apiUrl}/study-sessions/bulk-update`,
@@ -291,9 +289,6 @@ const CalendarEditor = () => {
         }
       );
 
-      console.log('Response status:', response.status);
-      console.log('Response ok:', response.ok);
-
       if (!response.ok) {
         const errorText = await response.text();
         console.error('Error response:', errorText);
@@ -301,7 +296,6 @@ const CalendarEditor = () => {
       }
 
       const result = await response.json();
-      console.log('API Response:', result);
 
       if (result.success) {
         setShowSuccessModal(true);

@@ -14,8 +14,6 @@ const usePremiumUpdates = () => {
 
     // Register callback for premium updates
     onPremiumUpdate((data) => {
-      console.log('🎉 Premium update received in hook:', data);
-
       // Update localStorage with new premium status
       const userStr = localStorage.getItem('user');
       if (userStr) {

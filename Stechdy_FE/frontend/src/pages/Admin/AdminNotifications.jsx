@@ -34,9 +34,6 @@ const AdminNotifications = () => {
       setLoading(true);
       const token = localStorage.getItem('token');
       
-      console.log('Sending notification:', form);
-      console.log('API URL:', `${API_BASE_URL}/admin/notifications/broadcast`);
-      
       const response = await fetch(`${API_BASE_URL}/admin/notifications/broadcast`, {
         method: 'POST',
         headers: {
@@ -46,9 +43,7 @@ const AdminNotifications = () => {
         body: JSON.stringify(form)
       });
 
-      console.log('Response status:', response.status);
       const data = await response.json();
-      console.log('Response data:', data);
 
       if (!response.ok) {
         throw new Error(data.message || 'Failed to send notification');

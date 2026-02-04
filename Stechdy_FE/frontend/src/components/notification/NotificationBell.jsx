@@ -33,7 +33,6 @@ const NotificationBell = () => {
 
     // Only use polling as fallback when socket is disconnected
     if (!isConnected) {
-      console.log("Socket disconnected, using polling fallback");
       const interval = setInterval(loadNotifications, 30000);
       return () => clearInterval(interval);
     }

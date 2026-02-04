@@ -47,14 +47,12 @@ const PaymentModal = ({ isOpen, onClose, planData }) => {
       });
 
       const data = await response.json();
-      console.log("Create payment response:", response.status, data);
 
       if (!response.ok) {
         throw new Error(data.message || "Failed to create payment request");
       }
 
       setPaymentInfo(data.payment);
-      console.log("Payment info set:", data.payment);
     } catch (err) {
       console.error("Error creating payment request:", err);
       setError(err.message || "Đã có lỗi xảy ra. Vui lòng thử lại.");
@@ -69,7 +67,6 @@ const PaymentModal = ({ isOpen, onClose, planData }) => {
       setError("");
 
       const token = localStorage.getItem("token");
-      console.log("Submitting payment with ID:", paymentInfo.id);
       
       const response = await fetch(`${config.apiUrl}/payments/submit`, {
         method: "POST",
@@ -83,7 +80,6 @@ const PaymentModal = ({ isOpen, onClose, planData }) => {
       });
 
       const data = await response.json();
-      console.log("Submit response:", data);
 
       if (!response.ok) {
         throw new Error(data.message || "Failed to submit payment");

@@ -18,14 +18,12 @@ export const AdminThemeProvider = ({ children }) => {
 
   useEffect(() => {
     // Apply theme to document root
-    console.log('Admin theme changed to:', theme);
     document.documentElement.setAttribute('data-theme', theme);
     localStorage.setItem('admin-theme', theme);
   }, [theme]);
 
   const toggleTheme = () => {
     const newTheme = theme === 'light' ? 'dark' : 'light';
-    console.log('Toggling theme from', theme, 'to', newTheme);
     setTheme(newTheme);
   };
 

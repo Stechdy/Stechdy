@@ -12,7 +12,6 @@ const PremiumBanner = () => {
     // Listen for realtime premium status updates
     if (onPremiumUpdate) {
       onPremiumUpdate((data) => {
-        console.log('Premium status updated in banner:', data);
         // When admin approves, show banner immediately
         if (data.status === 'premium') {
           displayBanner();

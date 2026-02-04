@@ -164,22 +164,13 @@ const MoodCalendar = () => {
       const endOfMonth = dateUtils.getEndOfMonthUTC(year, month);
       const daysInMonth = dateUtils.getDaysInMonth(year, month);
 
-      console.log('MoodCalendar - loadMonthMoods');
-      console.log('MoodCalendar - Year:', year, 'Month:', month + 1);
-      console.log('MoodCalendar - Days in this month:', daysInMonth);
-      console.log('MoodCalendar - startOfMonth:', startOfMonth.toISOString());
-      console.log('MoodCalendar - endOfMonth:', endOfMonth.toISOString());
-
       const response = await moodService.getMoodEntries({
         startDate: startOfMonth.toISOString(),
         endDate: endOfMonth.toISOString(),
         limit: 100,
       });
 
-      console.log('Calendar mood entries response:', response);
       if (response.success) {
-        console.log('Calendar moods data count:', response.data?.length);
-        console.log('Calendar moods data:', response.data);
         setMoods(response.data);
       } else {
         console.warn('Calendar response not successful:', response);
@@ -247,10 +238,6 @@ const MoodCalendar = () => {
     const now = new Date();
     const today = dateUtils.getStartOfDayUTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
     
-    console.log('Clicked day:', day);
-    console.log('Clicked date (UTC):', clickedDate.toISOString());
-    console.log('Today (UTC):', today.toISOString());
-    
     // If mood exists, show detail modal
     if (mood) {
       setSelectedDate(day);
@@ -260,7 +247,6 @@ const MoodCalendar = () => {
     else if (clickedDate < today) {
       // Check if user has makeup check-ins remaining
       if (streakData && streakData.makeupCheckIns.remainingMakeups > 0) {
-        console.log('Setting makeup date to:', clickedDate);
         setMakeupDate(clickedDate);
         setShowMakeupModal(true);
       } else {
@@ -311,9 +297,6 @@ const MoodCalendar = () => {
       const month = makeupDate.getUTCMonth();
       const day = makeupDate.getUTCDate();
       const dateString = dateUtils.formatDateForAPI(year, month, day);
-      
-      console.log('Submitting makeup for date (UTC):', dateString);
-      console.log('Makeup date object:', makeupDate.toISOString());
       
       const response = await moodService.makeupMoodCheckIn({
         date: dateString,

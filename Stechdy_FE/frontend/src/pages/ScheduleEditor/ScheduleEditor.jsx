@@ -637,7 +637,6 @@ const ScheduleEditor = () => {
         const result = await response.json();
 
         if (result.success) {
-          console.log(`Schedule saved! Created ${result.data.sessionsCreated} sessions.`);
           setHasChanges(false);
           setShowSuccessModal(true);
 

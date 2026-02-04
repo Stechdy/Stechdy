@@ -188,9 +188,16 @@ studySessionScheduleSchema.methods.reschedule = function(newDate, newStartTime, 
 
 // Method to get computed status (auto-detect missed)
 studySessionScheduleSchema.methods.getComputedStatus = function() {
-  // If already completed or missed, return as is
-  if (this.status === 'completed' || this.status === 'missed') {
-    return this.status;
+  // If already completed, ALWAYS return completed (don't override with missed)
+  // This is critical: if a session has been completed (has actualEndTime), 
+  // it should NEVER be shown as missed, regardless of current time
+  if (this.status === 'completed' || this.actualEndTime) {
+    return 'completed';
+  }
+  
+  // If already marked as missed, return as is
+  if (this.status === 'missed') {
+    return 'missed';
   }
   
   // Check if session time has passed (Vietnam timezone UTC+7)

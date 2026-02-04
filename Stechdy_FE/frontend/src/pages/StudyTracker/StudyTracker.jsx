@@ -269,9 +269,6 @@ const StudyTracker = () => {
       return 0;
     }
     
-    console.log('Checking progress for:', dayDate);
-    console.log('Available sessions:', monthSessions.length);
-    
     // Get all completed sessions for this specific day
     const daySessions = monthSessions.filter(session => {
       const sessionDate = new Date(session.date);
@@ -280,11 +277,8 @@ const StudyTracker = () => {
       const sessionMonth = String(sessionDate.getMonth() + 1).padStart(2, '0');
       const sessionDay = String(sessionDate.getDate()).padStart(2, '0');
       const sessionDateStr = `${sessionYear}-${sessionMonth}-${sessionDay}`;
-      console.log('Session date:', sessionDateStr, 'vs', dayDate, 'status:', session.status);
       return sessionDateStr === dayDate && session.status === 'completed';
     });
-    
-    console.log('Found completed sessions for', dayDate, ':', daySessions.length);
     
     if (daySessions.length === 0) return 0;
     
@@ -293,16 +287,11 @@ const StudyTracker = () => {
     daySessions.forEach(session => {
       const duration = session.actualDuration || session.plannedDuration || 0;
       totalMinutes += duration;
-      console.log('Session duration:', duration, 'minutes');
     });
-    
-    console.log('Total minutes for', dayDate, ':', totalMinutes);
     
     // Convert to percentage (assume 4 hours = 240 minutes = 100%)
     const targetMinutesPerDay = 240; // 4 hours for more visible progress
     const percentage = Math.min((totalMinutes / targetMinutesPerDay) * 100, 100);
-    
-    console.log('Percentage:', percentage);
     
     return percentage;
   };

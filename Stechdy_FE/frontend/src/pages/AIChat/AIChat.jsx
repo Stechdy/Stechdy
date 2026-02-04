@@ -20,7 +20,7 @@ const AIChat = () => {
   const [isPremium, setIsPremium] = useState(null); // null = loading, false = free, true = premium
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
 
-  const GEMINI_API_KEY = process.env.REACT_APP_GEMINI_API_KEY || "AIzaSyDUT9bNZBUdWIgDdUVycn_lMqiDXsuj5WI";
+  const GEMINI_API_KEY = process.env.REACT_APP_GEMINI_API_KEY;
   
   // Initialize Gemini AI
   const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
@@ -37,17 +37,13 @@ const AIChat = () => {
           });
           if (response.ok) {
             const userData = await response.json();
-            console.log('User data:', userData); // Debug log
             // Check premium status - can be isPremium boolean OR premiumStatus string
             const userIsPremium = userData.isPremium === true || userData.premiumStatus === 'premium' || userData.user?.isPremium === true || userData.user?.premiumStatus === 'premium';
             setIsPremium(userIsPremium);
-            console.log('Is Premium:', userIsPremium, 'premiumStatus:', userData.premiumStatus); // Debug log
           } else {
-            console.log('No user data in response'); // Debug log
             setIsPremium(false); // Default to free if no data
           }
         } else {
-          console.log('No token found'); // Debug log  
           setIsPremium(false); // Default to free if no token
         }
       } catch (error) {

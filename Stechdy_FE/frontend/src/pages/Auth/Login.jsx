@@ -75,8 +75,6 @@ const Login = () => {
       const sessionId = `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
       localStorage.setItem("sessionId", sessionId);
 
-      console.log("🔐 Logging in with NEW sessionId:", sessionId);
-
       const response = await login(
         formData.email,
         formData.password,
@@ -118,8 +116,6 @@ const Login = () => {
       // ALWAYS create NEW sessionId on login (invalidates old sessions)
       const sessionId = `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
       localStorage.setItem("sessionId", sessionId);
-
-      console.log("🔐 Google login with NEW sessionId:", sessionId);
 
       const response = await googleLogin(
         credentialResponse.credential,

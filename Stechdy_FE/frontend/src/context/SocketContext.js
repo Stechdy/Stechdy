@@ -34,19 +34,16 @@ export const SocketProvider = ({ children }) => {
     if (!sessionId) {
       sessionId = `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
       localStorage.setItem("sessionId", sessionId);
-      console.log("📝 Created new sessionId:", sessionId);
     }
 
     const token = localStorage.getItem("token");
 
     if (!token) {
-      console.log("No token found, skipping socket connection");
       return;
     }
 
     // Skip socket connection in production if no socket server
     if (process.env.REACT_APP_ENV === 'production' && !process.env.REACT_APP_SOCKET_URL) {
-      console.log("No socket server configured for production, skipping socket connection");
       return;
     }
 
@@ -54,11 +51,6 @@ export const SocketProvider = ({ children }) => {
     const socketUrl = process.env.REACT_APP_SOCKET_URL;
     const apiUrl = process.env.REACT_APP_API_URL || "http://localhost:3001/api";
     const serverUrl = socketUrl || apiUrl.replace(/\/api$/, ""); // Use socket URL or remove /api suffix
-
-    console.log("🔌 Connecting to Socket.IO server...");
-    console.log("🌐 Server URL:", serverUrl);
-    console.log("📝 SessionID:", sessionId);
-    console.log("🔑 Token:", token?.substring(0, 20) + "...");
 
     const newSocket = io(serverUrl, {
       auth: {
@@ -73,16 +65,14 @@ export const SocketProvider = ({ children }) => {
 
     // Connection events
     newSocket.on("connect", () => {
-      console.log("✅ Socket.IO connected:", newSocket.id);
       setIsConnected(true);
     });
 
     newSocket.on("connected", (data) => {
-      console.log("✅ Connected to notification server:", data);
+      // Connected to notification server
     });
 
     newSocket.on("disconnect", () => {
-      console.log("❌ Socket.IO disconnected");
       setIsConnected(false);
     });
 
@@ -95,11 +85,6 @@ export const SocketProvider = ({ children }) => {
         error.message.includes("Session terminated") ||
         error.message.includes("Logged in from another device")
       ) {
-        console.log("\n========== SESSION TERMINATED ==========");
-        console.log("Reason: Logged in from another device");
-        console.log("Showing modal...");
-        console.log("========================================\n");
-
         // Show modal FIRST - tokens will be cleared when user clicks button
         setShowSessionExpiredModal(true);
       }
@@ -111,8 +96,6 @@ export const SocketProvider = ({ children }) => {
 
     // Notification events
     newSocket.on("notification:new", (data) => {
-      console.log("🔔 New notification received:", data);
-
       // Add notification to state
       setNotifications((prev) => [data.notification, ...prev]);
 
@@ -134,13 +117,10 @@ export const SocketProvider = ({ children }) => {
     });
 
     newSocket.on("notification:unread-count", (data) => {
-      console.log("📊 Unread count updated:", data.unreadCount);
       setUnreadCount(data.unreadCount);
     });
 
     newSocket.on("notification:read", (data) => {
-      console.log("✓ Notification marked as read:", data.notificationId);
-
       // Update notification in state
       setNotifications((prev) =>
         prev.map((notif) =>
@@ -150,8 +130,6 @@ export const SocketProvider = ({ children }) => {
     });
 
     newSocket.on("notification:all-read", (data) => {
-      console.log("✓ All notifications marked as read");
-
       // Mark all notifications as read
       setNotifications((prev) =>
         prev.map((notif) => ({ ...notif, read: true })),
@@ -161,8 +139,6 @@ export const SocketProvider = ({ children }) => {
     });
 
     newSocket.on("notification:deleted", (data) => {
-      console.log("🗑️ Notification deleted:", data.notificationId);
-
       // Remove notification from state
       setNotifications((prev) =>
         prev.filter((notif) => notif._id !== data.notificationId),
@@ -170,13 +146,10 @@ export const SocketProvider = ({ children }) => {
     });
 
     newSocket.on("notification:update", (data) => {
-      console.log("🔄 Notifications updated:", data);
       // Trigger fetch (handled by NotificationBell)
     });
 
     newSocket.on("system:announcement", (data) => {
-      console.log("📢 System announcement:", data);
-
       // Show system announcement
       if (Notification.permission === "granted") {
         new Notification("System Announcement", {
@@ -189,12 +162,6 @@ export const SocketProvider = ({ children }) => {
 
     // Force logout event (single-session enforcement)
     newSocket.on("auth:force-logout", (data) => {
-      console.log("\n========== FORCE LOGOUT RECEIVED ==========");
-      console.log("Reason:", data.reason);
-      console.log("Message:", data.message);
-      console.log("My SessionID:", sessionId);
-      console.log("===========================================\n");
-
       // Show modal FIRST - tokens will be cleared when user clicks button
       setShowSessionExpiredModal(true);
 
@@ -204,8 +171,6 @@ export const SocketProvider = ({ children }) => {
 
     // Premium status update
     newSocket.on("premium:status-updated", (data) => {
-      console.log("🎉 Premium status updated:", data);
-
       // Call registered callback if exists
       if (premiumUpdateCallback) {
         premiumUpdateCallback(data);
@@ -229,7 +194,6 @@ export const SocketProvider = ({ children }) => {
 
     // Cleanup on unmount
     return () => {
-      console.log("🔌 Disconnecting socket...");
       newSocket.disconnect();
     };
   }, []); // Only run once on mount (token from localStorage is read inside effect)
@@ -237,9 +201,7 @@ export const SocketProvider = ({ children }) => {
   // Request browser notification permission
   useEffect(() => {
     if ("Notification" in window && Notification.permission === "default") {
-      Notification.requestPermission().then((permission) => {
-        console.log("Notification permission:", permission);
-      });
+      Notification.requestPermission();
     }
   }, []);
 
@@ -248,11 +210,11 @@ export const SocketProvider = ({ children }) => {
     try {
       const audio = new Audio("/notification-sound.mp3");
       audio.volume = 0.5;
-      audio.play().catch((err) => {
-        console.log("Could not play notification sound:", err);
+      audio.play().catch(() => {
+        // Could not play notification sound
       });
     } catch (error) {
-      console.log("Notification sound error:", error);
+      // Notification sound error
     }
   }, []);
 
