@@ -52,15 +52,15 @@ const initializeScheduler = () => {
     timezone: "Asia/Ho_Chi_Minh"
   });
 
-  // ========== STUDY SESSION REMINDERS ==========
+  // ========== STUDY SESSION IN-APP NOTIFICATIONS ==========
   
-  // Check for study sessions every 15 minutes
+  // Check for study sessions every 15 minutes (in-app notifications only)
   cron.schedule('*/15 * * * *', async () => {
-    console.log('Running study session reminder check...');
+    console.log('Running study session in-app notification check...');
     try {
       await sendStudySessionReminders();
     } catch (error) {
-      console.error('Study session reminder failed:', error);
+      console.error('Study session notification failed:', error);
     }
   }, {
     timezone: "Asia/Ho_Chi_Minh"
@@ -68,9 +68,8 @@ const initializeScheduler = () => {
 
   // ========== AUTO-MARK MISSED SESSIONS ==========
   
-  // Check for missed sessions every minute for accuracy
-  cron.schedule('* * * * *', async () => {
-    console.log('Running auto-mark missed sessions...');
+  // Check for missed sessions every 5 minutes
+  cron.schedule('*/5 * * * *', async () => {
     try {
       await autoMarkMissedSessions();
     } catch (error) {
@@ -101,9 +100,10 @@ const initializeScheduler = () => {
   console.log('  🌅 Morning mood reminders: 9:00 AM daily');
   console.log('  🌙 Evening mood reminders: 7:00 PM daily');
   console.log('  ✅ Task reminders: Every hour');
-  console.log('  📚 Study session reminders: Every 15 minutes');
-  console.log('  ❌ Auto-mark missed sessions: Every minute');
+  console.log('  📱 Study session in-app notifications: Every 15 min');
+  console.log('  ❌ Auto-mark missed sessions: Every 5 min');
   console.log('  ⏰ Deadline reminders: 8:00 AM & 6:00 PM daily');
+  console.log('  📧 Email reminders: sessionReminderService (every min)');
   console.log('========================================');
 };
 

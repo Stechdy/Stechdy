@@ -37,13 +37,11 @@ const parseTime = (timeStr, date) => {
   return result;
 };
 
-// Kiểm tra và gửi email nhắc nhở (15 phút trước)
+// Kiểm tra và gửi email nhắc nhở (trước giờ học tối đa 16 phút)
 const checkAndSendReminders = async () => {
   try {
     const now = getVietnamTime();
-    const fifteenMinutesLater = new Date(now.getTime() + 15 * 60 * 1000);
     
-    // Tìm các session sắp bắt đầu trong vòng 15-16 phút
     const today = new Date(now);
     today.setHours(0, 0, 0, 0);
     const tomorrow = new Date(today);
@@ -57,52 +55,78 @@ const checkAndSendReminders = async () => {
       status: 'scheduled'
     }).populate('userId subjectId');
 
+    console.log(`🔍 [${now.toLocaleTimeString('vi-VN')}] Checking ${sessions.length} session(s) for email reminders...`);
+
     for (const session of sessions) {
       const sessionStart = parseTime(session.startTime, session.date);
       const timeDiff = sessionStart - now;
+      const minutesUntil = Math.floor(timeDiff / 60000);
       
-      // Nếu session bắt đầu trong 15-16 phút và chưa gửi reminder
-      if (timeDiff > 14 * 60 * 1000 && timeDiff <= 16 * 60 * 1000) {
+      console.log(`  📋 Session: ${session.subjectId?.subjectName || 'Unknown'} at ${session.startTime} (in ${minutesUntil} min)`);
+      
+      // Gửi email nếu session bắt đầu trong vòng 1-16 phút tới
+      // Map reminderSent đảm bảo mỗi session chỉ gửi 1 lần duy nhất
+      if (timeDiff > 1 * 60 * 1000 && timeDiff <= 16 * 60 * 1000) {
         const sessionKey = session._id.toString();
         
-        if (!reminderSent.has(sessionKey)) {
-          const user = session.userId;
-          const subject = session.subjectId;
-          
-          if (user && user.email && subject) {
-            // Check if user has email notifications enabled
-            const userSettings = await Settings.findOne({ userId: user._id });
-            const emailEnabled = userSettings?.notification?.email;
-            
-            if (!emailEnabled) {
-              console.log(`🔕 Email notifications disabled for user ${user.email}`);
-              continue;
-            }
-            
-            const actionToken = generateActionToken(session._id.toString(), user._id.toString());
-            
-            const sessionData = {
-              userName: user.name,
-              subjectName: subject.subjectName,
-              startTime: session.startTime,
-              endTime: session.endTime,
-              date: session.date,
-              sessionId: session._id.toString()
-            };
-
-            const sent = await sendReminderEmail(user.email, sessionData, actionToken);
-            
-            if (sent) {
-              reminderSent.set(sessionKey, {
-                sent: true,
-                confirmed: false,
-                token: actionToken,
-                userId: user._id.toString()
-              });
-              console.log(`📧 Reminder sent for session ${sessionKey} to ${user.email}`);
-            }
-          }
+        if (reminderSent.has(sessionKey)) {
+          console.log(`  ⏭️  Already sent email for this session`);
+          continue;
         }
+        
+        console.log(`  ✅ Session in reminder window (1-16 min) → sending email...`);
+        
+        const user = session.userId;
+        const subject = session.subjectId;
+        
+        if (!user || !user.email || !subject) {
+          console.log(`  ⚠️  Missing user/email/subject data`);
+          continue;
+        }
+        
+        // Check if user has email notifications enabled
+        const userSettings = await Settings.findOne({ userId: user._id });
+        const systemEmailEnabled = userSettings?.notification?.email !== false;
+        const userStudyReminderEnabled = user.notificationSettings?.studyReminder !== false;
+        
+        console.log(`  🔧 Email settings - System: ${systemEmailEnabled}, User studyReminder: ${userStudyReminderEnabled}`);
+        
+        if (!systemEmailEnabled || !userStudyReminderEnabled) {
+          console.log(`  🔕 Email disabled → System: ${systemEmailEnabled}, studyReminder: ${userStudyReminderEnabled}`);
+          continue;
+        }
+        
+        const actionToken = generateActionToken(session._id.toString(), user._id.toString());
+        
+        const sessionData = {
+          userName: user.name,
+          subjectName: subject.subjectName,
+          startTime: session.startTime,
+          endTime: session.endTime,
+          date: session.date,
+          sessionId: session._id.toString()
+        };
+
+        console.log(`  📧 Sending reminder email to ${user.email}...`);
+        const sent = await sendReminderEmail(user.email, sessionData, actionToken);
+        
+        if (sent) {
+          reminderSent.set(sessionKey, {
+            sent: true,
+            confirmed: false,
+            token: actionToken,
+            userId: user._id.toString()
+          });
+          console.log(`  ✅ EMAIL SENT for session ${sessionKey} → ${user.email}`);
+        } else {
+          console.log(`  ❌ FAILED to send email to ${user.email}`);
+        }
+      } else if (timeDiff <= 0) {
+        console.log(`  ⏰ Session already passed`);
+      } else if (timeDiff <= 1 * 60 * 1000) {
+        console.log(`  ⏰ Starting in < 1 min, too late for email`);
+      } else {
+        console.log(`  ⏰ Too far (> 16 min) - waiting...`);
       }
     }
   } catch (error) {
