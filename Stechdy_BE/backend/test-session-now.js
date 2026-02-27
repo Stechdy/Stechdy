@@ -1,4 +1,4 @@
-﻿const mongoose = require('mongoose');
+const mongoose = require('mongoose');
 require('dotenv').config();
 require('./src/models');
 
@@ -7,14 +7,14 @@ const StudyTimetable = require('./src/models/StudyTimetable');
 const User = require('./src/models/User');
 const Subject = require('./src/models/Subject');
 
-async function createTestSession() {
+async function createImmediateTestSession() {
   try {
     await mongoose.connect(process.env.MONGODB_URI);
     console.log('✅ Connected to database');
 
     // Xóa test sessions cũ
     const deleted = await StudySessionSchedule.deleteMany({ 
-      topic: 'Test email reminder system'
+      topic: { $regex: /Test email reminder/i }
     });
     if (deleted.deletedCount > 0) {
       console.log(`🗑️  Deleted ${deleted.deletedCount} old test session(s)`);
@@ -39,9 +39,8 @@ async function createTestSession() {
 
     const now = new Date();
     
-    // Tạo session cho hôm nay, bắt đầu sau 15 phút 30 giây
-    // (sessionReminderService gửi email cho session trong khoảng 14-16 phút)
-    const sessionStart = new Date(now.getTime() + 15.5 * 60 * 1000);
+    // Tạo session bắt đầu sau chính xác 15 phút
+    const sessionStart = new Date(now.getTime() + 15 * 60 * 1000);
     const sessionEnd = new Date(sessionStart.getTime() + 90 * 60 * 1000);
 
     const h = sessionStart.getHours();
@@ -54,18 +53,10 @@ async function createTestSession() {
 
     const sessionType = h >= 6 && h < 12 ? 'morning' : h >= 12 && h < 18 ? 'afternoon' : 'evening';
 
-    // Set date to today at midnight in Vietnam timezone (UTC+7)
-    // We need to create a date that represents midnight Vietnam time in UTC
     const sessionDate = new Date(now);
     sessionDate.setHours(0, 0, 0, 0);
-    
-    // Adjust for timezone offset to ensure correct date in DB
-    // Vietnam is UTC+7, so we add 7 hours to keep the date correct
-    const timezoneOffset = sessionDate.getTimezoneOffset(); // Minutes difference from UTC
+    const timezoneOffset = sessionDate.getTimezoneOffset();
     const adjustedDate = new Date(sessionDate.getTime() - (timezoneOffset * 60 * 1000));
-    
-    console.log('📅 Session date (local):', sessionDate.toLocaleDateString('vi-VN'));
-    console.log('📅 Session date (will be saved as):', adjustedDate.toISOString());
 
     const testSession = await StudySessionSchedule.create({
       timetableId: timetable._id,
@@ -76,32 +67,27 @@ async function createTestSession() {
       sessionType: sessionType,
       startTime: startTime,
       endTime: endTime,
-      topic: 'Test email reminder system',
+      topic: 'Test email reminder - IMMEDIATE',
       status: 'scheduled',
       plannedDuration: 90
     });
 
-    console.log('\n🎉 TEST SESSION CREATED SUCCESSFULLY!\n');
+    console.log('\n🎉 IMMEDIATE TEST SESSION CREATED!\n');
     console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
     console.log('📝 Session ID:', testSession._id);
     console.log('👤 User:', user.email);
     console.log('📚 Subject:', subject.subjectName);
     console.log('⏰ Time:', startTime, '-', endTime);
     console.log('🕐 Session starts at:', sessionStart.toLocaleTimeString('vi-VN'));
+    console.log('⏱️  Minutes until start: 15 minutes (PERFECT for testing!)');
     console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-    console.log('\n📬 Email Reminder Schedule:');
-    console.log('   ⏱️  Reminder window: 14-16 minutes before session');
-    console.log('   📧 Email will be sent between:');
-    console.log('      - Earliest:', new Date(sessionStart.getTime() - 16*60*1000).toLocaleTimeString('vi-VN'));
-    console.log('      - Latest:  ', new Date(sessionStart.getTime() - 14*60*1000).toLocaleTimeString('vi-VN'));
-    console.log('   🔍 Check interval: Every 1 minute');
-    console.log('\n🚀 Next steps:');
-    console.log('   1. Run: npm start');
-    console.log('   2. Check user email settings enabled at:');
-    console.log('      GET /api/settings/:userId');
-    console.log('   3. Watch console logs for:');
-    console.log('      "📧 Reminder sent for session..."');
-    console.log('   4. Check email inbox around:', new Date(sessionStart.getTime() - 15*60*1000).toLocaleTimeString('vi-VN'));
+    console.log('\n📬 Email will be sent in the next 1-2 minutes!');
+    console.log('   🔍 Reminder window: 14-16 minutes before session');
+    console.log('   ⏰ Current time:', now.toLocaleTimeString('vi-VN'));
+    console.log('   📧 Email should arrive around:', now.toLocaleTimeString('vi-VN'));
+    console.log('\n🚨 IMPORTANT: Make sure server is running!');
+    console.log('   Check for log: "🔍 [time] Checking X session(s) for reminders..."');
+    console.log('   Every minute you should see scheduler running');
     console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n');
 
     process.exit(0);
@@ -112,4 +98,4 @@ async function createTestSession() {
   }
 }
 
-createTestSession();
+createImmediateTestSession();
