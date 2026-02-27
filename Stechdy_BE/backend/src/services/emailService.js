@@ -1,5 +1,11 @@
 const nodemailer = require('nodemailer');
 
+// Warn about missing email configuration
+if (!process.env.EMAIL_USER || !process.env.EMAIL_PASSWORD) {
+  console.warn('⚠️  EMAIL_USER or EMAIL_PASSWORD not set in .env - email notifications will FAIL!');
+  console.warn('   Set EMAIL_USER=stechdy.work@gmail.com and EMAIL_PASSWORD=<app_password> in .env');
+}
+
 // Cấu hình transporter
 const transporter = nodemailer.createTransport({
   service: 'gmail',
@@ -1110,11 +1116,136 @@ const sendPaymentConfirmationToUser = async (userData) => {
   }
 };
 
+// Notify admin when a new premium payment request is created (before user submits confirmation)
+const sendNewPaymentRequestToAdmin = async (paymentData) => {
+  try {
+    const { userName, userEmail, planName, amount, paymentCode, paymentId, createdAt } = paymentData;
+
+    const adminEmail = 'stechdy.work@gmail.com';
+    const adminPanelUrl = `${process.env.FRONTEND_URL}/admin/payments`;
+
+    const formattedDate = new Date(createdAt).toLocaleString('vi-VN', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+
+    const formattedAmount = new Intl.NumberFormat('vi-VN').format(amount);
+
+    const mailOptions = {
+      from: `"Stechdy Payment System" <${process.env.EMAIL_USER}>`,
+      to: adminEmail,
+      subject: `🆕 Yêu cầu đăng ký Premium mới - ${userName} - ${paymentCode}`,
+      html: `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <meta charset="UTF-8">
+          <style>
+            body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background-color: #f5f5f5; margin: 0; padding: 20px; }
+            .container { max-width: 600px; margin: 0 auto; background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+            .header { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); padding: 30px; text-align: center; }
+            .header h1 { color: white; margin: 0; font-size: 24px; }
+            .header .icon { font-size: 48px; margin-bottom: 10px; display: block; }
+            .content { padding: 30px; }
+            .alert-box { background: #fffbeb; border-left: 4px solid #f59e0b; padding: 15px; margin-bottom: 20px; border-radius: 4px; }
+            .alert-box p { margin: 0; color: #92400e; font-size: 15px; }
+            .info-box { background: #f8f9fa; border-radius: 12px; padding: 20px; margin: 20px 0; }
+            .info-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #e0e0e0; }
+            .info-row:last-child { border-bottom: none; }
+            .label { font-weight: 600; color: #555; }
+            .value { color: #333; font-weight: 500; }
+            .payment-code { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white; padding: 15px; border-radius: 8px; text-align: center; font-size: 22px; font-weight: bold; letter-spacing: 3px; margin: 20px 0; }
+            .btn { display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white !important; padding: 14px 32px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 16px; margin-top: 20px; }
+            .footer { background: #f8f9fa; padding: 20px 30px; text-align: center; color: #888; font-size: 13px; border-top: 1px solid #e0e0e0; }
+          </style>
+        </head>
+        <body>
+          <div class="container">
+            <div class="header">
+              <span class="icon">🆕</span>
+              <h1>Yêu Cầu Đăng Ký Premium Mới</h1>
+            </div>
+            <div class="content">
+              <div class="alert-box">
+                <p>⚡ Có yêu cầu đăng ký tài khoản Premium mới. Người dùng đang chờ hướng dẫn chuyển khoản.</p>
+              </div>
+
+              <div class="info-box">
+                <div class="info-row">
+                  <span class="label">👤 Họ tên:</span>
+                  <span class="value">${userName}</span>
+                </div>
+                <div class="info-row">
+                  <span class="label">📧 Email:</span>
+                  <span class="value">${userEmail}</span>
+                </div>
+                <div class="info-row">
+                  <span class="label">📦 Gói đăng ký:</span>
+                  <span class="value">${planName}</span>
+                </div>
+                <div class="info-row">
+                  <span class="label">💰 Số tiền:</span>
+                  <span class="value" style="color: #d97706; font-weight: bold;">${formattedAmount}₫</span>
+                </div>
+                <div class="info-row">
+                  <span class="label">📅 Thời gian tạo:</span>
+                  <span class="value">${formattedDate}</span>
+                </div>
+              </div>
+
+              <div class="payment-code">${paymentCode}</div>
+
+              <div style="background: #fef3c7; border-left: 4px solid #f59e0b; padding: 15px; margin: 20px 0; border-radius: 4px;">
+                <p style="margin: 0; color: #92400e;">
+                  <strong>⚠️ Lưu ý:</strong> Người dùng sẽ chuyển khoản theo hướng dẫn và xác nhận. Bạn sẽ nhận thêm email khi họ bấm "Xác nhận đã chuyển khoản".
+                </p>
+              </div>
+
+              <div style="text-align: center;">
+                <a href="${adminPanelUrl}" class="btn">🔍 Xem tại trang Admin</a>
+              </div>
+            </div>
+            <div class="footer">
+              <p>Email này được gửi tự động từ hệ thống Stechdy khi có yêu cầu Premium mới.</p>
+              <p>© 2025 Stechdy. All rights reserved.</p>
+            </div>
+          </div>
+        </body>
+        </html>
+      `
+    };
+
+    await transporter.sendMail(mailOptions);
+    console.log(`✅ New premium request notification sent to admin for ${paymentCode}`);
+    return true;
+  } catch (error) {
+    console.error('❌ Error sending new premium request notification to admin:', error);
+    throw error;
+  }
+};
+
+// Verify transporter configuration
+const verifyTransporter = async () => {
+  try {
+    await transporter.verify();
+    console.log('✅ Email transporter is ready');
+    return true;
+  } catch (error) {
+    console.error('❌ Email transporter verification failed:', error.message);
+    return false;
+  }
+};
+
 module.exports = {
   sendReminderEmail,
   sendStartSessionEmail,
   sendCompletionEmail,
   sendPaymentNotificationToAdmin,
-  sendPaymentConfirmationToUser
+  sendPaymentConfirmationToUser,
+  sendNewPaymentRequestToAdmin,
+  verifyTransporter
 };
 

@@ -10,6 +10,7 @@ const connectDB = require("./config/database");
 const { initializeScheduler } = require("./utils/scheduler");
 const { startReminderScheduler } = require("./services/sessionReminderService");
 const { initializeSocket } = require("./services/socketService");
+const { verifyTransporter } = require("./services/emailService");
 
 // Connect to database
 connectDB();
@@ -31,6 +32,15 @@ try {
   console.error('❌ Failed to initialize session reminder scheduler:', error.message);
   console.error('Server will continue without session reminders');
 }
+
+// Verify email transporter configuration
+verifyTransporter().then(ok => {
+  if (ok) {
+    console.log('✅ Email service ready - notifications will be sent to stechdy.work@gmail.com');
+  } else {
+    console.warn('⚠️  Email service NOT ready - check EMAIL_USER and EMAIL_PASSWORD in .env');
+  }
+});
 
 const app = express();
 const server = http.createServer(app);

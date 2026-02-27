@@ -266,7 +266,7 @@ exports.verifyPayment = async (req, res) => {
         try {
           const notification = await Notification.create({
             userId: user._id,
-            type: 'premium',
+            type: 'payment',
             title: '🎉 Premium Activated!',
             message: `Your ${payment.planName} subscription has been activated successfully. Enjoy premium features until ${expiryDate.toLocaleDateString('vi-VN')}!`,
             priority: 'high',
