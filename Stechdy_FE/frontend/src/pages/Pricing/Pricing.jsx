@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useTheme } from "../../context/ThemeContext";
 import BottomNav from "../../components/common/BottomNav";
 import SidebarNav from "../../components/common/SidebarNav";
 import PaymentModal from "../../components/payment/PaymentModal";
+import HappyImg from "../../assets/Happy.png";
+import config from "../../config";
 import "./Pricing.css";
 
 // SVG Icons
@@ -84,6 +86,27 @@ const Pricing = () => {
   const navigate = useNavigate();
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState(null);
+  const [hasPendingPayment, setHasPendingPayment] = useState(false);
+  const [showPendingPopup, setShowPendingPopup] = useState(false);
+
+  useEffect(() => {
+    const checkPendingPayment = async () => {
+      const token = localStorage.getItem("token");
+      if (!token) return;
+      try {
+        const res = await fetch(`${config.apiUrl}/payments/my-payments`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (!res.ok) return;
+        const data = await res.json();
+        const pending = (data.payments || []).some(
+          (p) => p.status === "pending" && new Date(p.expiresAt) > new Date()
+        );
+        setHasPendingPayment(pending);
+      } catch (_) {}
+    };
+    checkPendingPayment();
+  }, []);
 
   const plans = [
     {
@@ -176,8 +199,9 @@ const Pricing = () => {
   const handleSelectPlan = (plan) => {
     if (plan.id === "free") {
       navigate("/register");
+    } else if (hasPendingPayment) {
+      setShowPendingPopup(true);
     } else {
-      // Open payment modal for paid plans
       setSelectedPlan(plan);
       setShowPaymentModal(true);
     }
@@ -320,6 +344,26 @@ const Pricing = () => {
         onClose={() => setShowPaymentModal(false)}
         planData={selectedPlan}
       />
+
+      {/* Pending Payment Popup */}
+      {showPendingPopup && (
+        <div className="pending-popup-overlay" onClick={() => setShowPendingPopup(false)}>
+          <div className="pending-popup" onClick={(e) => e.stopPropagation()}>
+            <img src={HappyImg} alt="Happy" className="pending-popup-logo" />
+            <h3 className="pending-popup-title">Yêu cầu đang được xử lý!</h3>
+            <p className="pending-popup-message">
+              Bạn đã có một yêu cầu nâng cấp Premium đang chờ xử lý.<br />
+              Vui lòng chờ admin duyệt yêu cầu trước của bạn nhé! 🌟
+            </p>
+            <button
+              className="pending-popup-btn"
+              onClick={() => setShowPendingPopup(false)}
+            >
+              Đã hiểu
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

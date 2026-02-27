@@ -272,29 +272,35 @@ const AdminPayments = () => {
                           {formatAmount(payment.amount)}₫
                         </td>
                         <td>{formatDate(payment.createdAt)}</td>
-                        <td>{payment.submittedAt ? formatDate(payment.submittedAt) : "-"}</td>
+                        <td>{payment.submittedAt ? (
+                          <span style={{color: '#10b981', fontWeight: 600}}>
+                            {formatDate(payment.submittedAt)}
+                          </span>
+                        ) : (
+                          <span style={{color: '#f59e0b', fontSize: '12px', fontStyle: 'italic'}}>Chờ user xác nhận</span>
+                        )}</td>
                         <td>{getStatusBadge(payment.status)}</td>
                         <td>
                           <div className="action-buttons">
-                            {payment.status === "pending" && payment.submittedAt ? (
+                            {payment.status === "pending" ? (
                               <>
                                 <button
                                   className="btn btn-success btn-sm"
                                   onClick={() => handleVerifyPayment(payment._id, "verified")}
                                   disabled={processing === payment._id}
+                                  title="Duyệt thanh toán và kích hoạt Premium"
                                 >
-                                  ✓ Duyệt
+                                  {processing === payment._id ? "⏳" : "✓ Duyệt"}
                                 </button>
                                 <button
                                   className="btn btn-danger btn-sm"
                                   onClick={() => handleVerifyPayment(payment._id, "rejected")}
                                   disabled={processing === payment._id}
+                                  title="Từ chối yêu cầu thanh toán"
                                 >
-                                  ✗ Từ chối
+                                  {processing === payment._id ? "⏳" : "✗ Từ chối"}
                                 </button>
                               </>
-                            ) : payment.status === "pending" && !payment.submittedAt ? (
-                              <span className="text-muted">Chờ user xác nhận</span>
                             ) : (
                               <span className="text-muted">-</span>
                             )}

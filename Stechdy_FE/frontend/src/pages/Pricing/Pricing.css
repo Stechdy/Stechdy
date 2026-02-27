@@ -721,3 +721,84 @@
     justify-content: center;
   }
 }
+
+/* ─── Pending Payment Popup ─────────────────────────── */
+.pending-popup-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  animation: pricingFadeIn 0.2s ease;
+}
+
+.pending-popup {
+  background: #fff;
+  border-radius: 24px;
+  padding: 40px 36px 32px;
+  max-width: 380px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.18);
+  animation: pricingFadeIn 0.25s ease;
+}
+
+[data-theme="dark"] .pending-popup {
+  background: #1e1e2e;
+}
+
+.pending-popup-logo {
+  width: 110px;
+  height: 110px;
+  object-fit: contain;
+  margin-bottom: 16px;
+  border-radius: 50%;
+  filter: drop-shadow(0 4px 12px rgba(180, 120, 220, 0.35));
+}
+
+.pending-popup-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #7c3aed;
+  margin: 0 0 12px;
+}
+
+[data-theme="dark"] .pending-popup-title {
+  color: #c084fc;
+}
+
+.pending-popup-message {
+  font-size: 15px;
+  line-height: 1.7;
+  color: #555;
+  margin: 0 0 24px;
+}
+
+[data-theme="dark"] .pending-popup-message {
+  color: #a0a0b8;
+}
+
+.pending-popup-btn {
+  display: inline-block;
+  padding: 12px 36px;
+  background: linear-gradient(135deg, #a855f7, #7c3aed);
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.15s;
+}
+
+.pending-popup-btn:hover {
+  opacity: 0.88;
+  transform: translateY(-1px);
+}
+
+.pending-popup-btn:active {
+  transform: scale(0.97);
+}
