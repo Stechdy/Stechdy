@@ -89,6 +89,12 @@ const Pricing = () => {
   const [hasPendingPayment, setHasPendingPayment] = useState(false);
   const [showPendingPopup, setShowPendingPopup] = useState(false);
 
+  // Discount states
+  const [discountCode, setDiscountCode] = useState("");
+  const [discountData, setDiscountData] = useState(null);
+  const [discountError, setDiscountError] = useState("");
+  const [discountLoading, setDiscountLoading] = useState(false);
+
   useEffect(() => {
     const checkPendingPayment = async () => {
       const token = localStorage.getItem("token");
@@ -196,13 +202,98 @@ const Pricing = () => {
     return new Intl.NumberFormat("vi-VN").format(price);
   };
 
+  // Discount handlers
+  const handleApplyDiscount = async () => {
+    if (!discountCode.trim()) {
+      setDiscountError("Vui lòng nhập mã discount.");
+      return;
+    }
+
+    const token = localStorage.getItem("token");
+    if (!token) {
+      setDiscountError("Vui lòng đăng nhập để sử dụng mã discount.");
+      return;
+    }
+
+    try {
+      setDiscountLoading(true);
+      setDiscountError("");
+      setDiscountData(null);
+
+      const res = await fetch(`${config.apiUrl}/discounts/validate`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ code: discountCode.trim() }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setDiscountError(data.message || "Mã discount không hợp lệ.");
+        return;
+      }
+
+      console.log('💎 Discount validated successfully:', data.data);
+      setDiscountData(data.data);
+      setDiscountError("");
+    } catch (err) {
+      setDiscountError("Có lỗi xảy ra. Vui lòng thử lại.");
+    } finally {
+      setDiscountLoading(false);
+    }
+  };
+
+  const handleRemoveDiscount = () => {
+    setDiscountCode("");
+    setDiscountData(null);
+    setDiscountError("");
+  };
+
+  const getDiscountedPrice = (plan) => {
+    if (!discountData || plan.id === "free") return plan.price;
+    if (discountData.type !== "price_reduction") return plan.price;
+
+    // Check applicable plans
+    if (!discountData.applicablePlans.includes("all") && !discountData.applicablePlans.includes(plan.id)) {
+      return plan.price;
+    }
+
+    let discountAmount = 0;
+    if (discountData.discountMethod === "percentage") {
+      discountAmount = (plan.price * discountData.discountValue) / 100;
+      if (discountData.maxDiscountAmount > 0) {
+        discountAmount = Math.min(discountAmount, discountData.maxDiscountAmount);
+      }
+    } else {
+      discountAmount = discountData.discountValue;
+    }
+
+    return Math.max(0, plan.price - discountAmount);
+  };
+
+  const isDiscountApplicable = (plan) => {
+    if (!discountData || plan.id === "free") return false;
+    return discountData.applicablePlans.includes("all") || discountData.applicablePlans.includes(plan.id);
+  };
+
   const handleSelectPlan = (plan) => {
     if (plan.id === "free") {
       navigate("/register");
     } else if (hasPendingPayment) {
       setShowPendingPopup(true);
     } else {
-      setSelectedPlan(plan);
+      // Attach discount info to plan if applicable
+      const planWithDiscount = { ...plan };
+      if (discountData && isDiscountApplicable(plan)) {
+        planWithDiscount.discountCode = discountData.code;
+        planWithDiscount.discountData = discountData;
+        planWithDiscount.discountedPrice = getDiscountedPrice(plan);
+        console.log('💎 Plan with discount applied:', planWithDiscount);
+      }
+      setSelectedPlan(planWithDiscount);
       setShowPaymentModal(true);
     }
   };
@@ -239,6 +330,54 @@ const Pricing = () => {
         <div className="pricing-main">
           <p className="pricing-subtitle">{t("pricing.subtitle")}</p>
 
+          {/* Discount Code Input */}
+          <div className="pricing-discount-section">
+            <div className="pricing-discount-input-wrapper">
+              <div className="pricing-discount-icon">🎫</div>
+              <input
+                type="text"
+                className="pricing-discount-input"
+                placeholder="Nhập mã discount..."
+                value={discountCode}
+                onChange={(e) => {
+                  setDiscountCode(e.target.value.toUpperCase());
+                  if (discountError) setDiscountError("");
+                }}
+                onKeyDown={(e) => e.key === "Enter" && handleApplyDiscount()}
+                disabled={!!discountData}
+              />
+              {discountData ? (
+                <button className="pricing-discount-btn remove" onClick={handleRemoveDiscount}>
+                  ✕ Xóa
+                </button>
+              ) : (
+                <button
+                  className="pricing-discount-btn apply"
+                  onClick={handleApplyDiscount}
+                  disabled={discountLoading || !discountCode.trim()}
+                >
+                  {discountLoading ? "..." : "Áp dụng"}
+                </button>
+              )}
+            </div>
+            {discountError && <p className="pricing-discount-error">{discountError}</p>}
+            {discountData && (
+              <div className="pricing-discount-success">
+                <span className="pricing-discount-success-icon">✅</span>
+                <div className="pricing-discount-success-info">
+                  <strong>{discountData.code}</strong> — {discountData.description}
+                  <span className="pricing-discount-success-detail">
+                    {discountData.type === "price_reduction"
+                      ? discountData.discountMethod === "percentage"
+                        ? `Giảm ${discountData.discountValue}%`
+                        : `Giảm ${new Intl.NumberFormat("vi-VN").format(discountData.discountValue)}₫`
+                      : `+${discountData.extraDays} ngày Premium miễn phí`}
+                  </span>
+                </div>
+              </div>
+            )}
+          </div>
+
           {/* Pricing Cards */}
           <div className="pricing-cards-grid">
             {plans.map((plan) => (
@@ -266,14 +405,38 @@ const Pricing = () => {
                 <div className="pricing-card-price">
                   <span className="pricing-currency">₫</span>
                   <span className="pricing-amount">
-                    {formatPrice(plan.price)}
+                    {discountData && isDiscountApplicable(plan)
+                      ? formatPrice(getDiscountedPrice(plan))
+                      : formatPrice(plan.price)}
                   </span>
                   {plan.duration && (
                     <span className="pricing-period">/{plan.duration}</span>
                   )}
                 </div>
 
-                {plan.originalPrice && plan.originalPrice !== plan.price && (
+                {/* Show original price with strikethrough when discount is applied */}
+                {discountData && isDiscountApplicable(plan) && discountData.type === "price_reduction" && getDiscountedPrice(plan) < plan.price && (
+                  <div className="pricing-original-price">
+                    <span className="pricing-strikethrough">
+                      ₫{formatPrice(plan.price)}
+                    </span>
+                    <span className="pricing-discount-tag">
+                      -{discountData.discountMethod === "percentage"
+                        ? `${discountData.discountValue}%`
+                        : `${formatPrice(discountData.discountValue)}₫`}
+                    </span>
+                  </div>
+                )}
+
+                {/* Show extra days badge for time_extension discount */}
+                {discountData && isDiscountApplicable(plan) && discountData.type === "time_extension" && (
+                  <div className="pricing-extra-days-badge">
+                    🎁 +{discountData.extraDays} ngày miễn phí
+                  </div>
+                )}
+
+                {/* Show original price when no discount or discount not applicable */}
+                {(!discountData || !isDiscountApplicable(plan)) && plan.originalPrice && plan.originalPrice !== plan.price && (
                   <div className="pricing-original-price">
                     <span className="pricing-strikethrough">
                       ₫{formatPrice(plan.originalPrice)}

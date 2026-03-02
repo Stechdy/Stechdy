@@ -398,3 +398,48 @@
     padding: 16px 0 0;
   }
 }
+
+/* Discount Info in Payment Modal */
+.payment-discount-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding: 10px 16px;
+  background: rgba(16, 185, 129, 0.08);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  border-radius: 12px;
+  margin-top: -8px;
+  animation: fadeIn 0.3s ease;
+}
+
+[data-theme="dark"] .payment-discount-info {
+  background: rgba(16, 185, 129, 0.12);
+  border-color: rgba(16, 185, 129, 0.25);
+}
+
+.payment-discount-badge {
+  padding: 4px 10px;
+  background: linear-gradient(135deg, #a855f7, #7c3aed);
+  color: #fff;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.payment-discount-saved {
+  font-size: 13px;
+  font-weight: 600;
+  color: #10b981;
+}
+
+.payment-discount-extra {
+  font-size: 13px;
+  font-weight: 600;
+  color: #7c3aed;
+}
+
+[data-theme="dark"] .payment-discount-extra {
+  color: #c084fc;
+}

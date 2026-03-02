@@ -59,7 +59,28 @@ const paymentSchema = new mongoose.Schema({
   expiresAt: {
     type: Date
   },
-  notes: String
+  notes: String,
+  // Discount information
+  discountCode: {
+    type: String,
+    default: null
+  },
+  discountInfo: {
+    type: {
+      type: String,
+      enum: ['price_reduction', 'time_extension']
+    },
+    description: String,
+    discountMethod: String,
+    discountValue: Number,
+    maxDiscountAmount: Number,
+    extraDays: Number,
+    applicablePlans: [String]
+  },
+  originalAmount: {
+    type: Number,
+    default: null
+  }
 }, {
   timestamps: true
 });

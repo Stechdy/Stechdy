@@ -27,5 +27,6 @@ module.exports = {
   Reminder: require('./Reminder'),
   NotificationLog: require('./NotificationLog'),
   AIInput: require('./AIInput'),
-  AIGenerationResult: require('./AIGenerationResult')
+  AIGenerationResult: require('./AIGenerationResult'),
+  Discount: require('./Discount')
 };
