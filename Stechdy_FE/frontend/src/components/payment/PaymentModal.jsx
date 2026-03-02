@@ -33,17 +33,34 @@ const PaymentModal = ({ isOpen, onClose, planData }) => {
         return;
       }
 
+      // Determine amount - use discounted price if discount is applied
+      const paymentAmount = planData.discountedPrice !== undefined ? planData.discountedPrice : planData.price;
+
+      const requestBody = {
+        planId: planData.id,
+        planName: planData.name,
+        amount: paymentAmount,
+      };
+
+      // Include discount info if available
+      if (planData.discountCode) {
+        requestBody.discountCode = planData.discountCode;
+        console.log('💎 Adding discount code to request:', planData.discountCode);
+      }
+      if (planData.discountData) {
+        requestBody.discountInfo = planData.discountData;
+        console.log('💎 Adding discount info to request:', planData.discountData);
+      }
+
+      console.log('📤 Creating payment with body:', requestBody);
+
       const response = await fetch(`${config.apiUrl}/payments/create`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({
-          planId: planData.id,
-          planName: planData.name,
-          amount: planData.price,
-        }),
+        body: JSON.stringify(requestBody),
       });
 
       const data = await response.json();
@@ -143,6 +160,23 @@ const PaymentModal = ({ isOpen, onClose, planData }) => {
               <span className="payment-amount-label">Số tiền thanh toán:</span>
               <span className="payment-amount">{formatAmount(paymentInfo.amount)}₫</span>
             </div>
+
+            {/* Show discount info */}
+            {planData.discountData && (
+              <div className="payment-discount-info">
+                <span className="payment-discount-badge">🎫 {planData.discountCode}</span>
+                {planData.discountData.type === "price_reduction" && planData.price !== paymentInfo.amount && (
+                  <span className="payment-discount-saved">
+                    Tiết kiệm: {formatAmount(planData.price - paymentInfo.amount)}₫
+                  </span>
+                )}
+                {planData.discountData.type === "time_extension" && (
+                  <span className="payment-discount-extra">
+                    🎁 +{planData.discountData.extraDays} ngày Premium miễn phí
+                  </span>
+                )}
+              </div>
+            )}
 
             <div className="payment-qr-section">
               <h3>Quét mã QR để chuyển khoản</h3>

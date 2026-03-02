@@ -23,6 +23,7 @@ const AdminLayout = ({ children }) => {
     { path: '/admin/dashboard', icon: '📊', label: 'Dashboard' },
     { path: '/admin/users', icon: '👥', label: 'Quản lý người dùng' },
     { path: '/admin/payments', icon: '💳', label: 'Quản lý thanh toán' },
+    { path: '/admin/discounts', icon: '🎫', label: 'Mã Discount' },
     { path: '/admin/revenue', icon: '📈', label: 'Thống kê doanh thu' },
     { path: '/admin/reports', icon: '📋', label: 'Báo cáo hàng tháng' },
     { path: '/admin/notifications', icon: '🔔', label: 'Thông báo hệ thống' },

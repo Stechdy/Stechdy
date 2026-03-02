@@ -43,6 +43,11 @@ const AdminPayments = () => {
 
       const data = await response.json();
       
+      // Debug: log first payment to check discount info
+      if (data.payments && data.payments.length > 0) {
+        console.log('Sample payment with discount info:', data.payments[0]);
+      }
+      
       // Calculate stats
       const allPayments = data.payments || [];
       const pendingCount = allPayments.filter(p => p.status === 'pending').length;
@@ -92,7 +97,26 @@ const AdminPayments = () => {
   }, [fetchPayments]);
 
   const handleVerifyPayment = async (paymentId, status) => {
-    if (!window.confirm(`Xác nhận ${status === "verified" ? "DUYỆT" : "TỪ CHỐI"} thanh toán này?`)) {
+    // Build confirm message with discount details
+    const payment = payments.find(p => p._id === paymentId);
+    let confirmMsg = `Xác nhận ${status === "verified" ? "DUYỆT" : "TỪ CHỐI"} thanh toán này?`;
+    if (payment && status === "verified") {
+      confirmMsg = `Xác nhận DUYỆT thanh toán?\n\n• Gói: ${payment.planName}\n• Số tiền: ${formatAmount(payment.amount)}₫`;
+      if (payment.discountCode) {
+        confirmMsg += `\n• Mã discount: ${payment.discountCode}`;
+        if (payment.discountInfo?.description) {
+          confirmMsg += ` - ${payment.discountInfo.description}`;
+        }
+        if (payment.discountInfo?.type === 'price_reduction' && payment.originalAmount) {
+          confirmMsg += `\n• Giá gốc: ${formatAmount(payment.originalAmount)}₫ → Đã giảm: ${formatAmount(payment.originalAmount - payment.amount)}₫`;
+        }
+        if (payment.discountInfo?.type === 'time_extension' && payment.discountInfo?.extraDays) {
+          confirmMsg += `\n• Bonus: +${payment.discountInfo.extraDays} ngày Premium miễn phí`;
+        }
+      }
+    }
+
+    if (!window.confirm(confirmMsg)) {
       return;
     }
 
@@ -247,6 +271,7 @@ const AdminPayments = () => {
                       <th>Người dùng</th>
                       <th>Gói</th>
                       <th>Số tiền</th>
+                      <th>Discount</th>
                       <th>Ngày tạo</th>
                       <th>Ngày submit</th>
                       <th>Trạng thái</th>
@@ -268,8 +293,44 @@ const AdminPayments = () => {
                         <td>
                           <span className="plan-badge">{payment.planName}</span>
                         </td>
-                        <td className="amount-cell">
-                          {formatAmount(payment.amount)}₫
+                        <td>
+                          <div className="amount-detail-cell">
+                            <span className="amount-cell">
+                              {formatAmount(payment.amount)}₫
+                            </span>
+                            {payment.discountCode && payment.originalAmount && payment.originalAmount !== payment.amount && (
+                              <span className="amount-original">
+                                <s>{formatAmount(payment.originalAmount)}₫</s>
+                                <span className="amount-saved">-{formatAmount(payment.originalAmount - payment.amount)}₫</span>
+                              </span>
+                            )}
+                          </div>
+                        </td>
+                        <td>
+                          {payment.discountCode ? (
+                            <div className="discount-detail-cell">
+                              <code className="discount-code-badge">{payment.discountCode}</code>
+                              {payment.discountInfo?.description && (
+                                <span className="discount-description" title={payment.discountInfo.description}>
+                                  {payment.discountInfo.description}
+                                </span>
+                              )}
+                              {payment.discountInfo?.type === 'price_reduction' && (
+                                <span className="discount-tag price">
+                                  💰 {payment.discountInfo.discountMethod === 'percentage'
+                                    ? `${payment.discountInfo.discountValue}%`
+                                    : `${formatAmount(payment.discountInfo.discountValue)}₫`}
+                                </span>
+                              )}
+                              {payment.discountInfo?.type === 'time_extension' && (
+                                <span className="discount-tag time">
+                                  🎁 +{payment.discountInfo.extraDays} ngày
+                                </span>
+                              )}
+                            </div>
+                          ) : (
+                            <span className="text-muted">—</span>
+                          )}
                         </td>
                         <td>{formatDate(payment.createdAt)}</td>
                         <td>{payment.submittedAt ? (

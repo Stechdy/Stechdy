@@ -17,7 +17,7 @@ const generatePaymentCode = () => {
 // Create payment request
 exports.createPaymentRequest = async (req, res) => {
   try {
-    const { planId, planName, amount } = req.body;
+    const { planId, planName, amount, discountCode, discountInfo } = req.body;
     const userId = req.user.id;
 
     // Validate plan
@@ -55,8 +55,12 @@ exports.createPaymentRequest = async (req, res) => {
       if (!existing) isUnique = true;
     }
 
+    // Determine original amount (before discount)
+    const planPrices = { oneMonth: 39000, threeMonths: 99000, oneYear: 299000 };
+    const originalAmount = planPrices[planId] || amount;
+
     // Create payment request
-    const payment = new Payment({
+    const paymentData = {
       userId,
       planId,
       planName,
@@ -69,7 +73,32 @@ exports.createPaymentRequest = async (req, res) => {
         accountNumber: '175678888',
         bankName: 'VIB'
       }
-    });
+    };
+
+    // Save discount info if present
+    if (discountCode) {
+      paymentData.discountCode = discountCode;
+      paymentData.originalAmount = originalAmount;
+      console.log('💎 Saving discount code:', discountCode);
+    }
+    if (discountInfo) {
+      paymentData.discountInfo = {
+        type: discountInfo.type,
+        description: discountInfo.description,
+        discountMethod: discountInfo.discountMethod,
+        discountValue: discountInfo.discountValue,
+        maxDiscountAmount: discountInfo.maxDiscountAmount,
+        extraDays: discountInfo.extraDays,
+        applicablePlans: discountInfo.applicablePlans
+      };
+      console.log('💎 Saving discount info:', paymentData.discountInfo);
+      // For time_extension type, the amount stays the same but we track originalAmount
+      if (!paymentData.originalAmount) {
+        paymentData.originalAmount = originalAmount;
+      }
+    }
+
+    const payment = new Payment(paymentData);
 
     await payment.save();
 
@@ -82,7 +111,8 @@ exports.createPaymentRequest = async (req, res) => {
         amount: payment.amount,
         paymentCode: payment.paymentCode,
         bankInfo: payment.bankInfo,
-        expiresAt: payment.expiresAt
+        expiresAt: payment.expiresAt,
+        discountCode: payment.discountCode || null
       }
     });
   } catch (error) {
@@ -199,6 +229,15 @@ exports.getAllPayments = async (req, res) => {
       .limit(limit * 1)
       .skip((page - 1) * limit);
 
+    // Debug: log discount info of first payment
+    if (payments.length > 0 && payments[0].discountCode) {
+      console.log('💎 Returning payment with discount:', {
+        code: payments[0].discountCode,
+        hasDiscountInfo: !!payments[0].discountInfo,
+        description: payments[0].discountInfo?.description
+      });
+    }
+
     const count = await Payment.countDocuments(query);
 
     res.status(200).json({
@@ -255,6 +294,12 @@ exports.verifyPayment = async (req, res) => {
             break;
         }
 
+        // Add extra days from time_extension discount
+        if (payment.discountInfo && payment.discountInfo.type === 'time_extension' && payment.discountInfo.extraDays) {
+          premiumDays += payment.discountInfo.extraDays;
+          console.log(`🎁 Discount ${payment.discountCode}: +${payment.discountInfo.extraDays} extra days (total: ${premiumDays} days)`);
+        }
+
         const expiryDate = new Date();
         expiryDate.setDate(expiryDate.getDate() + premiumDays);
 
@@ -264,16 +309,28 @@ exports.verifyPayment = async (req, res) => {
 
         // Create in-app notification for premium activation
         try {
+          let notifMessage = `Your ${payment.planName} subscription has been activated successfully. Enjoy premium features until ${expiryDate.toLocaleDateString('vi-VN')}!`;
+          
+          // Add discount info to notification
+          if (payment.discountCode && payment.discountInfo) {
+            if (payment.discountInfo.type === 'price_reduction' && payment.originalAmount) {
+              notifMessage += ` (Discount ${payment.discountCode}: saved ${(payment.originalAmount - payment.amount).toLocaleString('vi-VN')}₫)`;
+            } else if (payment.discountInfo.type === 'time_extension' && payment.discountInfo.extraDays) {
+              notifMessage += ` (Discount ${payment.discountCode}: +${payment.discountInfo.extraDays} bonus days included!)`;
+            }
+          }
+
           const notification = await Notification.create({
             userId: user._id,
             type: 'payment',
             title: '🎉 Premium Activated!',
-            message: `Your ${payment.planName} subscription has been activated successfully. Enjoy premium features until ${expiryDate.toLocaleDateString('vi-VN')}!`,
+            message: notifMessage,
             priority: 'high',
             metadata: {
               planName: payment.planName,
               expiryDate: expiryDate,
-              paymentId: payment._id
+              paymentId: payment._id,
+              discountCode: payment.discountCode || null
             }
           });
 

@@ -33,6 +33,7 @@ import AdminRevenue from "./pages/Admin/AdminRevenue";
 import AdminReports from "./pages/Admin/AdminReports";
 import AdminNotifications from "./pages/Admin/AdminNotifications";
 import AdminActivity from "./pages/Admin/AdminActivity";
+import AdminDiscounts from "./pages/Admin/AdminDiscounts";
 
 // Main App Pages
 import Dashboard from "./pages/Dashboard/Dashboard";
@@ -329,6 +330,14 @@ function App() {
               element={
                 <AdminPrivateRoute>
                   <AdminActivity />
+                </AdminPrivateRoute>
+              }
+            />
+            <Route
+              path="/admin/discounts"
+              element={
+                <AdminPrivateRoute>
+                  <AdminDiscounts />
                 </AdminPrivateRoute>
               }
             />

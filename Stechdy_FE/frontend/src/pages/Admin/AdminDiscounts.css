@@ -1,0 +1,499 @@
+/* AdminDiscounts specific styles - works with AdminTheme.css */
+
+/* Discount Code */
+.discount-code {
+  font-family: 'Monaco', 'Consolas', monospace;
+  font-size: 13px;
+  background: var(--admin-info-bg);
+  padding: 4px 10px;
+  border-radius: 6px;
+  color: var(--admin-info);
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+/* Type Badge */
+.discount-type-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.discount-type-badge.price {
+  background: var(--admin-success-bg);
+  color: var(--admin-success);
+}
+
+.discount-type-badge.time {
+  background: var(--admin-info-bg);
+  color: var(--admin-info);
+}
+
+/* Discount Value */
+.discount-value {
+  font-weight: 700;
+  color: var(--admin-success);
+  font-size: 14px;
+}
+
+/* Discount Plans */
+.discount-plans {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.discount-plan-tag {
+  display: inline-block;
+  padding: 2px 8px;
+  background: var(--admin-secondary-bg);
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--admin-text-secondary);
+}
+
+/* Usage Bar */
+.discount-usage {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.usage-bar {
+  width: 80px;
+  height: 6px;
+  background: var(--admin-secondary-bg);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.usage-bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+.usage-bar-fill.low {
+  background: var(--admin-success);
+}
+
+.usage-bar-fill.medium {
+  background: var(--admin-warning);
+}
+
+.usage-bar-fill.high {
+  background: var(--admin-danger);
+}
+
+.usage-text {
+  font-size: 12px;
+  color: var(--admin-text-tertiary);
+}
+
+/* Date Cell */
+.date-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.date-cell .date-start,
+.date-cell .date-end {
+  font-size: 12px;
+  color: var(--admin-text-secondary);
+}
+
+.date-cell .date-label {
+  font-size: 10px;
+  color: var(--admin-text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Modal Styles */
+.discount-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.discount-modal {
+  background: var(--admin-bg-card);
+  border: 1px solid var(--admin-border);
+  border-radius: 20px;
+  width: 100%;
+  max-width: 640px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.discount-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 28px 16px;
+  border-bottom: 1px solid var(--admin-border);
+}
+
+.discount-modal-header h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--admin-text-primary);
+}
+
+.discount-modal-close {
+  background: var(--admin-bg-hover);
+  border: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--admin-text-secondary);
+  font-size: 18px;
+  transition: all 0.2s;
+}
+
+.discount-modal-close:hover {
+  background: var(--admin-danger-bg);
+  color: var(--admin-danger);
+}
+
+.discount-modal-body {
+  padding: 24px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.discount-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.discount-form-group label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--admin-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.discount-form-group input,
+.discount-form-group select,
+.discount-form-group textarea {
+  padding: 10px 14px;
+  border: 1px solid var(--admin-border);
+  border-radius: 10px;
+  background: var(--admin-bg-secondary);
+  color: var(--admin-text-primary);
+  font-size: 14px;
+  font-weight: 500;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.discount-form-group input:focus,
+.discount-form-group select:focus,
+.discount-form-group textarea:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
+}
+
+.discount-form-group textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+.discount-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+/* Type Selector */
+.discount-type-selector {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.discount-type-option {
+  padding: 14px;
+  border: 2px solid var(--admin-border);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+  background: var(--admin-bg-secondary);
+}
+
+.discount-type-option:hover {
+  border-color: var(--admin-text-tertiary);
+}
+
+.discount-type-option.selected {
+  border-color: #667eea;
+  background: rgba(102, 126, 234, 0.08);
+}
+
+.discount-type-option .type-icon {
+  font-size: 24px;
+  margin-bottom: 6px;
+}
+
+.discount-type-option .type-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--admin-text-primary);
+}
+
+.discount-type-option .type-desc {
+  font-size: 11px;
+  color: var(--admin-text-tertiary);
+  margin-top: 2px;
+}
+
+/* Plan Checkboxes */
+.discount-plans-selector {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.plan-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border: 1px solid var(--admin-border);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: var(--admin-bg-secondary);
+  font-size: 13px;
+  color: var(--admin-text-secondary);
+  font-weight: 500;
+}
+
+.plan-checkbox:hover {
+  border-color: var(--admin-text-tertiary);
+}
+
+.plan-checkbox.checked {
+  border-color: #667eea;
+  background: rgba(102, 126, 234, 0.1);
+  color: #667eea;
+}
+
+.plan-checkbox input {
+  display: none;
+}
+
+/* Modal Footer */
+.discount-modal-footer {
+  padding: 16px 28px 24px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  border-top: 1px solid var(--admin-border);
+}
+
+.discount-modal-footer .btn-cancel {
+  padding: 10px 20px;
+  border: 1px solid var(--admin-border);
+  border-radius: 10px;
+  background: var(--admin-bg-secondary);
+  color: var(--admin-text-secondary);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.discount-modal-footer .btn-cancel:hover {
+  background: var(--admin-bg-hover);
+}
+
+.discount-modal-footer .btn-save {
+  padding: 10px 24px;
+  border: none;
+  border-radius: 10px;
+  background: var(--admin-gradient-primary);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.discount-modal-footer .btn-save:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+}
+
+.discount-modal-footer .btn-save:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Toggle Switch */
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 44px;
+  height: 24px;
+}
+
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--admin-secondary-bg);
+  border-radius: 24px;
+  transition: 0.3s;
+}
+
+.toggle-slider:before {
+  content: '';
+  position: absolute;
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background: white;
+  border-radius: 50%;
+  transition: 0.3s;
+}
+
+.toggle-switch input:checked + .toggle-slider {
+  background: var(--admin-success);
+}
+
+.toggle-switch input:checked + .toggle-slider:before {
+  transform: translateX(20px);
+}
+
+/* Active/Inactive Status */
+.discount-status-active {
+  color: var(--admin-success);
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.discount-status-inactive {
+  color: var(--admin-danger);
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.discount-status-expired {
+  color: var(--admin-warning);
+  font-weight: 600;
+  font-size: 12px;
+}
+
+/* Action Buttons */
+.discount-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.discount-action-btn {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 14px;
+}
+
+.discount-action-btn.edit {
+  background: var(--admin-info-bg);
+  color: var(--admin-info);
+}
+
+.discount-action-btn.edit:hover {
+  background: var(--admin-info);
+  color: #fff;
+}
+
+.discount-action-btn.toggle {
+  background: var(--admin-warning-bg);
+  color: var(--admin-warning);
+}
+
+.discount-action-btn.toggle:hover {
+  background: var(--admin-warning);
+  color: #fff;
+}
+
+.discount-action-btn.delete {
+  background: var(--admin-danger-bg);
+  color: var(--admin-danger);
+}
+
+.discount-action-btn.delete:hover {
+  background: var(--admin-danger);
+  color: #fff;
+}
+
+/* Description Cell */
+.discount-description-cell {
+  max-width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 13px;
+  color: var(--admin-text-secondary);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .discount-form-row {
+    grid-template-columns: 1fr;
+  }
+  
+  .discount-type-selector {
+    grid-template-columns: 1fr;
+  }
+  
+  .discount-modal {
+    margin: 10px;
+    max-height: 95vh;
+  }
+}
