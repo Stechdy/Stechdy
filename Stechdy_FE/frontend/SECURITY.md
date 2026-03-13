@@ -25,7 +25,7 @@ cp .env.example .env
 ```
 
 #### Các biến quan trọng:
-- `REACT_APP_GEMINI_API_KEY`: API key cho Google Gemini AI
+- `GEMINI_API_KEY` (backend env): API key cho Google Gemini AI (không đặt ở frontend)
 - `REACT_APP_GOOGLE_CLIENT_ID`: Client ID cho Google OAuth
 - `REACT_APP_API_URL`: URL của backend API
 - `REACT_APP_N8N_WEBHOOK_URL`: URL webhook n8n
@@ -37,8 +37,8 @@ cp .env.example .env
 - **Google OAuth**: https://console.cloud.google.com/apis/credentials
 
 #### Bảo vệ API Keys:
-- ✅ Lưu trong file `.env` (đã được gitignore)
-- ✅ Sử dụng `process.env.REACT_APP_*` để truy cập
+- ✅ Lưu Gemini key ở backend `.env` (server-side)
+- ✅ Frontend chỉ gọi backend API cho AI chat
 - ❌ KHÔNG hard-code trực tiếp trong code
 - ❌ KHÔNG commit vào Git
 - ❌ KHÔNG chia sẻ công khai
@@ -165,7 +165,7 @@ cp .env.example .env
 ```
 
 #### Important variables:
-- `REACT_APP_GEMINI_API_KEY`: API key for Google Gemini AI
+- `GEMINI_API_KEY` (backend env): API key for Google Gemini AI (do not place in frontend)
 - `REACT_APP_GOOGLE_CLIENT_ID`: Client ID for Google OAuth
 - `REACT_APP_API_URL`: Backend API URL
 - `REACT_APP_N8N_WEBHOOK_URL`: n8n webhook URL
@@ -177,8 +177,8 @@ cp .env.example .env
 - **Google OAuth**: https://console.cloud.google.com/apis/credentials
 
 #### Protect API Keys:
-- ✅ Store in `.env` file (gitignored)
-- ✅ Access via `process.env.REACT_APP_*`
+- ✅ Store Gemini key in backend `.env` only
+- ✅ Frontend should call backend AI endpoint
 - ❌ DO NOT hard-code in source
 - ❌ DO NOT commit to Git
 - ❌ DO NOT share publicly

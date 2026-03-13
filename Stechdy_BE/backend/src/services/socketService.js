@@ -2,6 +2,25 @@ const socketIO = require("socket.io");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 
+const getAllowedSocketOrigins = () => {
+  const envOrigins = [
+    process.env.FRONTEND_URL,
+    process.env.FRONTEND_URLS,
+  ]
+    .filter(Boolean)
+    .flatMap((value) => value.split(",").map((item) => item.trim()))
+    .filter(Boolean);
+
+  const defaults = [
+    "https://stechdy.ai.vn",
+    "https://www.stechdy.ai.vn",
+    "http://localhost:3000",
+    "http://localhost:3001",
+  ];
+
+  return [...new Set([...defaults, ...envOrigins])];
+};
+
 let io;
 const userSockets = new Map(); // Map userId to array of {socketId, sessionId}
 
@@ -10,9 +29,19 @@ const userSockets = new Map(); // Map userId to array of {socketId, sessionId}
  * @param {http.Server} server - HTTP server instance
  */
 const initializeSocket = (server) => {
+  const allowedOrigins = getAllowedSocketOrigins();
+
   io = socketIO(server, {
     cors: {
-      origin: process.env.FRONTEND_URL || "http://localhost:3000",
+      origin: (origin, callback) => {
+        // Allow non-browser clients or same-origin requests without Origin header.
+        if (!origin || allowedOrigins.includes(origin)) {
+          callback(null, true);
+          return;
+        }
+
+        callback(new Error(`Socket CORS blocked for origin: ${origin}`));
+      },
       methods: ["GET", "POST"],
       credentials: true,
     },
