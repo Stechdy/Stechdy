@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { GoogleGenerativeAI } from "@google/generative-ai";
 import SidebarNav from "../../components/common/SidebarNav";
 import BottomNav from "../../components/common/BottomNav";
 import "./AIChat.css";
@@ -20,11 +19,56 @@ const AIChat = () => {
   const [isPremium, setIsPremium] = useState(null); // null = loading, false = free, true = premium
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
 
-  const GEMINI_API_KEY = process.env.REACT_APP_GEMINI_API_KEY;
-  
-  // Initialize Gemini AI
-  const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
-  const model = genAI.getGenerativeModel({ model: "gemini-3-flash-preview" });
+  const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:3001/api";
+
+  const tryGenerateContent = async (message) => {
+    const token = localStorage.getItem("token");
+    const headers = {
+      "Content-Type": "application/json",
+    };
+
+    if (token) {
+      headers.Authorization = `Bearer ${token}`;
+    }
+
+    const response = await fetch(`${API_BASE_URL}/ai-chat/message`, {
+      method: "POST",
+      headers,
+      body: JSON.stringify({ message }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      const error = new Error(data?.error || data?.message || "AI request failed");
+      error.status = response.status;
+      throw error;
+    }
+
+    return data?.data?.reply || "";
+  };
+
+  const mapAIErrorMessage = (error) => {
+    const raw = `${error?.message || ""}`.toLowerCase();
+
+    if (raw.includes("not configured")) {
+      return "AI chưa được cấu hình ở server. Vui lòng kiểm tra GEMINI_API_KEY trong backend env.";
+    }
+
+    if (raw.includes("403") || raw.includes("permission") || raw.includes("forbidden")) {
+      return "Gemini trả về 403: API key có thể bị giới hạn domain/IP, chưa bật Generative Language API, hoặc không có quyền dùng model hiện tại.";
+    }
+
+    if (raw.includes("404") || raw.includes("no longer available") || raw.includes("not found")) {
+      return "Model AI hiện không còn hỗ trợ cho project/key này. Hệ thống đang dùng model fallback mới, vui lòng thử lại.";
+    }
+
+    if (raw.includes("429") || raw.includes("quota") || raw.includes("rate")) {
+      return "Đã vượt quota/rate limit của Gemini API. Bạn cần chờ reset quota hoặc nâng gói API key.";
+    }
+
+    return "Sorry, I'm having trouble connecting right now. Please try again later.";
+  };
 
   useEffect(() => {
     // Check user premium status and usage
@@ -116,15 +160,7 @@ const AIChat = () => {
     }
 
     try {
-      const prompt = `You are S'Techdy AI, a helpful study assistant. The user asked: "${currentInput}". 
-                  
-If they want to create a study schedule, respond with: "Of course! Please press on create Schedule to continue!!!"
-
-Otherwise, provide a helpful, friendly response related to studying, productivity, or scheduling.`;
-
-      const result = await model.generateContent(prompt);
-      const response = await result.response;
-      const aiText = response.text();
+      const aiText = await tryGenerateContent(currentInput);
       
       if (aiText) {
         const aiMessage = {
@@ -138,9 +174,10 @@ Otherwise, provide a helpful, friendly response related to studying, productivit
         throw new Error("Invalid response from AI");
       }
     } catch (error) {
+      console.error("AI Chat generation error:", error);
       const errorMessage = {
         id: Date.now() + 1,
-        text: "Sorry, I'm having trouble connecting right now. Please try again later.",
+        text: mapAIErrorMessage(error),
         sender: "ai",
         timestamp: new Date(),
       };
