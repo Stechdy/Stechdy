@@ -35,7 +35,7 @@ const DAILY_REVENUE_BREAKDOWN = [
 const REVENUE_BY_PLAN = [
   { _id: 'premium-monthly', planName: 'Premium tháng', count: 89, revenue: 10680000 },
   { _id: 'premium-quarterly', planName: 'Premium quý', count: 41, revenue: 4920000 },
-  { _id: 'premium-yearly', planName: 'Premium năm', count: 22, revenue: 2448000 },
+  { _id: 'premium-yearly', planName: 'Premium năm', count: 25, revenue: 2448000 },
 ];
 
 const MONTHLY_REPORT_DATA = {
@@ -79,7 +79,7 @@ const MONTHLY_REPORT_DATA = {
       byPlan: [
         { _id: 'premium-monthly', planName: 'Premium tháng', count: 87, revenue: 10440000 },
         { _id: 'premium-quarterly', planName: 'Premium quý', count: 40, revenue: 4200000 },
-        { _id: 'premium-yearly', planName: 'Premium năm', count: 22, revenue: 3084000 },
+        { _id: 'premium-yearly', planName: 'Premium năm', count: 25, revenue: 3084000 },
       ],
     },
     studySessions: {
