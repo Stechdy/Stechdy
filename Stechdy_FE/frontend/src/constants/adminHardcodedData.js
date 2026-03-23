@@ -8,34 +8,34 @@ export const ADMIN_HARDCODED_METRICS = {
 };
 
 const MONTHLY_REVENUE_BREAKDOWN = [
-  { _id: { month: 2 }, count: 3, revenue: 324000 },
-  { _id: { month: 3 }, count: 149, revenue: 17724000 },
+  { _id: { month: 2 }, count: 3, revenue: 177000 },
+  { _id: { month: 3 }, count: 149, revenue: 17871000 },
 ];
 
 const WEEKLY_REVENUE_BREAKDOWN = [
-  { _id: { week: 1 }, count: 3, revenue: 324000 },
+  { _id: { week: 1 }, count: 3, revenue: 177000 },
   { _id: { week: 2 }, count: 28, revenue: 3348000 },
   { _id: { week: 3 }, count: 36, revenue: 4284000 },
   { _id: { week: 4 }, count: 41, revenue: 4896000 },
-  { _id: { week: 5 }, count: 44, revenue: 5196000 },
+  { _id: { week: 5 }, count: 44, revenue: 5343000 },
 ];
 
 const DAILY_REVENUE_BREAKDOWN = [
-  { _id: { day: 12, month: 2 }, count: 1, revenue: 108000 },
-  { _id: { day: 20, month: 2 }, count: 1, revenue: 108000 },
-  { _id: { day: 27, month: 2 }, count: 1, revenue: 108000 },
+  { _id: { day: 12, month: 2 }, count: 1, revenue: 39000 },
+  { _id: { day: 20, month: 2 }, count: 1, revenue: 39000 },
+  { _id: { day: 27, month: 2 }, count: 1, revenue: 99000 },
   { _id: { day: 5, month: 3 }, count: 19, revenue: 2250000 },
   { _id: { day: 10, month: 3 }, count: 22, revenue: 2610000 },
   { _id: { day: 15, month: 3 }, count: 27, revenue: 3210000 },
   { _id: { day: 21, month: 3 }, count: 31, revenue: 3690000 },
   { _id: { day: 26, month: 3 }, count: 24, revenue: 2850000 },
-  { _id: { day: 31, month: 3 }, count: 26, revenue: 3114000 },
+  { _id: { day: 31, month: 3 }, count: 26, revenue: 3261000 },
 ];
 
 const REVENUE_BY_PLAN = [
-  { _id: 'premium-monthly', planName: 'Premium tháng', count: 89, revenue: 10680000 },
-  { _id: 'premium-quarterly', planName: 'Premium quý', count: 41, revenue: 4920000 },
-  { _id: 'premium-yearly', planName: 'Premium năm', count: 25, revenue: 2448000 },
+  { _id: 'premium-monthly', planName: 'Premium tháng', count: 70, revenue: 2730000 },
+  { _id: 'premium-quarterly', planName: 'Premium quý', count: 46, revenue: 4554000 },
+  { _id: 'premium-yearly', planName: 'Premium năm', count: 36, revenue: 10764000 },
 ];
 
 const MONTHLY_REPORT_DATA = {
@@ -47,13 +47,13 @@ const MONTHLY_REPORT_DATA = {
       premiumConversions: 3,
     },
     revenue: {
-      total: 324000,
-      previous: 216000,
+      total: 177000,
+      previous: 118000,
       growthRate: 50.0,
       transactions: 3,
       byPlan: [
-        { _id: 'premium-monthly', planName: 'Premium tháng', count: 2, revenue: 240000 },
-        { _id: 'premium-quarterly', planName: 'Premium quý', count: 1, revenue: 84000 },
+        { _id: 'premium-monthly', planName: 'Premium tháng', count: 2, revenue: 78000 },
+        { _id: 'premium-quarterly', planName: 'Premium quý', count: 1, revenue: 99000 },
       ],
     },
     studySessions: {
@@ -72,14 +72,14 @@ const MONTHLY_REPORT_DATA = {
       premiumConversions: 121,
     },
     revenue: {
-      total: 17724000,
-      previous: 324000,
-      growthRate: 5370.4,
+      total: 17871000,
+      previous: 177000,
+      growthRate: 9996.6,
       transactions: 149,
       byPlan: [
-        { _id: 'premium-monthly', planName: 'Premium tháng', count: 87, revenue: 10440000 },
-        { _id: 'premium-quarterly', planName: 'Premium quý', count: 40, revenue: 4200000 },
-        { _id: 'premium-yearly', planName: 'Premium năm', count: 25, revenue: 3084000 },
+        { _id: 'premium-monthly', planName: 'Premium tháng', count: 68, revenue: 2652000 },
+        { _id: 'premium-quarterly', planName: 'Premium quý', count: 45, revenue: 4455000 },
+        { _id: 'premium-yearly', planName: 'Premium năm', count: 36, revenue: 10764000 },
       ],
     },
     studySessions: {
@@ -94,17 +94,17 @@ const MONTHLY_REPORT_DATA = {
 
 const TOP_USERS = [
   {
-    user: { name: 'Nguyen Minh Anh', email: 'minhanh@stechdy.vn', avatarUrl: '' },
+    user: { name: 'Nguyen Minh Anh', email: 'minhanh04@gmail.com', avatarUrl: '' },
     totalMinutes: 6420,
     sessionsCompleted: 34,
   },
   {
-    user: { name: 'Tran Bao Chau', email: 'baochau@stechdy.vn', avatarUrl: '' },
+    user: { name: 'Tran Bao Chau', email: 'baochau@gmail.com', avatarUrl: '' },
     totalMinutes: 5950,
     sessionsCompleted: 30,
   },
   {
-    user: { name: 'Le Quoc Dat', email: 'quocdat@stechdy.vn', avatarUrl: '' },
+    user: { name: 'Le Quoc Dat', email: 'quocdat@gmail.com', avatarUrl: '' },
     totalMinutes: 5620,
     sessionsCompleted: 29,
   },
@@ -159,7 +159,7 @@ const RECENT_PAYMENTS = [
     userName: 'Pham Thanh Huyen',
     userEmail: 'thanhhuyen@stechdy.vn',
     planName: 'Premium tháng',
-    amount: 120000,
+    amount: 39000,
     status: 'verified',
   },
   {
@@ -167,7 +167,7 @@ const RECENT_PAYMENTS = [
     userName: 'Hoang Gia Linh',
     userEmail: 'gialinh@stechdy.vn',
     planName: 'Premium quý',
-    amount: 420000,
+    amount: 99000,
     status: 'pending',
   },
   {
@@ -175,7 +175,7 @@ const RECENT_PAYMENTS = [
     userName: 'Tran Bao Chau',
     userEmail: 'baochau@stechdy.vn',
     planName: 'Premium năm',
-    amount: 1400000,
+    amount: 299000,
     status: 'verified',
   },
   {
@@ -183,7 +183,7 @@ const RECENT_PAYMENTS = [
     userName: 'Le Quoc Dat',
     userEmail: 'quocdat@stechdy.vn',
     planName: 'Premium tháng',
-    amount: 120000,
+    amount: 39000,
     status: 'verified',
   },
   {
@@ -191,7 +191,7 @@ const RECENT_PAYMENTS = [
     userName: 'Nguyen Duy An',
     userEmail: 'duyan@stechdy.vn',
     planName: 'Premium tháng',
-    amount: 120000,
+    amount: 39000,
     status: 'rejected',
   },
 ];
