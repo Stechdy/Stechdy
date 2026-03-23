@@ -110,6 +110,92 @@ const TOP_USERS = [
   },
 ];
 
+const RECENT_USERS = [
+  {
+    _id: 'u-202603-001',
+    name: 'Pham Thanh Huyen',
+    email: 'thanhhuyen@stechdy.vn',
+    premiumStatus: 'premium',
+    createdAt: '2026-03-22T08:30:00.000Z',
+    avatarUrl: '',
+  },
+  {
+    _id: 'u-202603-002',
+    name: 'Do Minh Khoa',
+    email: 'minhkhoa@stechdy.vn',
+    premiumStatus: 'free',
+    createdAt: '2026-03-21T14:10:00.000Z',
+    avatarUrl: '',
+  },
+  {
+    _id: 'u-202603-003',
+    name: 'Hoang Gia Linh',
+    email: 'gialinh@stechdy.vn',
+    premiumStatus: 'premium',
+    createdAt: '2026-03-20T09:45:00.000Z',
+    avatarUrl: '',
+  },
+  {
+    _id: 'u-202603-004',
+    name: 'Nguyen Duy An',
+    email: 'duyan@stechdy.vn',
+    premiumStatus: 'free',
+    createdAt: '2026-03-19T16:20:00.000Z',
+    avatarUrl: '',
+  },
+  {
+    _id: 'u-202603-005',
+    name: 'Le Thu Trang',
+    email: 'thutrang@stechdy.vn',
+    premiumStatus: 'premium',
+    createdAt: '2026-03-18T11:00:00.000Z',
+    avatarUrl: '',
+  },
+];
+
+const RECENT_PAYMENTS = [
+  {
+    _id: 'pay-202603-149',
+    userName: 'Pham Thanh Huyen',
+    userEmail: 'thanhhuyen@stechdy.vn',
+    planName: 'Premium tháng',
+    amount: 120000,
+    status: 'verified',
+  },
+  {
+    _id: 'pay-202603-148',
+    userName: 'Hoang Gia Linh',
+    userEmail: 'gialinh@stechdy.vn',
+    planName: 'Premium quý',
+    amount: 420000,
+    status: 'pending',
+  },
+  {
+    _id: 'pay-202603-147',
+    userName: 'Tran Bao Chau',
+    userEmail: 'baochau@stechdy.vn',
+    planName: 'Premium năm',
+    amount: 1400000,
+    status: 'verified',
+  },
+  {
+    _id: 'pay-202602-003',
+    userName: 'Le Quoc Dat',
+    userEmail: 'quocdat@stechdy.vn',
+    planName: 'Premium tháng',
+    amount: 120000,
+    status: 'verified',
+  },
+  {
+    _id: 'pay-202602-002',
+    userName: 'Nguyen Duy An',
+    userEmail: 'duyan@stechdy.vn',
+    planName: 'Premium tháng',
+    amount: 120000,
+    status: 'rejected',
+  },
+];
+
 const MONTH_NAMES = [
   '',
   'Tháng 1',
@@ -152,8 +238,8 @@ export const getHardcodedDashboardStats = () => ({
     totalStudyHours: ADMIN_HARDCODED_METRICS.totalStudyHours,
     completed: 194,
   },
-  recentUsers: [],
-  recentPayments: [],
+  recentUsers: RECENT_USERS,
+  recentPayments: RECENT_PAYMENTS,
 });
 
 export const getHardcodedRevenueStats = (period, year) => {
