@@ -1,9 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import AdminLayout from '../../components/layout/AdminLayout';
 import '../../components/layout/AdminLayout.css';
-
-import config from '../../config';
-const API_BASE_URL = config.apiUrl;
+import { getHardcodedRevenueStats } from '../../constants/adminHardcodedData';
 
 const AdminRevenue = () => {
   const [stats, setStats] = useState(null);
@@ -14,17 +12,7 @@ const AdminRevenue = () => {
   const fetchRevenueStats = useCallback(async () => {
     try {
       setLoading(true);
-      const token = localStorage.getItem('token');
-      
-      const response = await fetch(
-        `${API_BASE_URL}/admin/revenue/stats?period=${period}&year=${year}`,
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-
-      if (!response.ok) throw new Error('Failed to fetch revenue stats');
-
-      const data = await response.json();
-      setStats(data.data);
+      setStats(getHardcodedRevenueStats(period, year));
     } catch (err) {
     } finally {
       setLoading(false);
