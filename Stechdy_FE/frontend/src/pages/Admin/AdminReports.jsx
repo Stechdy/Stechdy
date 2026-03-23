@@ -1,9 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import AdminLayout from '../../components/layout/AdminLayout';
 import '../../components/layout/AdminLayout.css';
-
-import config from '../../config';
-const API_BASE_URL = config.apiUrl;
+import { getHardcodedMonthlyReport } from '../../constants/adminHardcodedData';
 
 const AdminReports = () => {
   const [report, setReport] = useState(null);
@@ -14,17 +12,7 @@ const AdminReports = () => {
   const fetchReport = useCallback(async () => {
     try {
       setLoading(true);
-      const token = localStorage.getItem('token');
-      
-      const response = await fetch(
-        `${API_BASE_URL}/admin/reports/monthly?month=${month}&year=${year}`,
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-
-      if (!response.ok) throw new Error('Failed to fetch report');
-
-      const data = await response.json();
-      setReport(data.data);
+      setReport(getHardcodedMonthlyReport(month, year));
     } catch (err) {
     } finally {
       setLoading(false);
@@ -40,6 +28,13 @@ const AdminReports = () => {
       style: 'currency',
       currency: 'VND'
     }).format(amount);
+  };
+
+  const formatHours = (hours) => {
+    return new Intl.NumberFormat('vi-VN', {
+      minimumFractionDigits: 1,
+      maximumFractionDigits: 1,
+    }).format(hours || 0);
   };
 
   const months = [
@@ -77,7 +72,7 @@ BÁO CÁO THÁNG ${report?.period?.month}/${report?.period?.year}
 - Tổng buổi học: ${report?.studySessions?.total || 0}
 - Hoàn thành: ${report?.studySessions?.completed || 0}
 - Tỷ lệ hoàn thành: ${report?.studySessions?.completionRate || 0}%
-- Tổng giờ học: ${report?.studySessions?.totalHours || 0}h
+ - Tổng giờ học: ${formatHours(report?.studySessions?.totalHours)}h
 
 4. TOP USERS
 ${report?.topUsers?.map((u, i) => `${i + 1}. ${u.user?.name} - ${Math.round(u.totalMinutes / 60)}h`).join('\n') || 'Không có dữ liệu'}
@@ -181,7 +176,7 @@ ${report?.topUsers?.map((u, i) => `${i + 1}. ${u.user?.name} - ${Math.round(u.to
 
             <div className="admin-stat-card orange">
               <div className="stat-icon">⏰</div>
-              <div className="stat-value">{report.studySessions?.totalHours || 0}h</div>
+              <div className="stat-value">{formatHours(report.studySessions?.totalHours)}h</div>
               <div className="stat-label">Tổng giờ học</div>
               <span className="stat-change positive">
                 {report.studySessions?.total || 0} buổi

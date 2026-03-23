@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import AdminLayout from '../../components/layout/AdminLayout';
-
-import config from '../../config';
-const API_BASE_URL = config.apiUrl;
+import { getHardcodedDashboardStats } from '../../constants/adminHardcodedData';
 
 const AdminDashboard = () => {
   const [stats, setStats] = useState(null);
@@ -16,20 +14,8 @@ const AdminDashboard = () => {
   const fetchDashboardStats = async () => {
     try {
       setLoading(true);
-      const token = localStorage.getItem('token');
-      
-      const response = await fetch(`${API_BASE_URL}/admin/dashboard/stats`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to fetch dashboard stats');
-      }
-
-      const data = await response.json();
-      setStats(data.data);
+      setError('');
+      setStats(getHardcodedDashboardStats());
     } catch (err) {
       setError(err.message);
     } finally {
@@ -52,6 +38,13 @@ const AdminDashboard = () => {
       hour: '2-digit',
       minute: '2-digit'
     });
+  };
+
+  const formatHours = (hours) => {
+    return new Intl.NumberFormat('vi-VN', {
+      minimumFractionDigits: 1,
+      maximumFractionDigits: 1,
+    }).format(hours || 0);
   };
 
   if (loading) {
@@ -143,7 +136,7 @@ const AdminDashboard = () => {
 
         <div className="admin-stat-card green">
           <div className="stat-icon">⏰</div>
-          <div className="stat-value">{stats?.studySessions?.totalStudyHours || 0}h</div>
+          <div className="stat-value">{formatHours(stats?.studySessions?.totalStudyHours)}h</div>
           <div className="stat-label">Tổng giờ học</div>
           <span className="stat-change positive">
             Từ {stats?.studySessions?.completed || 0} buổi
