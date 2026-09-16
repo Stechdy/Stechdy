@@ -34,6 +34,8 @@
 |**Tài liệu SRS**| https://drive.google.com/file/d/1WJZl6gFb5DF9T3D2AZglvzE49_dYeSyc/view?usp=drive_link | Các thông tin chuyên ngành về hệ thống Stechdy |
 
 ---
+## User and finance Result
+
 
 <img width="605" height="338" alt="image" src="https://github.com/user-attachments/assets/bda6068f-e8a9-4906-9ed1-d4f2bd6f8ff0" />
 
