@@ -29,7 +29,7 @@
 
 | 📄 Tài liệu | 🔗 Liên kết (Link) | 📝 Mô tả nội dung |
 | :--- | :--- | :--- |
-| **Figma UI/UX Prototype & Design System** | [[Add Link Here](https://](https://www.figma.com/design/uZTWUuiZXfmAyiobl5Hccy/S-Techdy?node-id=518-91&t=9G6KMutzi7ifIwGA-1)) | Wireframe, High-fidelity UI, Bộ màu Dark/Light, Typography & Components |
+| **Figma UI/UX Prototype & Design System** | (https://](https://www.figma.com/design/uZTWUuiZXfmAyiobl5Hccy/S-Techdy?node-id=518-91&t=9G6KMutzi7ifIwGA-1)) | Wireframe, High-fidelity UI, Bộ màu Dark/Light, Typography & Components |
 | **Video Demo & Project Presentation** | https://drive.google.com/file/d/1KNihikF6jMQrPT-a1_P3az_-IOih9xKE/view?usp=drive_link | Video walkthrough toàn bộ tính năng và Slide thuyết trình báo cáo |
 |**Tài liệu SRS**| https://drive.google.com/file/d/1WJZl6gFb5DF9T3D2AZglvzE49_dYeSyc/view?usp=drive_link |
 
